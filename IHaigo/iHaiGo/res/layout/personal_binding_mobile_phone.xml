@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F4F4"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+             android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:layout_weight="2"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/bingdingtel"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/title_activity_settings"
+            android:textColor="@color/title_font"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/bingding_tel_login_hint" />
+
+    <EditText
+        android:id="@+id/et_bingding_tel"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/personal_userlogin_edittext_bg"
+        android:drawableLeft="@drawable/personal_userlogin_tel_hint"
+        android:drawablePadding="20dp"
+        android:hint="@string/personal_enter_tel"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColorHint="@color/personal_edit_hint_font"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/userlogin_tv_next"
+        style="@style/personalButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/personal_userlogin_next"
+        android:textSize="18sp" />
+
+   
+
+</LinearLayout>

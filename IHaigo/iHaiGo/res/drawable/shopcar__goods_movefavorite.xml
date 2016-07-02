@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 购物车移至收藏夹 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <solid android:color="@color/shopcar_goods_movefavorite" />
+
+    <corners android:radius="5dp" />
+
+</shape>

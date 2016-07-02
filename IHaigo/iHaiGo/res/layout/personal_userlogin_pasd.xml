@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F4F4"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:layout_weight="2"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/find_psd"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/title_activity_settings"
+            android:textColor="@color/title_font"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:singleLine="true"
+        android:text="@string/again_setting_loginpsd" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"
+        android:text="@string/psd_hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/personal_userlogin_edittext_psd_normal"
+        android:orientation="vertical" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/personal_login_psd"
+            android:drawablePadding="15dp"
+            android:hint="@string/personal_enter_loginpsd"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:password="true"
+            android:textColorHint="@color/personal_edit_hint_font"
+            android:textSize="13sp" />
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/personal_login_psd"
+            android:drawablePadding="15dp"
+            android:hint="@string/personal_confirm_loginpsd"
+            android:padding="5dp"
+            android:password="true"
+            android:singleLine="true"
+            android:textColorHint="@color/personal_edit_hint_font"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/userlogin_tv_affirm"
+        style="@style/personalButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/sure"
+        android:textSize="18sp" />
+
+</LinearLayout>

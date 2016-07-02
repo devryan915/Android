@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResponseCodes>
+
+    <ResponseCode
+        Code="-999"
+        Msg="服务异常" />
+    <ResponseCode
+        Code="0"
+        Msg="操作成功" />
+    <ResponseCode
+        Code="3"
+        Msg="操作无效" />
+    <ResponseCode
+        Code="1000"
+        Msg="设备不存在" />
+    <ResponseCode
+        Code="1001"
+        Msg="密码不正确" />
+    <ResponseCode
+        Code="1002"
+        Msg="设备已经被使用" />
+    <ResponseCode
+        Code="1003"
+        Msg="设备的使用人不正确" />
+    <ResponseCode
+        Code="1004"
+        Msg="设备未启用" />
+    <ResponseCode
+        Code="1005"
+        Msg="设备已关闭" />
+    <ResponseCode
+        Code="1006"
+        Msg="更换设备" />
+    <ResponseCode
+        Code="2000"
+        Msg="登录人员不存在" />
+    <ResponseCode
+        Code="2001"
+        Msg="用户名或密码不正确" />
+    <ResponseCode
+        Code="2002"
+        Msg="登录手机号已经存在" />
+    <ResponseCode
+        Code="2003"
+        Msg="超出最大家属限制" />
+    <ResponseCode
+        Code="2004"
+        Msg="注册超出最大短信次数" />
+    <ResponseCode
+        Code="2005"
+        Msg="身份证信息错误" />
+    <ResponseCode
+        Code="2006"
+        Msg="原密码不正确" />
+    <ResponseCode
+        Code="2007"
+        Msg="超出最大短信次数" />
+    <ResponseCode
+        Code="3000"
+        Msg="验证码失效，或验证码不正确" />
+    <ResponseCode
+        Code="9001"
+        Msg="手机型号不存在" />
+
+</ResponseCodes>

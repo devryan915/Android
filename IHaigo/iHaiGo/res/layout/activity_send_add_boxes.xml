@@ -1,0 +1,197 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/box_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/line"
+        android:paddingBottom="8dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="8dp"
+        android:text="" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="包裹内容"
+            android:textColor="@color/add_edt_title"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/package_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:hint="请输入包裹内容"
+            android:textColor="@color/add_edt_title"
+            android:textColorHint="@color/add_edt"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp" />
+
+    <LinearLayout
+        android:id="@+id/send_goods_channel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="发货渠道"
+            android:textColor="@color/add_edt_title"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/channel_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:drawableRight="@drawable/more"
+            android:hint="请选择发货渠道"
+            android:textColor="@color/add_edt_title"
+            android:textColorHint="@color/add_edt"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp" />
+
+    <LinearLayout
+        android:id="@+id/identify_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="身份信息"
+            android:textColor="@color/add_edt_title"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/remark_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:drawableRight="@drawable/more"
+            android:hint="请选择身份 信息"
+            android:textColor="@color/add_edt_title"
+            android:textColorHint="@color/add_edt"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp" />
+
+    <LinearLayout
+        android:id="@+id/add_address"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="收貨地址"
+            android:textColor="@color/add_edt_title"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/forecast_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:drawableRight="@drawable/more"
+            android:hint="请选择收貨地址"
+            android:textColor="@color/add_edt_title"
+            android:textColorHint="@color/add_edt"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="备注信息"
+            android:textColor="@color/add_edt_title"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/desc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:hint="备注（选填）"
+            android:textColor="@color/add_edt_title"
+            android:textColorHint="@color/add_edt"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

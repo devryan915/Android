@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 定义底部tab选中字体颜色变化 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true" android:color="@color/tab_title_selected"/>
+    <item android:color="@color/tab_title_font"/>
+
+</selector>

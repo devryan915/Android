@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/puragent_head"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@+id/puragent_head"
+        android:text="lulu海外代购"
+        android:textColor="@color/puragentdetail_comments_head"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/user_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_name"
+        android:layout_below="@+id/user_name"
+        android:layout_marginTop="3dp"
+        android:text="一句话介绍"
+        android:textColor="@color/puragentdetail_comments_label"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragentdetail_comments_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/user_name"
+        android:layout_toLeftOf="@+id/puragentdetail_comments_time"
+        android:text="04-22"
+        android:textColor="@color/puragentdetail_comments_datetime"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/puragentdetail_comments_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/user_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="13:22"
+        android:textColor="@color/puragentdetail_comments_datetime"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_feelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_name"
+        android:layout_below="@+id/user_introduce"
+        android:layout_marginTop="5dp"
+        android:text="@string/puragent_fee"
+        android:textColor="@color/puragentdetail_comments_label"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_feeval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/puragent_feelabel"
+        android:layout_alignBottom="@+id/puragent_feelabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_feelabel"
+        android:text="7.3"
+        android:textColor="@color/puragentdetail_comments_val"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_shippinglabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_feeval"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragent_feeval"
+        android:text="@string/puragent_shipping"
+        android:textColor="@color/puragentdetail_comments_label"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_shippingval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_shippinglabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_shippinglabel"
+        android:text="6.8"
+        android:textColor="@color/puragentdetail_comments_val"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_servicelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_shippingval"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragent_shippingval"
+        android:text="@string/puragent_service"
+        android:textColor="@color/puragentdetail_comments_label"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_serviceval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_servicelabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_servicelabel"
+        android:text="9.9"
+        android:textColor="@color/puragentdetail_comments_val"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/puragent_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/user_head" />
+
+    <TextView
+        android:id="@+id/purdetail_comments_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/puragent_feelabel"
+        android:layout_below="@+id/puragent_feelabel"
+        android:layout_marginTop="5dp"
+        android:text="第一次购物感觉挺好滴"
+        android:textColor="@color/puragentdetail_comments_contens" />
+
+</RelativeLayout>

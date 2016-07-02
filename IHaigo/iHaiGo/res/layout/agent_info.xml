@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/agent_info_rl"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/white"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/order_detail_puragent_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/agent_head"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/agent_head"
+            android:text="lulu海外代购"
+            android:textColor="@color/purchasehead"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/puragent_feeval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/puragent_feelabel"
+            android:layout_alignBottom="@+id/puragent_feelabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_feelabel"
+            android:text="7.3"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/puragent_shippinglabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_feeval"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/puragent_feeval"
+            android:text="@string/puragent_shipping"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_shippingval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_shippinglabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_shippinglabel"
+            android:text="6.8"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_servicelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_shippingval"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/puragent_shippingval"
+            android:text="@string/puragent_service"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_serviceval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_servicelabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_servicelabel"
+            android:text="9.9"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/agent_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/puragentdetail_supportcancelorder_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:text="已转运2次"
+            android:textColor="@color/blue" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@color/white"
+            android:text="@null"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/puragent_feelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/pruagent_creditlevel"
+            android:layout_below="@+id/button1"
+            android:text="@string/puragent_fee"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/pruagent_creditlevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/order_detail_puragent_name"
+            android:layout_alignTop="@+id/button1"
+            android:text="帶給你最安全快捷的海淘享受"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

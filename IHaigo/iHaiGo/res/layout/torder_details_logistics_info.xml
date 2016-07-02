@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- 物流信息 -->
+
+    <LinearLayout
+        android:id="@+id/torder_detail_logistics_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whiteBg"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteBg"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <View
+                    android:id="@+id/oval"
+                    style="@style/oval_new"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="42dp"
+                    android:background="@color/green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="18dp" />
+
+                <TextView
+                    android:id="@+id/first_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="-15dp"
+                    android:text="2014-12-12  14:60"
+                    android:textColor="@color/gray_color"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/first_location"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:drawableLeft="@drawable/new_lift"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:text="包裹已扫描入库，等待用户操作"
+                        android:textColor="@color/gray_color_logs"
+                        android:textSize="15sp" />
+                </LinearLayout>
+                  <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/shopcar_paybill_border" />
+            </LinearLayout>
+        </LinearLayout>
+
+       
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteBg"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <View
+                    style="@style/oval"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp" />
+
+                <View
+                    style="@style/greyBg"
+                    android:layout_width="3dp"
+                    android:layout_height="42dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="18dp" />
+
+                <TextView
+                    android:id="@+id/send_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="-15dp"
+                    android:text="2014-12-18  17:40"
+                    android:textColor="@color/gray_color"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/send_location"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:drawableLeft="@drawable/new_lift"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:text="用户已提交入库预报"
+                        android:textColor="@color/gray_color_logs"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+       
+        <Button
+            android:id="@+id/torder_detail_btn_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/puragentdetail_commitbutton_shape"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            android:text="立即发货"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <!-- Bottom -->
+
+</LinearLayout>

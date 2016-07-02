@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/personalhealth_sportscur_bg"
+    android:gravity="center_horizontal" >
+
+    <ImageView
+        android:id="@+id/personalhealth_sports_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/personalhealth_sportscur_music" />
+
+    <LinearLayout
+        android:id="@+id/personalhealth_sports_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_sports_music"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2" >
+
+            <LinearLayout
+                style="@style/personalhealth_sports_indicator"
+                android:background="@drawable/personalhealth_sportscur_steps" >
+
+                <TextView
+                    style="@style/personalhealth_indicator"
+                    android:text="@string/personalhealth_sports_stepindicator" />
+
+                <TextView
+                    android:id="@+id/sports_steps"
+                    style="@style/personalhealth_indicatorvalue"
+                    android:text="1232" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/personalhealth_sports_indicator"
+                android:background="@drawable/personalhealth_sportscur_calorie" >
+
+                <TextView
+                    style="@style/personalhealth_indicator"
+                    android:text="@string/personalhealth_sports_calorieindicator" />
+
+                <TextView
+                    android:id="@+id/sports_calorie"
+                    style="@style/personalhealth_indicatorvalue"
+                    android:text="1232" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/personalhealth_sports_indicator"
+                android:background="@drawable/personalhealth_sportscur_heartrate" >
+
+                <TextView
+                    style="@style/personalhealth_indicator"
+                    android:text="@string/personalhealth_sports_heartrateindicator" />
+
+                <TextView
+                    android:id="@+id/sports_curheartrate"
+                    style="@style/personalhealth_indicatorvalue"
+                    android:text="1232" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/personalhealth_sports_indicator"
+                android:background="@drawable/personalhealth_sportscur_breathrate" >
+
+                <TextView
+                    style="@style/personalhealth_indicator"
+                    android:text="@string/personalhealth_sports_breathrateindicator" />
+
+                <TextView
+                    android:id="@+id/sports_curbreathrate"
+                    style="@style/personalhealth_indicatorvalue"
+                    android:text="1232" />
+            </LinearLayout>
+        </GridLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/personalhealth_sports_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_sports_up"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:progress="100"
+        android:progressDrawable="@drawable/custom_sports_progress"
+        android:secondaryProgress="20" />
+
+    <TextView
+        android:id="@+id/personalhealth_sports_progresslbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_sports_progress"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="已完成：65%"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/personalhealth_sports_setgoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/personalhealth_sports_setgoal"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:text="@string/personalhealth_sports_setgoal"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

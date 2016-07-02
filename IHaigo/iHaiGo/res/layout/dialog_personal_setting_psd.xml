@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300.5dip"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="108dip"
+        android:background="@drawable/folder_dalog_top_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dialogtitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:layout_gravity="center_horizontal"
+            android:text="提示"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/suretext1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dip"
+            android:layout_gravity="center"
+            android:text="设置登录密码成功"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+        <!-- android:textColor="#c0c0c0" android:layout_gravity="center" -->
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="300.5dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:layout_marginTop="0.5dip"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/exit_oks"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/personal_ok"
+            android:clickable="false"
+            android:textColor="#5AC8FB"
+            android:textSize="18sp"
+            android:text="确定" />
+
+       
+    </LinearLayout>
+
+</LinearLayout>

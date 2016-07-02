@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/transport_company_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/line"
+        android:paddingBottom="8dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="8dp"
+        android:text="@string/transport_serviceintro" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                android:id="@+id/transport_address_firstname"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_address" />
+
+            <TextView
+                android:id="@+id/transport_address_address"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_city" />
+
+            <TextView
+                android:id="@+id/transport_address_city"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_zipcode" />
+
+            <TextView
+                android:id="@+id/transport_address_zipcode"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_lastname" />
+
+            <TextView
+                android:id="@+id/transport_address_lastname"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_unit" />
+
+            <TextView
+                android:id="@+id/transport_address_unit"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_state" />
+
+            <TextView
+                android:id="@+id/transport_address_state"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+
+            <TextView
+                style="@style/transport_address_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_tel" />
+
+            <TextView
+                android:id="@+id/transport_address_tel"
+                style="@style/transport_address_value"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transport_address_firstname" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

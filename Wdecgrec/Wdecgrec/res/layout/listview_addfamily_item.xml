@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.broadchance.wdecgrec.widget.GridItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:gravity="center" >
+
+    <RelativeLayout
+        android:id="@+id/viewContact"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:gravity="center" >
+
+        <View
+            android:id="@+id/viewHead"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/addfamily_head_nor" />
+
+        <Button
+            android:id="@+id/contactDelete"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginTop="-2dp"
+            android:clickable="false"
+            android:layout_toRightOf="@+id/viewHead"
+            android:background="@drawable/addfamily_delete" />
+
+        <TextView
+            android:id="@+id/contactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewHead"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:text="和笑笑"
+            android:textColor="#666666"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/contactPhoneNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactName"
+            android:layout_centerHorizontal="true"
+            android:text="18854205420"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonContactAdd"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/addfamily_addmode_nor"
+        android:clickable="false"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonContactDelete"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/addfamily_deletemode_nor"
+        android:clickable="false"
+        android:visibility="gone" />
+
+</com.broadchance.wdecgrec.widget.GridItemLayout>

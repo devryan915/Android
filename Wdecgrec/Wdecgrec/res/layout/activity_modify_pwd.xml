@@ -1,0 +1,202 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <com.broadchance.wdecgrec.widget.CustomTitle
+        android:id="@+id/customTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </com.broadchance.wdecgrec.widget.CustomTitle>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:background="@drawable/common_title_bg"
+        android:gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/buttonTitleBack"
+            android:layout_width="22dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="@dimen/title_btnback_marginleft"
+            android:background="@drawable/common_rebtn" />
+
+        <View
+            android:id="@+id/common_title_contactshead"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/buttonTitleBack"
+            android:background="@drawable/common_title_contactshead" />
+
+        <TextView
+            android:id="@+id/textViewUseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/common_title_contactshead"
+            android:gravity="center"
+            android:text="18852408888"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/textViewUseName"
+            android:gravity="center"
+            android:text="@string/settings_welcome"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llTitle"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/modifypwd_title"
+            android:textColor="#4a4a4a"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_mobilephone"
+                    style="@style/myinfo_textview"
+                    android:text="@string/modifypwd_oldpwd" />
+
+                <EditText
+                    android:id="@+id/modifyPwdOldPwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/modifypwd_oldpwdhint"
+                    android:inputType="textPassword"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_address"
+                    style="@style/myinfo_textview"
+                    android:text="@string/modifypwd_newpwd" />
+
+                <EditText
+                    android:id="@+id/modifyPwd_NewPwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/modifypwd_newpwdhint"
+                    android:inputType="numberPassword"
+                    android:maxLength="8"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_zipcode"
+                    style="@style/myinfo_textview"
+                    android:text="@string/modifypwd_confirmpwd" />
+
+                <EditText
+                    android:id="@+id/modifyPwdConfirmpwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/modifypwd_confirmpwdhint"
+                    android:inputType="numberPassword"
+                    android:maxLength="8"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/common_btnbg_green"
+                android:text="@string/dialog_button_save"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

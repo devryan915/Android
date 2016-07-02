@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
+
+    <TextView
+        android:id="@+id/puragent_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/puragent_head"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@+id/puragent_head"
+        android:text="lulu海外代购"
+        android:textColor="@color/purchasehead"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/pruagent_creditlevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/puragent_name"
+        android:layout_below="@+id/puragent_name"
+        android:layout_marginTop="5dp"
+        android:text="@string/puragent_credit"
+        android:textColor="@color/purchaseagentlabel"
+        android:textSize="12sp" />
+
+    <RatingBar
+        android:id="@+id/puragent_credit_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/pruagent_creditlevel"
+        android:layout_toRightOf="@+id/pruagent_creditlevel"
+        android:isIndicator="true"
+        android:minHeight="10dp"
+        android:minWidth="20dp"
+        android:progressDrawable="@drawable/ratingbar_style"
+        android:rating="3.5" />
+
+    <TextView
+        android:id="@+id/puragent_feelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pruagent_creditlevel"
+        android:layout_below="@+id/pruagent_creditlevel"
+        android:layout_marginTop="5dp"
+        android:text="@string/puragent_fee"
+        android:textColor="@color/purchaseagentlabel"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_feeval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/puragent_feelabel"
+        android:layout_alignBottom="@+id/puragent_feelabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_feelabel"
+        android:text="7.3"
+        android:textColor="@color/purchaseagentval"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_shippinglabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_feeval"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragent_feeval"
+        android:text="@string/puragent_shipping"
+        android:textColor="@color/purchaseagentlabel"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_shippingval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_shippinglabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_shippinglabel"
+        android:text="6.8"
+        android:textColor="@color/purchaseagentval"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_servicelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_shippingval"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragent_shippingval"
+        android:text="@string/puragent_service"
+        android:textColor="@color/purchaseagentlabel"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/puragent_serviceval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragent_servicelabel"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/puragent_servicelabel"
+        android:text="9.9"
+        android:textColor="@color/purchaseagentval"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/puragent_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/puragent" />
+
+    <View
+        android:id="@+id/puragentdetail_border1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/puragent_head"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/puragentdetail_border" />
+
+    <ImageView
+        android:id="@+id/puragentdetail_supportreback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/puragentdetail_border1"
+        android:layout_below="@+id/puragentdetail_border1"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/supportreback" />
+
+    <TextView
+        android:id="@+id/puragentdetail_supportreback_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragentdetail_supportreback"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragentdetail_supportreback"
+        android:text="@string/purdetail_supportreback"
+        android:textColor="@color/puragentdetail_support" />
+
+    <ImageView
+        android:id="@+id/puragentdetail_supportcancelorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragentdetail_supportreback_val"
+        android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/puragentdetail_supportreback_val"
+        android:src="@drawable/supportcancelorder" />
+
+    <TextView
+        android:id="@+id/puragentdetail_supportcancelorder_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/puragentdetail_supportcancelorder"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/puragentdetail_supportcancelorder"
+        android:text="@string/purdetail_supoortcancelorder"
+        android:textColor="@color/puragentdetail_support" />
+
+</RelativeLayout>

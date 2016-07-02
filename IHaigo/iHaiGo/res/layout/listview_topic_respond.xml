@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="@null" >
+
+    <LinearLayout
+        android:id="@+id/test_topic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/goods_item_topic"
+            android:layout_width="262dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_height="fill_parent" >
+
+                <ImageView
+                    android:id="@+id/headImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/userlogo" />
+
+                <TextView
+                    android:id="@+id/nickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/headImage"
+                    android:layout_marginLeft="14dp"
+                    android:singleLine="true"
+                    android:layout_toRightOf="@+id/headImage"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:layout_alignLeft="@+id/nickName"
+                    android:layout_below="@+id/nickName"
+                    android:textColor="@color/topic_pers" />
+
+                <TextView
+                    android:id="@+id/createTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/nickName"
+                    android:layout_alignParentRight="true"
+                    android:text="17:34"
+                    android:textColor="@color/topic_pers" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/deletegoods"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/shopcar_bottom_paybutton"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/shopcar_goods_deletegoods"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</HorizontalScrollView>

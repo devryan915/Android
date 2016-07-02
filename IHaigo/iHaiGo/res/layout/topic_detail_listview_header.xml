@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/greyBg"
+    android:orientation="vertical" >
+    
+
+    <TextView
+        android:id="@+id/detail_topic_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp" >
+
+        <ImageView
+            android:id="@+id/detail_user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/detail_user_image"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_user_nickName"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"/>
+
+            <TextView
+                android:id="@+id/detail_user_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/shopcar_goodsrules"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/detail_topic_createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="15dp"
+            android:textColor="@color/shopcar_goodsrules" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/detail_topic_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:singleLine="false"
+        android:textSize="12sp" />
+
+    <com.kc.ihaigo.ui.selfwidget.WrapListView
+        android:id="@+id/image_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="none" 
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"/>
+    
+    
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" />
+</LinearLayout>

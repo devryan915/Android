@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/shopcar_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/btn_back"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tab_shopcar"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/title_edit"
+            android:textColor="@color/title_font"
+            android:textSize="18sp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/have"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_tip"
+                    android:textColor="@color/shopcar_tip" />
+
+                <TextView
+                    android:id="@+id/addshopcartgoods"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/shopcar_tipcounts" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_tipgoods"
+                    android:textColor="@color/shopcar_tip" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/shopcar_border" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/shopcar_border" />
+
+            <com.kc.ihaigo.ui.selfwidget.PullUpRefreshListView
+                android:id="@+id/shopcar_goods"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:dividerHeight="5dp" >
+            </com.kc.ihaigo.ui.selfwidget.PullUpRefreshListView>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:background="@color/white" >
+
+                <CheckBox
+                    android:id="@+id/shopcar_selall_chk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:button="@drawable/shopcar_checkbox_selector" />
+
+                <TextView
+                    android:id="@+id/shopcar_selall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/shopcar_selall_chk"
+                    android:text="@string/shopcar_bottom_allsel"
+                    android:textColor="@color/shopcar_bottom_allsel"
+                    android:textSize="20sp" />
+
+                <RelativeLayout
+                    android:id="@+id/shopcar_buyinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/shopcar_bottoom_pay"
+                    android:layout_toRightOf="@id/shopcar_selall" >
+
+                    <TextView
+                        android:id="@+id/shopcar_bottom_discounted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/shopcar_bottom_discounted"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/shopcar_bottom_discountedprice"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/shopcar_bottom_discounted"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@id/shopcar_bottom_discounted"
+                        android:text="￥0.00"
+                        android:textColor="@color/shopcar_bottom_discountedprice"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/shopcar_bottom_counts_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/shopcar_bottom_discounted"
+                        android:text="@string/shopcar_bottom_counts_label"
+                        android:textColor="@color/shopcar_bottom_counts"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/shopcar_bottom_counts"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/shopcar_bottom_counts_label"
+                        android:layout_alignLeft="@+id/shopcar_bottom_discountedprice"
+                        android:layout_toRightOf="@id/shopcar_bottom_counts_label"
+                        android:text="0"
+                        android:textColor="@color/shopcar_bottom_price"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/shopcar_bottoom_pay"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shopcar_paybutton_shape"
+                    android:text="@string/shopcar_bottom_pay"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/empty_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="116dp"
+                android:background="@drawable/empty_bg" />
+
+            <TextView
+                android:id="@+id/nogoods"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_bg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/empty_shopcar_text" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</LinearLayout>

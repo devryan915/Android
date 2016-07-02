@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="labeledittext">
+        <attr name="labeltext" format="reference|string"></attr>
+        <attr name="labelcolor" format="reference|color"></attr>
+        <attr name="labelpaddingleft" format="reference|dimension"></attr>
+        <attr name="labeltextsize" format="reference|dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="openglecgview">
+        <attr name="gridlightcolor" format="reference|color"></attr>
+        <attr name="griddarkcolor" format="reference|color"></attr>
+        <attr name="gridbgcolor" format="reference|color"></attr>
+        <attr name="ecglinecolor" format="reference|color"></attr>
+        <attr name="leftrightmargin" format="reference|dimension"></attr>
+    </declare-styleable>
+
+</resources>

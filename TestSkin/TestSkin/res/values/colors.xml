@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 定义通用色值 -->
+    <color name="common_line_dark">#bfbfbf</color>
+    <color name="common_line_light">#e3e3e3</color>
+    <color name="dark_green">#ff006e2e</color>
+    <color name="light_green">#2b8100</color>
+    <color name="dark_red">#ff0000</color>
+    <color name="transparent">#00000000</color>
+    <color name="dialog_title">#404040</color>
+    <color name="dialog_content">#666666</color>
+    <color name="myinfo_textviewcolor">#999999</color>
+    <color name="addcontact_selbg">#e9f5ee</color>
+</resources>

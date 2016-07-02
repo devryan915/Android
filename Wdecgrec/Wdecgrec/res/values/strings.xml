@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello_world">Hello world!</string>
+    <!--  -->
+    <string name="app_name">穿戴式动态心电记录仪软件</string>
+    <string name="title_activity_welcome">WelocomeActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_mode">ModeActivity</string>
+    <string name="title_activity_ecg">EcgActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_my_info">MyInfoActivity</string>
+    <string name="title_activity_reset_pwd">ModifyPwdActivity</string>
+    <string name="title_activity_option_settings">OptionSettingsActivity</string>
+    <string name="title_activity_add_family">AddFamilyActivity</string>
+    <string name="title_activity_modify_pwd">ModifyPwdActivity</string>
+    <!-- 皮肤资源的资源名 -->
+    <string name="skin_settings_changeskin">settings_changeskin</string>
+    <!-- title -->
+    <string name="title_blestatus">蓝牙状态</string>
+    <string name="title_leftpower">电量剩余</string>
+    <!-- 登录 -->
+    <string name="login_user_label">用户名</string>
+    <string name="login_pwd_label">密码</string>
+    <string name="login_savepwd">记住密码</string>
+    <string name="login_forgotpwd">忘记密码?</string>
+    <string name="login_login">立即登录</string>
+    <string name="login_register">帐号注册</string>
+    <string name="login_version">当前版本：</string>
+    <!-- 注册 -->
+    <string name="register_title">帐号注册</string>
+    <string name="register_account_label">账号：</string>
+    <string name="register_account_hint">请输入手机号</string>
+    <string name="register_delay_sendmsg">后，重新发送</string>
+    <string name="register_token_label">验证码：</string>
+    <string name="register_token_hint">请输入验证码</string>
+    <string name="register_pwd_label">密码：</string>
+    <string name="register_pwd_hint">请输入您的密码</string>
+    <string name="register_confirmpwd_label">确认密码：</string>
+    <string name="register_confirmpwd_hint">请再次输入您的密码</string>
+    <string name="register_ID_label">身份证：</string>
+    <string name="register_ID_hint">请输入您的身份证号码</string>
+    <string name="register_agreed_agreement">同意《用户协议书》</string>
+    <string name="register_register">立即注册</string>
+    <!-- 模式选择 -->
+    <string name="mode_welcome">欢迎登录，</string>
+    <string name="mode_wearmode">佩戴\n模式</string>
+    <string name="mode_familymode">家属\n模式</string>
+    <string name="mode_sportsmode">运动\n模式</string>
+    <string name="mode_monitormode">监护\n模式</string>
+    <string name="mode_logout">退出登录</string>
+    <string name="mode_settings">设置</string>
+    <string name="mode_waiting_new">此功能正在开发，敬请期待</string>
+    <!-- 心电主页 -->
+    <string name="ecg_curspeed">当前速度：</string>
+    <string name="ecg_channel1">MII</string>
+    <string name="ecg_channel2">MV1</string>
+    <string name="ecg_channel3">MV5</string>
+    <string name="ecg_curspeedadjust">当前速度调整</string>
+    <string name="ecg_curchannel">当前显示通道</string>
+    <string name="ecg_batch_mode">批量模式</string>
+    <string name="ecg_realtime_mode">实时模式</string>
+    <string name="ecg_threechannels">三通道</string>
+    <string name="ecg_onechannel">单通道</string>
+    <!-- 设置主页 -->
+    <string name="settings_welcome">欢迎您！</string>
+    <string name="settings_upload">一键上传</string>
+    <string name="settings_myinfo">我的信息</string>
+    <string name="settings_addfamily">添加家属</string>
+    <string name="settings_pwd">密码设置</string>
+    <string name="settings_settingsdevinfo">选项设置与设备信息</string>
+    <string name="settings_changeskin">换肤</string>
+    <string name="settings_appupdate">系统更新</string>
+    <!-- 定义对话框 -->
+    <string name="dialog_title_changeskin">换肤</string>
+    <string name="dialog_title_appupdate">系统更新	</string>
+    <string name="dialog_curversion">当前版本：</string>
+    <string name="dialog_latestversion">最新版本：</string>
+    <string name="dialog_canupdate">是否更新？</string>
+    <string name="dialog_title_choosebledev">连接蓝牙</string>
+    <string name="dialog_title_devinfo">设备信息</string>
+    <string name="dialog_title_offdata">离线数据</string>
+    <string name="dialog_button_save">保存</string>
+    <string name="dialog_button_no">否</string>
+    <string name="dialog_button_rescan">重新扫描</string>
+    <string name="dialog_button_yes">是</string>
+    <string name="dialog_button_confirm">确认</string>
+    <string name="dialog_button_reject">拒绝</string>
+    <string name="dialog_button_confirmuse">启用</string>
+    <string name="dialog_title_newdevicebind">启用绑定设备</string>
+    <string name="dialog_title_logout">退出登录</string>
+    <string name="dialog_tips_contentlogout">是否确定退出？</string>
+    <string name="dialog_devicepwd">设备密码</string>
+    <string name="dialog_title_replacedevice">替换设备</string>
+    <string name="dialog_cofirmreplacedevice">确定替换原设备？</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_devicepwd_hint">请输入密码</string>
+    <string name="dialog_button_replace">替换</string>
+    <string name="dialog_title_tips">提示</string>
+    <string name="dialog_title_onekeyupload">一键上传</string>
+    <string name="dialog_onekeyupload_waitlabel">当前有待上传：</string>
+    <string name="dialog_onekeyupload_unitlabel">个</string>
+    <string name="dialog_onekeyupload_nowuploadlabel">正在上传</string>
+    <string name="dialog_onekeyupload_forwait">，请稍候</string>
+    <string name="dialog_title_choosecontact">请选择号码</string>
+    <string name="dialog_button_add">添加</string>
+    <!-- 设置-我的信息 -->
+    <string name="myinfo_head">我的信息</string>
+    <string name="myinfo_head_attetion">（注：</string>
+    <string name="myinfo_redstar">*</string>
+    <string name="myinfo_head_required">号为必填项目）</string>
+    <string name="myinfo_devinfono">设备号</string>
+    <string name="myinfo_name">姓名</string>
+    <string name="myinfo_id">身份证</string>
+    <string name="myinfo_height">身高</string>
+    <string name="myinfo_weight">体重</string>
+    <string name="myinfo_mobilephone">验证手机</string>
+    <string name="myinfo_address">家庭住址</string>
+    <string name="myinfo_zipcode">邮编</string>
+    <string name="myinfo_memo">备注事项</string>
+    <string name="myinfo_namehint">请输入您的姓名</string>
+    <string name="myinfo_yourheighthint">请输入您的身高</string>
+    <string name="myinfo_yourweighthint">请输入您的体重</string>
+    <string name="myinfo_mobilephonehint">请输入您的手机号码</string>
+    <string name="myinfo_addresshint">请输入详细的家庭住址</string>
+    <string name="myinfo_zipcodehint">请输入邮编</string>
+    <string name="myinfo_memohint">建议输入过往重大病史</string>
+    <!-- 重置密码 -->
+    <string name="resetpwd_title">重置密码</string>
+    <string name="resetpwd_newpwd">新密码：</string>
+    <!-- 选项设置与设备信息 -->
+    <string name="optionsettings_title">选项设置与设备信息</string>
+    <string name="optionsettings_dataupload">数据文件上传</string>
+    <string name="optionsettings_lowsignal_tip">设备信号弱提示音</string>
+    <string name="optionsettings_lowpower_tip">设备电量低提示音</string>
+    <string name="optionsettings_off_tip">设备断开提示音</string>
+    <string name="optionsettings_falloff_tip">设备脱落提示音</string>
+    <string name="optionsettings_gpslocation">GPS定位</string>
+    <string name="optionsettings_adviceopen">建议开启</string>
+    <string name="optionsettings_offdata">离线数据</string>
+    <string name="optionsettings_storagetime">请选择存储时间</string>
+    <string name="optionsettings_devinfo">设备信息</string>
+    <string name="optionsettings_showdevinfo">查看设备信息</string>
+    <!-- 添加家属 -->
+    <string name="addfamily_title">添加家属</string>
+    <string name="title_activity_add_contact">AddContactActivity</string>
+    <!-- 添加手机联系人 -->
+    <string name="addcontact_title">添加手机联系人</string>
+    <string name="addcontact_addcontact">添加</string>
+    <!-- ble -->
+    <string name="ble_not_supported">不支持蓝牙4.0</string>
+    <!-- 修改密码 -->
+    <string name="modifypwd_title">密码设置</string>
+    <string name="modifypwd_oldpwd">原始密码</string>
+    <string name="modifypwd_oldpwdhint">请输入原始密码</string>
+    <string name="modifypwd_newpwd">新密码</string>
+    <string name="modifypwd_newpwdhint">请输入新密码</string>
+    <string name="modifypwd_confirmpwd">确认密码</string>
+    <string name="modifypwd_confirmpwdhint">请再次输入新密码</string>
+
+</resources>

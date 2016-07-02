@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE skins PUBLIC "//UNKNOWN/" "unknown.dtd">
+<!-- 为了皮肤使用更加灵活性，扩展性，将皮肤做成配置  defined by ryan -->
+<skins>
+
+    <!-- default skin 禁止修改 -->
+    <!-- 默认皮肤的 skin_pkg_name为本身app的包名 -->
+    <skin
+        asset_skin_filename=""
+        skin_id="0"
+        skin_image_name="settings_changeskin_default"
+        skin_name="default"
+        skin_pkg_name="com.example.testskin" >
+    </skin>
+    <!-- start define skin -->
+    <!-- 定义皮肤，运行时copy到文件目录，现在为内置皮肤将来可通过网络下载安装皮肤 -->
+    <!-- skin_id 皮肤ID唯一标识 -->
+    <!-- asset_skin_filename  存放在Asset下的皮肤的文件名称 -->
+    <!-- skin_name 皮肤名称 -->
+    <!-- skin_pkg_name 皮肤包名 -->
+    <skin
+        asset_skin_filename="testskinskin.trs"
+        skin_id="1"
+        skin_image_name="settings_changeskin_oldages"
+        skin_name="oldages"
+        skin_pkg_name="com.example.testskinskin" >
+    </skin>
+    <!-- end define skin -->
+
+</skins>

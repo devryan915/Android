@@ -1,0 +1,136 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wdecgrec="http://schemas.android.com/apk/res/com.broadchance.wdecgrec"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/register_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <ImageView
+        android:id="@+id/register_com_top"
+        android:layout_width="145dp"
+        android:layout_height="83dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/register_com_top" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/register_edittext_dark"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:background="#f4f4f4"
+            android:gravity="center"
+            android:text="@string/resetpwd_title"
+            android:textColor="#404040"
+            android:textSize="20sp" />
+
+        <com.broadchance.wdecgrec.widget.LabelEditText
+            android:id="@+id/editTextUserName"
+            style="@style/register_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:ems="11"
+            android:hint="@string/register_account_hint"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingLeft="70dp"
+            wdecgrec:labelcolor="#7c7c7c"
+            wdecgrec:labelpaddingleft="10dp"
+            wdecgrec:labeltext="@string/register_account_label"
+            wdecgrec:labeltextsize="20sp" >
+
+            <requestFocus />
+        </com.broadchance.wdecgrec.widget.LabelEditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="center_vertical" >
+
+            <ImageButton
+                android:id="@+id/imageButtonGetToken"
+                android:layout_width="106dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="70dp"
+                android:background="@drawable/register_gettoken"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/textViewLeftTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="60s"
+                android:textColor="#fa7615"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/registerDelaySendMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_delay_sendmsg"
+                android:textColor="#666666"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <com.broadchance.wdecgrec.widget.LabelEditText
+            android:id="@+id/editTextToken"
+            style="@style/register_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:hint="@string/register_token_hint"
+            android:maxLength="8"
+            android:paddingLeft="90dp"
+            wdecgrec:labelcolor="#7c7c7c"
+            wdecgrec:labelpaddingleft="10dp"
+            wdecgrec:labeltext="@string/register_token_label"
+            wdecgrec:labeltextsize="20sp" />
+
+        <com.broadchance.wdecgrec.widget.LabelEditText
+            android:id="@+id/editTextPwd"
+            style="@style/register_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:hint="@string/register_pwd_hint"
+            android:inputType="numberPassword"
+            android:maxLength="8"
+            android:paddingLeft="90dp"
+            wdecgrec:labelcolor="#7c7c7c"
+            wdecgrec:labelpaddingleft="10dp"
+            wdecgrec:labeltext="@string/resetpwd_newpwd"
+            wdecgrec:labeltextsize="20sp" />
+
+        <com.broadchance.wdecgrec.widget.LabelEditText
+            android:id="@+id/editTextConfirmPwd"
+            style="@style/register_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:hint="@string/register_confirmpwd_hint"
+            android:inputType="numberPassword"
+            android:maxLength="8"
+            android:paddingLeft="110dp"
+            wdecgrec:labelcolor="#7c7c7c"
+            wdecgrec:labelpaddingleft="10dp"
+            wdecgrec:labeltext="@string/register_confirmpwd_label"
+            wdecgrec:labeltextsize="20sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonResetPwd"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/common_btnbg_green"
+        android:text="@string/dialog_button_save"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>

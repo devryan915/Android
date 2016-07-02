@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/address_add"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:paddingRight="5dp"
+            android:text="@string/add_save"
+            android:textColor="@color/title_font"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        style="@style/whiteBg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/companyLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/contacts"
+                android:textColor="@color/add_style"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/contacts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="0.8"
+                android:background="@null"
+                android:hint="@string/contacts_hini"
+                android:textColor="@color/mersser"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/contact_number"
+                android:textColor="@color/add_style"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/contact_number"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="@string/contact_number_hini"
+                android:numeric="integer"
+                android:textColor="@color/mersser"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/area_selection"
+                android:textColor="@color/add_style"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/area_selection"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="@string/area_selection_hini"
+                android:textColor="@color/mersser"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/detailed_address"
+                android:textColor="@color/add_style"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/detailed_address"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="@string/detailed_address_hini"
+                android:textColor="@color/mersser"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/zip_code"
+                android:textColor="@color/add_style"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/postalCode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="@string/zip_code"
+                android:numeric="integer"
+                android:textColor="@color/mersser"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        style="@style/fillBoxBg"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        style="@style/whiteBg"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.8"
+            android:text="@string/address_open"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/settings_address_status"
+            style="@style/settings_button" />
+
+    </LinearLayout>
+
+</LinearLayout>

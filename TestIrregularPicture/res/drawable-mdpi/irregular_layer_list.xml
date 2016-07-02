@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/layer1"
+        android:drawable="@drawable/layer1"/>
+    <item
+        android:id="@+id/layer2"
+        android:drawable="@drawable/layer2"/>
+    <item
+        android:id="@+id/layer3"
+        android:drawable="@drawable/layer3"/>
+    <item
+        android:id="@+id/layer4"
+        android:drawable="@drawable/layer4"/>
+    <item
+        android:id="@+id/layer5"
+        android:drawable="@drawable/layer5"/>
+    <item
+        android:id="@+id/layer6"
+        android:drawable="@drawable/layer6"/>
+    <item
+        android:id="@+id/layer7"
+        android:drawable="@drawable/layer7"/>
+    <item
+        android:id="@+id/layer8"
+        android:drawable="@drawable/layer8"/>
+    <item
+        android:id="@+id/layer9"
+        android:drawable="@drawable/layer9"/>
+    <item
+        android:id="@+id/layer10"
+        android:drawable="@drawable/layer10"/>
+
+</layer-list>

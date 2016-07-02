@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="10dp" >
+
+    <ImageView
+        android:id="@+id/goodsimage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/adv_goods" />
+
+    <TextView
+        android:id="@+id/goodsname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/oldprice"
+        android:layout_toRightOf="@+id/goodsimage"
+        android:lines="2"
+        android:text="Abercrombie Fitch 棒球领男sd测试男神驾到，"
+        android:textColor="@color/shopcar_goodsname" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/oldprice"
+        android:layout_below="@+id/oldprice"
+        android:text="$5"
+        android:textColor="@color/shopcar_goodsprice"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/goodscolor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/price"
+        android:layout_toRightOf="@+id/goodsimage"
+        android:text="@string/shopcar_goods_colorlabel"
+        android:textColor="@color/shopcar_goodsrules" />
+
+    <TextView
+        android:id="@+id/goodsrule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goodscolor"
+        android:layout_below="@+id/goodscolor"
+        android:text="@string/shopcar_goods_rulelabel"
+        android:textColor="@color/shopcar_goodsrules" />
+
+    <TextView
+        android:id="@+id/goodscolorval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goodscolor"
+        android:layout_toRightOf="@+id/goodscolor"
+        android:text="TextView"
+        android:textColor="@color/shopcar_goodsrules" />
+
+    <TextView
+        android:id="@+id/goodsruleval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goodsrule"
+        android:layout_alignLeft="@+id/goodscolorval"
+        android:text="TextView"
+        android:textColor="@color/shopcar_goodsrules" />
+
+    <TextView
+        android:id="@+id/oldprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/goodsname"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:text="$20"
+        android:textColor="@color/shopcar_goodsoldprice"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/goodsquantityval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goodsruleval"
+        android:layout_alignRight="@+id/oldprice"
+        android:text="12"
+        android:textColor="@color/shopcar_goodsrules" />
+
+    <TextView
+        android:id="@+id/goodsquantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goodsquantityval"
+        android:layout_toLeftOf="@+id/goodsquantityval"
+        android:text="@string/shopcar_confirmbill_quantity"
+        android:textColor="@color/shopcar_goodsrules" />
+
+</RelativeLayout>

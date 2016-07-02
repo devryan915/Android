@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BleControl</string>
+    <string name="error_bluetooth_not_supported">未发现蓝牙设备</string>
+    <string name="ble_not_supported">不支持蓝牙4.0</string>
+    <string name="connected">蓝牙已连接</string>
+    <string name="reconnecting">正在重新连接蓝牙...</string>
+    <string name="disconnected">蓝牙已断开</string>
+    <string name="services_discovered">发现服务</string>
+    <string name="repeat_discover">重新扫描</string>
+    <string name="repeat_discovering">正在扫描蓝牙设备...</string>
+
+</resources>

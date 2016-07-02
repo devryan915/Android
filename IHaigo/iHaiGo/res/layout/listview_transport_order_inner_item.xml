@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp" >
+
+        <LinearLayout
+            android:id="@+id/shopcar_selall_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp" >
+
+            <Button
+                android:id="@+id/shopcar_goods_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/removegoods"
+                android:button="@drawable/shopcar_checkbox_selector"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/goods_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/shopcar_selall_ll"
+            android:src="@drawable/adv_goods" />
+
+        <TextView
+            android:id="@+id/goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/goods_image"
+            android:lines="2"
+            android:text="Abercrombie Fitch 短袖羊毛毛衣抓绒外套"
+            android:textColor="@color/shopcar_goodsname" />
+
+        <TextView
+            android:id="@+id/goodsrule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/goodscolor"
+            android:layout_below="@+id/goodscolor"
+            android:text="@string/shopcar_goods_rulelabel"
+            android:textColor="@color/shopcar_goodsrules" />
+
+        <TextView
+            android:id="@+id/goods_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/goodscolor"
+            android:layout_toRightOf="@+id/goodscolor"
+            android:text="黑色"
+            android:textColor="@color/shopcar_goodsrules" />
+
+        <Button
+            android:id="@+id/movefavorite"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/goodsruleval"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/shopcar__goods_movefavorite"
+            android:text="@string/shopcar_goods_movefavorite"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone" >
+        </Button>
+
+        <LinearLayout
+            android:id="@+id/goodecountselector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/goodsruleval"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/goodscolor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/goods_image"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/goods_image"
+            android:text="@string/shopcar_goods_colorlabel"
+            android:textColor="@color/shopcar_goodsrules" />
+
+        <TextView
+            android:id="@+id/goods_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/goodsrule"
+            android:layout_alignBottom="@+id/goodsrule"
+            android:layout_toRightOf="@+id/goodsrule"
+            android:text="XXL"
+            android:textColor="@color/shopcar_goodsrules" />
+
+        <TextView
+            android:id="@+id/goods_total"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/goods_size"
+            android:layout_marginRight="32dp"
+            android:layout_toLeftOf="@+id/goodecountselector"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:text="x3" />
+    </RelativeLayout>
+
+  <!--   <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color"
+        android:paddingTop="5dp" /> -->
+
+
+
+    <!--
+         <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color"
+         />
+    -->
+
+</LinearLayout>

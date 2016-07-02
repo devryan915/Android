@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteBg"
+    android:orientation="vertical" >
+
+    <TextView 
+        android:id="@+id/tv_addrId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="张三"
+                    android:textColor="#474A53"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/userRegion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:text="裸奔的兔子"
+                    android:textColor="#B5B6BB"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/infoRegion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="海淘小王子~"
+                android:textColor="#B5B6BB"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/more" />
+
+        <ImageView
+            android:id="@+id/seladdress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/more"
+            android:src="@drawable/dialog_seladdress" />
+    </RelativeLayout>
+    
+
+            <TextView
+                android:id="@+id/contact_number"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:text="@string/linkman_tel"
+                android:textColor="@color/personal_black_font"
+                android:textSize="16sp" 
+                android:visibility="gone"/>
+        
+
+            <TextView
+                android:id="@+id/postalCode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:text="@string/linkman_area_postal"
+                android:textColor="@color/personal_black_font"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+</LinearLayout>

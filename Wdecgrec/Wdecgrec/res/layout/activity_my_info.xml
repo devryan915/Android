@@ -1,0 +1,511 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <com.broadchance.wdecgrec.widget.CustomTitle
+        android:id="@+id/customTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </com.broadchance.wdecgrec.widget.CustomTitle>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:background="@drawable/common_title_bg"
+        android:gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/buttonTitleBack"
+            android:layout_width="22dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="@dimen/title_btnback_marginleft"
+            android:background="@drawable/common_rebtn" />
+
+        <View
+            android:id="@+id/common_title_contactshead"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/buttonTitleBack"
+            android:background="@drawable/common_title_contactshead" />
+
+        <TextView
+            android:id="@+id/textViewUseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/common_title_contactshead"
+            android:gravity="center"
+            android:text="18852408888"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/textViewUseName"
+            android:gravity="center"
+            android:text="@string/settings_welcome"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llTitle"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myinfo_head"
+            android:textColor="#4a4a4a"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myinfo_head_attetion"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myinfo_redstar"
+            android:textColor="#ff0000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myinfo_head_required"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_devinfono"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_devinfono" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_devinfono"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/myinfoDevNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:gravity="center_vertical"
+                    android:text="FFDDKKJJHH"
+                    android:textColor="#666666"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_name"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_name"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/myinfoName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/myinfoNameSexAge"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_namehint"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="20sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/myinfoNameSexAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:gravity="center_vertical"
+                    android:text="，男，100岁"
+                    android:textColor="#666666"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_id"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_id" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_id"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/myinfoID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:gravity="center_vertical"
+                    android:text="321322204552409999"
+                    android:textColor="#666666"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_height"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_height" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_height"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/myinfoHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/myinfoHeightCm"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_yourheighthint"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/myinfoHeightCm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:gravity="center_vertical"
+                    android:text="Cm"
+                    android:textColor="#666666"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_weight"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_weight" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_weight"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/myinfoWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/myinfoWeightKg"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_yourheighthint"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/myinfoWeightKg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:gravity="center_vertical"
+                    android:text="Kg"
+                    android:textColor="#666666"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_mobilephone"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_mobilephone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/myinfo_mobilephone"
+                    android:gravity="center_vertical"
+                    android:text="@string/myinfo_redstar"
+                    android:textColor="#ff0000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/myinfoMobilePhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/myinfoMobileN"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_mobilephonehint"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <ImageView
+                    android:id="@+id/myinfoMobileN"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@drawable/settings_nsbtn_nor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_address"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_address" />
+
+                <EditText
+                    android:id="@+id/myinfoAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_addresshint"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_zipcode"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_zipcode" />
+
+                <EditText
+                    android:id="@+id/myinfoZipCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_zipcodehint"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/myinfo_memo"
+                    style="@style/myinfo_textview"
+                    android:text="@string/myinfo_memo" />
+
+                <EditText
+                    android:id="@+id/myinfoMemo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/myinfo_memohint"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="@color/myinfo_textviewcolor"
+                    android:textColorHint="@color/myinfo_textviewcolor"
+                    android:textSize="20sp" >
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e7e7e7" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/common_btnbg_green"
+                android:text="@string/dialog_button_save"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

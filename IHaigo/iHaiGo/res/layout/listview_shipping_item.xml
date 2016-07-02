@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteBg"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+<!--  
+             <View
+                style="@style/greyBg"
+                android:layout_width="3dp"
+                android:layout_height="20dp" />-->
+
+            <View
+                android:id="@+id/oval"
+                style="@style/oval"
+                android:layout_width="13dp"
+                android:layout_height="13dp" />
+
+            <View
+                style="@style/greyBg"
+                android:layout_width="3dp"
+                android:layout_height="42dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="18dp" />
+
+            <TextView
+                android:id="@+id/transport_tite"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="-23dp"
+                android:text="2014-12-12  14:60"
+                android:textColor="@color/gray_color"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="1dp" >
+
+                <TextView
+                    android:id="@+id/transport"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:drawableLeft="@drawable/new_lift"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:text="抵达上海市"
+                    android:textColor="@color/gray_color_logs"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

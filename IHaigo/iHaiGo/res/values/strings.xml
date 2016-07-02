@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="loading">正在加载数据请稍后……</string>
+    <string name="app_name">海淘</string>
+    <string name="action_settings">設置</string>
+    <string name="title_activity_ihai_go_main">海淘</string>
+    <string name="tab_rec">精选</string>
+    <string name="tab_topic">话题</string>
+    <string name="tab_shopcar">购物车</string>
+    <string name="tab_shipping">物流</string>
+    <string name="tab_personal">我</string>
+    <string name="title_activity_setting">系统设置</string>
+    <string name="title_activity_personal">个人中心</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="title_activity_recommend">iHaigo</string>
+    <string name="title_activity_shop_car">购物车</string>
+    <string name="title_activity_shipping">物流</string>
+    <string name="title_activity_sortsearch">分类搜索</string>
+    <string name="title_activity_selpurchaseagent">选择代购商</string>
+    <string name="title_activity_puragentdetail">代购商详情</string>
+    <string name="title_activity_confirmbill">确认订单</string>
+    <string name="title_activity_paybill">支付订单</string>
+    <string name="title_activity_userlogin">iHaigo</string>
+    <string name="title_activity_topic">海淘话题</string>
+    <string name="title_activity_topicpublish">发表</string>
+    <string name="title_activity_transcomdetail">转运公司详情</string>
+    <!-- 自定义组件上拉刷新 -->
+    <string name="pull_to_refresh">下拉可以刷新</string>
+    <string name="release_to_refresh">松开可以刷新</string>
+    <string name="lastUpdateTime">最近更新：%s</string>
+    <string name="load_full">已加载全部</string>
+    <string name="no_data">暂无数据</string>
+    <string name="more">加载中</string>
+    <!-- 精选首页 -->
+    <string name="oldprice">原价：</string>
+    <string name="discounted">约</string>
+    <string name="latestrate">最新汇率</string>
+    <string name="renminbi">人民币</string>
+    <string name="latestrate_list">汇率一览</string>
+    <!-- 分类搜索 -->
+    <string name="sortsearch_search_hint">请输入您要搜索的产品名称</string>
+    <string name="sort_search_hot_tv">热门精选：</string>
+    <!-- 自定义title -->
+    <string name="title_back">返回</string>
+    <string name="title_settings">设置</string>
+    <string name="title_share">分享</string>
+    <string name="title_edit">编辑</string>
+    <string name="title_add">添加</string>
+    <string name="title_publish">发布</string>
+    <string name="title_save">完成</string>
+    <string name="title_complete">完成</string>
+    <!-- 分类搜索结果页 -->
+    <string name="ssr_hot_tv">人气</string>
+    <string name="ssr_discount_tv">折扣</string>
+    <string name="ssr_price_tv">价格</string>
+    <!-- 购物车 -->
+    <string name="shopcar_tip">购物车内共</string>
+    <string name="shopcar_tipgoods">件商品</string>
+    <string name="shopcar_bottom_allsel">全选</string>
+    <string name="shopcar_bottom_discounted">折约</string>
+    <string name="shopcar_bottom_counts_label">数量</string>
+    <string name="shopcar_bottom_price_label">价格</string>
+    <string name="shopcar_bottom_pay">结算</string>
+    <string name="shopcar_supporthomecredit">国内信用卡</string>
+    <string name="shopcar_translatecom">转运公司</string>
+    <string name="shopcar_supportredirectorpost">支持直邮</string>
+    <string name="shopcar_goods_colorlabel">颜色：</string>
+    <string name="shopcar_goods_rulelabel">尺寸：</string>
+    <string name="shopcar_goods_movefavorite">移至收藏夹</string>
+    <string name="shopcar_goods_addshopcar">已加入购物车</string>
+    <string name="shopcar_goods_deletegoods">删除</string>
+    <string name="shopcar_goods_deletesuccess">删除成功</string>
+    <string name="shopcar_goods_addfavorite">加入收藏</string>
+    <string name="shopcar_goods_nogoods">请选择商品后在提交</string>
+    <string name="shopcar_goods_nostocks">没有库存了</string>
+    <string name="empty_shopcar_text">购物车空空如也，赶快点我去逛逛吧</string>
+    <!-- 对话框 -->
+    <string name="dialogtip">提示</string>
+    <string name="dialogcancel">取消</string>
+    <string name="dialogconfirm">确定</string>
+    <string name="dialogaddfavorite">是否确认将该商品移入商品收藏？</string>
+    <string name="dialogselbuyway">请选择购买方式</string>
+    <string name="dialogselfbuy">自己购买</string>
+    <string name="dialogotherbuy">找人代购</string>
+    <!-- 选择代购商 -->
+    <string name="puragent_goodstip">以下您的预代购商品：</string>
+    <string name="puragent_quantity">数量:</string>
+    <string name="puragent_total">总计：</string>
+    <string name="puragent_discount">折约</string>
+    <string name="puragent_sortdefault">默认</string>
+    <string name="puragent_sortprice">价格</string>
+    <string name="puragent_sortspeed">速度</string>
+    <string name="puragent_sortservice">服务</string>
+    <string name="puragent_credit">信用</string>
+    <string name="puragent_fee">收费</string>
+    <string name="puragent_shipping">物流</string>
+    <string name="puragent_service">服务</string>
+    <string name="puragent_price">一口价</string>
+    <!-- 代购商详情 -->
+    <string name="purdetail_supportreback">支持退货</string>
+    <string name="purdetail_supoortcancelorder">支持付款后24内取消订单</string>
+    <string name="purdetail_fixedprice">一口价</string>
+    <string name="purdetail_desc">代购介绍</string>
+    <string name="purdetail_statement">承诺声明</string>
+    <string name="purdetail_userevaluation">用户评价</string>
+    <string name="purdetail_service">立即服务</string>
+    <!-- 确认订单 -->
+    <string name="shopcar_confirmbill_quantity">数量:</string>
+    <string name="shopcar_confirmbill_total">共计</string>
+    <string name="shopcar_confirmbill_price">件商品，代购价为</string>
+    <string name="shopcar_confirmbill_address">收货地址</string>
+    <string name="shopcar_confirmbill_confirmaddress">请选择收货地址</string>
+    <string name="shopcar_confirmbill_comments">备注信息</string>
+    <string name="shopcar_confirmbill_commentshint">备注(选填)</string>
+    <string name="shopcar_confirmbill_buytype">支付方式</string>
+    <string name="shopcar_confirmbill_buytypeval">请选择支付方式</string>
+    <string name="shopcar_confirmbill_commitbill">提交订单</string>
+    <string name="shopcar_confirmbill_cancel">取消</string>
+    <string name="shopcar_confirmbill_complete">完成</string>
+    <string name="shopcar_confirmbill_addnewaddress">添加新地址</string>
+    <!-- 支付订单 -->
+    <string name="shopcar_paybill_desc">备注信息</string>
+    <string name="shopcar_paybill_payamount">支付金额</string>
+    <string name="shopcar_paybil_paybill">支付订单</string>
+
+    <!-- 个人中心 -->
+    <string name="personal_userlogin_first_hint">请输入您的11位手机号码用于登录注册使用</string>
+    <string name="personal_reg_msg_hint_first">欢迎您首次注册iHaigo,我们需要验证您的手机号码</string>
+    <string name="personal_send_msg_hint">现已发送短信验证码至您的手机</string>
+    <string name="personal_enter_msgcode">请输入短信验证码</string>
+    <string name="personal_enter_tel">请输入手机号码</string>
+    <string name="personal_enter_loginpsd">请输入登录密码</string>
+    <string name="personal_confirm_loginpsd">请再次确认密码</string>
+    <string name="head_icon">头像</string>
+    <string name="nickName">昵称</string>
+    <string name="sex">性别</string>
+    <string name="view_login">or</string>
+    <string name="introduce">一句话介绍</string>
+    <string name="bingdingtel">绑定手机号码</string>
+    <string name="third_login_sina_hint">新浪微博授权登录</string>
+    <string name="third_login_qq_hint">腾讯QQ授权登录</string>
+    <string name="user_point_hint">距Lv2还差100成长值</string>
+    <string name="user_lucky_hint">Lv1用户每日有3次抽取分红机会，您今日还剩余2次</string>
+    <string name="nickName_hint">昵称由2-8个汉字或4-16位英文字母组成</string>
+    <string name="psd_hint">密码由6~20位英文字母、数字或符号组成</string>
+    <string name="again_setting_loginpsd">请重新设置您的登录密码</string>
+    <string name="setting_psd">请设置登录密码，以免重复验证登录</string>
+    <string name="return_login">欢迎回到iHaigo!请输入您的登录密码</string>
+    <string name="not_setting_loginpsd_hint">由于您未设置登录密码，我们需要重新验证手机号码</string>
+    <string name="find_psd">找回密码</string>
+    <string name="personal_account">账户安全</string>
+    <!-- <string name="personal_bill">账单记录</string> -->
+    <string name="personal_goods_collect">商品收藏</string>
+    <string name="personal_info">信息中心</string>
+    <string name="personal_logistics">物流中心</string>
+    <string name="personal_order">订单中心</string>
+    <string name="personal_quality_transport">转运中心</string>
+    <string name="personal_topic">话题中心</string>
+    <string name="personal_userlogin_next">下一步</string>
+    <string name="personal_login_msg">秒后重新获取</string>
+    <string name="personal_login_msg_data">59</string>
+    <string name="personal_service_hint">确认即表示同意并遵守</string>
+    <string name="personal_service_clause">《iHaigo服务条款》</string>
+    <string name="personal_trade_service_clause">《iHaigo个人账户服务条款》</string>
+    <string name="personal_edit_info">编辑个人资料</string>
+    <string name="personal_user_pay">充值</string>
+    <string name="dialog_user_photo_title">操作</string>
+    <string name="dialog_user_photo">拍照</string>
+    <string name="dialog_user_Album">从相册选取</string>
+    <string name="dialog_user_cancel">取消</string>
+    <string name="dialog_user_sex">用户性别修改</string>
+    <string name="dialog_user_man">男</string>
+    <string name="dialog_user_woman">女</string>
+    <string name="personal_indent_search">运单检索</string>
+    <string name="personal_indent_all">全部物流</string>
+    <string name="personal_one_month">近一个月物流</string>
+    <string name="personal_three_month">近三个月物流</string>
+    <string name="personal_six_month">近六个月物流</string>
+    <string name="personal_setting_inform">通知</string>
+    <string name="personal_setting_recommend">推荐我们</string>
+    <string name="personal_setting_love">喜欢我们，投一票</string>
+    <string name="personal_setting_opinion">意见反馈</string>
+    <string name="personal_setting_version">版本检测</string>
+    <string name="personal_setting_version_num">V 1.0</string>
+    <string name="personal_setting_about">关于</string>
+    <string name="personal_setting_clear_cache">清除本地缓存</string>
+    <string name="personal_quit_account">退出当前账号</string>
+    <string name="bingding_tel_login_hint">绑定手机号后，可直接使用该号码登录iHaigo</string>
+    <string name="sure">确认</string>
+    <string name="next">下一步</string>
+    <string name="find_psd_hint">您正在找回密码，我们需要验证您的手机号码</string>
+    <string name="account_balance">账户余额</string>
+    <string name="money">￥00.00</string>
+    <string name="intro">海淘小王子~</string>
+    <string name="level">LV9</string>
+    <string name="level_next">LV2</string>
+    <string name="level_now">LV1</string>
+    <string name="name">裸奔的兔子</string>
+    <string name="my_nickName">我的昵称</string>
+    <string name="intro_hint">一句话介绍由1~20个字符组成</string>
+    <string name="personal_credit">充值金额</string>
+    <string name="personalenter_credit">请输入充值金额</string>
+    <string name="transaction_amount">交易密码</string>
+    <string name="transaction_enter_amount">请输入交易密码</string>
+    <string name="recharge">立即充值</string>
+    <string name="level_num_first">0</string>
+    <string name="level_num_second">75</string>
+    <string name="level_num_third">150</string>
+    <string name="level_num_four">225</string>
+    <string name="level_num_five">300</string>
+    <string name="personal_collection">收藏列表</string>
+    <string name="collection_editor">编辑</string>
+    <string name="collection_save">保存</string>
+    <string name="collection_discount">折约</string>
+    <!-- 设置 -->
+    <string name="title_setting_inform">通知设置</string>
+    <string name="accept_new_inform">接收新消息通知</string>
+    <string name="inform_start">已开启</string>
+    <string name="accept_inform_type">接收通知类型</string>
+    <string name="close">已关闭</string>
+    <string name="accept_inform_time_frame">通知接收时段</string>
+    <string name="time">0:00~24:00</string>
+    <string name="voice">声音</string>
+    <string name="vibration">振动</string>
+    <string name="flashlight">闪光灯</string>
+    <string name="accept_new_inform_hint">如果您要关闭或开启iHaigo的新消息通知，请在手机的“设置”-“通知”功能中进行设置</string>
+    <string name="accept_inform_type_hint">如果您需要更改部分信息的通知，可以通过设置接收通知类型，来关闭或开启信息通知</string>
+    <string name="accept_inform_time_frame_hint">设置通知提示声音、振动或闪烁的时段</string>
+    <string name="accept_inform_voice_hint">当iHaigo正在运行时，您可以设置是否需要声音、振动或者闪光灯</string>
+    <string name="title_setting_opinion">意见反馈</string>
+    <string name="title_setting_aboutus">关于</string>
+    <string name="setting_opinion_hint">在此留下您的意见，我们会努力做得更好</string>
+    <string name="setting_opinion_tel_hint">如方便，请在此留下您的联系方式</string>
+    <string name="title_setting_inform_type">通知类型</string>
+    <string name="title_activity_quality_transport">QualityTransportActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_transport_tab">TransportTabActivity</string>
+    <string name="update_trade_pasd">修改交易密码</string>
+    <string name="find_trade_pasd">找回交易密码</string>
+    <string name="update_login_pasd">修改登录密码</string>
+    <string name="setting_trade_pasd">设置交易密码</string>
+    <string name="enter_old_trade_pasd_hint">请输入原交易密码</string>
+    <string name="enter_old_login_pasd_hint">请输入原登录密码</string>
+    <string name="enter_new_trade_pasd_hint">请输入新交易密码</string>
+    <string name="update_trade_pasd_hint">您正在修改密码，通过原交易密码修改</string>
+    <string name="update_login_pasd_hint">您正在修改密码，通过原登录密码修改</string>
+    <string name="find_trade_psd_hint">您正在找回交易密码，我们需要验证手机号码</string>
+    <string name="again_setting_trade_psd">请重新设置您的交易密码</string>
+    <string name="setting_trade_psd_hint">您正在找回交易密码，我们需要验证手机号码</string>
+    <string name="setting_confirm_trade_psd_hint">请设置交易密码，不能与登录密码一致</string>
+    <string name="forward_setting_hint">前往设置</string>
+    <string name="dialog_setting_trade_psd_hint">为了保障您的账户安全，余额充值前请设置交易密码</string>
+    <string name="settings_shipping_latesttip">运单更新通知</string>
+    <string name="settings_order_latesttip">订单更新通知</string>
+    <string name="settings_topic_latesttip">话题消息通知</string>
+    <string name="settings_goodswarning_latesttip">商品预警通知</string>
+    <string name="settings_activity_latesttip">活动推荐通知</string>
+    <string name="settings_appname">iHaigo</string>
+    <string name="settings_ourgoal">发现世界的另一面</string>
+    <string name="settings_welcome">欢迎页</string>
+    <string name="settings_contact">联系我们</string>
+    <string name="settings_noversion">当期已是最新版本，无需更新</string>
+    <string name="settings_worktime">工作时间：每天 09:00 - 22:00</string>
+    <string name="settings_contactnumber">021-56623106</string>
+    <string name="settings_call">呼叫</string>
+    <string name="title_activity_transport_merchant_detail">TransportMerchantDetailActivity</string>
+    <string name="title_activity_transport_order_detail">TransportOrderDetailActivity</string>
+    <string name="title_activity_forecast_add">ForecastAddActivity</string>
+
+    <string-array name="settings_informtime">
+        <item>00:00</item>
+        <item>01:00</item>
+        <item>02:00</item>
+        <item>03:00</item>
+        <item>04:00</item>
+        <item>05:00</item>
+        <item>06:00</item>
+        <item>07:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+        <item>11:00</item>
+        <item>12:00</item>
+        <item>13:00</item>
+        <item>14:00</item>
+        <item>15:00</item>
+        <item>16:00</item>
+        <item>17:00</item>
+        <item>18:00</item>
+        <item>19:00</item>
+        <item>20:00</item>
+        <item>21:00</item>
+        <item>22:00</item>
+        <item>23:00</item>
+        <item>24:00</item>
+    </string-array>
+
+    <string name="settings_clear_cache">已清除缓存:</string>
+    <string name="settings_clear_complete">成功清除</string>
+    <string name="settings_clear_cachedata">缓存数据</string>
+    <string name="settings_quit_logon">已退出登录</string>
+    <string name="dialog_tip">提示</string>
+    <string name="dialog_confirm">确认</string>
+    <string name="dialog_confirm_update">更新新版本</string>
+    <string name="dialog_finded_newversion">已找到新版本</string>
+    <string name="dialog_update_app">已找到新版本，正在更新...</string>
+    <string name="dialog_downloading">海淘正在下载中</string>
+    <string name="ihaigo_update">正在更新</string>
+    <string name="ihaigo_update_complete">已更新完毕,单击开始旅程</string>
+    <string name="reback_ihaigo">反馈成功，感谢您的支持</string>
+    <string name="settigns_logout">您确定要退出登录吗?</string>
+    <string name="setttings_clearing">正在清除数据</string>
+    <string name="settings_checkversion">正在检查版本</string>
+    <string name="settings_uploadimage">正在上传图片(,/$)</string>
+    <string name="settings_committing">正在提交</string>
+    <!-- 支付宝 -->
+    <string name="confirm_title">提示</string>
+    <string name="ensure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="content_description_icon">icon</string>
+    <string name="refresh">刷新</string>
+    <string name="processing">加载中</string>
+    <string name="download">下载</string>
+    <string name="download_fail">下载安装包失败</string>
+    <string name="cancel_install_msp">你已取消安装移动快捷支付服务</string>
+    <string name="cancel_install_alipay">你已取消安装支付宝钱包</string>
+    <string name="redo">重试</string>
+    <string name="install_msp">你尚未安装支付宝移动快捷支付服务，请立即安装</string>
+    <string name="install_alipay">你尚未安装支付宝钱包，请立即安装</string>
+    <!-- 预警 -->
+    <string name="hislowest">历史最低价</string>
+    <string name="highest">最高价</string>
+    <string name="average">市场均价</string>
+    <string name="title_activity_transport_company">TransportCompanyActivity</string>
+    <!-- 话题 -->
+    <string name="topic_left_title">发表</string>
+
+    <string-array name="topic_titles">
+        <item>海淘攻略</item>
+        <item>经验交流</item>
+        <item>海淘晒单</item>
+        <item>个人转让</item>
+        <item>物流转运</item>
+    </string-array>
+
+    <string name="topic_pub_label">发表</string>
+    <string name="topic_pubtime">小时前</string>
+    <string name="dialog_delete_topic">确认删除此话题？删除后将不再收到此话题的回应</string>
+    <string name="title_our_response">回复</string>
+    <string name="topic_publish_seltopictype">主题分类</string>
+    <string name="topic_publish_sel">请选择</string>
+    <string name="topic_publish_title_hint">请输入标题</string>
+    <string name="topic_publish_content_hint">请输入正文</string>
+    <string name="topic_publish_formcamera">相机</string>
+    <string name="topic_publish_formphoto">图片</string>
+    <string name="title_detail">详情</string>
+    <string name="detail_share">分享</string>
+    <string name="topic_detail_title">新手海淘与美亚交涉及体会</string>
+    <string name="page_turning">翻页</string>
+    <string name="enter_myself_response">我来回复</string>
+    <string name="enter_comment_content_hint">请输入评论内容.....</string>
+    <string name="dialog_detail_share">分享到</string>
+    <!-- 支付方式 -->
+    <string name="blipay_way">支付宝客户端支付</string>
+    <string name="wechat_way">微信支付</string>
+    <string name="unionpay_way">银联支付</string>
+    <string name="tenpay_way">财付通支付</string>
+    <string name="blipay_way_explain">推荐安装支付宝客户端的用户支付</string>
+    <string name="wechat_way_explain">推荐安装微信5.0及以上版本的使用</string>
+    <string name="unionpay_way_explain">储蓄卡支付，需开通无卡支付功能</string>
+    <string name="tenpay_way_explain">支持银行卡和财付通账户支付</string>
+    <string name="title_activity_topic_detail">TopicDetailActivity</string>
+    <string name="title_activity_transport_orde_unfinished_detail">TransportOrdeUnfinishedDetailActivity</string>
+    <string name="title_activity_send_goods">SendGoodsActivity</string>
+    <string name="title_activity_transport_order_detail_not_operated">TransportOrderDetailNotOperatedActivity</string>
+    <string name="title_activity_in_treatment">InTreatmentActivity</string>
+
+    <!-- 个人中心以及话题的所有弹框提示 -->
+    <string name="personal_enter_phone">请输入电话号码</string>
+    <string name="personal_enter_phone_check">请输入正确的电话号码</string>
+    <string name="personal_enter_pwd">请输入密码</string>
+    <string name="personal_enter_pwd_check">密码格式不正确，请重新输入！</string>
+    <string name="personal_enter_pwd_check_chinese">密码不能输入汉字</string>
+    <string name="personal_enter_pwd_check_length">密码长度不能少于6位</string>
+    <string name="personal_enter_pwd_check_twice">两次密码输入不一致，请重新输入！</string>
+    <string name="personal_linkman">联系人不能为空！</string>
+    <string name="personal_linkman_tel">联系号码不能为空！</string>
+    <string name="personal_linkman_tel_check">请输入正确的联系号码！</string>
+    <string name="personal_enter_address_area">所在区域不能为空！</string>
+    <string name="personal_enter_address_info">地址不能为空！</string>
+    <string name="personal_enter_postal">邮政编码不能为空！</string>
+    <string name="personal_enter_postal_check">请输入 正确的邮政编码！</string>
+    <string name="personal_enter_realnname">真实姓名不能为空！</string>
+    <string name="personal_enter_cardNumber">身份证号不能为空！</string>
+    <string name="personal_enter_cardNumber_check">身份证号码格式不正确，请重新输入！</string>
+    <string name="personal_enter_cardImage">请上传身份证照片!</string>
+    <string name="personal_enter_nickName">昵称不能为空！</string>
+    <string name="personal_enter_nickName_check">格式不正确，请重新输入！</string>
+    <string name="personal_enter_update_oldlogin">原登录密码错误，请重新输入！</string>
+    <string name="personal_enter_update_newpwd_twice">两次新密码输入不一致，请重新输入！</string>
+    <string name="personal_enter_update_pwd_success">修改成功，请重新登录！</string>
+    <string name="personal_enter_msgCode">验证码不能为空</string>
+    <string name="personal_enter_check_usernanme">该用户已存在！</string>
+    <string name="personal_enter_check_isusername">没有此用户！</string>
+    <string name="personal_dialog_delete_address">确认删除该收获地址？</string>
+    <string name="personal_bill_one_mounth">近一个月账单</string>
+    <string name="personal_bill_three_mounth">近三个月账单</string>
+    <string name="personal_bill_six_mounth">近六个月账单</string>
+    <string name="personal_bill_all_mounth">全部账单</string>
+    <string name="connection_time">连接超时,请重试...</string>
+    <string name="title_activity_add_adress">AddAdressActivity</string>
+    <string name="inventory_tv">库存</string>
+    <string name="second">件</string>
+    <string name="time_s">刚刚</string>
+    <string name="time_min">分钟前</string>
+    <string name="time_h">小时前</string>
+    <!-- 未完成订单，转运公司详情 -->
+    <string name="transport_transtimes">已转运$次</string>
+    <string name="transport_showaddress">点击查看地址</string>
+    <string name="transport_serviceintro">服务介绍</string>
+    <string name="transport_chargeintro">收费说明</string>
+    <string name="transport_activity">活动公告</string>
+    <string name="transport_userevaluation">用户评价</string>
+    <string name="transport_addwarning">添加预报</string>
+    <string name="title_activity_payed_order_detail">PayedOrderDetailActivity</string>
+    <string name="transport_address_firstname">名(First Name):</string>
+    <string name="transport_address_lastname">姓(Last Name):</string>
+    <string name="transport_address_address">地址(Address):</string>
+    <string name="transport_address_unit">单元号(Unit):</string>
+    <string name="transport_address_city">城市(City):</string>
+    <string name="transport_address_state">州/省(State):</string>
+    <string name="transport_address_zipcode">邮编(Zip Code):</string>
+    <string name="transport_address_tel">电话(Tel):</string>
+    <string name="title_activity_sent_goods_order_detail">SentGoodsOrderDetailActivity</string>
+    <string name="title_activity_completed_order_detail">CompletedOrderDetailActivity</string>
+    <string name="title_activity_evaluate_merchant">EvaluateMerchantActivity</string>
+    <string name="title_activity_evaluated_orderdetail">EvaluatedOrderdetailActivity</string>
+    <string name="usre_qq">复制并打开QQ</string>
+    <string name="usre_url">访问网页</string>
+    <string name="usre_mail">发送邮件</string>
+    <string name="trans_all_appraise">全部评价</string>
+    <string name="charge">收费</string>
+    <string name="trans">物流</string>
+    <string name="service">服务</string>
+    <string name="charge_star_num">5</string>
+    <string name="trans_star_num">4.3</string>
+    <string name="service_star_num">3.2</string>
+    <string name="transport_charge_intro">收费详细说明</string>
+    <string name="transport_address">查看地址</string>
+    <string name="warehouse_firstName">名（First Name）:</string>
+    <string name="warehouse_LastName">姓（Last Name）:</string>
+    <string name="warehouse_address">地址（Address）:</string>
+    <string name="warehouse_unit">单元号（Unit）:</string>
+    <string name="warehouse_city">城市（City）:</string>
+    <string name="warehouse_state">州/省（State）:</string>
+    <string name="warehouse_zip_code">邮编（Zip Code）:</string>
+    <string name="warehouse_tel">电话（Tel）:</string>
+    
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">松开后刷新</string>
+    <string name="pull_to_refresh_refreshing_label">刷新...</string>
+    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+    <string name="title_activity_choose_pay">ChoosePayActivity</string>
+
+</resources>

@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kc.ihaigo"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Include next permission if you want to allow UIL to cache images on SD card -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 在SDCard中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 往SDCard写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- SDK2.1新增获取用户位置信息 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 在SDCard中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <application
+        android:name="com.kc.ihaigo.IHaiGoApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        <meta-data
+            android:name="channel"
+            android:value="1" />
+        <!-- qq第三方登录 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1101689112" />
+                <!-- 100380359 100381104 222222 -->
+            </intent-filter>
+        </activity>
+        <!-- aliwap支付 -->
+        <activity
+            android:name="com.alipay.android.app.sdk.WapPayActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.kc.ihaigo.util.share.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.IHaiGoMainActivity"
+            android:label="@string/title_activity_ihai_go_main"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalActivity"
+            android:label="@string/title_activity_personal"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.RecommendActivity"
+            android:label="@string/title_activity_recommend"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.AdvActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.ShopCarActivity"
+            android:label="@string/title_activity_shop_car"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.ShippingActivity"
+            android:label="@string/title_activity_shipping"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.SortSearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.RecommendGroupActiviy"
+            android:alwaysRetainTaskState="true"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.SortSearchResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.SearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.SearchResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.AdvDetailsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.AdvDetailsInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.NoticeActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.recommend.NoticeUserActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.ShopCarGroupActiviy"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.AddShippingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.ShippingGroupActiviy"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.PurchasingAgent"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.ChooseLogisticsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.PuragentDetail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.SelfBuyActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.ShopcarConfirmBillActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.WayBillDetailsActivtiy"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.WayBillInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shopcar.ShopcarPayBill"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalLogisticsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalGroupActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalLoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalFirstLogin"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalLoginPasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.MyMessageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.AllWayBillActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalUserLogin"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.AddressActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.AddIdentityActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.BillRecordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.AllRecordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalEditUserInfo"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalUserPay"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalSettingPassword"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalConfirmSettingPassword"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalFindPassword"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalConfirmFindPassword"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalNickName"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalSelfIntroduction"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalBingdingMobile"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalConfirmBingdingMobile"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.WayBillEditorActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.WayChooseInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.shipping.WayTransDetails"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.OrderListBuyOtherAcivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.OrderTabActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.SubmitedOrderDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.MerchanantInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportOrderDetailNotInStorageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportOrderListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.transport.QualityTransportActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingInform"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingOpinion"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalCollectionActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.EditDefaultAddressInfo"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.EditDefaultCardInfo"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingTradePasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingsAboutUs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingInformType"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalGoodsDetailsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalJoinShopCartActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalPublishEvaluationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalLookEvaluationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.WebViewActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.SettingConfirmTradePasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.AccountSafety"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.UpdateLoginPasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.UpdateTradePasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.FindTradePasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.FindConfirmTradePasd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.IHaiGoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalWarningCompileActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.PersonalTopicActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.ForecastAddActivity"
+            android:label="@string/title_activity_forecast_add"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportCompanyActivity"
+            android:label="@string/title_activity_transport_company"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 话题模块 -->
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicGroupActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicContent"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicPublishActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.ChoicePayWay"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicDetailActivity"
+            android:label="@string/title_activity_topic_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.topic.TopicResponse"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportOrderUnfinishedDetailActivity"
+            android:label="@string/title_activity_transport_orde_unfinished_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.SendGoodsActivity"
+            android:label="@string/title_activity_send_goods"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportOrderDetailNotOperatedActivity"
+            android:label="@string/title_activity_transport_order_detail_not_operated"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.welcome.IhaigoWelcome"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.kc.ihaigo.receiver.LogonLogOutReceiver"
+            android:exported="false" >
+            <meta-data
+                android:name="receiverActivity"
+                android:value="com.kc.ihaigo.ui.personal.SettingsActivity;com.kc.ihaigo.ui.personal.PersonalActivity
+                ;" />
+
+            <intent-filter>
+                <action android:name="com.kc.ihaigo.logonlogout.action" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.kc.ihaigo.receiver.NetChangeReceiver"
+            android:exported="false" >
+            <meta-data
+                android:name="receiverActivity"
+                android:value="com.kc.ihaigo.ui.personal.PersonalActivity;" />
+
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.InTreatmentActivity"
+            android:label="@string/title_activity_in_treatment"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <service
+            android:name="com.kc.ihaigo.service.MessageService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.kc.ihaigo.message.service" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.AddAdressActivity"
+            android:label="@string/title_activity_add_adress"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransUncompleteComDetail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.TransportComAddress"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.PayedOrderDetailActivity"
+            android:label="@string/title_activity_payed_order_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.SentGoodsOrderDetailActivity"
+            android:label="@string/title_activity_sent_goods_order_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.CompletedOrderDetailActivity"
+            android:label="@string/title_activity_completed_order_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.EvaluateMerchantActivity"
+            android:label="@string/title_activity_evaluate_merchant"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.WebViewTransActivity"
+            android:label="@string/title_activity_evaluate_merchant"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.QualityTransportActivity"
+            android:label="@string/title_activity_evaluate_merchant"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.TransportAppraiseActivity"
+            android:label="@string/title_activity_evaluate_merchant"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.TransportMerchantDetailActivity"
+            android:label="@string/title_activity_evaluate_merchant"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.myorder.EvaluatedOrderdetailActivity"
+            android:label="@string/title_activity_evaluated_orderdetail" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ChoosePayActivity"
+            android:label="@string/title_activity_choose_pay" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.TransportChargeIntro"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.kc.ihaigo.ui.personal.TransportAddress"
+            android:screenOrientation="portrait" >
+        </activity>
+    </application>
+
+</manifest>

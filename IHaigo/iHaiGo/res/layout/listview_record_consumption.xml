@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whiteBg"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/recordLogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/record_logo" />
+
+    <!--
+         <TextView
+        android:id="@+id/recordLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="1"
+        android:layout_margin="10dp" />
+    -->
+
+    <TextView
+        android:id="@+id/recordName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/recordLogo"
+        android:text="充值记录"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recordName"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="2012-12-12"
+        android:textColor="@color/rec_titm"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/recordName"
+        android:layout_below="@+id/recordName"
+        android:layout_marginTop="15dp"
+        android:text="支付宝冲值"
+        android:textColor="@color/rec_titm"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/way"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="$100000"
+        android:textColor="@color/rec_con_amount"
+        android:textSize="16sp" />
+
+</RelativeLayout>

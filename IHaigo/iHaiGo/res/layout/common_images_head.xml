@@ -1,0 +1,40 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/headimages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_gravity="top"
+        android:background="@color/progressbg"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/progress_indicator"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/headimageview__indicator_shape" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/goodsnamebg"
+        android:padding="5dp"
+        android:scrollbars="none" >
+
+        <TextView
+            android:id="@+id/common_goodsname_tv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Abercrombie Fitch 男装卫衣加厚外套"
+            android:textColor="@color/white" />
+    </HorizontalScrollView>
+
+</merge>

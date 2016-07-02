@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color" />
+
+    <TextView
+        android:id="@+id/a_month"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:drawableRight="@drawable/more"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="近一个月订单"
+        android:textColor="#4A4D56"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color" />
+
+    <TextView
+        android:id="@+id/three_month"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/whiteBg"
+        android:drawableRight="@drawable/more"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="近三个月订单"
+        android:textColor="#4A4D56"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color" />
+
+    <TextView
+        android:id="@+id/six_month"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/whiteBg"
+        android:drawableRight="@drawable/more"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="近六个月订单"
+        android:textColor="#4A4D56"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray_color" />
+
+</LinearLayout>

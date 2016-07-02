@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 白天的背景色 -->
+    <color name="bg">#ceeefd</color>
+    <!-- 黑夜的背景色 -->
+    <color name="bg2">#1d3652</color>
+</resources>

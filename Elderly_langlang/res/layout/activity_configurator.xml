@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_repeat"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:id="@+id/con_updata_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/con_updata_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_updae_file_edt"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/incon_updata_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/con_updata_tw"
+            android:text="所有网络"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/listdown_19_item" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/con_rssi_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/con_rssi_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check__rssi_sound_edt"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/incon_rssi_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/con_rssi_tw"
+            android:layout_weight="1"
+            android:text="打开"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/listdown_19_item" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/con_ble_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/con_ble_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_ble_sound_edt"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/incon_ble_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/con_ble_tw"
+            android:text="打开"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/listdown_19_item" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/con_gps_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/con_gps_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_gps_on_edt"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/incon_gps_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/con_gps_tw"
+            android:text="打开"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/listdown_19_item" />
+    </RelativeLayout>
+<RelativeLayout
+        android:id="@+id/con_login_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/con_login_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_login_on_edt"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/incon_login_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/con_login_tw"
+            android:text="三天"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/listdown_19_item" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/incon_message_tw"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/defance_line"
+        android:drawableRight="@drawable/listdown_19_item"
+        android:gravity="center_vertical"
+        android:text="@string/check_equipment_edt"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

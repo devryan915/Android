@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/merchant_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:src="@drawable/merchant_logo" />
+
+    <TextView
+        android:id="@+id/merchant_name"
+        style="@style/merchant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/merchant_logo"
+        android:text="无忧无虑海淘运营团队" />
+
+    <TextView
+        android:id="@+id/merchant_slogan"
+        style="@style/merchant_slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/merchant_name"
+        android:layout_below="@+id/merchant_name"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:text="带你购全世界"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/merchant_content"
+        style="@style/merchant_slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/merchant_name"
+        android:layout_below="@+id/merchant_name"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:text="带你购全世界" />
+
+    <TextView
+        android:id="@+id/publish_time"
+        style="@style/publish_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/merchant_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:text="12-22 13:27" />
+
+</RelativeLayout>

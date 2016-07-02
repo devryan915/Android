@@ -1,0 +1,10 @@
+<com.kc.ihaigo.ui.selfwidget.WrapGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:listSelector="@color/transparent"
+    android:numColumns="3"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp" >
+</com.kc.ihaigo.ui.selfwidget.WrapGridView>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 增加物流 ， item，圆角边框 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <solid android:color="@color/white" />
+    <!-- 描边 -->
+
+    <stroke
+        android:width="1dp"
+        android:color="#FF4E04" />
+
+    <corners android:radius="5dp" />
+
+    <size
+        android:height="30dp"
+        android:width="30dp" >
+    </size>
+
+</shape>

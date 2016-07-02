@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/greyBg"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/warehouse_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/warehouse_name"
+        android:background="@color/whiteBg"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/tv_warehouse_firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/warehouse_firstName" />
+
+            <TextView
+                android:id="@+id/warehouse_firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_firstName"
+                android:text="@string/warehouse_firstName" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/warehouse_firstName"
+                android:text="@string/warehouse_address" />
+
+            <TextView
+                android:id="@+id/warehouse_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_address"
+                android:text="@string/warehouse_address" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/warehouse_address"
+                android:text="@string/warehouse_city" />
+
+            <TextView
+                android:id="@+id/warehouse_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_city"
+                android:text="@string/warehouse_city" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_zip_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/warehouse_city"
+                android:text="@string/warehouse_zip_code" />
+
+            <TextView
+                android:id="@+id/warehouse_zip_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_zip_code"
+                android:text="@string/warehouse_zip_code" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/tv_warehouse_LastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/warehouse_LastName" />
+
+            <TextView
+                android:id="@+id/warehouse_LastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_LastName"
+                android:text="@string/warehouse_LastName" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/warehouse_LastName"
+                android:text="@string/warehouse_unit" />
+
+            <TextView
+                android:id="@+id/warehouse_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_unit"
+                android:text="@string/warehouse_unit" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/warehouse_unit"
+                android:text="@string/warehouse_state" />
+
+            <TextView
+                android:id="@+id/warehouse_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_state"
+                android:text="@string/warehouse_state" />
+
+            <TextView
+                android:id="@+id/tv_warehouse_tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/warehouse_state"
+                android:text="@string/warehouse_tel" />
+
+            <TextView
+                android:id="@+id/warehouse_tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_warehouse_tel"
+                android:text="@string/warehouse_tel" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

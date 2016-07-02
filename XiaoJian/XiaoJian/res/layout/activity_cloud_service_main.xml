@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="matrix"
+        android:src="@drawable/cloudservice_upbg" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:columnCount="4"
+        android:paddingTop="20dp"
+        android:rowCount="2" >
+
+        <TextView
+            android:id="@+id/cloudservice_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_product"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_product" />
+
+        <TextView
+            android:id="@+id/cloudservice_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_service"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_service" />
+
+        <TextView
+            android:id="@+id/cloudservice_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_activity"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_activity" />
+
+        <TextView
+            android:id="@+id/cloudservice_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_buy"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_buy" />
+
+        <TextView
+            android:id="@+id/cloudservice_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_download"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_download" />
+
+        <TextView
+            android:id="@+id/cloudservice_ask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_ask"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_ask" />
+
+        <TextView
+            android:id="@+id/cloudservice_orderquery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_orderquery"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_orderquery" />
+
+        <TextView
+            android:id="@+id/cloudservice_prorec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/cloudservice_prorec"
+            android:gravity="center"
+            android:padding="@dimen/cloudservice_padding"
+            android:text="@string/cloudservice_prorec" />
+    </GridLayout>
+
+</LinearLayout>

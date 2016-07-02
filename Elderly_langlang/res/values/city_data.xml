@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="city_lable">
+        <item>1.上部</item>
+        <item>2.中部</item>
+        <item>3.下部</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+encoding//jni/hrate_lib=GBK
+encoding//jni/hrate_lib/ecg_filter.c=UTF-8
+encoding//jni/hrate_lib/main.c=GBK

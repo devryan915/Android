@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">应用程序内置资源实现换肤功能Demo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="traffic_metro">地铁</string>
+    <string name="traffic_passager">公交</string>
+    <string name="traffic_railway">火车</string>
+    <string name="traffic_taxi">的士</string>
+    <string name="traffic_waterbus">轮船</string>
+
+    <string name="skin_change">换肤设置</string>
+    <string name="skin_current">当前皮肤：</string>
+    <string name="skin_blue">蓝明</string>
+    <string name="skin_orange">橘黄</string>
+    <string name="skin_default">默认</string>
+    <string name="skin_red">酒红</string>
+
+</resources>

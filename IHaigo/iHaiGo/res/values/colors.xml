@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 定义tab颜色 -->
+    <color name="tab_title_font">#404548</color>
+    <color name="tab_title_selected">#5AC8FB</color>
+    <color name="tab_background">#FFFFFF</color>
+    <!-- 定义title字体颜色和背景颜色 -->
+    <color name="title_font">#ffffff</color>
+    <color name="title_bg">#5AC8FB</color>
+    <color name="search_dotsel">#5AC8FB</color>
+    <color name="search_dot">#D6D6D6</color>
+    <color name="rec_split">#DCDCDC</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <!-- 进度条背景色 -->
+    <color name="progressbg">#47484B</color>
+    <!-- 进度条颜色 -->
+    <color name="progressindicator">#ff5001</color>
+    <!-- 定义精选首页 -->
+    <color name="lineborder">#C9C9C9</color>
+    <color name="line">#F0EEEC</color>
+    <color name="activityfont">#2B2F31</color>
+    <color name="goodsnamebg">#AA595959</color>
+    <color name="currencybg">#C0595959</color>
+    <color name="oldprice">#B1B7BB</color>
+    <color name="goodsprice">#0B0301</color>
+    <color name="discountedprice">#E61419</color>
+    <color name="discountedfont">#ADB3B6</color>
+    <!-- 定义分类搜索页颜色 -->
+    <color name="menufnamesel">#FF4F4F</color>
+    <color name="menufname">#131212</color>
+    <color name="menufimagesel">#FD5E44</color>
+    <color name="hotsearch">#615F5F</color>
+    <color name="hotfont">#5AC8FB</color>
+    <color name="sortsearchfont">#000000</color>
+    <color name="submenuname">#B1BABF</color>
+    <color name="ssrindicator">#5AC8FB</color>
+    <color name="sortsearchborder">#DCDCDC</color>
+    <color name="sortsearchbg">#EEEEEE</color>
+    <color name="add_advDetails">#ffffff</color>
+    <!-- 搜索 -->
+    <color name="shoppingbut_bg">#FF5001</color>
+    <color name="adv_originalPrice">#6f7374</color>
+    <color name="adv_actualPrice">#0e0e0e</color>
+    <color name="advActualPrice">#E61419</color>
+    <color name="adv_info_bg">#FFFFFF</color>
+    <color name="search_hotsearch_dot">#AA595959</color>
+    <color name="search_result_bg">#F0F0F0</color>
+    <!-- 公告 -->
+    <color name="event_tilte">#0e0e0e</color>
+    <color name="event_merchantBg">#F7F7F7</color>
+    <color name="slogan_time">#ADADAD</color>
+    <color name="notice_sevcie">#FF5001</color>
+    <color name="view">#ADADAD</color>
+    <color name="notice_sevcieBg">#FFFFFF</color>
+    <!-- 最新汇率 -->
+    <color name="rec_rate">#D2D2D2</color>
+    <color name="rec_rate_font">#9A9A9A</color>
+    <color name="rec_rate_latest">#484B55</color>
+    <!-- 购物车 -->
+    <color name="shopcar_bg">#F0EEEC</color>
+    <color name="shopcar_border">#DCDCDC</color>
+    <color name="shopcar_tip">#2A2D2F</color>
+    <color name="shopcar_tipcounts">#FF5001</color>
+    <color name="shopcar_paysupport">#5B6163</color>
+    <color name="shopcar_ring">#DCDCDC</color>
+    <color name="shopcar_goodsname">#000000</color>
+    <color name="shopcar_goodsrules">#A2A2A8</color>
+    <color name="shopcar_goodsoldprice">#C9C9CF</color>
+    <color name="shopcar_goodsprice">#CC1010</color>
+    <color name="shopcar_selectorborder">#B5B5B5</color>
+    <color name="shopcar_selectorcounts">#3D4245</color>
+    <color name="shopcar_bottom_allsel">#5C6062</color>
+    <color name="shopcar_bottom_discounted">#1F2021</color>
+    <color name="shopcar_bottom_discountedprice">#D00000</color>
+    <color name="shopcar_bottom_counts">#121313</color>
+    <color name="shopcar_bottom_price">#FF5001</color>
+    <color name="shopcar_bottom_paybutton">#FF5001</color>
+    <color name="shopcar_goods_movefavorite">#FEB22F</color>
+    <!-- 商品信息 -->
+    <color name="goodsTitleStyle">#D6D6D6</color>
+    <color name="goods_originalPrice">#D6D6D6</color>
+    <color name="goods_actualPrice">#0e0e0e</color>
+    <color name="goodsActualPrice">#FF5006</color>
+    <color name="rate_about">#D6D6D6</color>
+    <color name="gooseInfo">#131313</color>
+    <!-- 填充框,灰背景,白底 -->
+    <color name="whiteBg">#FFFFFF</color>
+    <color name="fill_box">#D2D2D2</color>
+    <color name="greyBg">#EFEEEA</color>
+    <!-- 用户评价 -->
+    <color name="user_appraise">#92959A</color>
+    <color name="more_appraise">#FF5006</color>
+    <color name="buy">#FF5001</color>
+    <color name="join">#FC9200</color>
+    <color name="all_evaluationTitle">#363C3F</color>
+    <color name="wo_evaluation">#D2D2D2</color>
+    <!-- 对话框 -->
+    <color name="dialog_title">#0C0C0C</color>
+    <color name="dialog_content">#8FD8FC</color>
+    <color name="dialog_dvider">#DEDEDE</color>
+    <!-- 物流 -->
+    <!-- <color name="tite_color">#5AC8FB</color> -->
+    <color name="tite_color">#35ADE1</color>
+    <!-- <color name="gray_color">#D2D2D2</color> -->
+    <color name="gray_color">#9A9A9A</color>
+    <color name="gray_color_logs">#9E9E9E</color>
+    <color name="tite_bg">#FCFCFC</color>
+    <color name="order_numder">#FB5300</color>
+    <color name="order">#4A4A52</color>
+    <color name="order_new">#FB0200</color>
+    <color name="add_edt_title">#686868</color>
+    <color name="add_edt">#CCCCCC</color>
+    <!-- 选择代购商 -->
+    <color name="purchasebg">#F5F5F5</color>
+    <color name="purchasetip">#333436</color>
+    <color name="purchasegoods">#A9A9AA</color>
+    <color name="purchasebuylabel">#171719</color>
+    <color name="purchasebuyval">#FF5001</color>
+    <color name="purchaseindicator">#5AC8FB</color>
+    <color name="purchasesortsel">#494C53</color>
+    <color name="purchasesortnormal">#A4A3A3</color>
+    <color name="purchasehead">#5F646E</color>
+    <color name="purchaseagentlabel">#A7A7A7</color>
+    <color name="purchaseagentval">#FF5000</color>
+    <color name="purchaseagentpricelabel">#494C53</color>
+    <color name="purchaseagentpriceval">#FF5001</color>
+    <!-- 购物商详情 -->
+    <color name="puragentdetail_support">#7E828A</color>
+    <color name="puragentdetail_border">#DCDCDC</color>
+    <color name="puragentdetail_bg">#F0EEEC</color>
+    <color name="puragentdetail_titlebg">#F5F5F5</color>
+    <color name="puragentdetail_info">#494C53</color>
+    <color name="puragentdetail_commnetsbg">#F7F7F7</color>
+    <color name="puragentdetail_commentstitle">#92959A</color>
+    <color name="puragentdetail_commentsborder">#C9C9C9</color>
+    <color name="puragentdetail_comments_head">#494C53</color>
+    <color name="puragentdetail_comments_label">#A7A7A7</color>
+    <color name="puragentdetail_comments_val">#FF5000</color>
+    <color name="puragentdetail_comments_contens">#63676F</color>
+    <color name="puragentdetail_comments_datetime">#B2B5BC</color>
+    <color name="puragentdetail_service">#FF4F4F</color>
+    <!-- 选择快递 -->
+    <color name="choose">#5AC8FB</color>
+    <color name="about_choose">#FD5300</color>
+    <!-- 运单详情 -->
+    <color name="info_deliveryBg">#F5F5F5</color>
+    <color name="price_in">#FF6606</color>
+    <!-- 确认订单 -->
+    <color name="shopcar_confirmbill_commitbutton">#FE7C23</color>
+    <!-- 购物车支付订单 -->
+    <color name="shopcar_paybill_border">#DCDCDC</color>
+    <color name="shopcar_paybill_userinfo">#494C53</color>
+    <!-- 个人中心 -->
+    <color name="blueBg">#64C6FF</color>
+    <color name="personal_userlogin_btn">#5AC8FB</color>
+    <color name="personal_userlogin_msgcode_grayBg">#e5e5e5</color>
+    <color name="personal_font_gray">#666666</color>
+    <color name="personal_blueBg">#5ac8fb</color>
+    <color name="personal_hint_text">#262a2c</color>
+    <color name="personal_black_font">#333333</color>
+    <color name="personal_edit_hint_font">#a9b5bb</color>
+    <color name="personal_red_font">#ff0000</color>
+    <color name="personal_edit_userinfo_hint_font">#999999</color>
+    <color name="personal_pay_orange">#ff9900</color>
+    <color name="personal_bill_pay">#006633</color>
+    <color name="personal_gridview_item_font">#686868</color>
+    <color name="personal_msg_datasecond">#5AC8FB</color>
+    <color name="personal_grayBg">#F6F4F4</color>
+    <color name="personal_info_btn">#F46666</color>
+    <!-- 我的信息 添加 -->
+    <color name="mersser">#CCCCCC</color>
+    <color name="deleteInfo">#F70000</color>
+    <color name="add_style">#999999</color>
+    <!-- 账单记录 -->
+    <color name="rec_amount">#0E5438</color>
+    <color name="rec_con_amount">#FF9508</color>
+    <color name="rec_titm">#9A9A9A</color>
+    <!-- 我的订单 -->
+    <color name="orange">#fe7c23</color>
+    <color name="eree_color">#CCCCCC</color>
+    <color name="erre_bg">#FF3D2D</color>
+    <color name="brown">#947400</color>
+    <!-- 优质转运 -->
+    <color name="blue">#47bdf4</color>
+    <!-- 棕色 -->
+    <color name="addButton_sty">#5AC8FB</color>
+    <color name="delete_btn_color">#FF0033</color>
+    <color name="colletion_price">#FA5400</color>
+    <color name="get_price">#FF6600</color>
+    <color name="ideal_price">#0099FF</color>
+    <color name="low_text">#CC0000</color>
+    <!-- 设置 -->
+    <color name="settings_text_color">#333333</color>
+    <color name="settings_text_bule">#5ac8fb</color>
+    <!-- 预警 -->
+    <color name="warning_text">#666666</color>
+    <color name="warning_info">#CCCCCC</color>
+    <color name="topic_pers">#9A9A9A</color>
+    <color name="warning_price">#0033FF</color>
+    <color name="dialog_war">#CCCCCC</color>
+    <color name="price_wran">#494C53</color>
+    <!-- 话题 -->
+    <color name="topic_topictitle">#333333</color>
+    <color name="topic_topiccontent">#999999</color>
+    <color name="topic_topiccomment">#666666</color>
+    <!-- 转运订单 -->
+    <color name="red">#FF0000</color>
+    <color name="green">#7CFC00</color>
+
+    <!-- 登录后的充值 -->
+    <color name="personal_pay_shape">#F79900</color>
+    <color name="way_bill_color">#F0F0F0</color>
+    <color name="info_telte">#F5F5F5</color>
+
+</resources>

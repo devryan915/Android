@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purchasebg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_ihai_go_main"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/rec_search"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/paybillsuccess" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/puragent_goodstip"
+                android:textColor="@color/purchasetip" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical" >
+
+                <com.kc.ihaigo.ui.selfwidget.WrapListView
+                    android:id="@+id/puragent_goodslist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </com.kc.ihaigo.ui.selfwidget.WrapListView>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/shopcar_paybill_border" />
+
+                    <LinearLayout
+                        android:id="@+id/puragent_goodslist_more"
+                        android:layout_width="fill_parent"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <View
+                            android:id="@+id/v_dot0"
+                            style="@style/dot_style"
+                            android:background="@drawable/rec_dot_focused" />
+
+                        <View
+                            android:id="@+id/v_dot1"
+                            style="@style/dot_style"
+                            android:background="@drawable/rec_dot_focused" />
+
+                        <View
+                            android:id="@+id/v_dot2"
+                            style="@style/dot_style"
+                            android:background="@drawable/rec_dot_focused" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/shopcar_paybill_border" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/puragent_quantity_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/puragent_quantity"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_quantity_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/puragent_quantity_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/puragent_quantity_label"
+                    android:text="x1"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/puragent_discounted_val"
+                    android:text="@string/puragent_discount"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="$100"
+                    android:textColor="@color/purchasebuyval" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/puragent_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/puragent_head"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@+id/puragent_head"
+                    android:text="lulu海外代购"
+                    android:textColor="@color/purchasehead"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/pruagent_creditlevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/puragent_name"
+                    android:layout_below="@+id/puragent_name"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_credit"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <RatingBar
+                    android:id="@+id/puragent_credit_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/pruagent_creditlevel"
+                    android:layout_toRightOf="@+id/pruagent_creditlevel"
+                    android:isIndicator="true"
+                    android:minHeight="15dp"
+                    android:minWidth="20dp"
+                    android:progressDrawable="@drawable/ratingbar_style"
+                    android:rating="3.5" />
+
+                <TextView
+                    android:id="@+id/puragent_feelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/pruagent_creditlevel"
+                    android:layout_below="@+id/pruagent_creditlevel"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_fee"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_feeval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_feelabel"
+                    android:layout_alignBottom="@+id/puragent_feelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_feelabel"
+                    android:text="7.3"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippinglabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_feeval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_feeval"
+                    android:text="@string/puragent_shipping"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippingval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippinglabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_shippinglabel"
+                    android:text="6.8"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_servicelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippingval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_shippingval"
+                    android:text="@string/puragent_service"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_serviceval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_servicelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_servicelabel"
+                    android:text="9.9"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/puragent_head"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/puragent" />
+
+                <View
+                    android:id="@+id/puragentdetail_border1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/puragent_feelabel"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/puragentdetail_border" />
+
+                <ImageView
+                    android:id="@+id/puragentdetail_supportreback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/puragentdetail_border1"
+                    android:layout_below="@+id/puragentdetail_border1"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/supportreback" />
+
+                <TextView
+                    android:id="@+id/puragentdetail_supportreback_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragentdetail_supportreback"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragentdetail_supportreback"
+                    android:text="@string/purdetail_supportreback"
+                    android:textColor="@color/puragentdetail_support" />
+
+                <ImageView
+                    android:id="@+id/puragentdetail_supportcancelorder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragentdetail_supportreback_val"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@+id/puragentdetail_supportreback_val"
+                    android:src="@drawable/supportcancelorder" />
+
+                <TextView
+                    android:id="@+id/puragentdetail_supportcancelorder_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragentdetail_supportcancelorder"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragentdetail_supportcancelorder"
+                    android:text="@string/purdetail_supoortcancelorder"
+                    android:textColor="@color/puragentdetail_support" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_confirmbill_total"
+                    android:textColor="@color/shopcar_tip" />
+
+                <TextView
+                    android:id="@+id/puragent_quantity_valnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/shopcar_tipcounts" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_confirmbill_price"
+                    android:textColor="@color/shopcar_tip" />
+
+                <TextView
+                    android:id="@+id/puragentdetail_fixedprice_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥3"
+                    android:textColor="@color/shopcar_tipcounts" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" >
+
+                <ImageView
+                    android:id="@+id/shopcar_paybill_userlog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/userlogo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_userlog"
+                    android:text="王小毛"
+                    android:textColor="@color/shopcar_paybill_userinfo"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_userno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_paybill_username"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_username"
+                    android:text="15588888888"
+                    android:textColor="@color/shopcar_paybill_userinfo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/shopcar_paybill_username"
+                    android:layout_below="@+id/shopcar_paybill_username"
+                    android:text="上海上海市普陀区"
+                    android:textColor="@color/puragentdetail_support" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_addressdetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/shopcar_paybill_username"
+                    android:layout_below="@+id/shopcar_paybill_address"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="上海市普陀区狮山路35号"
+                    android:textColor="@color/puragentdetail_support" />
+
+                <View
+                    android:id="@+id/shopcar_paybill_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/shopcar_paybill_addressdetail"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/shopcar_paybill_border" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/shopcar_paybill_border"
+                    android:layout_marginLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/shopcar_paybill_desc"
+                    android:textColor="@color/shopcar_paybill_userinfo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_shopcar_paybill_descval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_paybill_desc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_desc"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="越快越好，鸡蛋"
+                    android:textColor="@color/puragentdetail_support" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/shopcar_confirmbill_buytype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/shopcar_confirmbill_buytype" />
+
+                <TextView
+                    android:id="@+id/shopcar_confirmbill_buytypeval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_confirmbill_buytype"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/shopcar_paybill_selbuytyep"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="支付宝客户端支付"
+                    android:textColor="@color/puragentdetail_support" />
+                <!-- android:layout_alignParentRight="true" -->
+
+                <ImageView
+                    android:id="@+id/shopcar_paybill_selbuytyep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_confirmbill_buytype"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:paddingBottom="10dp"
+                    android:src="@drawable/more" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_payamount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/shopcar_paybill_payamount" >
+                </TextView>
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_payamountval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_payamount"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="$123"
+                    android:textColor="@color/shopcar_tipcounts" >
+                </TextView>
+
+                <TextView
+                    android:id="@+id/shopcar_confrimbill_paybill"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/puragentdetail_commitbutton_shape"
+                    android:gravity="center"
+                    android:text="@string/shopcar_paybil_paybill"
+                    android:textColor="@color/white" >
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

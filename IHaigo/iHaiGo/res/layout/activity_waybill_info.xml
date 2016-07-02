@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/greyBg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/title_bg"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/title_left"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:src="@drawable/btn_back"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/title_middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/waybillDetails"
+                android:textColor="@color/title_font"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/title_right"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="@string/editor"
+                android:textColor="@color/title_font"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <RelativeLayout
+            style="@style/whiteBg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp" >
+
+            <TextView
+                android:id="@+id/uses_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/logo_img"
+                android:text="名称" />
+
+            <ImageView
+                android:id="@+id/logo_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/uses_Name"
+                android:src="@drawable/choose_logo" />
+
+            <TextView
+                android:id="@+id/use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/uses_Name"
+                android:layout_below="@+id/uses_Name"
+                android:layout_marginTop="5dp"
+                android:text="运单号"
+                android:textColor="@color/gray_color"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/order_Nameber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/use"
+                android:layout_alignBottom="@+id/use"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/use"
+                android:text="0000001113333"
+                android:textColor="@color/order_numder"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/way_Nameber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/uses_Name"
+                android:layout_alignLeft="@+id/order_Nameber"
+                android:text="" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/way_bill"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/whiteBg"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.80"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/order_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="3dp"
+                    android:text="@string/order_number"
+                    android:textColor="@color/order"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="3dp"
+                    android:text="@string/order_number"
+                    android:textColor="@color/gray_color"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/order_Tite"
+                style="@style/gray_color"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:padding="3dp"
+                android:text="刚刚"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/shippingItem"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/addTheAwd"
+            style="@style/addbuttonStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/add_the_awd" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dia_none"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/currencybg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@color/title_bg"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/dia_title_left"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:paddingLeft="-10dp"
+                android:src="@drawable/btn_back"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/add_the_awd"
+                android:textColor="@color/title_font"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dia_title_right"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:text="@string/shipping"
+                android:textColor="@color/title_font"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/courierNumber"
+                android:textColor="@color/add_edt_title"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/orerod_number"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="@string/courier_number"
+                android:textColor="@color/add_edt_title"
+                android:textColorHint="@color/add_edt"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:id="@+id/companyLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/company"
+                android:textColor="@color/add_edt_title"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/choose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.8"
+                android:text="@string/courier_company"
+                android:textColor="@color/add_edt"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:src="@drawable/more" />
+        </LinearLayout>
+
+        <View
+            style="@style/fillBoxBg"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp" />
+    </LinearLayout>
+
+</FrameLayout>

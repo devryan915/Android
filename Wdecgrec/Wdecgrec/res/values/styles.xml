@@ -1,0 +1,119 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <!-- 定义对话框 -->
+    <style name="DataSheetAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/push_up_in</item>
+    </style>
+    <!-- 自定义dialog样式 -->
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DataSheetAnimation</item>
+    </style>
+    <!-- 自定义dialog样式 -->
+    <style name="noDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DataSheetAnimation</item>
+    </style>
+    <!-- 无动画效果的dialog -->
+    <style name="DialogThemeNoAnimation" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="customProgressBar" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:indeterminateDrawable">@drawable/custom_progress_bar</item>
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateDuration">200</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="login_edittext">
+        <item name="android:layout_width">303dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:paddingLeft">95dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="register_edittext">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">#b4b4b4</item>
+        <item name="android:textColorHint">#b4b4b4</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/register_edittext_selector</item>
+    </style>
+
+    <style name="mode_leftbutton">
+        <item name="android:layout_width">114dp</item>
+        <item name="android:layout_height">114dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/mode_modebutton_selector</item>
+        <item name="android:textColor">@drawable/mode_buttontext_selector</item>
+    </style>
+
+    <style name="mode_rightbutton">
+        <item name="android:layout_width">114dp</item>
+        <item name="android:layout_height">114dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/mode_modebutton_selector</item>
+        <item name="android:textColor">@drawable/mode_buttontext_selector</item>
+    </style>
+
+    <style name="settings_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="myinfo_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/myinfo_marginleft</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+</resources>

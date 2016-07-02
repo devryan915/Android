@@ -1,0 +1,856 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/shopcar_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/left_title"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/myorderdetail"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:src="@drawable/rec_search"
+            android:text="操作"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/orderdetail_no"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:background="@color/shopcar_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="订单编号：20140000000000"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                style="@style/whiteBg"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/rec_supply_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/rec_supply_img" />
+
+                <View
+                    style="@style/fillBoxBg"
+                    android:layout_width="1px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_vertical" >
+                </View>
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp" >
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/credit_card" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/credit_card"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/transshipment" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transshipment"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp" >
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/direct_mail" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/direct_mail"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/paypal_grey" />
+                        </TableRow>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/shopcar_paybill_addressdetail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/shopcar_paybill_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="10dp" >
+
+                <ImageView
+                    android:id="@+id/goodsimage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/adv_goods" />
+
+                <TextView
+                    android:id="@+id/goods_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_toLeftOf="@+id/oldprice"
+                    android:layout_toRightOf="@+id/goodsimage"
+                    android:lines="2"
+                    android:text="Abercrombie Fitch 棒球领男sd测试男神驾到，"
+                    android:textColor="@color/shopcar_goodsname" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/oldprice"
+                    android:layout_below="@+id/oldprice"
+                    android:text="$5"
+                    android:textColor="@color/shopcar_goodsprice"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/goods_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/price"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/goodsimage"
+                    android:text="@string/shopcar_goods_colorlabel"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/goods_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/goods_color"
+                    android:layout_below="@+id/goods_color"
+                    android:text="@string/shopcar_goods_rulelabel"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/oldprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/goodsname"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="$20"
+                    android:textColor="@color/shopcar_goodsoldprice"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/goodsquantityval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/goods_size"
+                    android:layout_alignRight="@+id/oldprice"
+                    android:text="12"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/goodsquantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/goodsquantityval"
+                    android:layout_toLeftOf="@+id/goodsquantityval"
+                    android:text="@string/shopcar_confirmbill_quantity"
+                    android:textColor="@color/shopcar_goodsrules" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/shopcar_paybill_addressdetail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/shopcar_paybill_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/puragent_quantity_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/puragent_quantity"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_quantity_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/puragent_quantity_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/puragent_quantity_label"
+                    android:text="x1"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:id="@+id/puragent_total_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/puragent_quantity_label"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_total"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/pay_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/puragent_total_label"
+                    android:layout_alignLeft="@id/puragent_quantity_val"
+                    android:layout_toRightOf="@id/puragent_total_label"
+                    android:text="$300"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_discounted_val"
+                    android:layout_alignBottom="@+id/puragent_discounted_val"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/puragent_discounted_val"
+                    android:text="折约:"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_total_val"
+                    android:layout_alignBottom="@+id/puragent_total_val"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:text="900"
+                    android:textColor="@color/purchasebuyval" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="10dp" >
+            </LinearLayout>
+            <!-- 商家信息 -->
+
+            <LinearLayout
+                android:id="@+id/merchant_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:background="@color/white"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/order_detail_puragent_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/agent_head"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_toRightOf="@+id/agent_head"
+                        android:text="lulu海外代购"
+                        android:textColor="@color/purchasehead"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/pruagent_creditlevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/order_detail_puragent_name"
+                        android:layout_below="@+id/order_detail_puragent_name"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/puragent_credit"
+                        android:textColor="@color/purchaseagentlabel"
+                        android:textSize="12sp" />
+
+                    <RatingBar
+                        android:id="@+id/puragent_credit_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/pruagent_creditlevel"
+                        android:layout_toRightOf="@+id/pruagent_creditlevel"
+                        android:isIndicator="true"
+                        android:minHeight="10dp"
+                        android:minWidth="20dp"
+                        android:progressDrawable="@drawable/ratingbar_style"
+                        android:rating="3.5" />
+
+                    <TextView
+                        android:id="@+id/puragent_feelabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/pruagent_creditlevel"
+                        android:layout_below="@+id/pruagent_creditlevel"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/puragent_fee"
+                        android:textColor="@color/purchaseagentlabel"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/puragent_feeval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/puragent_feelabel"
+                        android:layout_alignBottom="@+id/puragent_feelabel"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@+id/puragent_feelabel"
+                        android:text="7.3"
+                        android:textColor="@color/purchaseagentval"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/puragent_shippinglabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragent_feeval"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/puragent_feeval"
+                        android:text="@string/puragent_shipping"
+                        android:textColor="@color/purchaseagentlabel"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/puragent_shippingval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragent_shippinglabel"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@+id/puragent_shippinglabel"
+                        android:text="6.8"
+                        android:textColor="@color/purchaseagentval"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/puragent_servicelabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragent_shippingval"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/puragent_shippingval"
+                        android:text="@string/puragent_service"
+                        android:textColor="@color/purchaseagentlabel"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/puragent_serviceval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragent_servicelabel"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@+id/puragent_servicelabel"
+                        android:text="9.9"
+                        android:textColor="@color/purchaseagentval"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:id="@+id/agent_head"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/puragent" />
+
+                    <View
+                        android:id="@+id/puragentdetail_border1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/agent_head"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@color/puragentdetail_border" />
+
+                    <ImageView
+                        android:id="@+id/puragentdetail_supportreback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/puragentdetail_border1"
+                        android:layout_below="@+id/puragentdetail_border1"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/supportreback" />
+
+                    <TextView
+                        android:id="@+id/puragentdetail_supportreback_val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragentdetail_supportreback"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/puragentdetail_supportreback"
+                        android:text="@string/purdetail_supportreback"
+                        android:textColor="@color/puragentdetail_support" />
+
+                    <ImageView
+                        android:id="@+id/puragentdetail_supportcancelorder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragentdetail_supportreback_val"
+                        android:layout_marginLeft="35dp"
+                        android:layout_toRightOf="@+id/puragentdetail_supportreback_val"
+                        android:src="@drawable/supportcancelorder" />
+
+                    <TextView
+                        android:id="@+id/puragentdetail_supportcancelorder_val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/puragentdetail_supportcancelorder"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/puragentdetail_supportcancelorder"
+                        android:text="@string/purdetail_supoortcancelorder"
+                        android:textColor="@color/puragentdetail_support" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_confirmbill_total"
+                    android:textColor="@color/shopcar_tip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/shopcar_tipcounts" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopcar_confirmbill_price"
+                    android:textColor="@color/shopcar_tip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥3"
+                    android:textColor="@color/shopcar_tipcounts" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="visible" >
+
+                <ImageView
+                    android:id="@+id/shopcar_paybill_userlog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/userlogo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_userlog"
+                    android:text="王小毛"
+                    android:textColor="@color/shopcar_paybill_userinfo"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_userno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_paybill_username"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_username"
+                    android:text="15588888888"
+                    android:textColor="@color/shopcar_paybill_userinfo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/shopcar_paybill_username"
+                    android:layout_below="@+id/shopcar_paybill_username"
+                    android:text="上海上海市普陀区"
+                    android:textColor="@color/puragentdetail_support" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_addressdetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/shopcar_paybill_username"
+                    android:layout_below="@+id/shopcar_paybill_address"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="上海市普陀区狮山路35号"
+                    android:textColor="@color/puragentdetail_support" />
+
+                <View
+                    android:id="@+id/line_border_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/shopcar_paybill_addressdetail"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/shopcar_paybill_border" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_border_space"
+                    android:layout_marginLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/shopcar_paybill_desc"
+                    android:textColor="@color/shopcar_paybill_userinfo" />
+
+                <TextView
+                    android:id="@+id/shopcar_paybill_shopcar_paybill_descval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shopcar_paybill_desc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/shopcar_paybill_desc"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="越快越好，鸡蛋"
+                    android:textColor="@color/puragentdetail_support" />
+            </RelativeLayout>
+            <!-- 支付方式 -->
+
+            <LinearLayout
+                style="@style/whiteBg"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/pay"
+                    android:textColor="@color/add_edt_title"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/payType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableRight="@drawable/more"
+                    android:gravity="center"
+                    android:paddingRight="20dp"
+                    android:text="@string/pay_way"
+                    android:textColor="@color/add_edt_title"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="10dp" >
+            </LinearLayout>
+
+            <!-- 物流信息 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteBg"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:id="@+id/oval"
+                            style="@style/oval_new"
+                            android:layout_width="13dp"
+                            android:layout_height="13dp" />
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="42dp"
+                            android:background="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="18dp" />
+
+                        <TextView
+                            android:id="@+id/transport_tite"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="-15dp"
+                            android:text="2014-12-12  14:60"
+                            android:textColor="@color/gray_color"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/transport"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="5dp"
+                                android:drawableLeft="@drawable/new_lift"
+                                android:drawablePadding="8dp"
+                                android:gravity="center_vertical"
+                                android:text="包裹已成功签收 ，订单已完成"
+                                android:textColor="@color/gray_color_logs"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/shopcar_paybill_border" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteBg"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:visibility="visible" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <View
+                            style="@style/oval"
+                            android:layout_width="13dp"
+                            android:layout_height="13dp" />
+
+                        <View
+                            style="@style/greyBg"
+                            android:layout_width="3dp"
+                            android:layout_height="42dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="18dp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="-15dp"
+                            android:text="2014-12-11  14:60"
+                            android:textColor="@color/gray_color"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="5dp"
+                                android:drawablePadding="8dp"
+                                android:gravity="center_vertical"
+                                android:text="货物已到真如投递部，快递员投递中"
+                                android:textColor="@color/gray_color_logs"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bottom -->
+
+         <!--    <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white" >
+
+                <TextView
+                    android:id="@+id/order_detail_remind_send_goods"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/puragentdetail_commitbutton_shape"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="评价商家"
+                    android:textColor="@color/white" />
+            </LinearLayout> -->
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

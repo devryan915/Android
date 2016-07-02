@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <com.broadchance.wdecgrec.widget.CustomTitle
+        android:id="@+id/customTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </com.broadchance.wdecgrec.widget.CustomTitle>
+
+    <RelativeLayout
+        android:id="@+id/titleHead"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_below="@+id/title"
+        android:background="@drawable/common_title_bg"
+        android:gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/buttonTitleBack"
+            android:layout_width="22dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="@dimen/title_btnback_marginleft"
+            android:background="@drawable/common_rebtn" />
+
+        <View
+            android:id="@+id/common_title_contactshead"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/buttonTitleBack"
+            android:background="@drawable/common_title_contactshead" />
+
+        <TextView
+            android:id="@+id/textViewUseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/common_title_contactshead"
+            android:gravity="center"
+            android:text="18852408888"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/textViewUseName"
+            android:gravity="center"
+            android:text="@string/settings_welcome"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llTitle"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_below="@+id/titleHead"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addfamily_title"
+            android:textColor="#4a4a4a"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gridViewFamily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSave"
+        android:layout_below="@+id/llTitle"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="1dp" >
+    </GridView>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/common_btnbg_green"
+        android:maxHeight="47dp"
+        android:minHeight="47dp"
+        android:text="@string/dialog_button_save"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>

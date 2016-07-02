@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lineborder"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/top_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_transcomdetail"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/detail_share"
+            android:textColor="@color/title_font" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@+id/puragent_head"
+                    android:text="lulu海外代购"
+                    android:textColor="@color/puragentdetail_comments_head"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/user_introduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/user_name"
+                    android:layout_below="@+id/user_name"
+                    android:layout_marginTop="3dp"
+                    android:text="一句话介绍"
+                    android:textColor="@color/puragentdetail_comments_label"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/transport_transtimes"
+                    style="@style/transport_trnes_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_name"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/transport_transtimes" />
+
+                <TextView
+                    android:id="@+id/puragent_feelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/user_name"
+                    android:layout_below="@+id/user_introduce"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_fee"
+                    android:textColor="@color/puragentdetail_comments_label"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_feeval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_feelabel"
+                    android:layout_alignBottom="@+id/puragent_feelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_feelabel"
+                    android:text="7.3"
+                    android:textColor="@color/puragentdetail_comments_val"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippinglabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_feeval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_feeval"
+                    android:text="@string/puragent_shipping"
+                    android:textColor="@color/puragentdetail_comments_label"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippingval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippinglabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_shippinglabel"
+                    android:text="6.8"
+                    android:textColor="@color/puragentdetail_comments_val"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_servicelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippingval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_shippingval"
+                    android:text="@string/puragent_service"
+                    android:textColor="@color/puragentdetail_comments_label"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_serviceval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_servicelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_servicelabel"
+                    android:text="9.9"
+                    android:textColor="@color/puragentdetail_comments_val"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/puragent_head"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/empty_small" />
+            </RelativeLayout>
+
+            <com.kc.ihaigo.ui.selfwidget.WrapListView
+                android:id="@+id/transport_company_addresses"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </com.kc.ihaigo.ui.selfwidget.WrapListView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

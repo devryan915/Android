@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Custom background for the new tab button -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@drawable/folder_dalog_cancel_bg_pressed"></item>
+    <item android:state_pressed="false"
+        android:drawable="@drawable/folder_dalog_cancel_bg" />
+    <item android:state_pressed="true"
+         android:drawable="@drawable/folder_dalog_cancel_bg_disabled" />
+    <item android:drawable="@drawable/folder_dalog_cancel_bg"></item>
+</selector>

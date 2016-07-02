@@ -1,0 +1,9 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:singleLine="true"
+    android:text="蛋白粉"
+    android:textColor="@color/hotfont" />

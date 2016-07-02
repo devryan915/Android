@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0.1dp"
+    android:background="@color/white"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
+
+    <TextView
+        android:id="@+id/send_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:drawableLeft="@drawable/userlogo"
+        android:gravity="center"
+        android:text="鞋子3双"
+        android:textColor="@color/add_edt_title"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/send_goods_weight"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:gravity="right"
+        android:hint="重量：6磅"
+        android:textColor="@color/add_edt_title"
+        android:textColorHint="@color/add_edt"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/minus_goods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/minus_goods" />
+
+</LinearLayout>

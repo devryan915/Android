@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/launch_bg"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageview_launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/imageview_launch" />
+
+    <TextView
+        android:id="@+id/textview_idea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageview_launch"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/product_words"
+        android:textColor="@color/product_words"
+        android:textSize="@dimen/product_words" />
+
+    <TextView
+        android:id="@+id/textview_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textview_copyrightcn"
+        android:gravity="center_horizontal"
+        android:text="@string/company_copyrighten"
+        android:textColor="@color/company_copyright"
+        android:textSize="@dimen/company_copyrighten" />
+
+    <TextView
+        android:id="@+id/textview_copyrightcn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/company_copyrightcn"
+        android:textColor="@color/company_copyright"
+        android:textSize="@dimen/company_copyrightcn" />
+
+</RelativeLayout>

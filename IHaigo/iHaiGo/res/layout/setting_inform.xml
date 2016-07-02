@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/personal_grayBg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_setting_inform"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/rec_search"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/whiteBg"
+        android:visibility="gone" >
+
+        <TextView
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/accept_new_inform" />
+
+        <TextView
+            style="@style/settings_text_right"
+            android:drawableRight="@null"
+            android:text="@string/inform_start" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/settings_tips"
+        android:text="@string/accept_new_inform_hint"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/whiteBg" >
+
+        <TextView
+            android:id="@+id/informtype"
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/accept_inform_type" />
+
+        <TextView
+            android:id="@+id/setinfo_receive_status"
+            style="@style/settings_text_right"
+            android:text="@string/close" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/settings_tips"
+        android:text="@string/accept_inform_type_hint" />
+
+    <RelativeLayout
+        android:id="@+id/settings_seltime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/accept_inform_time_frame" />
+
+        <TextView
+            android:id="@+id/infortime"
+            style="@style/settings_text_right"
+            android:text="@string/time" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/settings_tips"
+        android:lines="1"
+        android:text="@string/accept_inform_time_frame_hint" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp" >
+
+        <TextView
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/voice" />
+
+        <CheckBox
+            android:id="@+id/settings_voice"
+            style="@style/settings_button" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp" >
+
+        <TextView
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/vibration" />
+
+        <CheckBox
+            android:id="@+id/settings_shake"
+            style="@style/settings_button" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/settings_text"
+            android:layout_marginTop="0dp"
+            android:drawableRight="@null"
+            android:text="@string/flashlight" />
+
+        <CheckBox
+            android:id="@+id/settings_flash"
+            style="@style/settings_button" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/settings_tips"
+        android:text="@string/accept_inform_voice_hint" />
+
+</LinearLayout>

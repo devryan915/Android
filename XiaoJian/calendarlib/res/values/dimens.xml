@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="nav_year_left">50.0dip</dimen>
+    <dimen name="nav_year_right">50.0dip</dimen>
+    <dimen name="nav_year_labelfont">28sp</dimen>
+    <dimen name="nav_yearweek_labelfont">20sp</dimen>
+    <dimen name="month_font">30sp</dimen>
+    <dimen name="day_font">18sp</dimen>
+</resources>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
+    android:background="@color/whiteBg"
+    android:orientation="vertical" >
+
+    <View
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/user_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="23dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:text="@string/head_icon" />
+
+        <ImageView
+            android:id="@+id/iv_edit_personal_user_head"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toLeftOf="@+id/tv_edit_head"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/user_head"/>
+       <TextView
+           android:id="@+id/tv_edit_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+             android:drawableRight="@drawable/more"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/user_nickName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="23dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="18sp"
+            android:text="@string/nickName" />
+
+        <TextView
+            android:id="@+id/tv_nickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:drawablePadding="5dp"
+            android:textColor="@color/personal_font_gray"
+            android:drawableRight="@drawable/more"
+            android:text="@string/name" />
+    </RelativeLayout>
+
+    <View
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/user_sex"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="23dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="18sp"
+            android:text="@string/sex" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:drawablePadding="5dp"
+            android:textColor="@color/personal_font_gray"
+            android:drawableRight="@drawable/more"
+            android:text="@string/dialog_user_woman" />
+    </RelativeLayout>
+
+    <View
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/user_introduce"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="23dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="18sp"
+            android:text="@string/introduce" />
+
+        <TextView
+            android:id="@+id/tv_self_intru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:drawableRight="@drawable/more"
+            android:drawablePadding="5dp"
+            android:textColor="@color/personal_font_gray"
+            android:text="@string/intro" />
+    </RelativeLayout>
+
+    <View
+        style="@style/greyBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</LinearLayout>

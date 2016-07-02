@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/catalog"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:background="#f0f0f0"
+        android:clickable="false"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="A"
+        android:textColor="#4a4a4a"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/viewAddContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listitem_addcontactbg_selector"
+        android:gravity="center_vertical"
+        android:onClick="addFamily"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <requestFocus />
+
+        <View
+            android:id="@+id/contactHead"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/addfamily_head_nor" />
+
+        <TextView
+            android:id="@+id/contactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/contactHead"
+            android:gravity="center"
+            android:text="和笑笑"
+            android:textColor="#666666"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/contactPhoneNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactName"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/contactHead"
+            android:gravity="center"
+            android:text="18854205420"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,538 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 定义tabhost -->
+    <style name="main_tab_bottom">
+        <item name="android:textSize">@dimen/bottom_tab_font_size</item>
+        <item name="android:textColor">@drawable/tab_color_selector</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">#ffffff</item>
+        <item name="android:paddingTop">@dimen/bottom_tab_padding_up</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">@dimen/bottom_tab_padding_drawable</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <!-- 定义分类搜索页面一级菜单 -->
+    <style name="dot_style">
+        <item name="android:layout_width">5dip</item>
+        <item name="android:layout_height">5dip</item>
+        <item name="android:background">@drawable/rec_dot_normal</item>
+        <item name="android:layout_marginLeft">1.5dip</item>
+        <item name="android:layout_marginRight">1.5dip</item>
+    </style>
+
+    <style name="customProgressBar" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:indeterminateDrawable">@drawable/custom_progress_bar</item>
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateDuration">200</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <!-- 分类搜索主页 -->
+    <style name="sortsearch_textview">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:drawableLeft">@drawable/sortsearch_searchimg</item>
+        <item name="android:hint">@string/sortsearch_search_hint</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:background">@drawable/sortsearch__searchview_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textColor">@color/sortsearchfont</item>
+    </style>
+    <!-- 搜索后列表-商品名称 -->
+    <style name="goodsName">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!-- 搜索后列表-实际价格 -->
+    <style name="actualPrice">
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!-- 搜索后列表-原来价格 -->
+    <style name="originalPrice">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <!-- 加入购物车样式 -->
+    <style name="addAdvDetails">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:background">@drawable/shopping_btn_shape</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- 广告列表-美元原来价格 -->
+    <style name="adv_originalPrice">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/adv_originalPrice</item>
+    </style>
+    <!-- 广告列表-美元实际价格 -->
+    <style name="adv_actualPrice">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/adv_actualPrice</item>
+    </style>
+    <!-- 广告列表-人民币实际价格 -->
+    <style name="advActualPrice">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/advActualPrice</item>
+    </style>
+    <!-- 自定义dialog样式 -->
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DataSheetAnimation</item>
+    </style>
+    <!-- 自定义dialog样式 -->
+    <style name="noDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DataSheetAnimation</item>
+    </style>
+    <!-- 无动画效果的dialog -->
+    <style name="DialogThemeNoAnimation" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <!-- 广告列表商品信息 item背景 -->
+    <style name="adv_info_itemBg">
+        <item name="android:background">@drawable/adv_info_shape</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <!-- 公告活动标题样式 -->
+    <style name="event_tilte">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/event_tilte</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <!-- 公告活动商家背景 -->
+    <style name="event_merchantBg">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/event_merchantBg</item>
+    </style>
+    <!-- 活动商家名称 -->
+    <style name="merchant_name">
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!-- 活动商家，标语 颜色 -->
+    <style name="merchant_slogan">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/slogan_time</item>
+    </style>
+    <!-- 活动用户商家名称 -->
+    <style name="user_name">
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!-- 活动发布时间字体 颜色 -->
+    <style name="publish_time">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/slogan_time</item>
+    </style>
+    <!-- 用户商家，标语 颜色 -->
+    <style name="user_slogan">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/slogan_time</item>
+    </style>
+    <!-- 用户商家，收费，物理，服务 颜色 -->
+    <style name="notice_sevcie">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/notice_sevcie</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+    <!-- 用户商家，收费，物理，服务 背景颜色 -->
+    <style name="notice_sevcieBg">
+        <item name="android:background">@color/notice_sevcieBg</item>
+    </style>
+    <!-- BUTTON样式 -->
+    <style name="buttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:background">@drawable/shopping_btn_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="DataSheetAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/push_up_in</item>
+    </style>
+
+    <style name="personalButtonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:background">@drawable/personal_btn_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+    <!-- 商品详情,国内信息用卡,转动,直邮字体样式 -->
+    <style name="goodsTitleStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textColor">@color/goodsTitleStyle</item>
+    </style>
+    <!-- 商品详情,原美元 -->
+    <style name="goods_originalPrice">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textColor">@color/goods_originalPrice</item>
+    </style>
+    <!-- 商品详情,实际美元 -->
+    <style name="goods_actualPrice">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textColor">@color/goods_actualPrice</item>
+    </style>
+    <!-- 商品详情,人民币实际价格 -->
+    <style name="goodsActualPrice">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textColor">@color/goodsActualPrice</item>
+    </style>
+    <!-- 商品详情,汇率,折约提示语 -->
+    <style name="rate_about">
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textColor">@color/rate_about</item>
+    </style>
+    <!-- 灰背景色 -->
+    <style name="greyBg">
+        <item name="android:background">@color/greyBg</item>
+    </style>
+    <!-- 白色背景色 -->
+    <style name="whiteBg">
+        <item name="android:background">@color/whiteBg</item>
+    </style>
+    <!-- view 分隔线 -->
+    <style name="fillBoxBg">
+        <item name="android:background">@color/fill_box</item>
+    </style>
+    <!-- 商品介绍 -->
+    <style name="goodsInfo">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/gooseInfo</item>
+    </style>
+    <!-- 商品介绍信息 -->
+    <style name="goodsInfoStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/gooseInfo</item>
+    </style>
+    <!-- 用户评价,评价,灰色 -->
+    <style name="user_appraise">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/user_appraise</item>
+    </style>
+    <!-- 更多用户评价,评价,灰色 -->
+    <style name="more_appraiseStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/user_appraise</item>
+    </style>
+    <!-- 更多用户评价,评价条数,黄色 -->
+    <style name="more_appraise">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/more_appraise</item>
+    </style>
+    <!-- 加入购物车BUTTON样式 -->
+    <style name="joinbuttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:background">@drawable/join_but_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+    <!-- 立即购买BUTTON样式 -->
+    <style name="buybuttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:background">@drawable/buy_btn_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+    <!-- 全部评价 -商品名称 -->
+    <style name="evaluationTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/all_evaluationTitle</item>
+    </style>
+    <!-- 我要评价BUTTON样式 -->
+    <style name="evaluationbuttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/wo_evaluation</item>
+        <item name="android:background">@drawable/wo_evaluation</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+    <!-- 添加国内BUTTON样式 -->
+    <style name="addbuttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/addButton_sty</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <!-- 物流   灰色字体 -->
+    <style name="gray_color">
+        <item name="android:textColor">@color/gray_color</item>
+    </style>
+    <!-- 物流   圆 -->
+    <style name="oval">
+        <item name="android:background">@drawable/oval_shape</item>
+    </style>
+
+    <style name="oval_new">
+        <item name="android:background">@drawable/oval_shape_bac</item>
+    </style>
+    <!-- 物流   新增 -->
+    <style name="addoval">
+        <item name="android:background">@drawable/oval_shape</item>
+    </style>
+
+    <!-- 个人信息编辑 蓝色背景 -->
+    <style name="blueBg">
+        <item name="android:background">@color/blueBg</item>
+    </style>
+
+    <style name="blueoval">
+        <item name="android:background">@drawable/blue_oval_shape</item>
+    </style>
+    <!-- 选择快递ITEM -->
+
+    <style name="chooserItem">
+        <item name="android:background">@drawable/choose_item_lift_shape</item>
+    </style>
+    <!-- 加入购物车样式 -->
+    <style name="addShippingBut">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:background">@drawable/shopping_btn_shape</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- 立即购买 弹出dialog BUTTON样式 -->
+    <style name="immediatelyBuyBut">
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:background">@drawable/immediately_buy_shape</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="dialog_confirm_exit" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 屏幕背景是否变暗 -->
+    </style>
+
+    <style name="MyDialog" parent="@android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="editbuttonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:background">@drawable/buy_edit_shape</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="popwindow_delete_btn_anim_style">
+        <item name="android:windowEnterAnimation">@anim/delete_btn_show</item>
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowExitAnimation">@anim/delete_btn_hide</item>
+        <!-- 指定消失的动画xml -->
+
+    </style>
+    <!-- 设置页面 -->
+    <style name="settings_button" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/settings_button_selector</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <!-- 设置页面 -->
+    <style name="warning_settings_button" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/settings_button_selector</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <!-- 设置页面字体样式 -->
+    <style name="settings_text" parent="@android:style/Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:drawableRight">@drawable/more</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/settings_text_color</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <style name="settings_text_quit" parent="@android:style/Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/settings_text_color</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <!-- 设置页面右侧字体 -->
+    <style name="settings_text_right">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:drawableRight">@drawable/more</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:textColor">@color/personal_font_gray</item>
+    </style>
+    <!-- 设置页面提示部分字体样式 -->
+    <style name="settings_tips" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/personal_font_gray</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="AlertDialog" parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/popup_bg</item>
+    </style>
+
+    <style name="CustomCheckboxTheme">
+        <item name="android:button">@drawable/checkbox_selector</item>
+    </style>
+    <!-- 转运未完成订单 -->
+    <style name="transport_contact">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:drawableRight">@drawable/more</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="transport_address_label">
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/warning_text</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="transport_address_value">
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/warning_text</item>
+    </style>
+
+    <style name="transport_trnes_style">
+        <item name="android:background">@drawable/transport_times_bg_shape</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+     <!-- 蓝色BUTTON样式-->
+    <style name="buttonSty">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/add_advDetails</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:background">@drawable/button_sty</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <!-- 定义评分的星星样式 -->
+    <style name="MyRatingBar" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/food_rating_bar_full</item>    
+        <item name="android:minHeight">15dip</item>    
+        <item name="android:maxHeight">15dip</item>    
+    </style>    
+
+</resources>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/transport_address"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/title_activity_settings"
+            android:textColor="@color/title_font"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/merchant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/puragent_head"
+            android:layout_toRightOf="@+id/puragent_head"
+            android:text="lulu海外代购"
+            android:textColor="@color/purchasehead"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pruagent_creditlevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/merchant_name"
+            android:layout_below="@+id/merchant_name"
+            android:layout_marginTop="5dp"
+            android:text="带给您最安全快捷的享受"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_feelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/pruagent_creditlevel"
+            android:layout_below="@+id/pruagent_creditlevel"
+            android:layout_marginTop="5dp"
+            android:text="@string/puragent_fee"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_feeval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/puragent_feelabel"
+            android:layout_alignBottom="@+id/puragent_feelabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_feelabel"
+            android:text="7.3"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_shippinglabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_feeval"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/puragent_feeval"
+            android:text="@string/puragent_shipping"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_shippingval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_shippinglabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_shippinglabel"
+            android:text="6.8"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_servicelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_shippingval"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/puragent_shippingval"
+            android:text="@string/puragent_service"
+            android:textColor="@color/purchaseagentlabel"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/puragent_serviceval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/puragent_servicelabel"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/puragent_servicelabel"
+            android:text="9.9"
+            android:textColor="@color/purchaseagentval"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/puragent_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/puragent" />
+
+        <View
+            android:id="@+id/puragentdetail_border1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/puragent_head"
+            android:background="@color/puragentdetail_border" />
+
+        <TextView
+            android:id="@+id/transfer"
+            style="@style/transport_trnes_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/merchant_name"
+            android:layout_marginRight="10dp"
+            android:text="已转运3次" />
+    </RelativeLayout>
+    
+    <ListView 
+        android:id="@+id/trans_addr_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"/>
+
+</LinearLayout>

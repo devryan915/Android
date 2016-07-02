@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+
+     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp" >
+
+        <ImageView
+            android:id="@+id/detail_user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/detail_user_image"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_nickName"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"/>
+
+            <TextView
+                android:id="@+id/detail_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/shopcar_goodsrules"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        
+        <ImageButton 
+            android:id="@+id/btn_topic_response"
+            android:layout_width="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/topic_response"/>
+        <TextView
+            android:id="@+id/detail_topic_createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btn_topic_response"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="15dp"
+            android:textColor="@color/shopcar_goodsrules" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/detail_topic_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="70dp"
+        android:paddingRight="15dp"
+        android:singleLine="false"
+        android:textSize="12sp" />
+    <TextView 
+        android:id="@+id/detail_response_last_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="70dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/response_last_content"/>
+</LinearLayout>

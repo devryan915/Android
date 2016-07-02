@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
+
+    <View
+        android:id="@+id/viewSkin"
+        android:layout_width="48dp"
+        android:layout_height="74dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/settings_changeskin_default" />
+
+    <TextView
+        android:id="@+id/textViewSkinName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/viewSkin"
+        android:text="清爽简约"
+        android:textColor="@color/dialog_content"
+        android:textSize="17sp" />
+
+    <View
+        android:id="@+id/viewSelSkin"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/changeskin_nor" />
+
+</RelativeLayout>

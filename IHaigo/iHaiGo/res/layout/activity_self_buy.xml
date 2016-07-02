@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purchasebg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/title_left"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:layout_weight="2"
+            android:src="@drawable/btn_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_ihai_go_main"
+            android:textColor="@color/title_font"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/title_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/rec_search"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/paybillsuccess" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/puragent_goodstip"
+                android:textColor="@color/purchasetip" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical" >
+
+                <com.kc.ihaigo.ui.selfwidget.WrapListView
+                    android:id="@+id/puragent_goodslist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </com.kc.ihaigo.ui.selfwidget.WrapListView>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/shopcar_paybill_border" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/whiteBg"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/rec_supply_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/rec_supply_img" />
+
+                <View
+                    style="@style/fillBoxBg"
+                    android:layout_width="1px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_vertical" >
+                </View>
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp" >
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/credit_card" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/credit_card"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/transshipment" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transshipment"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp" >
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/direct_mail" />
+
+                            <TextView
+                                style="@style/goodsTitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/direct_mail"
+                                android:textColor="@color/purchasehead" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/paypal_grey" />
+                        </TableRow>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/shopcar_paybill_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="10dp" >
+
+                <ImageView
+                    android:id="@+id/goodsimage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/adv_goods" />
+
+                <TextView
+                    android:id="@+id/goods_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_toLeftOf="@+id/oldprice"
+                    android:layout_toRightOf="@+id/goodsimage"
+                    android:lines="2"
+                    android:text="Abercrombie Fitch 棒球领男sd测试男神驾到，"
+                    android:textColor="@color/shopcar_goodsname" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/oldprice"
+                    android:layout_below="@+id/oldprice"
+                    android:text="$5"
+                    android:textColor="@color/shopcar_goodsprice"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/goods_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/price"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/goodsimage"
+                    android:text="@string/shopcar_goods_colorlabel"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/goods_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/goods_color"
+                    android:layout_below="@+id/goods_color"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/shopcar_goods_rulelabel"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/oldprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="$20"
+                    android:textColor="@color/shopcar_goodsoldprice"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/goodsquantityval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/goods_size"
+                    android:layout_alignRight="@+id/oldprice"
+                    android:text="12"
+                    android:textColor="@color/shopcar_goodsrules" />
+
+                <TextView
+                    android:id="@+id/goodsquantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/goodsquantityval"
+                    android:layout_toLeftOf="@+id/goodsquantityval"
+                    android:text="@string/shopcar_confirmbill_quantity"
+                    android:textColor="@color/shopcar_goodsrules" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/shopcar_paybill_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/puragent_quantity_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/puragent_quantity"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/puragent_quantity_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/puragent_quantity_label"
+                    android:text="x1"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:id="@+id/puragent_total_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/puragent_quantity_label"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_total"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/pay_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/puragent_total_label"
+                    android:layout_toRightOf="@id/puragent_total_label"
+                    android:text="$300"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_discounted_val"
+                    android:layout_alignBottom="@+id/puragent_discounted_val"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/puragent_discounted_val"
+                    android:text="折约:"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_discounted_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:text="900"
+                    android:textColor="@color/purchasebuyval" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/quantity_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/puragent_quantity"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/puragent_quantity_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/quantity_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/quantity_label"
+                    android:text="x1"
+                    android:textColor="@color/purchasebuyval" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/discounted_val"
+                    android:text="@string/puragent_discount"
+                    android:textColor="@color/purchasebuylabel" />
+
+                <TextView
+                    android:id="@+id/discounted_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="$100"
+                    android:textColor="@color/purchasebuyval" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/choose_logistics_shape"
+                android:orientation="horizontal"
+                android:padding="1dp" >
+
+                <TextView
+                    android:id="@+id/domestic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="默认" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/choose" />
+
+                <TextView
+                    android:id="@+id/turn_the"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="价格" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/choose" />
+
+                <TextView
+                    android:id="@+id/overseas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="速度" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/choose" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="服务" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/white"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/order_detail_puragent_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/agent_head"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@+id/agent_head"
+                    android:text="lulu海外代购"
+                    android:textColor="@color/purchasehead"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/pruagent_creditlevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/order_detail_puragent_name"
+                    android:layout_below="@+id/order_detail_puragent_name"
+                    android:layout_marginTop="5dp"
+                    android:text="帶給你最安全快捷的海淘享受"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_feelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/pruagent_creditlevel"
+                    android:layout_below="@+id/pruagent_creditlevel"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/puragent_fee"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_feeval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/puragent_feelabel"
+                    android:layout_alignBottom="@+id/puragent_feelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_feelabel"
+                    android:text="7.3"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippinglabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_feeval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_feeval"
+                    android:text="@string/puragent_shipping"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_shippingval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippinglabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_shippinglabel"
+                    android:text="6.8"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_servicelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_shippingval"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/puragent_shippingval"
+                    android:text="@string/puragent_service"
+                    android:textColor="@color/purchaseagentlabel"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/puragent_serviceval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/puragent_servicelabel"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/puragent_servicelabel"
+                    android:text="9.9"
+                    android:textColor="@color/purchaseagentval"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/agent_head"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/puragent" />
+
+                <View
+                    android:id="@+id/puragentdetail_border1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/agent_head"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/puragentdetail_border" />
+
+                <TextView
+                    android:id="@+id/puragentdetail_supportcancelorder_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:text="已转运2次"
+                    android:textColor="@color/blue" />
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/blueBg"
+                    android:text="地址"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

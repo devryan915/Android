@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/rec_goods_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/empty_small" />
+
+    <com.kc.ihaigo.ui.selfwidget.AutoLineText
+        android:id="@+id/rec_goodsname_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/rec_goods_img"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text=""
+        android:textColor="@color/puragentdetail_comments_head"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rec_goodsname_tv"
+        android:layout_below="@+id/rec_goodsname_tv"
+        android:layout_marginTop="10dp"
+        android:text="299"
+        android:textColor="@color/oldprice"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/priceicon"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignTop="@+id/price"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/price"
+        android:src="@drawable/price" />
+
+    <TextView
+        android:id="@+id/discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/price"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/priceicon"
+        android:text="$69"
+        android:textColor="@color/goodsprice"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/ram_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rec_goodsname_tv"
+        android:layout_below="@+id/price"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/arm_price"
+        android:textColor="@color/oldprice"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/rmbprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ram_price_tv"
+        android:layout_toRightOf="@+id/ram_price_tv"
+        android:text="￥111 "
+        android:textColor="@color/discountedprice"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/shoppingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/rec_goodsname_tv"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shopping_btn_shape"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/add_advDetails"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/source"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_alignRight="@+id/shoppingBtn"
+        android:layout_below="@+id/shoppingBtn"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/rec_supply_img" />
+
+</RelativeLayout>

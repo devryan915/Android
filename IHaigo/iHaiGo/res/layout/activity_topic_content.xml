@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kc.ihaigo.ui.selfwidget.PullUpRefreshListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topic_content_ll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:dividerHeight="10dp"
+    android:orientation="vertical"
+    android:persistentDrawingCache="all" >
+
+</com.kc.ihaigo.ui.selfwidget.PullUpRefreshListView>

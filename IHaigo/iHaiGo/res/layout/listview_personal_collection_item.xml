@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="@null" >
+
+    <LinearLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/goods_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp" >
+
+            <LinearLayout
+                android:id="@+id/shopcar_selall_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="10dp" >
+
+                <ImageView
+                    android:id="@+id/shopcar_goods_remove"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/removegoods"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/goods_loog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/adv_goods" />
+
+                <ImageView
+                    android:id="@+id/goodsfrom"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/rec_supply_img" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/goods_info"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/goodsname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:text="Abe"
+                    android:textColor="@color/shopcar_goodsname" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/goodsname"
+                    android:layout_marginTop="3dp"
+                    android:text="$5"
+                    android:textColor="@color/shopcar_goodsprice"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/oldprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/price"
+                    android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@+id/price"
+                    android:text="$20"
+                    android:textColor="@color/shopcar_goodsoldprice"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/oldprice"
+                    android:layout_alignBottom="@+id/oldprice"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/oldprice"
+                    android:text="@string/collection_discount"
+                    android:textColor="@color/shopcar_goodsoldprice"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/price_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/discount"
+                    android:layout_alignBottom="@+id/discount"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/discount"
+                    android:text="￥5"
+                    android:textColor="@color/colletion_price"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/price"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/warning"
+                    android:padding="5dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/deletegoods"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/shopcar_bottom_paybutton"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/shopcar_goods_deletegoods"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</HorizontalScrollView>
