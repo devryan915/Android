@@ -65,4 +65,34 @@ public class UIDevice extends Object {
 	public void setExpireYear(int _ExpireYear) {
 		this.ExpireYear = _ExpireYear;
 	}
+
+	private String DeviceNo;
+
+	public String getDeviceNo() {
+		return DeviceNo;
+	}
+
+	public void setDeviceNo(String _DeviceNo) {
+		this.DeviceNo = _DeviceNo;
+	}
+
+	private int DeviceStatus;
+
+	public int getDeviceStatus() {
+		return DeviceStatus;
+	}
+
+	public void setDeviceStatus(int _DeviceStatus) {
+		this.DeviceStatus = _DeviceStatus;
+	}
+
+	private Boolean IsOverTime;
+
+	public Boolean getIsOverTime() {
+		return IsOverTime;
+	}
+
+	public void setIsOverTime(Boolean _IsOverTime) {
+		this.IsOverTime = _IsOverTime;
+	}
 }

@@ -31,6 +31,8 @@
         android:hint=""
         android:inputType="number"
         android:maxLength="11"
+        android:singleLine="true"
+        android:text="13790909090"
         android:textColorHint="#91c3be"
         wdecgrec:labelcolor="@android:color/white"
         wdecgrec:labelpaddingleft="40dp"
@@ -46,9 +48,12 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/login_pwd_selector"
         android:ems="8"
-        android:inputType="textPassword"
+        android:imeOptions="actionGo"
+        android:inputType="numberPassword"
         android:maxLength="8"
+        android:singleLine="true"
         android:textColorHint="#91c3be"
+        android:visibility="gone"
         wdecgrec:labelcolor="@android:color/white"
         wdecgrec:labelpaddingleft="40dp"
         wdecgrec:labeltext="@string/login_pwd_label"
@@ -57,7 +62,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" >
+        android:layout_marginTop="8dp"
+        android:visibility="gone" >
 
         <CheckBox
             android:id="@+id/checkBoxSavePwd"
@@ -92,27 +98,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp" >
 
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="146dp"
-            android:layout_height="47dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/login_loginbtn_bg"
-            android:text="@string/login_login"
-            android:textColor="#ff6c00"
-            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/buttonResetPwd"
-            android:layout_width="146dp"
-            android:layout_height="47dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/login_registerbtn_bg"
-            android:text="@string/login_register"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/login_loginbtn_bg"
+                android:text="@string/login_login"
+                android:textColor="#ff6c00"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/buttonResetPwd"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/login_registerbtn_bg"
+                android:text="@string/login_register"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout

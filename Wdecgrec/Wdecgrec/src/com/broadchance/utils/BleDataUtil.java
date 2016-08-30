@@ -14,10 +14,64 @@ public class BleDataUtil {
 			if (ConstantConfig.Debug) {
 				SimpleDateFormat sdf = new SimpleDateFormat(
 						"yyyy-MM-dd HH:mm:ss");
-				Date date = new Date();
-				LogUtil.d(TAG, "DateTime " + sdf.format(date) + " " + bleData);
+				LogUtil.d(TAG, "DateTime " + sdf.format(CommonUtil.getDate())
+						+ " " + bleData);
 			}
 		}
+	}
+
+	/**
+	 * 获取设备的显示名
+	 * 
+	 * @param macAddress
+	 * @return
+	 */
+	public static String getDeviceName(String macAddress) {
+		return "BC"
+				+ paddLeft((getDeviceNumber(macAddress) + "").toString(), 8,
+						'0');
+	}
+
+	/**
+	 * 获取设备的校验码
+	 * 
+	 * @param macAddress
+	 * @return
+	 */
+	public static String getDevcieToken(String macAddress) {
+		return paddLeft(getDeviceNumber(macAddress) * 4 + "", 8, '0');
+	}
+
+	/**
+	 * 获取设备的后8位数字字符
+	 * 
+	 * @param macAddress
+	 * @return
+	 */
+	public static long getDeviceNumber(String macAddress) {
+		String device = macAddress.replace(":", "");
+		StringBuffer strBuffer = new StringBuffer();
+		char[] chars = device.substring(device.length() - 4).toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			strBuffer.append(paddLeft(Integer.valueOf(chars[i] + "", 16) + "",
+					2, '0'));
+		}
+		return Long.parseLong(strBuffer.toString());
+	}
+
+	/**
+	 * 
+	 * @param src
+	 * @param length
+	 * @param padding
+	 * @return
+	 */
+	public static String paddRight(String src, int length, char padding) {
+		return String.format("%-" + length + "s", src).replace(' ', padding);
+	}
+
+	public static String paddLeft(String src, int length, char padding) {
+		return String.format("%" + length + "s", src).replace(' ', padding);
 	}
 
 	/**
@@ -32,6 +86,66 @@ public class BleDataUtil {
 			stringBuilder.append(String.format("%02X ", byteChar));
 		}
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * 
+	 * 
+	 * 
+	 * Convert byte[] to hex
+	 * string.这里我们可以将byte转换成int，然后利用Integer.toHexString(int)来转换成16进制字符串。
+	 * 
+	 * @param src
+	 *            byte[] data
+	 * @return hex string
+	 */
+	public static String bytesToHexString(byte[] src) {
+		StringBuilder stringBuilder = new StringBuilder("");
+		if (src == null || src.length <= 0) {
+			return null;
+		}
+		for (int i = 0; i < src.length; i++) {
+			int v = src[i] & 0xFF;
+			String hv = Integer.toHexString(v);
+			if (hv.length() < 2) {
+				stringBuilder.append(0);
+			}
+			stringBuilder.append(hv);
+		}
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * Convert hex string to byte[]
+	 * 
+	 * @param hexString
+	 *            the hex string
+	 * @return byte[]
+	 */
+	public static byte[] hexStringToBytes(String hexString) {
+		if (hexString == null || hexString.equals("")) {
+			return null;
+		}
+		hexString = hexString.toUpperCase();
+		int length = hexString.length() / 2;
+		char[] hexChars = hexString.toCharArray();
+		byte[] d = new byte[length];
+		for (int i = 0; i < length; i++) {
+			int pos = i * 2;
+			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+		}
+		return d;
+	}
+
+	/**
+	 * Convert char to byte
+	 * 
+	 * @param c
+	 *            char
+	 * @return byte
+	 */
+	private static byte charToByte(char c) {
+		return (byte) "0123456789ABCDEF".indexOf(c);
 	}
 
 	/**
@@ -60,10 +174,32 @@ public class BleDataUtil {
 				ecgData[i * 2] = data[0];
 				ecgData[i * 2 + 1] = data[1];
 			}
-			//每一帧可以解出12点，第六和12两个点不是ecg点
+			// 每一帧可以解出12点，第六和12两个点不是ecg点
 			return new short[] { ecgData[0], ecgData[1], ecgData[2],
 					ecgData[3], ecgData[4], ecgData[6], ecgData[7], ecgData[8],
 					ecgData[9], ecgData[10] };
+		}
+		return null;
+	}
+
+	/**
+	 * 获取呼吸波数据
+	 * 
+	 * @param frameData
+	 * @return
+	 */
+	public static short[] getBreathData(byte[] frameData) {
+		short[] ecgData = null;
+		if (frameData != null && frameData.length == 20) {
+			ecgData = new short[12];
+			for (int i = 0; i < 6; i++) {
+				short[] data = bleABCbyte2ShortArray(frameData[i * 3 + 2],
+						frameData[i * 3 + 3], frameData[i * 3 + 4]);
+				ecgData[i * 2] = data[0];
+				ecgData[i * 2 + 1] = data[1];
+			}
+			// 每一帧可以解出12点，第六和12两个点不是ecg点
+			return new short[] { ecgData[5], ecgData[11] };
 		}
 		return null;
 	}
@@ -79,9 +215,27 @@ public class BleDataUtil {
 	 */
 	public static short[] bleABCbyte2ShortArray(byte byteA, byte byteB,
 			byte byteC) {
-		byte restoreA = (byte) ((byteA & 0x80) | ((byteA & 0x7C) >> 2));
+		int bitA = byteA & 0x80;
+		byte restoreA = 0;
+		// 如果byte高位是1，补111;否则补000.
+		if (bitA != 0) {
+			restoreA = (byte) (0xE0 | ((byteA & 0x7C) >> 2));
+		} else {
+			restoreA = (byte) ((byteA & 0x7C) >> 2);
+		}
+		// restoreA = (byte) ((byteA & 0x80) | ((byteA & 0x7C) >> 2));
 		byte restoreB = (byte) (((byteA & 0x03) << 6) | ((byteB & 0xF0) >> 2));
-		byte restoreC = (byte) (((byteB & 0x08) << 4) | ((byteB & 0x07) << 2) | ((byteC & 0xC0) >> 6));
+
+		int bitC = byteB & 0x08;
+		byte restoreC = 0;
+		if (bitC != 0) {
+			restoreC = (byte) ((0xE0) | ((byteB & 0x07) << 2) | ((byteC & 0xC0) >> 6));
+		} else {
+			restoreC = (byte) (((byteB & 0x07) << 2) | ((byteC & 0xC0) >> 6));
+		}
+		// restoreC = (byte) (((byteB & 0x08) << 4) | ((byteB & 0x07) << 2) |
+		// ((byteC & 0xC0) >> 6));
+
 		byte restoreD = (byte) ((byteC & 0x3F) << 2);
 		try {
 			return new short[] {
@@ -105,6 +259,25 @@ public class BleDataUtil {
 		bytes[7] = (byte) (data & 0xff);
 		return new byte[] { bytes[0], bytes[1], bytes[1], bytes[3], bytes[4],
 				bytes[5], bytes[6], bytes[7] };
+	}
+
+	/**
+	 * 返回小端字节
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static byte[] longto5BytesLE(long data) {
+		byte[] bytes = new byte[8];
+		bytes[0] = (byte) ((data >> 56) & 0xff);
+		bytes[1] = (byte) ((data >> 48) & 0xff);
+		bytes[2] = (byte) ((data >> 40) & 0xff);
+		bytes[3] = (byte) ((data >> 32) & 0xff);
+		bytes[4] = (byte) ((data >> 24) & 0xff);
+		bytes[5] = (byte) ((data >> 16) & 0xff);
+		bytes[6] = (byte) ((data >> 8) & 0xff);
+		bytes[7] = (byte) (data & 0xff);
+		return new byte[] { bytes[3], bytes[7], bytes[6], bytes[5], bytes[4] };
 	}
 
 	/**
@@ -194,6 +367,15 @@ public class BleDataUtil {
 	 */
 	public static byte[] short2ByteArray(short value) {
 		return new byte[] { (byte) ((value >> 8) & 0xFF), (byte) (value & 0xFF) };
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static byte[] short2ByteArrayLE(short value) {
+		return new byte[] { (byte) (value & 0xFF), (byte) ((value >> 8) & 0xFF) };
 	}
 
 	/**

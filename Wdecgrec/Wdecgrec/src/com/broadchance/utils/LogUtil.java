@@ -18,7 +18,7 @@ public class LogUtil {
 	}
 
 	public static void e(String tag, Exception e) {
-		// Log.e(tag, e == null ? "" : e.toString());
+		Log.e(tag, e == null ? "" : e.toString());
 		if (ConstantConfig.Debug) {
 			e.printStackTrace();
 		}

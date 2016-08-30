@@ -16,6 +16,7 @@ import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFile;
 import com.broadchance.entity.UploadFileStatus;
 import com.broadchance.entity.UserStatus;
+import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.DBHelper;
 import com.broadchance.utils.LogUtil;
@@ -25,6 +26,12 @@ public class DataManager {
 	private static UIUserInfoLogin USER;
 	private static Object objUploadFileLock = new Object();
 
+	/**
+	 * 将用户密码置空
+	 * 
+	 * @param userName
+	 * @return
+	 */
 	public static boolean deleteUserPwd(String userName) {
 		DBHelper dbHelper = DBHelper.getInstance();
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -32,6 +39,28 @@ public class DataManager {
 				+ "  set pwd=null where user_name=" + userName);
 		db.close();
 		return true;
+	}
+
+	/**
+	 * 更新当前登录用户的mac地址
+	 * 
+	 * @param macAddress
+	 * @return
+	 */
+	public static boolean updateUserMac(String macAddress) {
+		getUserInfo();
+		if (USER != null) {
+			DBHelper dbHelper = DBHelper.getInstance();
+			SQLiteDatabase db = dbHelper.getWritableDatabase();
+			db.execSQL("update " + DBHelper.TBL_USER
+					+ "  set macaddress=? where user_name=?", new Object[] {
+					macAddress, USER.getLoginName() });
+			USER.setMacAddress(macAddress);
+			db.close();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -64,19 +93,22 @@ public class DataManager {
 				db.execSQL(
 						"update "
 								+ DBHelper.TBL_USER
-								+ "  set status=?,pwd=?,token=? where user_name=?",
+								+ "  set status=?,pwd=?,nick_name=?,token=?,macaddress=? where user_name=?",
 						new Object[] { UserStatus.Login.getValue(), pwd,
+								userInfo.getNickName(),
 								userInfo.getAccess_token(),
+								userInfo.getMacAddress(),
 								userInfo.getLoginName() });
 			} else {
 				db.execSQL(
 						"insert into "
 								+ DBHelper.TBL_USER
-								+ " (user_name , pwd , userid ,token,status) values (?,?,?,?,?) ",
+								+ " (user_name , pwd,nick_name , userid ,token,status,macaddress) values (?,?,?,?,?,?,?) ",
 						new Object[] { userInfo.getLoginName(), pwd,
-								userInfo.getUserID(),
+								userInfo.getNickName(), userInfo.getUserID(),
 								userInfo.getAccess_token(),
-								UserStatus.Login.getValue() });
+								UserStatus.Login.getValue(),
+								userInfo.getMacAddress() });
 			}
 			db.setTransactionSuccessful();
 			return true;
@@ -120,11 +152,13 @@ public class DataManager {
 	}
 
 	public static UIUserInfoLogin getUserInfo() {
-		if (USER != null)
+		if (USER != null) {
+			ConstantConfig.ORDERNO = USER.getAccess_token();
 			return USER;
+		}
 		DBHelper dbHelper = DBHelper.getInstance();
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		String sql = "select user_name , pwd , userid ,token from "
+		String sql = "select user_name , pwd , userid ,nick_name,token,macaddress from "
 				+ DBHelper.TBL_USER + " where status=?";
 		String[] selectionArgs = new String[] { UserStatus.Login.getValue()
 				+ "" };
@@ -134,6 +168,10 @@ public class DataManager {
 			user.setLoginName(cursor.getString(cursor
 					.getColumnIndex("user_name")));
 			user.setUserID(cursor.getString(cursor.getColumnIndex("userid")));
+			user.setNickName(cursor.getString(cursor
+					.getColumnIndex("nick_name")));
+			user.setMacAddress(cursor.getString(cursor
+					.getColumnIndex("macaddress")));
 			user.setAccess_token(cursor.getString(cursor
 					.getColumnIndex("token")));
 		}
@@ -141,6 +179,7 @@ public class DataManager {
 		db.close();
 		USER = (user.getUserID() != null && user.getUserID().trim().length() > 0) ? user
 				: null;
+		ConstantConfig.ORDERNO = USER != null ? USER.getAccess_token() : "";
 		return USER;
 	}
 
@@ -164,11 +203,12 @@ public class DataManager {
 	 * @return
 	 */
 	public static boolean saveUploadFile(String fileName, String path,
-			Date dataBeginTime, Date dataEndTime, FileType type) {
+			Date dataBeginTime, Date dataEndTime, FileType type, String bpath,
+			String hrs) {
 		synchronized (objUploadFileLock) {
 			try {
-				SimpleDateFormat sdf = new SimpleDateFormat(
-						ConstantConfig.DATA_DATE_FORMAT);
+				// SimpleDateFormat sdf = new SimpleDateFormat(
+				// ConstantConfig.DATA_DATE_FORMAT);
 				DBHelper dbHelper = DBHelper.getInstance();
 				SQLiteDatabase db = dbHelper.getWritableDatabase();
 				// db.execSQL(
@@ -191,11 +231,15 @@ public class DataManager {
 				cValue.put("path", path);
 				cValue.put("status", UploadFileStatus.UnDeal.getValue());
 				cValue.put("uploadtimes", 0);
-				cValue.put("data_begintime", sdf.format(dataBeginTime));
-				cValue.put("data_endtime", sdf.format(dataEndTime));
-				cValue.put("creation_date", sdf.format(new Date()));
-				cValue.put("upload_date", sdf.format(new Date()));
+				cValue.put("data_begintime",
+						CommonUtil.getTime_C(dataBeginTime));
+				cValue.put("data_endtime", CommonUtil.getTime_C(dataEndTime));
+				cValue.put("creation_date", CommonUtil.getTime_C());
+				cValue.put("upload_date", CommonUtil.getTime_C());
 				cValue.put("filetype", type.getValue());
+				cValue.put("bpath", bpath);
+				cValue.put("hrs", hrs);
+
 				long rowid = db.insert(DBHelper.TBL_UPLOAD, null, cValue);
 				db.close();
 				return rowid != -1;
@@ -241,8 +285,8 @@ public class DataManager {
 	public static boolean updateUploadFileTimes(List<UploadFile> uploadFiles) {
 		synchronized (objUploadFileLock) {
 			DBHelper dbHelper = DBHelper.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					ConstantConfig.DATA_DATE_FORMAT);
+			// SimpleDateFormat sdf = new SimpleDateFormat(
+			// ConstantConfig.DATA_DATE_FORMAT);
 			SQLiteDatabase db = dbHelper.getWritableDatabase();
 			// 开始事务
 			db.beginTransaction();
@@ -252,7 +296,7 @@ public class DataManager {
 							"update  "
 									+ DBHelper.TBL_UPLOAD
 									+ " set uploadtimes=uploadtimes+1,upload_date=?  where file_name=?  ",
-							new Object[] { sdf.format(new Date()),
+							new Object[] { CommonUtil.getTime_C(),
 									file.getFileName() });
 				}
 				// 设置事务成功完成
@@ -278,8 +322,8 @@ public class DataManager {
 			UploadFileStatus status) {
 		synchronized (objUploadFileLock) {
 			DBHelper dbHelper = DBHelper.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					ConstantConfig.DATA_DATE_FORMAT);
+			// SimpleDateFormat sdf = new SimpleDateFormat(
+			// ConstantConfig.DATA_DATE_FORMAT);
 			SQLiteDatabase db = dbHelper.getWritableDatabase();
 			// 开始事务
 			db.beginTransaction();
@@ -287,7 +331,7 @@ public class DataManager {
 				for (UploadFile file : uploadFiles) {
 					ContentValues values = new ContentValues();
 					values.put("status", status.getValue());
-					values.put("upload_date", sdf.format(new Date()));
+					values.put("upload_date", CommonUtil.getTime_C());
 					String whereClause = "file_name=?";
 					String[] whereArgs = { file.getFileName() };
 					int rows = db.update(DBHelper.TBL_UPLOAD, values,
@@ -367,14 +411,14 @@ public class DataManager {
 				LogUtil.d(TAG, "getUploadFile " + "用户数据不存在");
 				return null;
 			}
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					ConstantConfig.DATA_DATE_FORMAT);
+			// SimpleDateFormat sdf = new SimpleDateFormat(
+			// ConstantConfig.DATA_DATE_FORMAT);
 			List<UploadFile> files = new ArrayList<UploadFile>();
 			DBHelper dbHelper = DBHelper.getInstance();
 			SQLiteDatabase db = dbHelper.getReadableDatabase();
 			// 查询给定时间之后且数据未上传或者上传失败或者上传超时(默认时间2min)发生异常导致数据状态未回写的数据，抓取指定条数
 			int timeoutData = 2;
-			String sql = "select file_name,path,uploadtimes,data_begintime,data_endtime,upload_date,status,filetype  from "
+			String sql = "select file_name,path,uploadtimes,data_begintime,data_endtime,upload_date,status,filetype,bpath,hrs  from "
 					+ DBHelper.TBL_UPLOAD
 					+ " where creation_date>=? and (status=? or status=? or upload_date<?) and user_id=? "
 					+ (limit > 0 ? "limit ?" : "")
@@ -383,16 +427,17 @@ public class DataManager {
 			calendar.add(Calendar.MINUTE, -timeoutData);
 			String[] selectionArgs = null;
 			if (limit > 0) {
-				selectionArgs = new String[] { sdf.format(date),
+				selectionArgs = new String[] { CommonUtil.getTime_C(date),
 						UploadFileStatus.UnDeal.getValue() + "",
 						UploadFileStatus.UploadFailed.getValue() + "",
-						sdf.format(calendar.getTime()), user.getUserID(),
-						limit + "" };
+						CommonUtil.getTime_C(calendar.getTime()),
+						user.getUserID(), limit + "" };
 			} else {
-				selectionArgs = new String[] { sdf.format(date),
+				selectionArgs = new String[] { CommonUtil.getTime_C(date),
 						UploadFileStatus.UnDeal.getValue() + "",
 						UploadFileStatus.UploadFailed.getValue() + "",
-						sdf.format(calendar.getTime()), user.getUserID() };
+						CommonUtil.getTime_C(calendar.getTime()),
+						user.getUserID() };
 			}
 
 			UploadFile file = null;
@@ -411,13 +456,14 @@ public class DataManager {
 				file.setType(FileType.Default.getFileStatus(cursor
 						.getInt(cursor.getColumnIndex("filetype"))));
 
-				file.setDataBeginTime(sdf.parse(cursor.getString(cursor
-						.getColumnIndex("data_begintime"))));
-				file.setDataEndTime(sdf.parse(cursor.getString(cursor
-						.getColumnIndex("data_endtime"))));
-				file.setUploadDate(sdf.parse(cursor.getString(cursor
-						.getColumnIndex("upload_date"))));
-
+				file.setDataBeginTime(CommonUtil.parseDate_C(cursor
+						.getString(cursor.getColumnIndex("data_begintime"))));
+				file.setDataEndTime(CommonUtil.parseDate_C(cursor
+						.getString(cursor.getColumnIndex("data_endtime"))));
+				file.setUploadDate(CommonUtil.parseDate_C(cursor
+						.getString(cursor.getColumnIndex("upload_date"))));
+				file.setBpath(cursor.getString(cursor.getColumnIndex("bpath")));
+				file.setHrs(cursor.getString(cursor.getColumnIndex("hrs")));
 				files.add(file);
 			}
 			cursor.close();

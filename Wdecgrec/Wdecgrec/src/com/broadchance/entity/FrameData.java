@@ -2,11 +2,25 @@ package com.broadchance.entity;
 
 import java.util.Date;
 
+import org.json.JSONObject;
+
+import android.content.Intent;
+
+import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.utils.BleDataUtil;
+import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
+import com.broadchance.wdecgrec.alert.AlertMachine;
+import com.broadchance.wdecgrec.alert.AlertType;
 
+/**
+ * ble一帧的数据
+ * 
+ * @author ryan.wang
+ * 
+ */
 public class FrameData {
 	private final static String TAG = FrameData.class.getSimpleName();
 	private byte[] frameData;
@@ -90,6 +104,14 @@ public class FrameData {
 		}
 	}
 
+	public short[] getBreathPoints() throws Exception {
+		if (isParsedData) {
+			return BleDataUtil.getBreathData(frameData);
+		} else {
+			throw new Exception("请先调用parseData");
+		}
+	}
+
 	/**
 	 * 将数据置0，保留帧类型
 	 */
@@ -99,6 +121,11 @@ public class FrameData {
 		}
 	}
 
+	/**
+	 * 上一次MII通道是否发生脱落
+	 */
+	private boolean lastMIIOff = false;
+
 	public void parseData() {
 		try {
 			// int frameHead = BleDataUtil.byteToInt(frameData[0]);
@@ -106,10 +133,34 @@ public class FrameData {
 			String frameTypeHex = String.format("%02X ", frameData[0])
 					.toUpperCase().trim();
 			String action = "";
+			// Intent intent = null;
 			boolean isECG = true;
 			if (frameTypeHex.startsWith("8")) {// 第一通道帧类型0x8x
 				frameType = FrameType.MII;
 				action = FrameDataMachine.ACTION_ECGMII_DATAOFF_AVAILABLE;
+				if (frameTypeHex.endsWith("0") && lastMIIOff) {
+					// 取消脱落
+					lastMIIOff = false;
+					AlertMachine.getInstance().cancelAlert(AlertType.A00001);
+					// UIUtil.sendBroadcast(new Intent(
+					// FrameDataMachine.ACTION_ECGMII_DATAON_AVAILABLE));
+				} else {
+					// 发生脱落
+					lastMIIOff = true;
+					UIUserInfoLogin user = DataManager.getUserInfo();
+					if (user == null)
+						return;
+					JSONObject alertObj = new JSONObject();
+					alertObj.put("id", AlertType.A00001.getValue());
+					alertObj.put("state", 1);
+					alertObj.put("time", CommonUtil.getTime_B());
+					JSONObject value = new JSONObject();
+					value.put("bledevice", user.getMacAddress());
+					value.put("ch", "all");
+					alertObj.put("value", value);
+					AlertMachine.getInstance().sendAlert(AlertType.A00001,
+							alertObj);
+				}
 			} else if (frameTypeHex.startsWith("9")) {// 第二通道帧类型0x9x
 				frameType = FrameType.MV1;
 				action = FrameDataMachine.ACTION_ECGMV1_DATAOFF_AVAILABLE;
@@ -129,7 +180,7 @@ public class FrameData {
 				seq = BleDataUtil.byteToInt(frameData[1]);
 				if (!frameTypeHex.endsWith("0")) {// 电极脱落/数据发生错误置为0
 					resetData();
-					UIUtil.sendBroadcast(action);
+					UIUtil.sendBroadcast(new Intent(action));
 				}
 			}
 

@@ -58,7 +58,7 @@
             android:layout_toRightOf="@+id/ecg_curspeed"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="10mm/mv 25mm/s"
+            android:text="10mm/mV 25mm/s"
             android:textColor="@color/light_green"
             android:textSize="13sp" />
 
@@ -106,10 +106,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#38a204"
+                    wdecgrec:ecglinecolor="#009900"
                     wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#16260c"
-                    wdecgrec:gridlightcolor="#0b1008"
+                    wdecgrec:griddarkcolor="#005200"
+                    wdecgrec:gridlightcolor="#002600"
                     wdecgrec:leftrightmargin="20dp" />
 
                 <TextView
@@ -130,17 +130,18 @@
                 android:paddingBottom="4dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="4dp" >
+                android:paddingTop="4dp"
+                android:visibility="gone" >
 
                 <com.broadchance.ecgview.ECGGLSurfaceView
                     android:id="@+id/ecgGLSurfaceViewChannelMV1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#38a204"
+                    wdecgrec:ecglinecolor="#009900"
                     wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#16260c"
-                    wdecgrec:gridlightcolor="#0b1008"
+                    wdecgrec:griddarkcolor="#005200"
+                    wdecgrec:gridlightcolor="#002600"
                     wdecgrec:leftrightmargin="20dp" />
 
                 <TextView
@@ -161,17 +162,18 @@
                 android:paddingBottom="4dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="4dp" >
+                android:paddingTop="4dp"
+                android:visibility="gone" >
 
                 <com.broadchance.ecgview.ECGGLSurfaceView
                     android:id="@+id/ecgGLSurfaceViewChannelMV5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#38a204"
+                    wdecgrec:ecglinecolor="#009900"
                     wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#16260c"
-                    wdecgrec:gridlightcolor="#0b1008"
+                    wdecgrec:griddarkcolor="#005200"
+                    wdecgrec:gridlightcolor="#002600"
                     wdecgrec:leftrightmargin="20dp" />
 
                 <TextView
@@ -225,7 +227,7 @@
                         android:background="@drawable/ecg_radio_selector"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="5mm/mv\n12.5mm/s"
+                        android:text="5mm/mV\n12.5mm/s"
                         android:textColor="@drawable/ecg_radiotextcolor_selector"
                         android:textSize="15sp" />
 
@@ -240,7 +242,7 @@
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="10mm/mv\n25mm/s"
+                        android:text="10mm/mV\n25mm/s"
                         android:textColor="@drawable/ecg_radiotextcolor_selector"
                         android:textSize="15sp" />
 
@@ -254,7 +256,7 @@
                         android:background="@drawable/ecg_radio_selector"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="20mm/mv\n50mm/s"
+                        android:text="20mm/mV\n50mm/s"
                         android:textColor="@drawable/ecg_radiotextcolor_selector"
                         android:textSize="15sp" />
                 </RadioGroup>
@@ -374,11 +376,12 @@
                     android:layout_width="298dp"
                     android:layout_height="80dp"
                     android:button="@drawable/ecg_chk_selector"
-                    android:checked="true"
+                    android:checked="false"
+                    android:enabled="false"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     android:singleLine="true"
-                    android:text="@string/ecg_threechannels"
+                    android:text="@string/ecg_onechannel"
                     android:textColor="@android:color/white"
                     android:textSize="40sp" />
             </LinearLayout>

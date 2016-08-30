@@ -7,6 +7,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -16,6 +19,7 @@ import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFileResponse;
 import com.broadchance.entity.UploadWay;
 import com.broadchance.entity.serverentity.Const;
+import com.broadchance.entity.serverentity.ServerResponse;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.PreferencesManager;
 import com.broadchance.wdecgrec.HttpReqCallBack;
@@ -26,6 +30,214 @@ import com.broadchance.wdecgrec.HttpReqCallBack;
  */
 public class ClientGameService {
 	private static final String TAG = ClientGameService.class.getSimpleName();
+
+	private ClientGameService() {
+	}
+
+	private static ClientGameService _Instance;
+
+	public static ClientGameService getInstance() {
+		if (_Instance == null)
+			_Instance = new ClientGameService();
+		return _Instance;
+	}
+
+	/**********************/
+	/**
+	 * 获取动态验证码
+	 * 
+	 * @param param
+	 * @param backCall
+	 */
+	public void getKey(JSONObject param,
+			HttpReqCallBack<ServerResponse> backCall) {
+		String indata = param.toString();
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("action", "get_key");
+		reparams.put("indata", indata);
+		// reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		HttpAsyncTaskUtil.fetchData(reparams, backCall);
+	}
+
+	/**
+	 * 登录
+	 * 
+	 * @param param
+	 * @param backCall
+	 */
+	public void login(JSONObject param, HttpReqCallBack<ServerResponse> backCall) {
+		String indata = param.toString();
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("action", "login");
+		reparams.put("indata", indata);
+		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		HttpAsyncTaskUtil.fetchData(reparams, backCall);
+	}
+
+	public void getAlertCFG(HttpReqCallBack<ServerResponse> backCall) {
+		try {
+			JSONObject param = new JSONObject();
+			UIUserInfoLogin user = DataManager.getUserInfo();
+			param.put("holtermobile", user.getLoginName());
+			param.put("holter_id", ConstantConfig.ORDERNO);
+			param.put("device", ConstantConfig.ORDERNO);
+			String indata = param.toString();
+			Map<String, Object> reparams = new HashMap<String, Object>();
+			reparams.put("action", "login");
+			reparams.put("indata", indata);
+			reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+			HttpAsyncTaskUtil.fetchData(reparams, backCall);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 发送报警信息
+	 * 
+	 * @param param
+	 * @param backCall
+	 */
+	public void sendAlert(JSONObject param,
+			HttpReqCallBack<ServerResponse> backCall) {
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		try {
+			param.put("mobile", user.getLoginName());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		String indata = param.toString();
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("action", "send_alert");
+		reparams.put("indata", indata);
+		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		HttpAsyncTaskUtil.fetchData(reparams, backCall);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void uploadRealBleFile(JSONObject param,
+			final HttpReqCallBack<UploadFileResponse> backCall) {
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		try {
+			param.put("mobile", user.getLoginName());
+			param.put("device", user.getMacAddress());
+			param.put("orderno", ConstantConfig.ORDERNO);
+			param.put("filetype", "1");
+			// ecgFile
+			// breathFile
+			// param.put("starttime", "");
+			// param.put("endtime", "");
+			// param.put("hrs", "");
+			// param.put("fileinfo", "");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		String indata = param.toString();
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("action", "send_data");
+		reparams.put("indata", indata);
+		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
+			// HttpReqCallBack<UploadFileResponse> backCall;
+
+			@Override
+			protected UploadFileResponse doInBackground(
+					Map<String, Object>... params) {
+				Map<String, Object> paramsIn = params[0];
+				// backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
+				// .get("backCall");
+				// String url = "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";
+				// url = ConstantConfig.SERVER_URL;
+				// url = "http://192.168.1.109:56285/api/Data/AddRemote_Data";
+				return HttpUtil.uploadRealBleFile(ConstantConfig.SERVER_URL,
+						paramsIn);
+			}
+
+			@Override
+			protected void onPostExecute(UploadFileResponse result) {
+				if (result.isOk()) {
+					backCall.doSuccess(result);
+				} else {
+					backCall.doError(result.getData());
+				}
+			}
+
+			@Override
+			protected void onProgressUpdate(Integer... values) {
+
+			}
+
+		}.execute(reparams);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void uploadBleFile(JSONObject param,
+			final HttpReqCallBack<UploadFileResponse> backCall) {
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		try {
+			param.put("mobile", user.getLoginName());
+			param.put("device", user.getMacAddress());
+			param.put("orderno", ConstantConfig.ORDERNO);
+			param.put("filetype", "2");
+			// zipFile
+			// param.put("starttime", "");
+			// param.put("endtime", "");
+			// param.put("hrs", "");
+			// param.put("fileinfo", "");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		File zipFile = null;
+		try {
+			zipFile = new File(param.getString("zipFile"));
+			if (!zipFile.exists()) {
+				return;
+			}
+			param.remove("zipFile");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		String indata = param.toString();
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("action", "send_data");
+		reparams.put("indata", indata);
+		reparams.put("zipFile", zipFile);
+
+		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
+			// HttpReqCallBack<UploadFileResponse> backCall;
+
+			@Override
+			protected UploadFileResponse doInBackground(
+					Map<String, Object>... params) {
+				Map<String, Object> paramsIn = params[0];
+				// backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
+				// .get("backCall");
+				// String url = "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";
+				// url = ConstantConfig.SERVER_URL;
+				// url = "http://192.168.1.109:56285/api/Data/AddRemote_Data";
+				return HttpUtil.uploadBleFile(ConstantConfig.SERVER_URL,
+						paramsIn);
+			}
+
+			@Override
+			protected void onPostExecute(UploadFileResponse result) {
+				if (result.isOk()) {
+					backCall.doSuccess(result);
+				} else {
+					backCall.doError(result.getData());
+				}
+			}
+
+			@Override
+			protected void onProgressUpdate(Integer... values) {
+
+			}
+
+		}.execute(reparams);
+	}
+
+	/***********************/
 
 	public void loginServer(String loginName, String password,
 			HttpReqCallBack<UIUserInfoLogin> backCall) {

@@ -31,11 +31,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="com.android.toolchain.gcc.1164016186.942287822" name="/" resourcePath="jni/hrate_lib">
-						<toolChain id="com.android.toolchain.gcc.1270318059" name="com.android.toolchain.gcc" superClass="com.android.toolchain.gcc" unusedChildren="">
-							<tool id="com.android.gcc.compiler.1249395054" name="Android GCC Compiler" superClass="com.android.gcc.compiler.1512663623"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="jni"/>
 					</sourceEntries>

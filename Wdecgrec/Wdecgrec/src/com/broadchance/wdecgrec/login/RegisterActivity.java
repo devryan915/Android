@@ -138,7 +138,7 @@ public class RegisterActivity extends BaseActivity {
 			return;
 		} else if (pwd.length() != 8) {
 			editTextPwd.requestFocusFromTouch();
-			showToast("密码必须为8为数字");
+			showToast("密码必须为8位数字");
 			return;
 		}
 		String rePwd = editTextConfirmPwd.getText().toString();
@@ -198,6 +198,8 @@ public class RegisterActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});
@@ -279,6 +281,8 @@ public class RegisterActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});

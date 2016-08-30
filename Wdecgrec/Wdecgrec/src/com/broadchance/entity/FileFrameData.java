@@ -26,4 +26,6 @@ public class FileFrameData {
 	 * 蓝牙收到的时间
 	 */
 	public Date date;
+	public static int pointsLength = 1;
+	public static int pointBytesLength = pointsLength * 2;
 }

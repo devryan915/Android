@@ -1,5 +1,6 @@
 package com.broadchance.utils;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -42,15 +46,17 @@ import android.net.ParseException;
 import android.os.Handler;
 import android.os.Message;
 
+import com.alibaba.fastjson.JSON;
 import com.broadchance.entity.DownLoadAPPResponse;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFileResponse;
+import com.broadchance.entity.serverentity.ServerResponse;
 import com.broadchance.entity.serverentity.StringResponse;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.SettingsManager;
 
 public class HttpUtil {
-	private final static String TAG = "HttpUtil";
+	private final static String TAG = HttpUtil.class.getSimpleName();
 
 	public static DownLoadAPPResponse downloadFile(String url,
 			Map<String, Object> reparams) {
@@ -135,6 +141,12 @@ public class HttpUtil {
 			Iterator<Entry<String, Object>> it = reparams.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, Object> entry = it.next();
+				if (ConstantConfig.Debug) {
+					LogUtil.d(
+							TAG,
+							entry.getKey() + ":"
+									+ String.valueOf(entry.getValue()));
+				}
 				params.add(new BasicNameValuePair(entry.getKey(), String
 						.valueOf(entry.getValue())));
 			}
@@ -151,14 +163,16 @@ public class HttpUtil {
 						HTTP.UTF_8);
 				errorMsg = "请求失败" + " url:" + url + "\r\n" + "StatusCode:"
 						+ statusCode + "\t" + resStr;
-				if (statusCode == 400) {
-					JSONObject jsonObject = new JSONObject(resStr);
-					errorMsg = jsonObject.getString("error_description");
-				} else if (statusCode == 401) {
-					JSONObject jsonObject = new JSONObject(resStr);
-					// jsonObject = jsonObject.getJSONObject("Error");
-					errorMsg = jsonObject.getString("Message");
-				}
+				// if (statusCode == 400) {
+				// strResponse.setCode("400");
+				// JSONObject jsonObject = new JSONObject(resStr);
+				// errorMsg = jsonObject.getString("error_description");
+				// } else if (statusCode == 401) {
+				// strResponse.setCode("401");
+				// JSONObject jsonObject = new JSONObject(resStr);
+				// // jsonObject = jsonObject.getJSONObject("Error");
+				// errorMsg = jsonObject.getString("Message");
+				// }
 				strResponse.setData(errorMsg);
 			}
 		} catch (Exception e) {
@@ -236,6 +250,192 @@ public class HttpUtil {
 		return strResult;
 	}
 
+	/**
+	 * 上传实时数据
+	 * 
+	 * @param url
+	 * @param reparams
+	 * @return
+	 */
+	public static UploadFileResponse uploadRealBleFile(String url,
+			Map<String, Object> reparams) {
+		UploadFileResponse response = new UploadFileResponse();
+		response.setCode(response.FAILED);
+		/**
+		 * 是否开启所有网络上传
+		 */
+		boolean netType = SettingsManager.getInstance().getSettingsNetType();
+		// 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
+		if (!netType && !NetUtil.isWifi()) {
+			response.setData("当前网络为移动网络，停止上传");
+			return response;
+		}
+		try {
+			String strResult = null;
+			// File ecgFile = (File) reparams.get("ecgFile");
+			// File breathFile = (File) reparams.get("breathFile");
+			// if (!ecgFile.exists() || !breathFile.exists()) {
+			// response.setData("上传文件不存在:" + ecgFile.getAbsolutePath() + " "
+			// + breathFile.getAbsolutePath());
+			// return response;
+			// }
+			String indata = (String) reparams.get("indata");
+			String action = (String) reparams.get("action");
+			String verify = (String) reparams.get("verify");
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "action:" + action);
+				LogUtil.d(TAG, "indata:" + indata);
+				LogUtil.d(TAG, "verify:" + verify);
+			}
+			HttpPost post = new HttpPost(url);
+			// post.addHeader("Authorization", "Bearer "
+			// + ConstantConfig.AUTHOR_TOKEN);
+			// post.addHeader("Token", ConstantConfig.AUTHOR_TOKEN);
+			// List<NameValuePair> params = new ArrayList<NameValuePair>();
+			// params.add(new BasicNameValuePair("desDataJson", desDataJson));
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			// InputStream ecgin = new FileInputStream(ecgFile);
+			// builder.addPart("ecgFile",
+			// new InputStreamBody(ecgin, ecgFile.getName()));
+			// InputStream breathin = new FileInputStream(breathFile);
+			// builder.addPart("breathFile", new InputStreamBody(breathin,
+			// breathFile.getName()));
+			ContentBody contentBody = new StringBody(indata);
+			builder.addPart("indata", contentBody);
+			contentBody = new StringBody(action);
+			builder.addPart("action", contentBody);
+			contentBody = new StringBody(verify + "");
+			builder.addPart("verify", contentBody);
+			// builder.addTextBody("desDataJson", desDataJson);
+			// builder.addTextBody("userID", userID);
+			post.setEntity(builder.build());
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse res = client.execute(post);
+			// ecgin.close();
+			// breathin.close();
+			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				strResult = EntityUtils.toString(res.getEntity(), "UTF-8");
+				if (strResult != null) {
+					ServerResponse entityData = JSON.parseObject(strResult,
+							ServerResponse.class);
+					if (entityData.isOK()) {
+						response.setCode(response.OK);
+					} else {
+						response.setData(entityData.getErrmsg());
+					}
+					return response;
+				}
+			}
+			int statusCode = res.getStatusLine().getStatusCode();
+			String restr = EntityUtils.toString(res.getEntity(), "UTF-8");
+			response.setData("上传文件服务端返回statusCode：" + statusCode + " " + restr);
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "uploadFile strResult:" + statusCode + "**"
+						+ restr);
+			}
+		} catch (ClientProtocolException e) {
+			response.setData("上传文件失败：" + e.toString());
+		} catch (ParseException e) {
+			// e.printStackTrace();
+			response.setData("上传文件失败：" + e.toString());
+		} catch (IOException e) {
+			response.setData("上传文件失败：" + e.toString());
+		}
+		return response;
+	}
+
+	/**
+	 * 上传心电滤波数据
+	 * 
+	 * @param url
+	 * @param reparams
+	 * @return
+	 */
+	public static UploadFileResponse uploadBleFile(String url,
+			Map<String, Object> reparams) {
+		UploadFileResponse response = new UploadFileResponse();
+		response.setCode(response.FAILED);
+		/**
+		 * 是否开启所有网络上传
+		 */
+		boolean netType = SettingsManager.getInstance().getSettingsNetType();
+		// 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
+		if (!netType && !NetUtil.isWifi()) {
+			response.setData("当前网络为移动网络，停止上传");
+			return response;
+		}
+		try {
+			String strResult = null;
+			File zipFile = (File) reparams.get("zipFile");
+			if (!zipFile.exists()) {
+				response.setData("上传文件不存在:" + zipFile.getAbsolutePath());
+				return response;
+			}
+			String indata = (String) reparams.get("indata");
+			String action = (String) reparams.get("action");
+			String verify = (String) reparams.get("verify");
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "action:" + action);
+				LogUtil.d(TAG, "indata:" + indata);
+				LogUtil.d(TAG, "verify:" + verify);
+				LogUtil.d(
+						TAG,
+						"zipFile:" + zipFile.length() + " "
+								+ zipFile.getAbsolutePath());
+			}
+			HttpPost post = new HttpPost(url);
+			// post.addHeader("Authorization", "Bearer "
+			// + ConstantConfig.AUTHOR_TOKEN);
+			// post.addHeader("Token", ConstantConfig.AUTHOR_TOKEN);
+			// List<NameValuePair> params = new ArrayList<NameValuePair>();
+			// params.add(new BasicNameValuePair("desDataJson", desDataJson));
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			InputStream zipin = new FileInputStream(zipFile);
+			builder.addPart("zipFile",
+					new InputStreamBody(zipin, zipFile.getName()));
+			ContentBody contentBody = new StringBody(indata);
+			builder.addPart("indata", contentBody);
+			contentBody = new StringBody(action);
+			builder.addPart("action", contentBody);
+			contentBody = new StringBody(verify + "");
+			builder.addPart("verify", contentBody);
+			// builder.addTextBody("desDataJson", desDataJson);
+			// builder.addTextBody("userID", userID);
+			post.setEntity(builder.build());
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse res = client.execute(post);
+			zipin.close();
+			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				strResult = EntityUtils.toString(res.getEntity(), "UTF-8");
+				if (strResult != null) {
+					ServerResponse entityData = JSON.parseObject(strResult,
+							ServerResponse.class);
+					if (entityData.isOK()) {
+						response.setCode(response.OK);
+					} else {
+						response.setData(entityData.getErrmsg());
+					}
+					return response;
+				}
+			}
+			int statusCode = res.getStatusLine().getStatusCode();
+			String restr = EntityUtils.toString(res.getEntity(), "UTF-8");
+			response.setData("上传文件服务端返回statusCode：" + statusCode + " " + restr);
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "uploadFile strResult:" + statusCode + "**"
+						+ restr);
+			}
+		} catch (ClientProtocolException e) {
+			response.setData("上传文件失败：" + e.toString());
+		} catch (ParseException e) {
+			// e.printStackTrace();
+			response.setData("上传文件失败：" + e.toString());
+		} catch (IOException e) {
+			response.setData("上传文件失败：" + e.toString());
+		}
+		return response;
+	}
+
 	public static UploadFileResponse uploadRealTimeFile(String url, int port,
 			Map<String, Object> reparams) {
 		UploadFileResponse response = new UploadFileResponse();
@@ -274,9 +474,9 @@ public class HttpUtil {
 			outputStream.write("NOW".getBytes("US-ASCII"));
 			outputStream.write(user.getUserID().length());
 			outputStream.write(user.getUserID().getBytes("US-ASCII"));
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss.SSS");
-			String dateStr = sdf.format(new java.util.Date());
+			// SimpleDateFormat sdf = new SimpleDateFormat(
+			// "yyyy-MM-dd HH:mm:ss.SSS");
+			String dateStr = CommonUtil.getTime_D();
 			outputStream.write(dateStr.length());
 			outputStream.write(dateStr.getBytes("US-ASCII"));
 			// 服务端是C#使用小端字节
@@ -404,13 +604,16 @@ public class HttpUtil {
 			response.setData("上传文件失败：" + e.toString());
 		}
 		return response;
-
-		// String end = "\r\n";
+		// // 回车(CR, ASCII 13, \r) 换行(LF, ASCII 10, \n)
+		// String clrf = "\r\n";
 		// String twoHyphens = "--";
+		// // 每个参数的边界，可是任意字符串，通常为比较复杂稍长有区别于提交数据
 		// String boundary = "******";
 		// try {
-		// URL url = new URL(uploadUrl);
-		// HttpURLConnection httpURLConnection = (HttpURLConnection) url
+		// File uploadFile = new File("");
+		// URL reqURL = new URL(
+		// "http://192.168.1.202:8001/api/Data/AddRemote_Data");
+		// HttpURLConnection httpURLConnection = (HttpURLConnection) reqURL
 		// .openConnection();// http连接
 		// // 设置每次传输的流大小，可以有效防止手机因为内存不足崩溃
 		// // 此方法用于在预先不知道内容长度时启用没有进行内部缓冲的 HTTP 请求正文的流。
@@ -421,22 +624,77 @@ public class HttpUtil {
 		// httpURLConnection.setUseCaches(false);
 		// // 使用POST方法
 		// httpURLConnection.setRequestMethod("POST");
-		// httpURLConnection.setRequestProperty("Connection", "Keep-Alive");//
-		// 保持一直连接
-		// httpURLConnection.setRequestProperty("Charset", "UTF-8");// 编码
+		// // 保持一直连接
+		// httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+		// // POST传递过去的编码
+		// httpURLConnection.setRequestProperty("Charset", "UTF-8");
+		// //
+		// 设置Content-Type:application/x-www-form-urlencoded代表请求包体以name/keyvalue,比如brand=Huawei&model=HUAWEI+C8816D
+		// // 如果请求头的Content-Type:multipart/form-data，则必须在请求头中指定每个参数的分界线
+		// // 而请求包体：以CLRF--boundaryCLRFContent-Disposition:...，比如：
+		// // 589
+		// // --JVE57qMo_GpJtoMGpSsM9uxX6yqsfkRom2amkgTy
+		// // Content-Disposition: form-data;
+		// // name="file";filename="uploadData.zip"
+		// // Content-Type: application/octet-stream
+		// // Content-Transfer-Encoding: binary
+		// //
+		// // PK��
+		// // B�H���������������20160513165833231+0800.dat��A
+		// //
+		// �0��;J�G8�[5)8�bi�@�k&����к��<*k�'y���{�W���������������������������������������������PK��sa���)���PK��
+		// // B�H���������������20160513165733916+0800.dat��A
+		// //
+		// �0��;J`���#,�<�L��ͺ�к��<*k��#y��8������������������������������������������������PK3n`�������PK��
+		// // B�H���������������20160513165633160+0800.dat��A
+		// //
+		// �0��;J�G�@�����E^3ɾ7�%���T�QY�h?���G����������������������������������������������OPK��Wb���%���PK��
+		// // B�H���������������20160513165533447+0800.dat��A
+		// // �0��;J.Q�!��di���$�ެK
+		// //
+		// �˩̣���>�׻�c�{�������������������������������������������z�PK��U`�������PK��
+		// // B�H���������������20160513165433317+0800.dat���
+		// //
+		// @@E����VG�ЋhJ�(B,�I��ֶd菚�<jk���:�}��j���������������������������������������������PK&�g�_�������PK���
+		// //
+		// B�H��sa���)��������������������20160513165833231+0800.datPK���
+		// //
+		// B�H3n`������������������������20160513165733916+0800.datPK���
+		// //
+		// B�H��Wb���%����������������Q��20160513165633160+0800.datPK���
+		// //
+		// B�H��U`�����������������������20160513165533447+0800.datPK���
+		// //
+		// B�H&�g�_�����������������������20160513165433317+0800.datPK������h��J����
+		// // 459
+		// //
+		// // --JVE57qMo_GpJtoMGpSsM9uxX6yqsfkRom2amkgTy
+		// // Content-Disposition: form-data; name="desDataJson"
+		// // Content-Type: text/plain; charset=US-ASCII
+		// // Content-Transfer-Encoding: 8bit
+		// //
+		// //
+		// [{"beginDT":"2016-05-13 16:57:33.771","deviceID":"74:DA:EA:9F:A4:8C","endDT":"2016-05-13 16:58:31.498","fileName":"20160513165833231+0800.dat","userID":"2866a41d0f4c4d55803a7505bea1d00e"},{"beginDT":"2016-05-13 16:56:34.609","deviceID":"74:DA:EA:9F:A4:8C","endDT":"2016-05-13 16:57:33.718","fileName":"20160513165733916+0800.dat","userID":"2866a41d0f4c4d55803a7505bea1d00e"},{"beginDT":"2016-05-13 16:55:33.214","deviceID":"74:DA:EA:9F:A4:8C","endDT":"2016-05-13 16:56:32.196","fileName":"20160513165633160+0800.dat","userID":"2866a41d0f4c4d55803a7505bea1d00e"},{"beginDT":"2016-05-13 16:54:35.308","deviceID":"74:DA:EA:9F:A4:8C","endDT":"2016-05-13 16:55:33.213","fileName":"20160513165533447+0800.dat","userID":"2866a41d0f4c4d55803a7505bea1d00e"},{"beginDT":"2016-05-13 16:53:33.724","deviceID":"74:DA:EA:9F:A4:8C","endDT":"2016-05-13 16:54:32.935","fileName":"20160513165433317+0800.dat","userID":"2866a41d0f4c4d55803a7505bea1d00e"}]
+		// // cc
+		//
 		// httpURLConnection.setRequestProperty("Content-Type",
-		// "multipart/form-data;boundary=" + boundary);// POST传递过去的编码
+		// "multipart/form-data;boundary=" + boundary);
 		//
 		// DataOutputStream dos = new DataOutputStream(
 		// httpURLConnection.getOutputStream());// 输出流
-		// dos.writeBytes(twoHyphens + boundary + end);
-		// dos.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\""
+		//
+		// // 定义第一个表单数据，为文件
+		// dos.writeBytes(clrf + twoHyphens + boundary + clrf);
+		// dos.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\""
 		// + uploadFile.getName().substring(
 		// uploadFile.getName().lastIndexOf("/") + 1)
 		// + "\""
-		// + end);
-		// dos.writeBytes(end);
-		//
+		// + clrf);
+		// dos.writeBytes("Content-Type: application/octet-stream" + clrf);
+		// dos.writeBytes("Content-Transfer-Encoding: binary" + clrf);
+		// // 空一行，结束数据头定义
+		// dos.writeBytes(clrf);
+		// // 写入数据内容
 		// FileInputStream fis = new FileInputStream(uploadFile);// 文件输入流，写入到内存中
 		// byte[] buffer = new byte[8192]; // 8k
 		// int count = 0;
@@ -445,13 +703,30 @@ public class HttpUtil {
 		// dos.write(buffer, 0, count);
 		// }
 		// fis.close();
+		// // 第一个表单数据写入完毕
+		// dos.writeBytes(clrf);
+		// dos.flush();
 		//
-		// dos.writeBytes(end);
-		// dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
+		// // 第二个表单数据，为text，name=desDataJson，是一个json数组
+		// dos.writeBytes(clrf + twoHyphens + boundary + clrf);
+		// dos.writeBytes("Content-Disposition: form-data; name=\"desDataJson\""
+		// + clrf);
+		// dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + clrf);
+		// dos.writeBytes("Content-Transfer-Encoding: 8bit" + clrf);
+		// // 空一行，结束数据头定义
+		// dos.writeBytes(clrf);
+		// // 写入数据内容
+		// dos.writeBytes("[{\"beginDT\":\"2016-05-13 16:57:33.771\",\"deviceID\":\"74:DA:EA:9F:A4:8C\"},{\"beginDT\":\"2016-05-13 16:56:34.609\",\"deviceID\":\"74:DA:EA:9F:A4:8C\"}]");
+		// // 结束表单数据写入
+		// dos.writeBytes(clrf);
+		// dos.flush();
+		//
+		// // 结束整个表单数据定义
+		// dos.writeBytes(twoHyphens + boundary + twoHyphens + clrf);
 		// dos.flush();
 		//
 		// InputStream is = httpURLConnection.getInputStream();//
-		// http输入，即得到返回的结果
+		// // http输入，即得到返回的结果
 		// InputStreamReader isr = new InputStreamReader(is, "utf-8");
 		// BufferedReader br = new BufferedReader(isr);
 		// String result = br.readLine();

@@ -120,6 +120,8 @@ public class AddFamilyActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});
@@ -226,6 +228,8 @@ public class AddFamilyActivity extends BaseActivity {
 						public void doError(String result) {
 							if (ConstantConfig.Debug) {
 								showToast(result);
+							} else {
+								showToast("操作失败");
 							}
 						}
 					});
@@ -256,6 +260,8 @@ public class AddFamilyActivity extends BaseActivity {
 						public void doError(String result) {
 							if (ConstantConfig.Debug) {
 								showToast(result);
+							} else {
+								showToast("操作失败");
 							}
 						}
 					});

@@ -24,17 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" >
         </ListView>
-        <!--
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/common_btnbg_green"
-            android:text="@string/dialog_confirm"
-            android:textColor="@android:color/white"
-            android:textSize="17sp" />
-        -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,25 +34,25 @@
             android:paddingRight="10dp" >
 
             <Button
-                android:id="@+id/buttonReScan"
+                android:id="@+id/buttonSave"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/dialot_btnbg_grey"
-                android:text="@string/dialog_button_rescan"
-                android:textColor="@android:color/black"
+                android:background="@drawable/common_btnbg_green"
+                android:text="@string/dialog_button_confirm"
+                android:textColor="@android:color/white"
                 android:textSize="17sp" />
 
             <Button
-                android:id="@+id/buttonSave"
+                android:id="@+id/buttonReScan"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/common_btnbg_green"
-                android:text="@string/dialog_button_confirm"
-                android:textColor="@android:color/white"
+                android:background="@drawable/dialot_btnbg_grey"
+                android:text="@string/dialog_button_rescan"
+                android:textColor="@android:color/black"
                 android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>

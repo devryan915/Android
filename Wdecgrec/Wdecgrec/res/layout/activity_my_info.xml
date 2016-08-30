@@ -259,6 +259,7 @@
                     android:gravity="center_vertical|right"
                     android:hint="@string/myinfo_yourheighthint"
                     android:inputType="numberDecimal"
+                    android:maxLength="5"
                     android:paddingRight="5dp"
                     android:text=""
                     android:textColor="@color/myinfo_textviewcolor"
@@ -363,7 +364,9 @@
                     android:id="@+id/myinfoMobilePhone"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/myinfoMobileN"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/myinfo_marginright"
                     android:background="@null"
                     android:gravity="center_vertical|right"
                     android:hint="@string/myinfo_mobilephonehint"
@@ -375,15 +378,6 @@
                     android:textColorHint="@color/myinfo_textviewcolor"
                     android:textSize="20sp" >
                 </EditText>
-
-                <ImageView
-                    android:id="@+id/myinfoMobileN"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/myinfo_marginright"
-                    android:background="@drawable/settings_nsbtn_nor" />
 
                 <View
                     android:layout_width="match_parent"

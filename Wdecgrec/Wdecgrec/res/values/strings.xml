@@ -54,7 +54,7 @@
     <string name="mode_waiting_new">此功能正在开发，敬请期待</string>
     <!-- 心电主页 -->
     <string name="ecg_curspeed">当前速度：</string>
-    <string name="ecg_channel1">MII</string>
+    <string name="ecg_channel1">MⅡ</string>
     <string name="ecg_channel2">MV1</string>
     <string name="ecg_channel3">MV5</string>
     <string name="ecg_curspeedadjust">当前速度调整</string>
@@ -72,6 +72,7 @@
     <string name="settings_settingsdevinfo">选项设置与设备信息</string>
     <string name="settings_changeskin">换肤</string>
     <string name="settings_appupdate">系统更新</string>
+    <string name="settings_bindeddev">解除绑定设备</string>
     <!-- 定义对话框 -->
     <string name="dialog_title_changeskin">换肤</string>
     <string name="dialog_title_appupdate">系统更新	</string>
@@ -94,6 +95,15 @@
     <string name="dialog_devicepwd">设备密码</string>
     <string name="dialog_title_replacedevice">替换设备</string>
     <string name="dialog_cofirmreplacedevice">确定替换原设备？</string>
+    <string name="dialog_title_unbinddev">解除绑定</string>
+    <string name="dialog_unbinddev_token">验证码：</string>
+    <string name="dialog_unbinddev_hint">请输入短信验证码</string>
+    <string name="dialog_tips_confirmunbind">确定解除绑定？</string>
+    <string name="dialog_unbinddev_tip">是否解除绑定？</string>
+    <string name="dialog_title_devcheck">校验设备</string>
+    <string name="dialog_devcheck_token">验证码：</string>
+    <string name="dialog_devcheck_hint">请输入设备验证码</string>
+    <string name="dialog_button_ok">确定</string>
     <string name="dialog_button_cancel">取消</string>
     <string name="dialog_devicepwd_hint">请输入密码</string>
     <string name="dialog_button_replace">替换</string>
@@ -105,6 +115,8 @@
     <string name="dialog_onekeyupload_forwait">，请稍候</string>
     <string name="dialog_title_choosecontact">请选择号码</string>
     <string name="dialog_button_add">添加</string>
+    <string name="dialog_title_offlogin">离线登录</string>
+    <string name="dialog_offlogin_content">是否确认离线登录？</string>
     <!-- 设置-我的信息 -->
     <string name="myinfo_head">我的信息</string>
     <string name="myinfo_head_attetion">（注：</string>
@@ -116,6 +128,7 @@
     <string name="myinfo_height">身高</string>
     <string name="myinfo_weight">体重</string>
     <string name="myinfo_mobilephone">验证手机</string>
+    <string name="myinfo_bindeddev_hint">尚未绑定设备</string>
     <string name="myinfo_address">家庭住址</string>
     <string name="myinfo_zipcode">邮编</string>
     <string name="myinfo_memo">备注事项</string>

@@ -42,6 +42,8 @@ import com.broadchance.entity.serverentity.UIPixelResponse;
 import com.broadchance.entity.serverentity.UpLoadData;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.SettingsManager;
+import com.broadchance.utils.AESEncryptor;
+import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FileUtil;
@@ -94,7 +96,7 @@ public class ModeActivity extends BaseActivity {
 
 	private static final int REQUEST_ENABLE_BT = 189;
 	// Stops scanning after 10 seconds.
-	private static final long SCAN_PERIOD = 30000;
+	private static final long SCAN_PERIOD = 10000;
 	/**
 	 * 蓝牙扫描对话框
 	 */
@@ -106,11 +108,11 @@ public class ModeActivity extends BaseActivity {
 	/**
 	 * 用新设备替换原设备对话框
 	 */
-	Dialog replaceDevDialog;
+	// Dialog replaceDevDialog;
 	/**
 	 * 确认使用新设备替换原设备对话框
 	 */
-	Dialog reconfirmDialog;
+	// Dialog reconfirmDialog;
 	/**
 	 * 退出确认对话框
 	 */
@@ -145,7 +147,7 @@ public class ModeActivity extends BaseActivity {
 			String dir = FileUtil.getEcgDir();
 			File ecgFile = new File(dir);
 			final File[] files = ecgFile.listFiles();
-			// new ClientGameService().uploadRealTimeFile(files[1],
+			// ClientGameService.getInstance().uploadRealTimeFile(files[1],
 			// new HttpReqCallBack<UploadFileResponse>() {
 			//
 			// @Override
@@ -187,32 +189,32 @@ public class ModeActivity extends BaseActivity {
 				List<UpLoadData> upLoadDatas = new ArrayList<UpLoadData>();
 				UpLoadData data = new UpLoadData();
 
-				data.setBeginDT(sdf.format(new Date()));
-				data.setEndDT(sdf.format(new Date()));
-				data.setUserID(user.getUserID());
-				data.setDeviceID(devID);
-				data.setFileName(files[1].getName());
-				upLoadDatas.add(data);
-				data = new UpLoadData();
-				data.setBeginDT(sdf.format(new Date()));
-				data.setEndDT(sdf.format(new Date()));
-				data.setUserID(user.getUserID());
-				data.setDeviceID(devID);
-				data.setFileName(files[2].getName());
-				upLoadDatas.add(data);
-				data = new UpLoadData();
-				data.setBeginDT(sdf.format(new Date()));
-				data.setEndDT(sdf.format(new Date()));
-				data.setUserID(user.getUserID());
-				data.setDeviceID(devID);
-				data.setFileName(files[3].getName());
+				// data.setBeginDT(sdf.format(new Date()));
+				// data.setEndDT(sdf.format(new Date()));
+				// data.setUserID(user.getUserID());
+				// data.setDeviceID(devID);
+				// data.setFileName(files[1].getName());
+				// upLoadDatas.add(data);
+				// data = new UpLoadData();
+				// data.setBeginDT(sdf.format(new Date()));
+				// data.setEndDT(sdf.format(new Date()));
+				// data.setUserID(user.getUserID());
+				// data.setDeviceID(devID);
+				// data.setFileName(files[2].getName());
+				// upLoadDatas.add(data);
+				// data = new UpLoadData();
+				// data.setBeginDT(sdf.format(new Date()));
+				// data.setEndDT(sdf.format(new Date()));
+				// data.setUserID(user.getUserID());
+				// data.setDeviceID(devID);
+				// data.setFileName(files[3].getName());
 				upLoadDatas.add(data);
 				String desDataJson = JSON.toJSONString(upLoadDatas);
 				/**
 				 * 批量
 				 */
-				new ClientGameService().uploadFile(zipFile, desDataJson,
-						UploadWay.Batch,
+				ClientGameService.getInstance().uploadFile(zipFile,
+						desDataJson, UploadWay.Batch,
 						new HttpReqCallBack<UploadFileResponse>() {
 
 							@Override
@@ -424,9 +426,14 @@ public class ModeActivity extends BaseActivity {
 		// } else {
 		// buttonTest.setVisibility(View.GONE);
 		// }
+		// test();
 	}
 
 	private void initDPIConfig() {
+		if (true) {
+			// 暂时取消获取分辨率 
+			return;
+		}
 		boolean needRefresh = SettingsManager.getInstance().getDpiConfigX() <= 0
 				|| SettingsManager.getInstance().getDpiConfigY() <= 0;
 		needRefresh = true;
@@ -472,11 +479,16 @@ public class ModeActivity extends BaseActivity {
 	}
 
 	private void initLocation() {
+		if (true) {
+			// 暂时取消保存定位数据
+			return;
+		}
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		final String lon = SettingsManager.getInstance().getGPSLon();
 		final String lat = SettingsManager.getInstance().getGPSLat();
 		if (user != null && lon != null && !lon.trim().isEmpty() && lat != null
 				&& !lat.trim().isEmpty()) {
+			
 			SSXLXService.getInstance().InserGPS(user.getUserID(), lon, lat,
 					new HttpReqCallBack<StringResponse>() {
 						@Override
@@ -613,8 +625,7 @@ public class ModeActivity extends BaseActivity {
 			if (resultCode == Activity.RESULT_CANCELED) {
 				showToast("请开启蓝牙");
 			} else {
-				showChooseBledev();
-				scanLeDevice(true);
+				chooseBle();
 			}
 			return;
 		} else if (requestCode == REQUEST_NET_CODE
@@ -659,6 +670,21 @@ public class ModeActivity extends BaseActivity {
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		} else {
+			chooseBle();
+		}
+	}
+
+	private void chooseBle() {
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		if (user.getMacAddress() != null
+				&& !user.getMacAddress().trim().isEmpty()) {
+			goEcgActivity();
+		} else {
+			if (user.isOverTime == 1) {
+				showToast("设备过期请重新选择设备");
+			} else {
+				showToast("请绑定新设备");
+			}
 			showChooseBledev();
 			scanLeDevice(true);
 		}
@@ -669,14 +695,15 @@ public class ModeActivity extends BaseActivity {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi,
 				byte[] scanRecord) {
-			System.out.println("");
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					BleDev dev = new BleDev();
-					dev.setMacAddress(device.getAddress());
-					adapter.addDevice(dev);
-					adapter.notifyDataSetChanged();
+					if (adapter != null) {
+						BleDev dev = new BleDev();
+						dev.setMacAddress(device.getAddress());
+						adapter.addDevice(dev);
+						adapter.notifyDataSetChanged();
+					}
 					if (bleScanDialog != null) {
 						bleScanDialog.cancel();
 						bleScanDialog.dismiss();
@@ -707,6 +734,9 @@ public class ModeActivity extends BaseActivity {
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					bleScanDialog.cancel();
 					bleScanDialog.dismiss();
+					if (adapter.getCount() < 1) {
+						showToast("未扫描到设备，请重新扫描");
+					}
 				}
 			}, SCAN_PERIOD);
 
@@ -783,79 +813,40 @@ public class ModeActivity extends BaseActivity {
 			LogUtil.d(TAG, "用户数据不存在");
 			return;
 		}
-		serverService.CheckUserDevice(user.getUserID(),
-				holderSel.dev.getMacAddress(),
-				new HttpReqCallBack<UIDeviceResponse>() {
-
-					@Override
-					public Activity getReqActivity() {
-						return ModeActivity.this;
-					}
-
-					@Override
-					public void doSuccess(UIDeviceResponse result) {
-						if (result.isOk()) {
-							// 检查有效期还剩一个月时，提示设备有效期至XX年XX月XX日
-							goEcgActivity();
-						} else {
-							// 绑定新设备
-							if (ResponseCode.DeviceNotEnable
-									.equals(result.Code)) {
-								// 绑定新设备
-								LayoutInflater inflater = (LayoutInflater) ModeActivity.this
-										.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-								LinearLayout layout = (LinearLayout) inflater
-										.inflate(R.layout.dialog_devicebind,
-												null);
-								editTextDevPwd = (EditText) layout
-										.findViewById(R.id.editTextDevPwd);
-								Button buttonReject = (Button) layout
-										.findViewById(R.id.buttonReject);
-								buttonReject
-										.setOnClickListener(ModeActivity.this);
-								Button buttonAllowed = (Button) layout
-										.findViewById(R.id.buttonAllowed);
-								buttonAllowed
-										.setOnClickListener(ModeActivity.this);
-								bindDevDialog = UIUtil.buildDialog(
-										ModeActivity.this, layout);
-								bindDevDialog.show();
-							} else if (ResponseCode.DeviceChange
-									.equals(result.Code)) {
-								// 新设备替换原设备
-								LayoutInflater inflater = (LayoutInflater) ModeActivity.this
-										.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-								LinearLayout layout = (LinearLayout) inflater
-										.inflate(R.layout.dialog_replacedevice,
-												null);
-								editTextDevPwd = (EditText) layout
-										.findViewById(R.id.editTextDevPwd);
-								Button buttonCancel = (Button) layout
-										.findViewById(R.id.buttonCancel);
-								buttonCancel
-										.setOnClickListener(ModeActivity.this);
-								Button buttonReplace = (Button) layout
-										.findViewById(R.id.buttonReplace);
-								buttonReplace
-										.setOnClickListener(ModeActivity.this);
-								replaceDevDialog = UIUtil.buildDialog(
-										ModeActivity.this, layout);
-								replaceDevDialog.show();
-							} else {
-								showToast(result.getMessage());
-								// showResponseMsg(result.Code);
-							}
-						}
-					}
-
-					@Override
-					public void doError(String result) {
-						if (ConstantConfig.Debug) {
-							showToast(result);
-						}
-					}
-				});
+		// 绑定新设备
+		LayoutInflater inflater = (LayoutInflater) ModeActivity.this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LinearLayout layout = (LinearLayout) inflater.inflate(
+				R.layout.dialog_devicecheck, null);
+		editTextDevPwd = (EditText) layout.findViewById(R.id.editTextDevPwd);
+		Button buttonOK = (Button) layout.findViewById(R.id.buttonOK);
+		buttonOK.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				bindNewDevice();
+			}
+		});
+		bindDevDialog = UIUtil.buildDialog(ModeActivity.this, layout);
+		bindDevDialog.show();
 	}
+
+	// private void showDevCheck() {
+	// LayoutInflater inflater = (LayoutInflater) ModeActivity.this
+	// .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	// LinearLayout layout = (LinearLayout) inflater.inflate(
+	// R.layout.dialog_devicecheck, null);
+	// editTextDevPwd = (EditText) layout.findViewById(R.id.editTextDevPwd);
+	// Button buttonOK = (Button) layout.findViewById(R.id.buttonOK);
+	// buttonOK.setOnClickListener(new OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	// bindNewDevice();
+	// }
+	// });
+	// bindDevDialog = UIUtil.buildDialog(ModeActivity.this, layout);
+	// bindDevDialog.show();
+	// }
 
 	/**
 	 * 关闭设备列表
@@ -873,14 +864,14 @@ public class ModeActivity extends BaseActivity {
 			bindDevDialog.cancel();
 			bindDevDialog.dismiss();
 		}
-		if (replaceDevDialog != null) {
-			replaceDevDialog.cancel();
-			replaceDevDialog.dismiss();
-		}
-		if (reconfirmDialog != null) {
-			reconfirmDialog.cancel();
-			reconfirmDialog.dismiss();
-		}
+		// if (replaceDevDialog != null) {
+		// replaceDevDialog.cancel();
+		// replaceDevDialog.dismiss();
+		// }
+		// if (reconfirmDialog != null) {
+		// reconfirmDialog.cancel();
+		// reconfirmDialog.dismiss();
+		// }
 		if (logoutDialog != null) {
 			logoutDialog.cancel();
 			logoutDialog.dismiss();
@@ -890,32 +881,32 @@ public class ModeActivity extends BaseActivity {
 	/**
 	 * 关闭绑定设备对话框
 	 */
-	private void closeBindDevDialog() {
-		if (bindDevDialog != null) {
-			bindDevDialog.cancel();
-			bindDevDialog.dismiss();
-		}
-	}
+	// private void closeBindDevDialog() {
+	// if (bindDevDialog != null) {
+	// bindDevDialog.cancel();
+	// bindDevDialog.dismiss();
+	// }
+	// }
 
 	/**
 	 * 关闭替换对话框
 	 */
-	private void closeReplaceDevDialog() {
-		if (replaceDevDialog != null) {
-			replaceDevDialog.cancel();
-			replaceDevDialog.dismiss();
-		}
-	}
+	// private void closeReplaceDevDialog() {
+	// if (replaceDevDialog != null) {
+	// replaceDevDialog.cancel();
+	// replaceDevDialog.dismiss();
+	// }
+	// }
 
 	/**
 	 * 关闭确认对话框
 	 */
-	private void closeReconfirmDialog() {
-		if (reconfirmDialog != null) {
-			reconfirmDialog.cancel();
-			reconfirmDialog.dismiss();
-		}
-	}
+	// private void closeReconfirmDialog() {
+	// if (reconfirmDialog != null) {
+	// reconfirmDialog.cancel();
+	// reconfirmDialog.dismiss();
+	// }
+	// }
 
 	/**
 	 * 确定选择了蓝牙
@@ -934,9 +925,9 @@ public class ModeActivity extends BaseActivity {
 	 */
 	private void familyMode() {
 		// if (!ConstantConfig.Debug) {
-		// showToast("敬请期待");
-		// if (true)
-		// return;
+		showToast("敬请期待");
+		if (true)
+			return;
 		// }
 		closeBleDialog();
 		if (checkNetAvailable()) {
@@ -999,11 +990,6 @@ public class ModeActivity extends BaseActivity {
 	 */
 	private void goEcgActivity() {
 		closeBleDialog();
-		SettingsManager.getInstance().setDeviceNumber(
-				holderSel.dev.getMacAddress());
-		if (BluetoothLeService.getInstance() != null) {
-			BluetoothLeService.getInstance().connect();
-		}
 		if (checkNetAvailable()) {
 			Intent intent = new Intent(ModeActivity.this, EcgActivity.class);
 			startActivity(intent);
@@ -1027,13 +1013,26 @@ public class ModeActivity extends BaseActivity {
 			showToast("请输入设备密码！");
 			return;
 		}
+		final String macAddress = holderSel.dev.getMacAddress();
+		String devToken = BleDataUtil.getDevcieToken(macAddress);
+		if (!devPwd.equals(devToken)) {
+			showToast("设备密码不正确！");
+			if (ConstantConfig.Debug) {
+				showToast(devToken);
+			}
+			return;
+		}
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		if (user == null) {
 			LogUtil.d(TAG, "用户数据不存在");
 			return;
 		}
 		String userPwd = DataManager.getUserPwd();
-		String macAddress = holderSel.dev.getMacAddress();
+		try {
+			userPwd = AESEncryptor.decrypt(user.getLoginName(), userPwd);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		serverService.ChangeDeviceUserID(user.getUserID(), macAddress, userPwd,
 				devPwd, new HttpReqCallBack<StringResponse>() {
 
@@ -1046,8 +1045,12 @@ public class ModeActivity extends BaseActivity {
 					public void doSuccess(StringResponse result) {
 						if (result.isOk()) {
 							showToast("绑定成功！");
+							DataManager.updateUserMac(macAddress);
+							if (BluetoothLeService.getInstance() != null) {
+								BluetoothLeService.getInstance().connect();
+							}
 							closeBleDialog();
-							closeBindDevDialog();
+							// closeBindDevDialog();
 							goEcgActivity();
 						} else {
 							showToast(result.getMessage());
@@ -1059,6 +1062,8 @@ public class ModeActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});
@@ -1067,63 +1072,68 @@ public class ModeActivity extends BaseActivity {
 	/**
 	 * 替换设备
 	 */
-	private void replaceOldDevice() {
-		// 确认替换原设备
-		reconfirmDialog = UIUtil.buildTipDialog(ModeActivity.this,
-				getString(R.string.dialog_title_tips),
-				getString(R.string.dialog_cofirmreplacedevice),
-				ModeActivity.this, ModeActivity.this,
-				getString(R.string.dialog_button_confirm),
-				getString(R.string.dialog_button_cancel));
-		reconfirmDialog.show();
-	}
+	// private void replaceOldDevice() {
+	// // 确认替换原设备
+	// reconfirmDialog = UIUtil.buildTipDialog(ModeActivity.this,
+	// getString(R.string.dialog_title_tips),
+	// getString(R.string.dialog_cofirmreplacedevice),
+	// ModeActivity.this, ModeActivity.this,
+	// getString(R.string.dialog_button_confirm),
+	// getString(R.string.dialog_button_cancel));
+	// reconfirmDialog.show();
+	// }
 
 	/**
 	 * 确认替换设备，提交服务端
 	 */
-	private void reConfirmReplaceDialog() {
-		String devPwd = checkDevPwd();
-		if (devPwd == null) {
-			showToast("请输入设备密码！");
-			return;
-		}
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user == null) {
-			LogUtil.d(TAG, "用户数据不存在");
-			return;
-		}
-		String userPwd = DataManager.getUserPwd();
-		String macAddress = holderSel.dev.getMacAddress();
-		serverService.ChangeDeviceUserID(user.getUserID(), macAddress, userPwd,
-				devPwd, new HttpReqCallBack<StringResponse>() {
-
-					@Override
-					public Activity getReqActivity() {
-						return ModeActivity.this;
-					}
-
-					@Override
-					public void doSuccess(StringResponse result) {
-						if (result.isOk()) {
-							showToast("替换成功！");
-							closeBleDialog();
-							closeReplaceDevDialog();
-							closeReconfirmDialog();
-							goEcgActivity();
-						} else {
-							showToast(result.getMessage());
-							// showResponseMsg(result.Code);
-						}
-					}
-
-					@Override
-					public void doError(String result) {
-						if (ConstantConfig.Debug) {
-							showToast(result);
-						}
-					}
-				});
-	}
+	// private void reConfirmReplaceDialog() {
+	// String devPwd = checkDevPwd();
+	// if (devPwd == null) {
+	// showToast("请输入设备密码！");
+	// return;
+	// }
+	// String macAddress = holderSel.dev.getMacAddress();
+	// String devToken = BleDataUtil.getDevcieToken(macAddress);
+	// if (devPwd.equals(devToken)) {
+	// showToast("设备密码不正确！");
+	// return;
+	// }
+	// UIUserInfoLogin user = DataManager.getUserInfo();
+	// if (user == null) {
+	// LogUtil.d(TAG, "用户数据不存在");
+	// return;
+	// }
+	// String userPwd = DataManager.getUserPwd();
+	// serverService.ChangeDeviceUserID(user.getUserID(), macAddress, userPwd,
+	// devPwd, new HttpReqCallBack<StringResponse>() {
+	//
+	// @Override
+	// public Activity getReqActivity() {
+	// return ModeActivity.this;
+	// }
+	//
+	// @Override
+	// public void doSuccess(StringResponse result) {
+	// if (result.isOk()) {
+	// showToast("替换成功！");
+	// closeBleDialog();
+	// // closeReplaceDevDialog();
+	// // closeReconfirmDialog();
+	// goEcgActivity();
+	// } else {
+	// showToast(result.getMessage());
+	// // showResponseMsg(result.Code);
+	// }
+	// }
+	//
+	// @Override
+	// public void doError(String result) {
+	// if (ConstantConfig.Debug) {
+	// showToast(result);
+	// }
+	// }
+	// });
+	// }
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -1161,25 +1171,25 @@ public class ModeActivity extends BaseActivity {
 		case R.id.buttonSave:
 			selectBleDev();
 			break;
-		case R.id.buttonReject:
-			closeBindDevDialog();
-			break;
-		case R.id.buttonAllowed:
-			bindNewDevice();
-			break;
-		case R.id.buttonCancel:
-			closeReplaceDevDialog();
-			break;
-		case R.id.buttonReplace:
-			replaceOldDevice();
-			break;
-		case R.id.buttonRecCancel:
-			closeReplaceDevDialog();
-			closeReconfirmDialog();
-			break;
-		case R.id.buttonRecConfirm:
-			reConfirmReplaceDialog();
-			break;
+		// case R.id.buttonReject:
+		// closeBindDevDialog();
+		// break;
+		// case R.id.buttonAllowed:
+		// bindNewDevice();
+		// break;
+		// case R.id.buttonCancel:
+		// closeReplaceDevDialog();
+		// break;
+		// case R.id.buttonReplace:
+		// replaceOldDevice();
+		// break;
+		// case R.id.buttonRecCancel:
+		// closeReplaceDevDialog();
+		// closeReconfirmDialog();
+		// break;
+		// case R.id.buttonRecConfirm:
+		// reConfirmReplaceDialog();
+		// break;
 		default:
 			break;
 		}

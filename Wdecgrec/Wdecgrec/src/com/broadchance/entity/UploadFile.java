@@ -18,7 +18,25 @@ public class UploadFile {
 	private Date uploadDate;
 	private UploadFileStatus status;
 	private FileType type;
+	private String bpath;
+	private String hrs;
 	
+
+	public String getBpath() {
+		return bpath;
+	}
+
+	public void setBpath(String bpath) {
+		this.bpath = bpath;
+	}
+
+	public String getHrs() {
+		return hrs;
+	}
+
+	public void setHrs(String hrs) {
+		this.hrs = hrs;
+	}
 
 	public FileType getType() {
 		return type;

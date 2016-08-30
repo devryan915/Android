@@ -278,33 +278,33 @@ public class SettingsManager {
 	 * 
 	 * @return
 	 */
-	public String getDeviceNumber() {
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user != null) {
-			String deviceNumber = PreferencesManager.getInstance()
-					.getString(
-							user.getUserID()
-									+ ConstantConfig.PREFERENCES_DEVIVCENUMBER);
-			return deviceNumber;
-		}
-		return "";
-	}
+	// public String getDeviceNumber() {
+	// UIUserInfoLogin user = DataManager.getUserInfo();
+	// if (user != null) {
+	// String deviceNumber = PreferencesManager.getInstance()
+	// .getString(
+	// user.getUserID()
+	// + ConstantConfig.PREFERENCES_DEVIVCENUMBER);
+	// return deviceNumber;
+	// }
+	// return "";
+	// }
 
 	/**
 	 * 保存设备号信息
 	 * 
 	 * @param mac
 	 */
-	public void setDeviceNumber(String mac) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user != null) {
-			PreferencesManager.getInstance()
-					.putString(
-							user.getUserID()
-									+ ConstantConfig.PREFERENCES_DEVIVCENUMBER,
-							mac);
-		}
-	}
+	// public void setDeviceNumber(String mac) {
+	// UIUserInfoLogin user = DataManager.getUserInfo();
+	// if (user != null) {
+	// PreferencesManager.getInstance()
+	// .putString(
+	// user.getUserID()
+	// + ConstantConfig.PREFERENCES_DEVIVCENUMBER,
+	// mac);
+	// }
+	// }
 
 	/**
 	 * 获取用户名

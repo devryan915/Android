@@ -59,19 +59,19 @@ public class OpenGLECGGrid {
 	 */
 	private float UNIT_SIZE = 0;
 	/**
-	 * 行线起始点
+	 * 行线起始点,沿坐标轴方向，起始点为负轴
 	 */
 	public float HLINE_STARTX = 0;
 	/**
-	 * 行线的结束点
+	 * 行线的结束点,沿坐标轴方向，结束点为正轴
 	 */
 	public float HLINE_ENDX = 0;
 	/**
-	 * 纵线的起始点
+	 * 纵线的起始点,沿坐标轴方向，起始点为负轴
 	 */
 	public float VLINE_STARTY = 0;
 	/**
-	 * 纵线的结束点
+	 * 纵线的结束点,沿坐标轴方向，结束点为正轴
 	 */
 	public float VLINE_ENDY = 0;// 1.50f
 	/**
@@ -83,23 +83,15 @@ public class OpenGLECGGrid {
 	 */
 	private float[] verticeVLines;
 
-	int gridLightColor;
-	int gridDarkColor;
+	float[] gridLightColor;
+	float[] gridDarkColor;
 
 	public float getyUnitCellSize() {
 		return yUnitCellSize;
 	}
-
-	public void setyUnitCellSize(float yUnitCellSize) {
-		this.yUnitCellSize = yUnitCellSize;
-	}
-
+	
 	public float getxUnitCellSize() {
 		return xUnitCellSize;
-	}
-
-	public void setxUnitCellSize(float xUnitCellSize) {
-		this.xUnitCellSize = xUnitCellSize;
 	}
 
 	public int getGRID_NUM_H() {
@@ -184,8 +176,8 @@ public class OpenGLECGGrid {
 	}
 
 	public void drawGrid(GL10 gl, int gridLightColor, int gridDarkColor) {
-		this.gridLightColor = gridLightColor;
-		this.gridDarkColor = gridDarkColor;
+		this.gridLightColor = CommonUtil.colorToRGB(gridLightColor);
+		this.gridDarkColor = CommonUtil.colorToRGB(gridDarkColor);
 		drawHLines(gl);
 		drawVLines(gl);
 	}
@@ -200,12 +192,14 @@ public class OpenGLECGGrid {
 			line[0] = (byte) (i * 2);
 			line[1] = (byte) (i * 2 + 1);
 			if (i % 5 == 0) {
-				float[] bgColor = CommonUtil.colorToRGB(this.gridDarkColor);
-				gl.glColor4f(bgColor[1], bgColor[2], bgColor[3], bgColor[0]);
+				// float[] bgColor = CommonUtil.colorToRGB(this.gridDarkColor);
+				gl.glColor4f(this.gridDarkColor[1], this.gridDarkColor[2],
+						this.gridDarkColor[3], this.gridDarkColor[0]);
 				gl.glLineWidth(2.0f);
 			} else {
-				float[] bgColor = CommonUtil.colorToRGB(this.gridLightColor);
-				gl.glColor4f(bgColor[1], bgColor[2], bgColor[3], bgColor[0]);
+				// float[] bgColor = CommonUtil.colorToRGB(this.gridLightColor);
+				gl.glColor4f(this.gridLightColor[1], this.gridLightColor[2],
+						this.gridLightColor[3], this.gridLightColor[0]);
 				gl.glLineWidth(1.0f);
 			}
 			gl.glDrawElements(GL10.GL_LINE_STRIP, 2, GL10.GL_UNSIGNED_BYTE,
@@ -223,12 +217,14 @@ public class OpenGLECGGrid {
 			line[1] = (byte) (i * 2 + 1);
 
 			if (i % 5 == 0) {
-				float[] bgColor = CommonUtil.colorToRGB(this.gridDarkColor);
-				gl.glColor4f(bgColor[1], bgColor[2], bgColor[3], bgColor[0]);
+				// float[] bgColor = CommonUtil.colorToRGB(this.gridDarkColor);
+				gl.glColor4f(this.gridDarkColor[1], this.gridDarkColor[2],
+						this.gridDarkColor[3], this.gridDarkColor[0]);
 				gl.glLineWidth(2.0f);
 			} else {
-				float[] bgColor = CommonUtil.colorToRGB(this.gridLightColor);
-				gl.glColor4f(bgColor[1], bgColor[2], bgColor[3], bgColor[0]);
+				// float[] bgColor = CommonUtil.colorToRGB(this.gridLightColor);
+				gl.glColor4f(this.gridLightColor[1], this.gridLightColor[2],
+						this.gridLightColor[3], this.gridLightColor[0]);
 				gl.glLineWidth(1.0f);
 			}
 			gl.glDrawElements(GL10.GL_LINE_STRIP, 2, GL10.GL_UNSIGNED_BYTE,

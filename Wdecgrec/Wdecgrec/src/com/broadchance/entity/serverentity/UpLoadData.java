@@ -4,54 +4,42 @@ public class UpLoadData extends Object {
 	public UpLoadData() {
 	}
 
-	private String FileName;
-
-	public String getFileName() {
-		return FileName;
+	private String datatype;
+	private String filename;
+	private String starttime;
+	private String endtime;
+	private String hrs;
+	
+	public String getHrs() {
+		return hrs;
 	}
-
-	public void setFileName(String fileName) {
-		FileName = fileName;
+	public void setHrs(String hrs) {
+		this.hrs = hrs;
 	}
-
-	private String UserID;
-
-	public String getUserID() {
-		return UserID;
+	public String getDatatype() {
+		return datatype;
 	}
-
-	public void setUserID(String _UserID) {
-		this.UserID = _UserID;
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
 	}
-
-	private String DeviceID;
-
-	public String getDeviceID() {
-		return DeviceID;
+	public String getFilename() {
+		return filename;
 	}
-
-	public void setDeviceID(String _DeviceID) {
-		this.DeviceID = _DeviceID;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
-
-	private String BeginDT;
-
-	public String getBeginDT() {
-		return BeginDT;
+	public String getStarttime() {
+		return starttime;
 	}
-
-	public void setBeginDT(String _BeginDT) {
-		this.BeginDT = _BeginDT;
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
 	}
-
-	private String EndDT;
-
-	public String getEndDT() {
-		return EndDT;
+	public String getEndtime() {
+		return endtime;
 	}
-
-	public void setEndDT(String _EndDT) {
-		this.EndDT = _EndDT;
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
+	
 
 }

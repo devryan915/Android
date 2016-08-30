@@ -25,7 +25,7 @@ import com.broadchance.wdecgrec.R;
  */
 
 public class HttpAsyncTask<T extends BaseResponse<?>> extends
-		AsyncTask<Object, Integer, String> {
+		AsyncTask<Object, Integer, StringResponse> {
 
 	private static final String TAG = HttpAsyncTask.class.getSimpleName();
 	Handler mHandler;
@@ -142,34 +142,33 @@ public class HttpAsyncTask<T extends BaseResponse<?>> extends
 	 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
 	 */
 	@Override
-	protected String doInBackground(Object... params) {
+	protected StringResponse doInBackground(Object... params) {
 
 		if (this.mReqParams != null && this.mReqParams.size() > 0) {
 			try {
-				StringResponse response = HttpUtil.postData(mUrl, mReqParams);
-				if (response.isOk()) {
-					return response.getData();
-				} else {
-					mIsError = true;
-					mErrorMsg = response.getData();
-					closeLoading();
-				}
+				return HttpUtil.postData(mUrl, mReqParams);
+				// if (response.isOk()) {
+				// return response.getData();
+				// } else {
+				// mIsError = true;
+				// mErrorMsg = response.getData();
+				// }
 			} catch (Exception e) {
 				mIsError = true;
 				mErrorMsg = e.toString();
-				closeLoading();
 			}
 		}
 		return null;
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(StringResponse response) {
 		closeLoading();
 		mIsLoaded = true;
-		boolean hasData = result != null && !result.isEmpty();
 		// 访问未超时，且数据不为空认为数据请求成功
-		if (!mIsError && !mIsTimeOut && hasData) {
+		String result = response.isOk() ? response.getData() : "";
+		boolean hasData = result != null && !result.isEmpty();
+		if (!mIsError && !mIsTimeOut) {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, result);
 			}
@@ -183,21 +182,37 @@ public class HttpAsyncTask<T extends BaseResponse<?>> extends
 					// cz.getGenericInterfaces()[0])
 					// .getActualTypeArguments()[0];
 					// mCallBack的父类是非接口类
-					Type type = ((ParameterizedType) cz.getGenericSuperclass())
-							.getActualTypeArguments()[0];
-					entityData = JSON.parseObject(result, type);
 					// TypeReference传入的T必须继承带泛型的非抽象类或接口
 					// entityData = JSON.parseObject(result,
 					// new TypeReference<T>() {
 					// });
-					mCallBack.doSuccess(entityData);
+					Type type = ((ParameterizedType) cz.getGenericSuperclass())
+							.getActualTypeArguments()[0];
+					if (hasData || response.getCode().equals("400")
+							|| response.getCode().equals("401")) {
+						if (hasData) {
+							entityData = JSON.parseObject(result, type);
+							if (entityData.getCode() == null) {
+								entityData.setCode(entityData.OK);
+							}
+						} else {
+							hasData = true;
+							entityData = (T) ((Class) type).newInstance();
+							entityData.setCode(entityData.FAILED);
+							entityData.setMessage(response.getData());
+						}
+						mCallBack.doSuccess(entityData);
+					} else {
+						mIsError = true;
+						mErrorMsg = response.getData();
+						LogUtil.e(TAG, mErrorMsg);
+					}
 				}
 			} catch (Exception e) {
 				mIsError = true;
 				mErrorMsg = "反序列化失败：\r\n" + e.toString();
 				LogUtil.e(TAG, e);
 			}
-
 		}
 		// 请求失败
 		if (mIsError) {
@@ -216,6 +231,6 @@ public class HttpAsyncTask<T extends BaseResponse<?>> extends
 				LogUtil.d(TAG, mErrorMsg);
 			}
 		}
-		super.onPostExecute(result);
+		super.onPostExecute(response);
 	}
 }

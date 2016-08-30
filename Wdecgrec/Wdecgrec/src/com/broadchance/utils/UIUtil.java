@@ -1,5 +1,7 @@
 package com.broadchance.utils;
 
+import android.app.ActivityManager;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +24,26 @@ import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.main.ModeActivity;
 
 public class UIUtil {
+	private static Toast toast;
+
+	public static void showToast(String content) {
+		Context context = null;
+		try {
+			if ((context = AppApplication.Instance.currentActivity) != null) {
+				showToast(context, context.getClass().getSimpleName() + "\n"
+						+ content);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void showToast(Context context, String content) {
-		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+		if (toast != null) {
+			toast.cancel();
+		}
+		toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 
 	public static void showLongToast(Context context, String content) {
@@ -43,8 +63,8 @@ public class UIUtil {
 		handler.sendMessage(message);
 	}
 
-	public static void sendBroadcast(String action) {
-		AppApplication.Instance.sendBroadcast(new Intent(action));
+	public static void sendBroadcast(Intent intent) {
+		AppApplication.Instance.sendBroadcast(intent);
 	}
 
 	/**

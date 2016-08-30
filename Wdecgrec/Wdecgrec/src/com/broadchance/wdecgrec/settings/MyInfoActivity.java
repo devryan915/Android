@@ -1,19 +1,28 @@
 package com.broadchance.wdecgrec.settings;
 
+import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.serverentity.StringResponse;
 import com.broadchance.entity.serverentity.UIUserInfoBaseResponse;
 import com.broadchance.manager.DataManager;
-import com.broadchance.manager.PreferencesManager;
-import com.broadchance.manager.SettingsManager;
+import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.ConstantConfig;
+import com.broadchance.utils.LogUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.HttpReqCallBack;
 import com.broadchance.wdecgrec.R;
@@ -32,21 +41,153 @@ public class MyInfoActivity extends BaseActivity {
 	private EditText myinfoMemo;
 	private Button buttonSave;
 
+	// private View viewBindedDev;
+
+	// private TextView editTextDevPwd;
+
+	// private TextView myinfoBindedDev;
+	// private Dialog dialogUnbind;
+	public class PartialRegexInputFilter implements InputFilter {
+
+		private Pattern mPattern;
+
+		public PartialRegexInputFilter(String pattern) {
+			mPattern = Pattern.compile(pattern);
+		}
+
+		@Override
+		public CharSequence filter(CharSequence source, int sourceStart,
+				int sourceEnd, Spanned destination, int destinationStart,
+				int destinationEnd) {
+			String textToCheck = destination.subSequence(0, destinationStart)
+					.toString()
+					+ source.subSequence(sourceStart, sourceEnd)
+					+ destination.subSequence(destinationEnd,
+							destination.length()).toString();
+			// try {
+			// DecimalFormat decimalFormat = new DecimalFormat("###.0");
+			// textToCheck = decimalFormat.format(Float
+			// .parseFloat(textToCheck));
+			// } catch (Exception e) {
+			// showToast("输入有误");
+			// } finally {
+			// return textToCheck;
+			// }
+			Matcher matcher = mPattern.matcher(textToCheck);
+			if (!matcher.matches()) {
+				return "";
+			}
+			return null;
+		}
+	}
+
+	public class CustomTextWatcher implements TextWatcher {
+		private boolean isChanged = false;
+		EditText edt;
+
+		public CustomTextWatcher(EditText edt) {
+			super();
+			this.edt = edt;
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			if (isChanged) {// ----->如果字符未改变则返回
+				return;
+			}
+			String str = s.toString();
+
+			isChanged = true;
+			String cuttedStr = null;
+			boolean flag = false;
+			/* 删除字符串中的dot */
+			// for (int i = str.length() - 1; i >= 0; i--) {
+			// char c = str.charAt(i);
+			// if ('.' == c && i == str.length() - 3) {
+			// cuttedStr = str.substring(0, i + 2);
+			// if (cuttedStr.endsWith(".")) {
+			// cuttedStr = cuttedStr.substring(0, i + 1);
+			// }
+			// flag = true;
+			// break;
+			// }
+			// }
+			int dotIndex = str.indexOf(".");
+			if (dotIndex != -1) {
+				String sufixx = ".";
+				String prefix = "";
+				try {
+					sufixx = str.substring(dotIndex, dotIndex + 2);
+					prefix = str.substring(Math.max(0, dotIndex - 3), dotIndex);
+					cuttedStr = prefix + sufixx;
+					flag = !str.equals(cuttedStr);
+				} catch (Exception e) {
+				}
+			} else {
+				cuttedStr = str.substring(Math.max(0, str.length() - 3),
+						str.length());
+				flag = !str.equals(cuttedStr);
+			}
+			// try {
+			// DecimalFormat decimalFormat = new DecimalFormat("0.0");
+			// cuttedStr = decimalFormat.format(Float.parseFloat(str));
+			// flag = !str.equals(cuttedStr);
+			// } catch (Exception e) {
+			// }
+			if (flag) {
+				edt.setText(cuttedStr);
+			}
+			// edit.setSelection(edit.length());
+			isChanged = false;
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_info);
 		findViewById(R.id.buttonTitleBack).setOnClickListener(this);
+		// viewBindedDev = findViewById(R.id.viewBindedDev);
+		// myinfoBindedDev = (TextView) findViewById(R.id.myinfoBindedDev);
+		// viewBindedDev.setOnClickListener(this);
 		textViewUseName = (TextView) findViewById(R.id.textViewUseName);
 		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
 		myinfoDevNo = (TextView) findViewById(R.id.myinfoDevNo);
-		String deviceNumber = SettingsManager.getInstance().getDeviceNumber();
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		String deviceNumber = "";
+		if (user != null) {
+			deviceNumber = user.getMacAddress();
+			if (deviceNumber != null && !deviceNumber.trim().isEmpty()) {
+				deviceNumber = BleDataUtil.getDeviceName(deviceNumber);
+			}
+		}
 		myinfoDevNo.setText(deviceNumber);
 		myinfoNameSexAge = (TextView) findViewById(R.id.myinfoNameSexAge);
 		myinfoName = (EditText) findViewById(R.id.myinfoName);
+		myinfoName.setEnabled(false);
 		myinfoID = (TextView) findViewById(R.id.myinfoID);
 		myinfoHeight = (EditText) findViewById(R.id.myinfoHeight);
+		myinfoHeight
+				.addTextChangedListener(new CustomTextWatcher(myinfoHeight));
+		// myinfoHeight
+		// .setFilters(new InputFilter[] { new PartialRegexInputFilter(
+		// "^[0-9]{1,3}//.[0-9]{0,1}") });
 		myinfoWeight = (EditText) findViewById(R.id.myinfoWeight);
+		myinfoWeight
+				.addTextChangedListener(new CustomTextWatcher(myinfoWeight));
+		// myinfoWeight
+		// .setFilters(new InputFilter[] { new PartialRegexInputFilter(
+		// "^[0-9]{1,3}//.{0,1}[0-9]{0,1}$") });
 		myinfoMobilePhone = (EditText) findViewById(R.id.myinfoMobilePhone);
 		myinfoAddress = (EditText) findViewById(R.id.myinfoAddress);
 		myinfoZipCode = (EditText) findViewById(R.id.myinfoZipCode);
@@ -104,6 +245,8 @@ public class MyInfoActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});
@@ -121,7 +264,7 @@ public class MyInfoActivity extends BaseActivity {
 	 * 保存用户数据
 	 */
 	private void saveData() {
-		String name = myinfoName.getText().toString();
+		final String name = myinfoName.getText().toString();
 		if (name.trim().isEmpty()) {
 			showToast("请输入姓名");
 			return;
@@ -134,7 +277,7 @@ public class MyInfoActivity extends BaseActivity {
 			return;
 		} else {
 			height = Float.parseFloat(heightStr);
-			if (height < 1) {
+			if (height < 100 || height > 250) {
 				myinfoHeight.requestFocusFromTouch();
 				showToast("请输入合法身高");
 				return;
@@ -148,13 +291,12 @@ public class MyInfoActivity extends BaseActivity {
 			return;
 		} else {
 			weight = Float.parseFloat(weightStr);
-			if (weight < 1) {
+			if (weight < 30 || weight > 200) {
 				myinfoWeight.requestFocusFromTouch();
 				showToast("请输入合法体重");
 				return;
 			}
 		}
-
 		final String tokenPhone = myinfoMobilePhone.getText().toString();
 		if (tokenPhone.trim().isEmpty()) {
 			myinfoMobilePhone.requestFocusFromTouch();
@@ -185,13 +327,14 @@ public class MyInfoActivity extends BaseActivity {
 						if (result.isOk()) {
 							showToast("保存成功");
 							// 回写数据
+							DataManager.getUserInfo().setNickName(name);
 							DataManager.getUserInfo().setMobileNum(tokenPhone);
 							returnSettingsAcitivity();
 						} else {
 							showToast(result.getMessage());
-							if (ConstantConfig.Debug) {
-								// showResponseMsg(result.Code);
-							}
+							// if (ConstantConfig.Debug) {
+							// showResponseMsg(result.Code);
+							// }
 						}
 					}
 
@@ -199,6 +342,8 @@ public class MyInfoActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});

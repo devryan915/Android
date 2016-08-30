@@ -275,26 +275,30 @@ public class GPSUtil {
 	private static void cdma(ArrayList<LocationCellInfo> cellInfos,
 			TelephonyManager tm) {
 		CdmaCellLocation location = (CdmaCellLocation) tm.getCellLocation();
-		LocationCellInfo info = new LocationCellInfo();
-		info.setCellId(location.getBaseStationId());
-		info.setLocationAreaCode(location.getNetworkId());
-		info.setMobileNetworkCode(String.valueOf(location.getSystemId()));
-		info.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
-		info.setRadioType("cdma");
-		cellInfos.add(info);
-
+		if (location != null) {
+			LocationCellInfo info = new LocationCellInfo();
+			info.setCellId(location.getBaseStationId());
+			info.setLocationAreaCode(location.getNetworkId());
+			info.setMobileNetworkCode(String.valueOf(location.getSystemId()));
+			info.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
+			info.setRadioType("cdma");
+			cellInfos.add(info);
+		}
 		// 前面获取到的都是单个基站的信息，接下来再获取周围邻近基站信息以辅助通过基站定位的精准性
 		// 获得邻近基站信息
 		List<NeighboringCellInfo> list = tm.getNeighboringCellInfo();
-		int size = list.size();
-		for (int i = 0; i < size; i++) {
-			LocationCellInfo cell = new LocationCellInfo();
-			cell.setCellId(list.get(i).getCid());
-			cell.setLocationAreaCode(location.getNetworkId());
-			cell.setMobileNetworkCode(String.valueOf(location.getSystemId()));
-			cell.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
-			cell.setRadioType("cdma");
-			cellInfos.add(cell);
+		if (list != null) {
+			int size = list.size();
+			for (int i = 0; i < size; i++) {
+				LocationCellInfo cell = new LocationCellInfo();
+				cell.setCellId(list.get(i).getCid());
+				cell.setLocationAreaCode(location.getNetworkId());
+				cell.setMobileNetworkCode(String.valueOf(location.getSystemId()));
+				cell.setMobileCountryCode(tm.getNetworkOperator().substring(0,
+						3));
+				cell.setRadioType("cdma");
+				cellInfos.add(cell);
+			}
 		}
 	}
 
@@ -307,26 +311,31 @@ public class GPSUtil {
 	private static void mobile(ArrayList<LocationCellInfo> cellInfos,
 			TelephonyManager tm) {
 		GsmCellLocation location = (GsmCellLocation) tm.getCellLocation();
-		LocationCellInfo info = new LocationCellInfo();
-		info.setCellId(location.getCid());
-		info.setLocationAreaCode(location.getLac());
-		info.setMobileNetworkCode(tm.getNetworkOperator().substring(3, 5));
-		info.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
-		info.setRadioType("gsm");
-		cellInfos.add(info);
-
+		if (location != null) {
+			LocationCellInfo info = new LocationCellInfo();
+			info.setCellId(location.getCid());
+			info.setLocationAreaCode(location.getLac());
+			info.setMobileNetworkCode(tm.getNetworkOperator().substring(3, 5));
+			info.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
+			info.setRadioType("gsm");
+			cellInfos.add(info);
+		}
 		// 前面获取到的都是单个基站的信息，接下来再获取周围邻近基站信息以辅助通过基站定位的精准性
 		// 获得邻近基站信息
 		List<NeighboringCellInfo> list = tm.getNeighboringCellInfo();
-		int size = list.size();
-		for (int i = 0; i < size; i++) {
-			LocationCellInfo cell = new LocationCellInfo();
-			cell.setCellId(list.get(i).getCid());
-			cell.setLocationAreaCode(location.getLac());
-			cell.setMobileNetworkCode(tm.getNetworkOperator().substring(3, 5));
-			cell.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
-			cell.setRadioType("gsm");
-			cellInfos.add(cell);
+		if (list != null) {
+			int size = list.size();
+			for (int i = 0; i < size; i++) {
+				LocationCellInfo cell = new LocationCellInfo();
+				cell.setCellId(list.get(i).getCid());
+				cell.setLocationAreaCode(location.getLac());
+				cell.setMobileNetworkCode(tm.getNetworkOperator().substring(3,
+						5));
+				cell.setMobileCountryCode(tm.getNetworkOperator().substring(0,
+						3));
+				cell.setRadioType("gsm");
+				cellInfos.add(cell);
+			}
 		}
 	}
 
@@ -339,31 +348,34 @@ public class GPSUtil {
 	private static void union(ArrayList<LocationCellInfo> cellInfos,
 			TelephonyManager tm) {
 		GsmCellLocation location = (GsmCellLocation) tm.getCellLocation();
-		if (location == null)
-			return;
-		LocationCellInfo info = new LocationCellInfo();
-		// 经过测试，获取联通数据以下两行必须去掉，否则会出现错误，错误类型为JSON Parsing Error
-		// info.setMobileNetworkCode(tm.getNetworkOperator().substring(3, 5));
-		// info.setMobileCountryCode(tm.getNetworkOperator().substring(0, 3));
-		info.setCellId(location.getCid());
-		info.setLocationAreaCode(location.getLac());
-		info.setMobileNetworkCode("");
-		info.setMobileCountryCode("");
-		info.setRadioType("gsm");
-		cellInfos.add(info);
-
+		if (location != null) {
+			LocationCellInfo info = new LocationCellInfo();
+			// 经过测试，获取联通数据以下两行必须去掉，否则会出现错误，错误类型为JSON Parsing Error
+			// info.setMobileNetworkCode(tm.getNetworkOperator().substring(3,
+			// 5));
+			// info.setMobileCountryCode(tm.getNetworkOperator().substring(0,
+			// 3));
+			info.setCellId(location.getCid());
+			info.setLocationAreaCode(location.getLac());
+			info.setMobileNetworkCode("");
+			info.setMobileCountryCode("");
+			info.setRadioType("gsm");
+			cellInfos.add(info);
+		}
 		// 前面获取到的都是单个基站的信息，接下来再获取周围邻近基站信息以辅助通过基站定位的精准性
 		// 获得邻近基站信息
 		List<NeighboringCellInfo> list = tm.getNeighboringCellInfo();
-		int size = list.size();
-		for (int i = 0; i < size; i++) {
-			LocationCellInfo cell = new LocationCellInfo();
-			cell.setCellId(list.get(i).getCid());
-			cell.setLocationAreaCode(location.getLac());
-			cell.setMobileNetworkCode("");
-			cell.setMobileCountryCode("");
-			cell.setRadioType("gsm");
-			cellInfos.add(cell);
+		if (list != null) {
+			int size = list.size();
+			for (int i = 0; i < size; i++) {
+				LocationCellInfo cell = new LocationCellInfo();
+				cell.setCellId(list.get(i).getCid());
+				cell.setLocationAreaCode(location.getLac());
+				cell.setMobileNetworkCode("");
+				cell.setMobileCountryCode("");
+				cell.setRadioType("gsm");
+				cellInfos.add(cell);
+			}
 		}
 	}
 

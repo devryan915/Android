@@ -10,6 +10,7 @@ import android.view.View;
 import com.broadchance.manager.PreferencesManager;
 import com.broadchance.manager.ResponseCodeMsgManager;
 import com.broadchance.manager.SkinManager;
+import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.SSXLXService;
 import com.broadchance.utils.UIUtil;
 
@@ -18,6 +19,7 @@ public class BaseActivity extends Activity implements View.OnClickListener {
 	// protected boolean NoTitle = false;
 	protected Resources localRes;
 	protected SSXLXService serverService;
+	protected ClientGameService clientService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class BaseActivity extends Activity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		localRes = SkinManager.getInstance().getLocalResources();
 		serverService = SSXLXService.getInstance();
+		clientService = ClientGameService.getInstance();
 	}
 
 	protected String getSkinString(int resNameId) {

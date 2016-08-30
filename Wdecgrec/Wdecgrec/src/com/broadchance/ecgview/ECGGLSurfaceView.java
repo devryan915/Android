@@ -5,6 +5,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Date;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -30,13 +33,22 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	private final static String TAG = ECGGLSurfaceView.class.getSimpleName();
 	// 走纸速度5mm/mv 12.5mm/s
 	public static final int ECG_MODE_LOW = 1;
+	/**
+	 * 每个格子多少个点
+	 */
 	public static final int ECG_MODE_LOW_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 12.5);
 	// 默认走纸速度10mm/mv 25mm/s
 	public static final int ECG_MODE_NORMAL = 2;
+	/**
+	 * 每个格子多少个点
+	 */
 	public static final int ECG_MODE_NORMAL_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 25);
 
 	// 走纸速度20mm/mv 50mm/s
 	public static final int ECG_MODE_HIGH = 3;
+	/**
+	 * 每个格子多少个点
+	 */
 	public static final int ECG_MODE_HIGH_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 50);
 
 	public OpenGLECGGrid grid;
@@ -47,7 +59,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	 * 单位mv的ecg电压差值即1mv对应ecg有效数据(分析样本数据散落值可以得出分布率最高的相对较大电压为最大电压，分布率相对较小电压为最小电压)
 	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值
 	 */
-	private static final int BASEFACTOR = 194;
+	public static Float BASEFACTOR = 200 / 0.65f;
 	/**
 	 * 电压系数 每个ecg数据单位值对应的opengl坐标值
 	 */
@@ -63,15 +75,22 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	int pointNumber = 0;
 
 	// public static final int MAX_POINT = 750;
-	public static final int MAX_POINT = 750 * 3;
+	// public static final int MAX_POINT = 750 * 3;
 
 	// float[] vertexArray = new float[750 * 3];
-	float[] vertexArray = new float[MAX_POINT * 3];
+	float[] vertexArray = null;
 
-	float[] highlightPointVert = new float[1 * 3];
-	int highlightPointPosition = 169;
+	// float[] highlightPointVert = new float[BLACK_LINE_POINTS * 3];
+	// int highlightPointPosition = 169;
 
+	/**
+	 * 当前所有点数
+	 */
 	private int currTotalPointNumber = 0;
+	/**
+	 * 当前更新点数的下标
+	 */
+	// private AtomicInteger curPointIndex = new AtomicInteger(0);
 
 	boolean normalized = false;
 	float maxY;
@@ -82,22 +101,23 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 
 	float middleY;
 
-	int countDraw = 0;
+	// int countDraw = 0;
 
-	CanvasReadyCallback callback = null;
+	// CanvasReadyCallback callback = null;
 
-	private Date drawDate = null;
+	// private Date drawDate = null;
 
 	private int mEcgMode = ECG_MODE_NORMAL;
+	private final static int BLACK_LINE_POINTS = 20;
 
 	/**
 	 * grid小格线颜色
 	 */
-	int gridLightColor = 0XFFFFFFFF;
+	public static int gridLightColor = 0XFFFFFFFF;
 	/**
 	 * grid中格线颜色
 	 */
-	int gridDarkColor = 0XFFFFFFFF;
+	public static int gridDarkColor = 0XFFFFFFFF;
 	/**
 	 * grid背景色
 	 */
@@ -105,7 +125,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	/**
 	 * 心电曲线颜色
 	 */
-	int ecgLineColor = 0XFF00FF00;
+	public static int ecgLineColor = 0XFF00FF00;
 	/**
 	 * 网格左右边距
 	 */
@@ -114,6 +134,19 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	 * 每英寸mm
 	 */
 	private final static float mmPerInch = 25.4f;
+	/**
+	 * 缓存的点，用于计算平均差值
+	 */
+	private LinkedBlockingQueue<Integer> vertextQueue = new LinkedBlockingQueue<Integer>();
+	/**
+	 * 
+	 */
+	private Integer[] queueArray;
+
+	/**
+	 * 必须保留足够大的点数，保证在这个范围内能够得到稳定的平均差值
+	 */
+	// private static int MAXVERTEXT = 125 * 3;
 
 	public ECGGLSurfaceView(Context context) {
 		super(context);
@@ -261,131 +294,146 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 		// perECGSize = (top_y - bottom_y) / (17 * gridVNum);
 	}
 
-	public void setCallback(CanvasReadyCallback callback) {
-		this.callback = callback;
-	}
+	// public void setCallback(CanvasReadyCallback callback) {
+	// this.callback = callback;
+	// }
 
-	public void drawECG(Integer[] data, int pointCount) {
-		if (pointCount == 0)
-			return;
-
-		// normalized = true;
-
-		// 用于存放data数组中实际的最大值和最小值
-		float maxDataValue = 0.0f;
-		float minDataValue = 0.0f;
-
-		// 用于存放最大的几何坐标值和最小的几何坐标值
-		float max = 0.0f;
-		float min = 0.0f;
-
-		// yGridValue用于表示每个单元格之间对应的实际电压差
-		// 每个单位的ECG数值对应的电压差为0.006V
-		float yGridValue = 0.0f;
-		int maxIdx = pointCount - 1;
-		int maxIIdx = pointCount - 2;
-		if (!normalized && pointCount >= 85) {
-			if (callback != null) {
-				callback.notifyCanvasReady();
-			}
-
-			maxY = data[maxIdx];
-			minY = data[maxIdx];
-			for (int i = maxIIdx; i > -1; i--) {
-				if (data[i] > maxY)
-					maxY = data[i];
-				if (data[i] < minY)
-					minY = data[i];
-			}
-
-			maxDataValue = maxY;
-			minDataValue = minY;
-
-			prevMaxY = maxY;
-			prevMinY = minY;
-
-			middleY = minY + (maxY - minY) * 0.5f;
-
-			normalized = true;
-		} else if (normalized) {
-			// 检查是否需要重新归一化
-			maxY = data[maxIdx];
-			minY = data[maxIdx];
-			for (int i = maxIIdx; i > -1; i--) {
-				if (data[i] > maxY)
-					maxY = data[i];
-				if (data[i] < minY)
-					minY = data[i];
-			}
-
-			// 保存data数组中的最大值和最小值
-			maxDataValue = maxY;
-			minDataValue = minY;
-
-			if ((maxY - prevMaxY > ((prevMaxY - prevMinY) * 0.25f))
-					|| (prevMinY - minY > ((prevMaxY - prevMinY) * 0.25f))) {
-				// 重新归一化
-				prevMaxY = maxY;
-				prevMinY = minY;
-
-				middleY = minY + (maxY - minY) * 0.5f;
-			} else if (((prevMaxY - maxY) > ((prevMaxY - prevMinY) * 0.25f))
-					|| ((minY - prevMinY) > ((prevMaxY - prevMinY) * 0.25f))) {
-				// 重新归一化
-				prevMaxY = maxY;
-				prevMinY = minY;
-				middleY = minY + (maxY - minY) * 0.5f;
-			} else {
-				// maxY = prevMaxY;
-				// minY = prevMinY;
+	private void normalizePoints(Integer[] data) {
+		int pointCount = data.length;
+		for (int i = 0; i < pointCount; i++) {
+			vertextQueue.offer(data[i]);
+		}
+		int length = vertextQueue.size() - currTotalPointNumber * 1;
+		for (int i = 0; i < length; i++) {
+			vertextQueue.poll();
+		}
+		queueArray = new Integer[0];
+		queueArray = vertextQueue.toArray(queueArray);
+		float premaxY = queueArray[0];
+		float preminY = queueArray[0];
+		for (int i = 0; i < queueArray.length; i++) {
+			if (queueArray[i] > premaxY)
+				premaxY = queueArray[i];
+			if (queueArray[i] < preminY)
+				preminY = queueArray[i];
+		}
+		float postmaxY = queueArray[0];
+		float postminY = queueArray[0];
+		if (queueArray.length > length && length > 0) {
+			postmaxY = queueArray[length];
+			postminY = queueArray[length];
+			for (int i = length; i < queueArray.length; i++) {
+				if (queueArray[i] > postmaxY)
+					postmaxY = queueArray[i];
+				if (queueArray[i] < postminY)
+					postminY = queueArray[i];
 			}
 		}
+		// maxY = premaxY * 0.7f + postmaxY * 0.3f;
+		// minY = preminY * 0.7f + postminY * 0.3f;
+		maxY = Math.max(premaxY, postmaxY);
+		minY = Math.max(preminY, postminY);
+		// System.out.println(minY + (maxY - minY) * 0.5f);
+	}
 
-		if (normalized) {
-			// 归一化
-			float delta_y = max_y - min_y;
-			float deltaY = maxY - minY;
-			// if (ConstantConfig.Debug) {
-			// LogUtil.d(TAG, "maxY " + maxY + " minY " + minY + " deltaY "
-			// + deltaY);
-			// }
-			if (Float.compare(deltaY, 0) == 0) {
-				for (int i = 0; i < pointCount; i++) {
-					vertexArray[i * 3 + 1] = min_y + 0.5f * delta_y;
+	private Object objectDrawLock = new Object();
+
+	// private AtomicBoolean atomicBooleanDrawLock = new AtomicBoolean(false);
+	// private int chkCount = 0;
+
+	public void drawECG(Integer[] data) {
+		synchronized (objectDrawLock) {
+			try {
+				// long useTime = System.currentTimeMillis();
+				int pointCount = data.length;
+				if (pointCount == 0)
+					return;
+				// normalized = true;
+
+				// 用于存放data数组中实际的最大值和最小值
+				// float maxDataValue = 0.0f;
+				// float minDataValue = 0.0f;
+
+				// 用于存放最大的几何坐标值和最小的几何坐标值
+				// float max = 0.0f;
+				// float min = 0.0f;
+
+				// yGridValue用于表示每个单元格之间对应的实际电压差
+				// 每个单位的ECG数值对应的电压差为0.006V
+				// float yGridValue = 0.0f;
+				// int maxIdx = 0;
+				// int maxIIdx = 1;
+				if (!normalized) {
+					// if (callback != null) {
+					// callback.notifyCanvasReady();
+					// }
+
+					maxY = data[0];
+					minY = data[0];
+
+					// maxDataValue = maxY;
+					// minDataValue = minY;
+					normalizePoints(data);
+					prevMaxY = maxY;
+					prevMinY = minY;
+
+					middleY = minY + (maxY - minY) * 0.5f;
+					normalized = true;
+				} else if (normalized) {
+					// 检查是否需要重新归一化
+					maxY = data[0];
+					minY = data[0];
+					normalizePoints(data);
+					int dealtMaxY = Math.abs((int) (prevMaxY - maxY));
+					int dealtMinY = Math.abs((int) (prevMinY - minY));
+					if (dealtMaxY > Math.abs((int) (prevMaxY * 0.25f))
+							|| dealtMinY > Math.abs((int) (prevMinY * 0.25f))) {
+						prevMaxY = maxY;
+						prevMinY = minY;
+					}
+					middleY = prevMinY + (prevMaxY - prevMinY) * 0.5f;
 				}
-				yGridValue = 0.0f;
-			} else {
-				// for (int i = 0; i < pointCount; i++) {
-				// vertexArray[i * 3 + 1] = middle_y + (data[i] - middleY)
-				// * perECGSize;
-				// }
 
-				for (int i = 0; i < pointCount; i++) {
-					vertexArray[i * 3 + 1] = middle_y
-							+ (data[maxIdx - i] - middleY) * factorV;
+				if (normalized) {
+					// for (int i = 0; i < pointCount; i++) {
+					// int curPoint = curPointIndex.get();
+					// vertexArray[curPoint * 3 + 1] = middle_y
+					// + (data[i] - middleY) * factorV;
+					// // 限定边界，最小不超过下限，最大不超过上限
+					// vertexArray[curPoint * 3 + 1] = Math.min(
+					// vertexArray[curPoint * 3 + 1], grid.VLINE_ENDY);
+					// vertexArray[curPoint * 3 + 1] = Math.max(
+					// vertexArray[curPoint * 3 + 1],
+					// grid.VLINE_STARTY);
+					// curPointIndex.getAndIncrement();
+					// curPointIndex.set(curPointIndex.get()
+					// % currTotalPointNumber);
+					// }
+					for (int i = currTotalPointNumber - 1, j = queueArray.length - 1; i >= 0
+							&& j >= 0; i--, j--) {
+						// 将原来的数据往前
+						vertexArray[i * 3 + 1] = middle_y
+								+ (queueArray[j] - middleY) * factorV;
+						// 限定边界，最小不超过下限，最大不超过上限
+						vertexArray[i * 3 + 1] = Math.min(
+								vertexArray[i * 3 + 1], grid.VLINE_ENDY);
+						vertexArray[i * 3 + 1] = Math.max(
+								vertexArray[i * 3 + 1], grid.VLINE_STARTY);
+					}
+					// LogUtil.d(TAG, "drawEcg data：" + "prevMaxY " + prevMaxY
+					// + " prevMinY" + prevMinY + "  当前中线：" + middleY
+					// + " currTotalPointNumber/currTotalPointNumber："
+					// + currTotalPointNumber + "/" + currTotalPointNumber);
 				}
-
-				// for (int i = 0; i < pointCount; i++) {
-				// vertexArray[i * 3 + 1] = (min_y + (data[i] - minY))
-				// * deltaY * factorV;
-				// }
-				//
-				// max = min_y + (delta_y / deltaY) * (maxDataValue - minY);
-				// min = min_y + (delta_y / deltaY) * (minDataValue - minY);
-				//
-				// if (Float.compare(max - min, 0) == 0) {
-				// yGridValue = 0.0f;
-				// } else {
-				// yGridValue = (maxDataValue - minDataValue) * 0.006f
-				// / ((max - min) / grid.getxUnitCellSize());
-				// }
-			}
-			pointNumber = pointCount;
-
-			if (callback != null && callback.stopPainting()) {
-				callback.onPaintingStopped(yGridValue);
-			} else {
+				if (pointNumber < currTotalPointNumber) {
+					pointNumber += pointCount;
+					pointNumber = Math.min(pointNumber, currTotalPointNumber);
+				}
 				requestRender();
+			} catch (Exception e) {
+				LogUtil.e(TAG, e);
+			} finally {
+				// atomicBooleanDrawLock.set(false);
 			}
 		}
 	}
@@ -398,29 +446,15 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 		this.currTotalPointNumber = currTotalPointNumber;
 	}
 
-	public void reset() {
-		pointNumber = 0;
-		normalized = false;
-		requestRender();
-	}
+	// public void reset() {
+	// pointNumber = 0;
+	// normalized = false;
+	// requestRender();
+	// }
 
 	public void DrawScene(GL10 gl) {
-		if (grid == null)
+		if (grid == null || vertexArray == null)
 			return;
-		if (countDraw == 0) {
-			drawDate = new Date();
-		} else {
-			Date now = new Date();
-			long ts = now.getTime() - drawDate.getTime();
-			System.out.println("action DrawScene calculate date[" + ts + "]");
-			if (ts > 100) {
-				System.out.println("action DrawScene calculate too long date["
-						+ ts + "]");
-			}
-			drawDate = now;
-		}
-		countDraw++;
-		System.out.println("action DrawScene start[" + countDraw + "]");
 		float[] bgColor = CommonUtil.colorToRGB(gridBgColor);
 		gl.glClearColor(bgColor[1], bgColor[2], bgColor[3], bgColor[0]);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
@@ -429,29 +463,36 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		// 画网格
 		grid.drawGrid(gl, gridLightColor, gridDarkColor);
+		if (pointNumber > 0) {
+			float[] ecglineColor = CommonUtil.colorToRGB(ecgLineColor);
+			gl.glColor4f(ecglineColor[1], ecglineColor[2], ecglineColor[3],
+					ecglineColor[0]);
+			gl.glLineWidth(2.0f);
 
-		float[] ecglineColor = CommonUtil.colorToRGB(ecgLineColor);
-		gl.glColor4f(ecglineColor[1], ecglineColor[2], ecglineColor[3],
-				ecglineColor[0]);
-		gl.glLineWidth(2.0f);
+			gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertex);
+			// int curPoint = curPointIndex.get();
+			gl.glDrawArrays(GL10.GL_LINE_STRIP,
+					Math.max(currTotalPointNumber - pointNumber, 0),
+					pointNumber);
+			// int nStartPosition = curPoint + BLACK_LINE_POINTS;
+			// int nPoints = currTotalPointNumber - nStartPosition;
+			// if (nPoints > 0 && pointNumber > nStartPosition) {
+			// gl.glDrawArrays(GL10.GL_LINE_STRIP, nStartPosition, nPoints);
+			// }
+			// if (normalized && pointNumber == currTotalPointNumber) {
+			// drawHighlightPoint(gl);
+			// }
 
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertex);
-		gl.glDrawArrays(GL10.GL_LINE_STRIP, 0, pointNumber);
-
-		if (normalized && pointNumber > highlightPointPosition) {
-			drawHighlightPoint(gl);
+			// if (callback != null && callback.getCapture()) {
+			// System.out.println("action ECGGLSurfaceView width, height:"
+			// + this.getWidth() + "," + this.getHeight());
+			// Bitmap bitmap = savePixels(0, 0, this.getWidth(),
+			// this.getHeight(), gl);
+			// callback.onCaptured(bitmap);
+			// bitmap = null;
+			// }
+			gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		}
-
-		if (callback != null && callback.getCapture()) {
-			System.out.println("action ECGGLSurfaceView width, height:"
-					+ this.getWidth() + "," + this.getHeight());
-			Bitmap bitmap = savePixels(0, 0, this.getWidth(), this.getHeight(),
-					gl);
-			callback.onCaptured(bitmap);
-			bitmap = null;
-		}
-
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 
 	public static Bitmap savePixels(int x, int y, int w, int h, GL10 gl) {
@@ -478,69 +519,75 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 
 	// private float mPosition=-0.5f;
 	private void initVertexArray() {
-		currX = grid.HLINE_ENDX;
+		currX = grid.HLINE_STARTX;
 		getDeltaX();
-
-		for (int i = 0; i < MAX_POINT; i++) {
+		for (int i = 0; i < currTotalPointNumber; i++) {
 			vertexArray[i * 3] = currX;
-			currX = currX - deltaX;
-
+			currX = currX + deltaX;
 			vertexArray[i * 3 + 2] = 0;
 		}
 
-		if (currTotalPointNumber != 0) {
-			highlightPointPosition = currTotalPointNumber / 2;
-		} else {
-			highlightPointPosition = 350;
-		}
+		// if (currTotalPointNumber != 0) {
+		// highlightPointPosition = currTotalPointNumber / 2;
+		// } else {
+		// highlightPointPosition = 350;
+		// }
+		// currX = grid.HLINE_STARTX;
+		// for (int i = 0; i < BLACK_LINE_POINTS; i++) {
+		// highlightPointVert[i * 3] = currX;
+		// currX = currX + deltaX;
+		//
+		// highlightPointVert[i * 3 + 2] = 0;
+		// }
+		// highlightPointVert[0] = vertexArray[highlightPointPosition * 3];
+		// highlightPointVert[2] = vertexArray[highlightPointPosition * 3 + 2];
 
-		highlightPointVert[0] = vertexArray[highlightPointPosition * 3];
-		highlightPointVert[2] = vertexArray[highlightPointPosition * 3 + 2];
-
-		pointNumber = 0;
+		// pointNumber = 0;
 		normalized = false;
 	}
 
-	private void drawHighlightPoint(GL10 gl) {
-		highlightPointVert[1] = vertexArray[highlightPointPosition * 3 + 1];
+	// private void drawHighlightPoint(GL10 gl) {
+	// // highlightPointVert[1] = vertexArray[highlightPointPosition * 3 + 1];
+	//
+	// ByteBuffer vertHPointBuffer = ByteBuffer
+	// .allocateDirect(highlightPointVert.length * 4);
+	// vertHPointBuffer.order(ByteOrder.nativeOrder());
+	// FloatBuffer vertexHPointer = vertHPointBuffer.asFloatBuffer();
+	// vertexHPointer.put(highlightPointVert);
+	// vertexHPointer.position(0);
+	//
+	// // gl.glColor4f(60.0f / 256, 75.0f/ 256, 113.0f /256, 1.0f);
+	// // gl.glColor4f(0.5f, 1.5f, 1.5f, 1.0f);
+	// gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	// gl.glPointSize(9f);
+	//
+	// gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexHPointer);
+	// gl.glDrawArrays(GL10.GL_POINTS, 0, BLACK_LINE_POINTS);
+	// }
 
-		ByteBuffer vertHPointBuffer = ByteBuffer
-				.allocateDirect(highlightPointVert.length * 4);
-		vertHPointBuffer.order(ByteOrder.nativeOrder());
-		FloatBuffer vertexHPointer = vertHPointBuffer.asFloatBuffer();
-		vertexHPointer.put(highlightPointVert);
-		vertexHPointer.position(0);
-
-		// gl.glColor4f(60.0f / 256, 75.0f/ 256, 113.0f /256, 1.0f);
-		// gl.glColor4f(0.5f, 1.5f, 1.5f, 1.0f);
-		gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-		gl.glPointSize(9f);
-
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexHPointer);
-		gl.glDrawArrays(GL10.GL_POINTS, 0, 1);
-	}
-
-	public interface CanvasReadyCallback {
-		public void notifyCanvasReady();
-
-		public boolean getCapture();
-
-		public void onCaptured(Bitmap bitmap);
-
-		public boolean stopPainting();
-
-		public void onPaintingStopped(float yGridValue);
-	}
-
-	public void redrawForCapture() {
-		requestRender();
-	}
+	// public interface CanvasReadyCallback {
+	// public void notifyCanvasReady();
+	//
+	// public boolean getCapture();
+	//
+	// public void onCaptured(Bitmap bitmap);
+	//
+	// public boolean stopPainting();
+	//
+	// public void onPaintingStopped(float yGridValue);
+	// }
+	//
+	// public void redrawForCapture() {
+	// requestRender();
+	// }
 
 	public void setEcgMode(int mode) {
 		if (ECG_MODE_NORMAL == mode || ECG_MODE_LOW == mode
 				|| ECG_MODE_HIGH == mode) {
 			mEcgMode = mode;
 			initVertexArray();
+			pointNumber = 0;
+			// curPointIndex.set(0);
 		}
 	}
 
@@ -567,5 +614,6 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 					* ECG_MODE_NORMAL_PERUNIT_POINT;
 			factorV = defaultFactor;
 		}
+		vertexArray = new float[currTotalPointNumber * 3];
 	}
 }

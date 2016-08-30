@@ -1,31 +1,35 @@
 package com.broadchance.wdecgrec.login;
 
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.Dialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.serverentity.CurVerResponse;
+import com.broadchance.entity.serverentity.ServerResponse;
+import com.broadchance.entity.serverentity.UIDevice;
+import com.broadchance.entity.serverentity.UIDeviceResponseList;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
-import com.broadchance.manager.PreferencesManager;
 import com.broadchance.manager.SettingsManager;
 import com.broadchance.manager.SkinManager;
 import com.broadchance.utils.AESEncryptor;
@@ -34,14 +38,16 @@ import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.GPSUtil;
 import com.broadchance.utils.LogUtil;
+import com.broadchance.utils.NetUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.HttpReqCallBack;
 import com.broadchance.wdecgrec.R;
+import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GpsService;
-import com.broadchance.wdecgrec.settings.SettingsActivity;
+import com.broadchance.wdecgrec.test.Test;
 import com.broadchance.wdecgrec.widget.LabelEditText;
 
 public class LoginActivity extends BaseActivity {
@@ -55,18 +61,35 @@ public class LoginActivity extends BaseActivity {
 	private Button buttonForgotPwd;
 	private Dialog dialogAppUpdate;
 	private final static int REQUEST_GPS_CODE = 188;
+	LoginActivity current;
+	private UIUserInfoLogin user;
+	Dialog offDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		getNewVer();
+		// getNewVer();
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		buttonLogin.setOnClickListener(this);
 		buttonRegister = (Button) findViewById(R.id.buttonResetPwd);
 		buttonRegister.setOnClickListener(this);
 		editTextUserName = (LabelEditText) findViewById(R.id.editTextUserName);
 		editTextPwd = (LabelEditText) findViewById(R.id.editTextPwd);
+		editTextPwd.setOnEditorActionListener(new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				switch (actionId) {
+				case EditorInfo.IME_ACTION_GO:
+					login();
+					break;
+				default:
+					break;
+				}
+				return false;
+			}
+		});
 		checkBoxSavePwd = (CheckBox) findViewById(R.id.checkBoxSavePwd);
 		buttonForgotPwd = (Button) findViewById(R.id.buttonForgotPwd);
 		buttonForgotPwd.setOnClickListener(this);
@@ -81,7 +104,7 @@ public class LoginActivity extends BaseActivity {
 						}
 					}
 				});
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		user = DataManager.getUserInfo();
 		if (user != null) {
 			editTextUserName.setText(user.getLoginName());
 			if (!user.getLoginName().isEmpty()) {
@@ -103,8 +126,16 @@ public class LoginActivity extends BaseActivity {
 		}
 		TextView textViewVerionValue = (TextView) findViewById(R.id.textViewVerionValue);
 		textViewVerionValue.setText(AppApplication.curVer);
-		initLocation();
-		new AppDownLoadUtil().showAppUpdateDialog(LoginActivity.this);
+		// 暂时取消gps定位
+		// boolean gps = SettingsManager.getInstance().getSettingsGPS();
+		// if (gps) {
+		// initLocation();
+		// }
+		// 暂时取消app更新
+		// new AppDownLoadUtil().showAppUpdateDialog(LoginActivity.this);
+		if (ConstantConfig.Debug) {
+			new Test().test();
+		}
 	}
 
 	/**
@@ -153,6 +184,8 @@ public class LoginActivity extends BaseActivity {
 			public void doError(String result) {
 				if (ConstantConfig.Debug) {
 					showToast(result);
+				} else {
+					showToast("操作失败");
 				}
 			}
 		});
@@ -163,12 +196,125 @@ public class LoginActivity extends BaseActivity {
 		startActivity(intent);
 	}
 
-	private void login() {
+	private void logon() {
+		if (current != null)
+			return;
+		current = this;
 		final String loginName = editTextUserName.getText().toString();
 		if (loginName.isEmpty()) {
 			showToast("请输入用户名");
 			// 重新获取焦点
 			editTextUserName.requestFocusFromTouch();
+			current = null;
+			return;
+		}
+		final JSONObject param;
+		try {
+			param = new JSONObject();
+			param.put("mobile", loginName);
+			clientService.getKey(param, new HttpReqCallBack<ServerResponse>() {
+
+				@Override
+				public Activity getReqActivity() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public void doSuccess(ServerResponse result) {
+					if (result.isOK()) {
+						try {
+							ConstantConfig.CERTKEY = result.getDATA()
+									.getString("certkey");
+							param.put("holtermobile", loginName);
+							_logon(param);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					} else {
+						showToast(result.getErrmsg());
+						current = null;
+					}
+				}
+
+				@Override
+				public void doError(String result) {
+					showToast(result);
+					current = null;
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void _logon(final JSONObject pram) {
+
+		clientService.login(pram, new HttpReqCallBack<ServerResponse>() {
+
+			@Override
+			public Activity getReqActivity() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void doSuccess(ServerResponse result) {
+				if (result.isOK()) {
+					try {
+						ConstantConfig.ORDERNO = result.getDATA().getString(
+								"orderno");
+						UIUserInfoLogin user = new UIUserInfoLogin();
+						String logName = pram.getString("holtermobile");
+						user.setUserID(logName);
+						user.setAccess_token(ConstantConfig.ORDERNO);
+						user.setLoginName(logName);
+						user.setNickName(pram.getString("holtermobile"));
+						user.setMacAddress(result.getDATA().getString("device"));
+						user.isOverTime = 0;
+						if (user.isOverTime == 0) {
+							// user.setMacAddress("D4:F5:13:79:75:FA");
+						}
+						DataManager.saveUser(user, "mima");
+						// 初始化用户皮肤
+						SkinManager.getInstance().initSkin();
+						if (BluetoothLeService.getInstance() != null) {
+							BluetoothLeService.getInstance().disconnect();
+							BluetoothLeService.getInstance().connect();
+						}
+						finish();
+						// Intent intent = new Intent(LoginActivity.this,
+						// EcgActivity.class);
+						Intent intent = new Intent(LoginActivity.this,
+								ModeActivity.class);
+						startActivity(intent);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					showToast(result.getErrmsg());
+					current = null;
+				}
+			}
+
+			@Override
+			public void doError(String result) {
+				showToast(result);
+				current = null;
+			}
+		});
+	}
+
+	private void login() {
+		if (current != null)
+			return;
+		current = this;
+		final String loginName = editTextUserName.getText().toString();
+		if (loginName.isEmpty()) {
+			showToast("请输入用户名");
+			// 重新获取焦点
+			editTextUserName.requestFocusFromTouch();
+			current = null;
 			return;
 		}
 		final String pwd = editTextPwd.getText().toString();
@@ -176,11 +322,12 @@ public class LoginActivity extends BaseActivity {
 			showToast("请输入密码");
 			// 重新获取焦点
 			editTextUserName.requestFocusFromTouch();
+			current = null;
 			return;
 		}
 		// 保存用户名
 		// putPreferencesString(ConstantConfig.PREFERENCES_USERNAME, loginName);
-		new ClientGameService().loginServer(loginName, pwd,
+		ClientGameService.getInstance().loginServer(loginName, pwd,
 				new HttpReqCallBack<UIUserInfoLogin>() {
 
 					@Override
@@ -190,46 +337,175 @@ public class LoginActivity extends BaseActivity {
 
 					@Override
 					public void doSuccess(UIUserInfoLogin result) {
-						UIUserInfoLogin user = DataManager.getUserInfo();
-						if (user != null
-								&& !user.getLoginName().equals(
-										result.getLoginName())) {
-							SettingsManager.getInstance().setDeviceNumber("");
-							if (BluetoothLeService.getInstance() != null) {
-								BluetoothLeService.getInstance().disconnect();
-								BluetoothLeService.getInstance().connect();
-							}
+						if (result.isOk()) {
+							// user = DataManager.getUserInfo();
+							// if (user != null
+							// && !user.getLoginName().equals(
+							// result.getLoginName())) {
+							//
+							// }
+							user = result;
+							// if (result.isOk()) {
+							ConstantConfig.AUTHOR_TOKEN = result
+									.getAccess_token();
+							serverService.GetUserDevice(
+									result.getUserID(),
+									new HttpReqCallBack<UIDeviceResponseList>() {
+
+										@Override
+										public Activity getReqActivity() {
+											return null;
+										}
+
+										@Override
+										public void doSuccess(
+												UIDeviceResponseList result) {
+											if (result.isOk()) {
+												try {
+													user.setMacAddress(null);
+													List<UIDevice> devices = result
+															.getData();
+													if (devices != null
+															&& devices.size() > 0) {
+														UIDevice device = devices
+																.get(0);
+														user.isOverTime = device
+																.getIsOverTime() ? 1
+																: 0;
+														user.isOverTime = 0;
+														if (user.isOverTime == 0) {
+															user.setMacAddress(device
+																	.getMAC());
+															// 74:DA:EA:A0:64:98
+															user.setMacAddress("D4:F5:13:79:75:FA");
+														}
+													}
+													// 初始化用户皮肤
+													SkinManager.getInstance()
+															.initSkin();
+													// 保存密码
+													String pwdString = pwd;
+													pwdString = AESEncryptor.encrypt(
+															user.getLoginName(),
+															pwd);
+													// TODO
+													// 由于服务端token没有做自动刷新，要求客户端如果掉线的情况下自动登录，所以此处必须记住密码
+													// DataManager
+													// .saveUser(
+													// user,
+													// checkBoxSavePwd
+													// .isChecked() ? pwdString
+													// : "");
+													DataManager.saveUser(user,
+															pwdString);
+													putPreferencesBoolean(
+															user.getUserID()
+																	+ ConstantConfig.PREFERENCES_USERPWDCHK,
+															checkBoxSavePwd
+																	.isChecked());
+													if (BluetoothLeService
+															.getInstance() != null) {
+														BluetoothLeService
+																.getInstance()
+																.disconnect();
+														BluetoothLeService
+																.getInstance()
+																.connect();
+													}
+													finish();
+													Intent intent = new Intent(
+															LoginActivity.this,
+															ModeActivity.class);
+													startActivity(intent);
+												} catch (Exception e) {
+													LogUtil.e(TAG, e);
+													current = null;
+												}
+											} else {
+												showToast(result.getMessage());
+												current = null;
+											}
+										}
+
+										@Override
+										public void doError(String result) {
+											if (ConstantConfig.Debug) {
+												showToast(result);
+											} else {
+												showToast("操作失败");
+											}
+											current = null;
+										}
+									});
+						} else {
+							showToast(result.getMessage());
+							current = null;
 						}
-						// if (result.isOk()) {
-						ConstantConfig.AUTHOR_TOKEN = result.getAccess_token();
-						// 初始化用户皮肤
-						SkinManager.getInstance().initSkin();
-						// 保存密码
-						// DataManager.saveUser(loginName,
-						// checkBoxSavePwd.isChecked() ? pwd : "");
-						String pwdString = pwd;
-						try {
-							pwdString = AESEncryptor.encrypt(
-									user.getLoginName(), pwd);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						DataManager.saveUser(result,
-								checkBoxSavePwd.isChecked() ? pwdString : "");
-						putPreferencesBoolean(result.getUserID()
-								+ ConstantConfig.PREFERENCES_USERPWDCHK,
-								checkBoxSavePwd.isChecked());
-						finish();
-						Intent intent = new Intent(LoginActivity.this,
-								ModeActivity.class);
-						startActivity(intent);
+
 						// }
 					}
 
 					@Override
 					public void doError(String result) {
-						if (ConstantConfig.Debug) {
-							showToast(result);
+						current = null;
+						if (!NetUtil.isConnectNet()) {
+							user = DataManager.getUserInfo();
+							if (user != null) {
+								if (!user.getLoginName().isEmpty()) {
+									String pwd = DataManager.getUserPwd();
+									if (pwd != null && !pwd.isEmpty()) {
+										try {
+											offDialog = UIUtil
+													.buildTipDialog(
+															LoginActivity.this,
+															getString(R.string.dialog_title_offlogin),
+															getString(R.string.dialog_offlogin_content),
+															new OnClickListener() {
+																@Override
+																public void onClick(
+																		View v) {
+																	if (offDialog != null) {
+																		offDialog
+																				.cancel();
+																		offDialog
+																				.dismiss();
+																	}
+																	Intent intent = new Intent(
+																			LoginActivity.this,
+																			ModeActivity.class);
+																	startActivity(intent);
+																	finish();
+																}
+															},
+															new OnClickListener() {
+
+																@Override
+																public void onClick(
+																		View v) {
+																	if (offDialog != null) {
+																		offDialog
+																				.cancel();
+																		offDialog
+																				.dismiss();
+																	}
+																}
+															},
+															getString(R.string.dialog_button_ok),
+															getString(R.string.dialog_button_cancel));
+											offDialog.show();
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								}
+							}
+
+						} else {
+							if (ConstantConfig.Debug) {
+								showToast(result);
+							} else {
+								showToast("操作失败");
+							}
 						}
 					}
 				});
@@ -244,6 +520,11 @@ public class LoginActivity extends BaseActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回桌面
+			Intent home = new Intent(Intent.ACTION_MAIN);
+			home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			home.addCategory(Intent.CATEGORY_HOME);
+			startActivity(home);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -254,7 +535,8 @@ public class LoginActivity extends BaseActivity {
 		super.onClick(v);
 		switch (v.getId()) {
 		case R.id.buttonLogin:
-			login();
+			// login();
+			logon();
 			break;
 		case R.id.buttonResetPwd:
 			register();

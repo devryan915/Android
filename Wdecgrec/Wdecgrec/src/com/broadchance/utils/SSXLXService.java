@@ -11,12 +11,12 @@
 package com.broadchance.utils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.broadchance.entity.serverentity.CurVerResponse;
 import com.broadchance.entity.serverentity.StringResponse;
 import com.broadchance.entity.serverentity.UIDeviceResponse;
+import com.broadchance.entity.serverentity.UIDeviceResponseList;
 import com.broadchance.entity.serverentity.UIFamilyResponse;
 import com.broadchance.entity.serverentity.UIFamilyResponseList;
 import com.broadchance.entity.serverentity.UIPixelResponse;
@@ -34,6 +34,39 @@ public class SSXLXService {
 		if (_Instance == null)
 			_Instance = new SSXLXService();
 		return _Instance;
+	}
+
+	/**
+	 * 
+	 * @param userID
+	 * @param iDCode
+	 * @param backCall
+	 */
+	public void GetFreeDeviceVerify(String userID, String iDCode,
+			HttpReqCallBack<StringResponse> backCall) {
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("userID", userID);
+		reparams.put("iDCode", iDCode);
+		HttpAsyncTask.fetchData(ConstantConfig.SERVER_URL
+				+ "/api/Device/GetFreeDeviceVerify", reparams, backCall);
+	}
+
+	public void FreeDevice(String userID, String iDCode, String verifyCode,
+			HttpReqCallBack<StringResponse> backCall) {
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("userID", userID);
+		reparams.put("iDCode", iDCode);
+		reparams.put("verifyCode", verifyCode);
+		HttpAsyncTask.fetchData(ConstantConfig.SERVER_URL
+				+ "/api/Device/FreeDevice", reparams, backCall);
+	}
+
+	public void GetUserDevice(String userID,
+			HttpReqCallBack<UIDeviceResponseList> backCall) {
+		Map<String, Object> reparams = new HashMap<String, Object>();
+		reparams.put("userID", userID);
+		HttpAsyncTask.fetchData(ConstantConfig.SERVER_URL
+				+ "/api/Device/GetUserDevice", reparams, backCall);
 	}
 
 	public void AddRemote_Data(String userID, int UploadWay, String zipData,

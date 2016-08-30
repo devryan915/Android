@@ -219,6 +219,47 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llUnbind"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/settings_unbind" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1" >
+
+            <TextView
+                style="@style/settings_textview"
+                android:text="@string/settings_bindeddev" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/settings_nsbtn_nor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#e7e7e7" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llSettingsDevInfo"
         android:layout_width="match_parent"
         android:layout_height="49dp"

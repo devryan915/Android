@@ -27,7 +27,17 @@ obj/local/mips/objs/ecgfilter/ecgfilter.o: jni/ecgfilter.c \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/strings.h \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/memory.h \
  jni/hrate_lib/ecg_filter.h jni/hrate_lib/ecg_config.h \
- jni/hrate_lib/bandfilt.c
+ jni/hrate_lib/bandfilt.c jni/hrate_lib/hrate_detect.c \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/math.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/sys/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/linux/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/machine/internal_types.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/machine/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/sys/syslimits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/asm/page.h \
+ jni/hrate_lib/pinghua.c jni/hrate_lib/bandfiltTEO.c \
+ jni/hrate_lib/mean_double_array.c jni/hrate_lib/find_maxv_maxloc.c
 
 D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/jni.h:
 
@@ -88,3 +98,29 @@ jni/hrate_lib/ecg_filter.h:
 jni/hrate_lib/ecg_config.h:
 
 jni/hrate_lib/bandfilt.c:
+
+jni/hrate_lib/hrate_detect.c:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/math.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/sys/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/linux/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/machine/internal_types.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/machine/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/sys/syslimits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-mips/usr/include/asm/page.h:
+
+jni/hrate_lib/pinghua.c:
+
+jni/hrate_lib/bandfiltTEO.c:
+
+jni/hrate_lib/mean_double_array.c:
+
+jni/hrate_lib/find_maxv_maxloc.c:

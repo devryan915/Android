@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FileUtil;
 import com.broadchance.utils.LogUtil;
@@ -77,6 +78,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	public void uncaughtException(Thread thread, Throwable ex) {
 		if (ConstantConfig.Debug) {
 			ex.printStackTrace();
+			// Toast.makeText(mContext, "程序发生未捕捉异常：" + ex.toString(),
+			// Toast.LENGTH_LONG).show();
 		}
 		if (!handleException(ex) && mDefaultHandler != null) {
 			// 如果用户没有处理则让系统默认的异常处理器来处理
@@ -88,8 +91,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				LogUtil.e(TAG, "error : ", e);
 			}
 			// 退出程序
-			android.os.Process.killProcess(android.os.Process.myPid());
-			System.exit(1);
+			// android.os.Process.killProcess(android.os.Process.myPid());
+			// System.exit(1);
 		}
 	}
 
@@ -107,10 +110,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		new Thread() {
 			@Override
 			public void run() {
-				Looper.prepare();
-				Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。", Toast.LENGTH_LONG)
-						.show();
-				Looper.loop();
+				// Looper.prepare();
+				// Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。",
+				// Toast.LENGTH_LONG)
+				// .show();
+				// Looper.loop();
 			}
 		}.start();
 
@@ -182,7 +186,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		sb.append(result);
 		try {
 			long timestamp = System.currentTimeMillis();
-			String time = formatter.format(new Date());
+			String time = formatter.format(CommonUtil.getDate());
 			String fileName = "crash-" + time + "-" + timestamp + ".log";
 			if (Environment.getExternalStorageState().equals(
 					Environment.MEDIA_MOUNTED)) {

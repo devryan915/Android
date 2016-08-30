@@ -10,7 +10,25 @@ import android.util.Log;
  * 
  */
 public class FilterUtil {
+	private FilterUtil() {
+	}
+
 	private static final String TAG = FilterUtil.class.getSimpleName();
+	public static FilterUtil Instance = new FilterUtil();
+	// private boolean isUIUsed;
+	//
+	// /**
+	// * 是否由画图使用
+	// *
+	// * @return
+	// */
+	// public boolean isUIUsed() {
+	// return isUIUsed;
+	// }
+	//
+	// public void setUIUsed(boolean isUIUsed) {
+	// this.isUIUsed = isUIUsed;
+	// }
 
 	static {
 		System.loadLibrary("ecgfilter");
@@ -26,6 +44,8 @@ public class FilterUtil {
 	 */
 	public native void resetFilter();
 
+	public native void resetFilterR();
+
 	/**
 	 * 获取第一通道滤波后心电数据
 	 * 
@@ -34,6 +54,8 @@ public class FilterUtil {
 	 * @return
 	 */
 	public native int[] getECGDataII(int[] inputData);
+
+	public native int[] getECGDataIIR(int[] inputData);
 
 	/**
 	 * 获取第二通道滤波后心电数据
@@ -44,6 +66,8 @@ public class FilterUtil {
 	 */
 	public native int[] getECGDataV1(int[] inputData);
 
+	public native int[] getECGDataV1R(int[] inputData);
+
 	/**
 	 * 获取第三通道滤波后心电数据
 	 * 
@@ -53,12 +77,16 @@ public class FilterUtil {
 	 */
 	public native int[] getECGDataV5(int[] inputData);
 
+	public native int[] getECGDataV5R(int[] inputData);
+
 	/**
 	 * 获取心率
 	 * 
 	 * @return
 	 */
 	public native int getHeartRate();
+
+	public native int getHeartRateR();
 
 	/**
 	 * 关闭滤波释放内存

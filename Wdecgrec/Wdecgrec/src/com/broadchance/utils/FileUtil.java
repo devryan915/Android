@@ -4,6 +4,9 @@
 package com.broadchance.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -14,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Environment;
@@ -22,6 +29,7 @@ import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FileType;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.DataManager;
+import com.broadchance.manager.FrameDataMachine;
 
 /**
  * @author ryan.wang
@@ -98,13 +106,15 @@ public class FileUtil {
 	 * 文件头
 	 */
 	private static ByteBuffer fileHead;
-	private ByteBuffer blockHead;
+	// private ByteBuffer blockHead;
 	/**
  * 
  */
 	private RandomAccessFile randomAccessFile;
 	private FileChannel fileChannel;
 	private File ecgFile;
+	// 呼吸波文件
+	private File breathFile;
 	/**
 	 * 指向即将写入的下标
 	 */
@@ -130,6 +140,10 @@ public class FileUtil {
 	 * 文件中最后一组数据点的从设备的接收到时间
 	 */
 	private Date dataEndTime;
+	/**
+	 * 呼吸波心率
+	 */
+	private JSONArray jHeartRateArray;
 
 	enum ECGFileStatus {
 		NONE, BEGIN, WRITEBLOCK, WRITERECORD, END
@@ -157,6 +171,59 @@ public class FileUtil {
 		return false;
 	}
 
+	// For test
+	public static void writeSRC(String ecgStr) {
+		try {
+			String dir = ECG_DIR + "/srcdata/";
+			if (checkDir(dir)) {
+				File file = new File(dir, "src.txt");
+				FileOutputStream fos = new FileOutputStream(file, true);
+				fos.write(ecgStr.getBytes());
+				fos.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeECGSRC(String ecgStr) {
+		try {
+			String dir = ECG_DIR + "/srcdata/";
+			if (checkDir(dir)) {
+				File file = new File(dir, "ecgsrc.txt");
+				FileOutputStream fos = new FileOutputStream(file, true);
+				fos.write(ecgStr.getBytes());
+				fos.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeECGFilter(String ecgStr) {
+		try {
+			String dir = ECG_DIR + "/srcdata/";
+			if (checkDir(dir)) {
+				File file = new File(dir, "filter.txt");
+				FileOutputStream fos = new FileOutputStream(file, true);
+				fos.write(ecgStr.getBytes());
+				fos.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// End For test
 	public void setTempMode() {
 		isRealTimeFile = true;
 	}
@@ -164,11 +231,19 @@ public class FileUtil {
 	/**
 	 * 生成文件名
 	 * 
+	 * @param type
+	 *            文件类型 1是心电2是呼吸波
 	 * @return
 	 */
-	private String getFileName() {
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				ConstantConfig.DATA_DATE_FORMAT);
+	private String getFileName(int type) {
+		if (type == 2 && ecgFile != null) {
+			// 保证呼吸波文件和心电文件同名，根据type可以区分文件类
+			String ecgPath = ecgFile.getAbsolutePath();
+			return ecgPath.substring(0, ecgPath.lastIndexOf("_") + 1) + type
+					+ ConstantConfig.ECGDATA_SUFFIX;
+		}
+		// SimpleDateFormat sdf = new SimpleDateFormat(
+		// ConstantConfig.DATA_DATE_FORMAT);
 		String dir = getEcgDir();
 		String path = isRealTimeFile ? FileUtil.ECGTEALTIMEDIR : dir;
 		if (path == null) {
@@ -177,7 +252,8 @@ public class FileUtil {
 			}
 			return null;
 		}
-		return path + sdf.format(new Date()) + ConstantConfig.ECGDATA_SUFFIX;
+		return path + CommonUtil.getTime_C() + "_" + type
+				+ ConstantConfig.ECGDATA_SUFFIX;
 	}
 
 	/**
@@ -210,7 +286,7 @@ public class FileUtil {
 		 * control 第一个bit数据是否完整：0数据完整，1数据不完整 第二个bit是否为文件头：0文件头，1 数据块 2-7
 		 * 保留备用，所有未定义的bit用1表示包括占位 文件头 0011 1111 占1字节
 		 */
-		byte control = 0x3F;
+		byte control = -4;
 		buffer.put(control);
 		// 整个文件头长度的幂，占1字节
 		byte length = (byte) power;
@@ -229,14 +305,14 @@ public class FileUtil {
 		byte[] firmwareVer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
 		buffer.put(firmwareVer);
 		// ECG 通道数目，现在为1,3， 范围 1-255,此处使用三通道，占1字节
-		byte ecgChannel = 0x03;
+		byte ecgChannel = 0x01;
 		buffer.put(ecgChannel);
 		// ECG_Resolution ECG采用精度(指每个心电数据点占位，现在是两个字节)，8位，16位，24位，32位，
 		// 范围1-64，此处精度使用16，占1字节
 		byte ecgResolution = 0x10;
 		buffer.put(ecgResolution);
 		// ECG_Frequency 采用速率，1000Hz 等，单通道125Hz，占2字节
-		byte[] ecgFrequency = new byte[] { 0x00, 0x7D };
+		byte[] ecgFrequency = new byte[] { 0x7d, 0x00 };
 		buffer.put(ecgFrequency);
 		// 1St Channel Nm 第 1个Channel 的名称占位16字节,暂时未定
 		byte[] channel1 = new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
@@ -282,7 +358,7 @@ public class FileUtil {
 		 * control 第一个bit数据是否完整：0数据完整，1数据不完整 第二个bit是否为文件头：0文件头，1 数据块 2-7
 		 * 保留备用，所有未定义的bit用1表示包括占位 文件头 0111 1111 占1字节
 		 */
-		byte control = 0x7F;
+		byte control = -2;
 		buffer.put(control);
 		// 整个数据块头长度的幂，占1字节，此处默认0留待回写
 		byte length = (byte) 0x0;
@@ -318,7 +394,7 @@ public class FileUtil {
 		bufferPosition = 0;
 		lastBlockPosition = 0;
 		fileStatus = ECGFileStatus.BEGIN;
-		String fileName = getFileName();
+		String fileName = getFileName(1);
 		if (fileName == null)
 			return;
 		ecgFile = new File(fileName);
@@ -367,14 +443,16 @@ public class FileUtil {
 		ByteBuffer blockHead = buildBlockHead();
 		MappedByteBuffer mbb = null;
 		// 由于blockHead中Records仅占用两字节，所以此处检查需要写入的点数
-		int blocks = (int) Math.ceil((fileFrameDatas.size() * 3f) / (0xFFFF));
+		int blocks = (int) Math.ceil((fileFrameDatas.size()
+				* FileFrameData.pointsLength * 1f) / (0xFFFF));
 		List<FileFrameData> waitWrite = null;
 		List<FileFrameData> nWrite = null;
 		if (blocks == 1) {
 			waitWrite = fileFrameDatas;
 		} else {
 			waitWrite = new ArrayList<FileFrameData>();
-			int maxSize = (int) Math.floor(0xFFFF / (3f));
+			int maxSize = (int) Math
+					.floor(0xFFFF / (FileFrameData.pointsLength * 1f));
 			for (int i = 0; i < maxSize; i++) {
 				waitWrite.add(fileFrameDatas.get(i));
 			}
@@ -386,32 +464,31 @@ public class FileUtil {
 		// 回写上一blockLength和FirstSEQ
 		// 存在上一block
 		if (lastBlockPosition > 0) {
-			// 获取上一block的10个字节的头信息
-			mbb = fileChannel.map(FileChannel.MapMode.READ_WRITE,
-					lastBlockPosition, 10);
-			// 回写上一block长度的幂
-			byte length = (byte) Math.log(bufferPosition - lastBlockPosition);
-			mbb.put(2, length);
+			writeBlockEnd();
+			MappedByteBuffer mbbw = fileChannel.map(
+					FileChannel.MapMode.READ_WRITE, lastBlockPosition, 10);
 			// 获取上一block的firstSeq
 			byte[] firstSeq = new byte[5];
 			for (int i = 0; i < 5; i++) {
-				firstSeq[i] = mbb.get(3 + i);
+				firstSeq[i] = mbbw.get(3 + i);
 			}
 			long lastFirstSeq = BleDataUtil.bytestoLong(firstSeq);
 			byte[] records = new byte[2];
-			for (int i = 0; i < 2; i++) {
-				records[i] = mbb.get(8 + i);
-			}
+			// for (int i = 0; i < 2; i++) {
+			// records[i] = mbbw.get(8 + i);
+			// }
+			records[0] = mbbw.get(9);
+			records[1] = mbbw.get(8);
 			short lastRecords = BleDataUtil.bytes2Short(records);
 			// 写入当前block的firstSeq
-			firstSeq = BleDataUtil.longto5Bytes(lastFirstSeq + lastRecords);
+			firstSeq = BleDataUtil.longto5BytesLE(lastFirstSeq + lastRecords);
 			for (int i = 0; i < 5; i++) {
 				blockHead.put(i + 3, firstSeq[i]);
 			}
 		} else {
 			dataBeginTime = fileFrameDatas.get(0).date;
 			dataEndTime = fileFrameDatas.get(fileFrameDatas.size() - 1).date;
-			byte[] firstSeq = BleDataUtil.longto5Bytes(lastBlockPosition);
+			byte[] firstSeq = BleDataUtil.longto5BytesLE(lastBlockPosition);
 			for (int i = 0; i < 5; i++) {
 				blockHead.put(i + 3, firstSeq[i]);
 			}
@@ -419,8 +496,8 @@ public class FileUtil {
 		lastBlockPosition = bufferPosition;
 		mbb = fileChannel.map(FileChannel.MapMode.READ_WRITE, bufferPosition,
 				blockHead.capacity());
-		int points = waitWrite.size() * 3;
-		byte[] records = BleDataUtil.short2ByteArray((short) (points));
+		int points = waitWrite.size() * FileFrameData.pointsLength;
+		byte[] records = BleDataUtil.short2ByteArrayLE((short) (points));
 		blockHead.put(8, records[0]);
 		blockHead.put(9, records[1]);
 		blockHead.position(0);
@@ -432,8 +509,39 @@ public class FileUtil {
 		writeRecord(waitWrite);
 		if (nWrite != null && nWrite.size() > 0) {
 			writeBlock(nWrite);
+		} else {
+			// 如果是最后一个block会写序号
+			writeBlockEnd();
 		}
 
+	}
+
+	/**
+	 * 结束block，回写block序号，并补空位
+	 * 
+	 * @throws Exception
+	 */
+	private void writeBlockEnd() throws Exception {
+		// 获取上一block的10个字节的头信息
+		MappedByteBuffer mbbw = fileChannel.map(FileChannel.MapMode.READ_WRITE,
+				lastBlockPosition, 10);
+		long dataLength = bufferPosition - lastBlockPosition;
+		// 回写上一block长度的幂
+		byte length = (byte) Math.getExponent(dataLength);
+		long blen = (long) (Math.pow(2, length) - dataLength);
+		// 如果指数偏小+1
+		if (blen < 0) {
+			length++;
+			blen = (long) (Math.pow(2, length) - dataLength);
+		}
+		mbbw.put(2, length);
+		// 补空白
+		mbbw = fileChannel.map(FileChannel.MapMode.READ_WRITE, bufferPosition,
+				blen);
+		byte blank = (byte) 0xFF;
+		for (int i = 0; i < blen; i++) {
+			mbbw.put(blank);
+		}
 	}
 
 	/**
@@ -447,15 +555,19 @@ public class FileUtil {
 		/**
 		 * 检查TLV中的Length是否放得下TL占3字节，剩下部分写数据
 		 */
-		int records = (int) Math
-				.ceil((fileFrameDatas.size() * 6f + 3) / (0xFFFF));
+		int records = (int) Math.ceil((fileFrameDatas.size()
+				* FileFrameData.pointBytesLength * 1f + 3) / (0xFFFF));
 		List<FileFrameData> waitWrite = null;
 		List<FileFrameData> nWrite = null;
 		if (records == 1) {
 			waitWrite = fileFrameDatas;
 		} else {
 			waitWrite = new ArrayList<FileFrameData>();
-			int maxSize = (int) Math.floor((0xFFFF - 3f) / (6f));
+			/**
+			 * 总长度为两个字节-TL占固定三个字节
+			 */
+			int maxSize = (int) Math.floor((0xFFFF - 3f)
+					/ (FileFrameData.pointBytesLength * 1f));
 			for (int i = 0; i < maxSize; i++) {
 				waitWrite.add(fileFrameDatas.get(i));
 			}
@@ -465,7 +577,7 @@ public class FileUtil {
 			}
 		}
 		// 当前记录所需大小为要写入ecg电压值的字节数+TL的长度
-		int length = waitWrite.size() * 6 + 3;
+		int length = waitWrite.size() * FileFrameData.pointBytesLength + 3;
 		MappedByteBuffer mbb = fileChannel.map(FileChannel.MapMode.READ_WRITE,
 				bufferPosition, length);
 		// 写入记录头
@@ -474,7 +586,7 @@ public class FileUtil {
 		byte type = 0x00;
 		mbb.put(type);
 		// 写入本记录的长度（包括头）
-		byte[] lengths = BleDataUtil.short2ByteArray((short) length);
+		byte[] lengths = BleDataUtil.short2ByteArrayLE((short) length);
 		for (int i = 0; i < 2; i++) {
 			mbb.put(lengths[i]);
 		}
@@ -486,16 +598,12 @@ public class FileUtil {
 			for (int j = 0; j < 2; j++) {
 				mbb.put(chs[j]);
 			}
-			// 写入第二通道点
-			chs = BleDataUtil.short2ByteArray(data.ch2);
-			for (int j = 0; j < 2; j++) {
-				mbb.put(chs[j]);
-			}
-			// 写入第三通道点
-			chs = BleDataUtil.short2ByteArray(data.ch3);
-			for (int j = 0; j < 2; j++) {
-				mbb.put(chs[j]);
-			}
+			/***
+			 * 第二三通道先关闭 // 写入第二通道点 chs = BleDataUtil.short2ByteArray(data.ch2);
+			 * for (int j = 0; j < 2; j++) { mbb.put(chs[j]); } // 写入第三通道点 chs =
+			 * BleDataUtil.short2ByteArray(data.ch3); for (int j = 0; j < 2;
+			 * j++) { mbb.put(chs[j]); }
+			 *****/
 		}
 		bufferPosition += mbb.capacity();
 		lastRecordEndPosition = bufferPosition;
@@ -514,21 +622,88 @@ public class FileUtil {
 			throw new Exception("文件状态不对：" + fileStatus);
 		}
 		randomAccessFile.close();
-		if (!isRealTimeFile) {
-			// 存入队列
-			boolean ret = DataManager.saveUploadFile(ecgFile.getName(),
-					ecgFile.getAbsolutePath(), dataBeginTime, dataEndTime,
-					FileType.Default);
-			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, ecgFile.getName()
-						+ (ret ? "存入数据库成功" : "存入数据库失败"));
-			}
-		}
+
 		fileStatus = ECGFileStatus.NONE;
 		bufferPosition = 0;
 		if (ConstantConfig.Debug) {
 			LogUtil.d(TAG, "endWriteFile");
 		}
+	}
+
+	public JSONArray getjHeartRateArray() {
+		return jHeartRateArray;
+	}
+
+	/**
+	 * 写入呼吸波数据，呼吸波文件路径和心电文件+呼吸波后缀
+	 * 
+	 * @param fileBreathDatas
+	 * @return
+	 */
+	public void writeBreathData(List<Short> fileBreathDatas) {
+		// 呼吸波文件路径
+		String bPath = "";
+
+		if (fileBreathDatas != null) {
+			bPath = getFileName(2);
+			breathFile = new File(bPath);
+			try {
+				FileOutputStream fos = new FileOutputStream(breathFile);
+				for (int i = 0; i < fileBreathDatas.size(); i++) {
+					fos.write(BleDataUtil.short2ByteArray(fileBreathDatas
+							.get(i)));
+				}
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (!isRealTimeFile) {
+			// 抓取心率
+			FrameDataMachine machine = FrameDataMachine.getInstance();
+			jHeartRateArray = new JSONArray();
+			Integer hrate = null;
+			while ((hrate = machine.getHeartRate()) != null) {
+				JSONObject rate = new JSONObject();
+				try {
+					rate.put("hr", hrate);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				jHeartRateArray.put(rate);
+			}
+			// 存入队列
+			boolean ret = DataManager.saveUploadFile(ecgFile.getName(),
+					ecgFile.getAbsolutePath(), dataBeginTime, dataEndTime,
+					FileType.Default, bPath, jHeartRateArray.toString());
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, ecgFile.getName()
+						+ (ret ? "存入数据库成功" : "存入数据库失败"));
+			}
+		} else {
+			FrameDataMachine machine = FrameDataMachine.getInstance();
+			jHeartRateArray = new JSONArray();
+			Integer hrate = null;
+			while ((hrate = machine.getHeartRealTimeRate()) != null) {
+				JSONObject rate = new JSONObject();
+				try {
+					rate.put("hr", hrate);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				jHeartRateArray.put(rate);
+			}
+		}
+	}
+
+	public Date getDataBeginTime() {
+		return dataBeginTime;
+	}
+
+	public Date getDataEndTime() {
+		return dataEndTime;
 	}
 
 	/**
@@ -540,10 +715,14 @@ public class FileUtil {
 		return ecgFile;
 	}
 
+	public File getBreathFile() {
+		return breathFile;
+	}
+
 	private void test(Context context) throws IOException {
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				ConstantConfig.DATA_DATE_FORMAT);
-		File ecgFile = new File(FileUtil.ECG_BATCHDIR + sdf.format(new Date())
+		// SimpleDateFormat sdf = new SimpleDateFormat(
+		// ConstantConfig.DATA_DATE_FORMAT);
+		File ecgFile = new File(FileUtil.ECG_BATCHDIR + CommonUtil.getTime_B()
 				+ ConstantConfig.ECGDATA_SUFFIX);
 		RandomAccessFile raf = new RandomAccessFile(ecgFile, "rw");
 		FileChannel fc = raf.getChannel();

@@ -3,8 +3,10 @@ package com.broadchance.utils;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import android.graphics.Color;
@@ -12,14 +14,86 @@ import android.graphics.Color;
 public class CommonUtil {
 	private final static String TAG = CommonUtil.class.getSimpleName();
 
-	public static String getCurTime() {
-		return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-				.format(Calendar.getInstance(Locale.getDefault()).getTime());
+	public static Date getDate() {
+		return Calendar.getInstance(Locale.getDefault()).getTime();
 	}
 
-	public static String getCurTime(String format) {
-		return new SimpleDateFormat(format, Locale.getDefault())
-				.format(Calendar.getInstance(Locale.getDefault()).getTime());
+	private final static String formatA = "yyyy-MM-dd";
+	private final static String formatB = "yyyyMMdd HH:mm:ss.SSS";
+	private final static String formatC = "yyyyMMddHHmmssSSSZ";
+	private final static String formatD = "yyyy-MM-dd HH:mm:ss.SSS";
+
+	/**
+	 * yyyy-MM-dd HH:mm:ss.SSS
+	 * 
+	 * @return
+	 */
+	public static String getTime_D() {
+		return getTime(formatD);
+	}
+
+	public static Date parseDate_C(String dateStr) throws ParseException {
+		return new SimpleDateFormat(formatC, Locale.getDefault())
+				.parse(dateStr);
+	}
+
+	/**
+	 * yyyyMMddHHmmssSSSZ
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String getTime_C(Date date) {
+		return getTime(formatC, date);
+	}
+
+	/**
+	 * yyyyMMddHHmmssSSSZ
+	 * 
+	 * @return
+	 */
+	public static String getTime_C() {
+		return getTime(formatC);
+	}
+
+	public static Date parseDate_B(String dateStr) throws ParseException {
+		return new SimpleDateFormat(formatB, Locale.getDefault())
+				.parse(dateStr);
+	}
+
+	public static String getTime_B(Date date) {
+		return getTime(formatB, date);
+	}
+
+	/**
+	 * yyyyMMdd HH:mm:ss.SSS
+	 * 
+	 * @return
+	 */
+	public static String getTime_B() {
+		return getTime(formatB);
+	}
+
+	/**
+	 * yyyy-MM-dd
+	 * 
+	 * @return
+	 */
+	public static String getTime_A() {
+		return getTime(formatA);
+	}
+
+	/**
+	 * 
+	 * @param format
+	 * @return
+	 */
+	private static String getTime(String format) {
+		return getTime(format, getDate());
+	}
+
+	private static String getTime(String format, Date date) {
+		return new SimpleDateFormat(format, Locale.getDefault()).format(date);
 	}
 
 	/**

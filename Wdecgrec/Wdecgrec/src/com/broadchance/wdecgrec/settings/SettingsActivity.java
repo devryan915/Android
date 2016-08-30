@@ -1,6 +1,7 @@
 package com.broadchance.wdecgrec.settings;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,7 +30,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.broadchance.entity.DownLoadAPPResponse;
+import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.serverentity.CurVerResponse;
+import com.broadchance.entity.serverentity.StringResponse;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
@@ -58,6 +61,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	private View llMyinfo;
 	private View llAddFamily;
 	private View llSetpwd;
+	private View llUnbind;
 	private View llSettingsDevInfo;
 	private View llChangeSkin;
 	private View llAppUpdate;
@@ -74,11 +78,13 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	private Dialog oneKeyUploadDialog;
 	private Dialog dialogChangeSkin;
 	private Dialog lodingDialog;
-
+	Dialog dialogUnbind;
+	Dialog dialogUnbindConfirm;
+	TextView editTextDevPwd;
 	DialogSkinListAdapter adapterSkin;
 	boolean isOneUpload = false;
-
-	private boolean isRegistUpload = false;
+	AtomicBoolean isReqUnBind = new AtomicBoolean(false);
+	AtomicBoolean isRegistUpload = new AtomicBoolean(false);
 	// private String curVer;
 	// private String newVer = null;
 	private final BroadcastReceiver uploadBroadcastReceiver = new BroadcastReceiver() {
@@ -101,7 +107,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 							oneKeyUploadDialog.cancel();
 							oneKeyUploadDialog.dismiss();
 						}
-						if (isRegistUpload) {
+						if (isRegistUpload.get()) {
 							unregisterReceiver(uploadBroadcastReceiver);
 						}
 						if (counts[1].equals("0")) {
@@ -137,6 +143,8 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		llAddFamily = findViewById(R.id.llAddFamily);
 		llAddFamily.setOnClickListener(this);
 		llSetpwd = findViewById(R.id.llSetpwd);
+		llUnbind = findViewById(R.id.llUnbind);
+		llUnbind.setOnClickListener(this);
 		llSetpwd.setOnClickListener(this);
 		llSettingsDevInfo = findViewById(R.id.llSettingsDevInfo);
 		llSettingsDevInfo.setOnClickListener(this);
@@ -311,7 +319,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			@Override
 			public void onCancel(DialogInterface dialog) {
 				try {
-					if (isRegistUpload) {
+					if (isRegistUpload.get()) {
 						unregisterReceiver(uploadBroadcastReceiver);
 					}
 				} catch (Exception e) {
@@ -329,28 +337,200 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	private void showUnbindConfirm() {
+		dialogUnbindConfirm = UIUtil.buildTipDialog(SettingsActivity.this,
+				getString(R.string.dialog_title_tips),
+				getString(R.string.dialog_tips_confirmunbind),
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (dialogUnbindConfirm != null) {
+							dialogUnbindConfirm.cancel();
+							dialogUnbindConfirm.dismiss();
+						}
+						showUnbind();
+					}
+				}, new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (dialogUnbindConfirm != null) {
+							dialogUnbindConfirm.cancel();
+							dialogUnbindConfirm.dismiss();
+						}
+					}
+				}, getString(R.string.dialog_button_ok),
+				getString(R.string.dialog_button_cancel));
+		dialogUnbindConfirm.show();
+	}
+
+	private void showUnbind() {
+		final UIUserInfoLogin user = DataManager.getUserInfo();
+		if (user == null) {
+			showToast("用户数据不存在");
+			return;
+		}
+		final String macAddress = user.getMacAddress();
+		if (macAddress != null && !macAddress.trim().isEmpty()) {
+			if (isReqUnBind.compareAndSet(false, true)) {
+				serverService.getInstance().GetFreeDeviceVerify(
+						user.getUserID(), macAddress,
+						new HttpReqCallBack<StringResponse>() {
+							@Override
+							public Activity getReqActivity() {
+								return null;
+							}
+
+							@Override
+							public void doSuccess(StringResponse result) {
+								if (result.isOk()) {
+									LayoutInflater inflater = (LayoutInflater) SettingsActivity.this
+											.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+									LinearLayout layout = (LinearLayout) inflater
+											.inflate(
+													R.layout.dialog_deviceunbind,
+													null);
+									editTextDevPwd = (TextView) layout
+											.findViewById(R.id.editTextDevPwd);
+									dialogUnbind = UIUtil.buildDialog(
+											SettingsActivity.this, layout);
+									Button buttonOk = (Button) dialogUnbind
+											.findViewById(R.id.buttonOk);
+									Button buttonCancel = (Button) dialogUnbind
+											.findViewById(R.id.buttonCancel);
+									buttonOk.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											if (editTextDevPwd.getText()
+													.toString().trim()
+													.isEmpty()) {
+												showToast(getResources()
+														.getString(
+																R.string.dialog_devcheck_hint));
+												return;
+											}
+											String token = editTextDevPwd
+													.getText().toString()
+													.trim();
+											serverService.FreeDevice(
+													user.getUserID(),
+													macAddress,
+													token,
+													new HttpReqCallBack<StringResponse>() {
+
+														@Override
+														public Activity getReqActivity() {
+															return null;
+														}
+
+														@Override
+														public void doSuccess(
+																StringResponse result) {
+															if (result.isOk()) {
+																showToast("解绑成功");
+																DataManager
+																		.updateUserMac("");
+																// myinfoDevNo
+																// .setText("");
+																// myinfoBindedDev
+																// .setText("");
+															} else {
+																showToast(result
+																		.getMessage());
+															}
+															if (dialogUnbind != null) {
+																dialogUnbind
+																		.cancel();
+																dialogUnbind
+																		.dismiss();
+															}
+															isReqUnBind
+																	.set(false);
+														}
+
+														@Override
+														public void doError(
+																String result) {
+															if (ConstantConfig.Debug) {
+																showToast(result);
+															} else {
+																showToast("操作失败");
+															}
+															if (dialogUnbind != null) {
+																dialogUnbind
+																		.cancel();
+																dialogUnbind
+																		.dismiss();
+															}
+															isReqUnBind
+																	.set(false);
+														}
+													});
+
+										}
+									});
+									buttonCancel
+											.setOnClickListener(new OnClickListener() {
+
+												@Override
+												public void onClick(View v) {
+													if (dialogUnbind != null) {
+														dialogUnbind.cancel();
+														dialogUnbind.dismiss();
+													}
+													isReqUnBind.set(false);
+												}
+											});
+									dialogUnbind.show();
+								} else {
+									if (ConstantConfig.Debug) {
+										showToast(result.getMessage());
+									}
+									isReqUnBind.set(false);
+								}
+
+							}
+
+							@Override
+							public void doError(String result) {
+								if (ConstantConfig.Debug) {
+									showToast(result);
+								} else {
+									showToast("操作失败");
+								}
+								isReqUnBind.set(false);
+							}
+						});
+			}
+		} else {
+			showToast("尚未绑定设备，不能解绑操作");
+		}
+	}
+
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
 		switch (v.getId()) {
 		case R.id.llUpload:
-			lodingDialog = UIUtil.showLoadingDialog(SettingsActivity.this,
-					"正在初始化...");
-			Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					if (lodingDialog != null && isOneUpload) {
-						lodingDialog.show();
+			if (isRegistUpload.compareAndSet(false, true)) {
+				lodingDialog = UIUtil.showLoadingDialog(SettingsActivity.this,
+						"正在初始化...");
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						if (lodingDialog != null && isOneUpload) {
+							lodingDialog.show();
+						}
 					}
-				}
-			}, 500);
-			sendBroadcast(new Intent(
-					BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE));
-			registerReceiver(uploadBroadcastReceiver,
-					makeGattUpdateIntentFilter());
-			isRegistUpload = true;
-			isOneUpload = true;
+				}, 500);
+				sendBroadcast(new Intent(
+						BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE));
+				registerReceiver(uploadBroadcastReceiver,
+						makeGattUpdateIntentFilter());
+				isOneUpload = true;
+			}
 			break;
 		case R.id.llMyinfo:
 			showMyInfo();
@@ -361,6 +541,9 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		case R.id.llSetpwd:
 			modifyPwd();
 			break;
+		case R.id.llUnbind:
+			showUnbindConfirm();
+			break;
 		case R.id.llSettingsDevInfo:
 			showOptionSettings();
 			break;
@@ -368,7 +551,11 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			showChangeSkin();
 			break;
 		case R.id.llAppUpdate:
-			new AppDownLoadUtil().showAppUpdateDialog(SettingsActivity.this);
+			boolean hasNew = new AppDownLoadUtil()
+					.showAppUpdateDialog(SettingsActivity.this);
+			if (!hasNew) {
+				showToast("恭喜您，已经是最新版本！");
+			}
 			break;
 		case R.id.buttonTitleBack:
 			returnModeAcitivity();

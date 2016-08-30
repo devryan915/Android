@@ -6,16 +6,16 @@
 
 #define ECG_LEN (ECG_CHs * ECG_WORD_SIZE)
 
-#define HR_LEN 750
+#define HR_LEN 1250
 
 
 #ifndef ECG_DBG
-#define ECG_DBG(format, args...) printf(format, ##args)
+#define ECG_DBG(format, ...) printf(format, ##__VA_ARGS__)
 #endif
 
 
 #ifndef ECG_LOG
-#define ECG_LOG(format, args...) printf(format, ##args)
+#define ECG_LOG(format, ...) printf(format, ##__VA_ARGS__)
 #endif
 
 

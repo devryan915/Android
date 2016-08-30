@@ -27,7 +27,18 @@ obj/local/x86/objs/ecgfilter/ecgfilter.o: jni/ecgfilter.c \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/strings.h \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/memory.h \
  jni/hrate_lib/ecg_filter.h jni/hrate_lib/ecg_config.h \
- jni/hrate_lib/bandfilt.c
+ jni/hrate_lib/bandfilt.c jni/hrate_lib/hrate_detect.c \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/math.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/sys/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/linux/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/machine/internal_types.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/machine/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/sys/syslimits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/asm/page.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/asm/page_32.h \
+ jni/hrate_lib/pinghua.c jni/hrate_lib/bandfiltTEO.c \
+ jni/hrate_lib/mean_double_array.c jni/hrate_lib/find_maxv_maxloc.c
 
 D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/jni.h:
 
@@ -88,3 +99,31 @@ jni/hrate_lib/ecg_filter.h:
 jni/hrate_lib/ecg_config.h:
 
 jni/hrate_lib/bandfilt.c:
+
+jni/hrate_lib/hrate_detect.c:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/math.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/sys/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/linux/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/machine/internal_types.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/machine/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/sys/syslimits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/asm/page.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-x86/usr/include/asm/page_32.h:
+
+jni/hrate_lib/pinghua.c:
+
+jni/hrate_lib/bandfiltTEO.c:
+
+jni/hrate_lib/mean_double_array.c:
+
+jni/hrate_lib/find_maxv_maxloc.c:

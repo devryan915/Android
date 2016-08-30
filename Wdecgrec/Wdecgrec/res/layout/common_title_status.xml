@@ -23,7 +23,7 @@
             android:id="@+id/imageViewSignal"
             android:layout_width="26dp"
             android:layout_height="19dp"
-            android:src="@drawable/common_blesingnal_2" />
+            android:src="@drawable/common_blesingnal_0" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:id="@+id/imageViewPower"
             android:layout_width="26dp"
             android:layout_height="19dp"
-            android:src="@drawable/common_blepower_3" />
+            android:src="@drawable/common_blepower_0" />
     </LinearLayout>
 
 </RelativeLayout>

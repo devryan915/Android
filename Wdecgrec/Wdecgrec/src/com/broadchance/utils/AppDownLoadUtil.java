@@ -39,12 +39,13 @@ public class AppDownLoadUtil {
 	private Context context;
 	private String newVer;
 
-	public void showAppUpdateDialog(BaseActivity context) {
+	public boolean showAppUpdateDialog(BaseActivity context) {
 		this.context = context;
 		newVer = PreferencesManager.getInstance().getString(
 				ConstantConfig.PREFERENCES_NEWAPPVER);
-		if (newVer.trim().isEmpty())
-			return;
+		if (newVer.trim().isEmpty()) {
+			return false;
+		}
 		String curVer = AppApplication.curVer;
 		// 有新的版本
 		if (newVer.compareTo(curVer) > 0) {
@@ -88,6 +89,9 @@ public class AppDownLoadUtil {
 			});
 			dialogAppUpdate = UIUtil.buildDialog(context, layout);
 			dialogAppUpdate.show();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -116,7 +120,7 @@ public class AppDownLoadUtil {
 			}
 
 		};
-		new ClientGameService().downLoadApp(url, downFile, handler,
+		ClientGameService.getInstance().downLoadApp(url, downFile, handler,
 				new HttpReqCallBack<DownLoadAPPResponse>() {
 
 					@Override
@@ -128,6 +132,8 @@ public class AppDownLoadUtil {
 					public void doSuccess(DownLoadAPPResponse result) {
 						if (result.getDownLoadFile() != null
 								&& result.getDownLoadFile().length() > 0) {
+							PreferencesManager.getInstance().putString(
+									ConstantConfig.PREFERENCES_NEWAPPURL, "");
 							Intent intent = new Intent(Intent.ACTION_VIEW);
 							intent.setDataAndType(
 									Uri.fromFile(result.getDownLoadFile()),
@@ -148,7 +154,7 @@ public class AppDownLoadUtil {
 							pBar.dismiss();
 						}
 						if (ConstantConfig.Debug) {
-							LogUtil.e(TAG, result);
+							LogUtil.d(TAG, result);
 						}
 					}
 				});

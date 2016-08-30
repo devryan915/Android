@@ -4,14 +4,16 @@
 #include "ecg_config.h"
 
 
-#define RING_LEN   1024
-#define RING_MASK  0x3ff
+#define RING_LEN   4096
+#define RING_MASK  0xfff
 
 
 typedef struct {
-    double ecg_chx_input[ECG_CHs][RING_LEN];
+    double ecg_chx_input[1][RING_LEN];
+    double ecg250_chx_input[1][ RING_LEN * 2 ];
 
-    unsigned int idx_w[ECG_CHs];
+    unsigned int idx_w[1];
+    unsigned int idx250_w[1];
 
     int fl_pass;
     int hr_pass;

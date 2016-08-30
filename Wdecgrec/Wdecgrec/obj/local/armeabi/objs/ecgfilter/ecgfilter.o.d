@@ -26,7 +26,17 @@ obj/local/armeabi/objs/ecgfilter/ecgfilter.o: jni/ecgfilter.c \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/strings.h \
  D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/memory.h \
  jni/hrate_lib/ecg_filter.h jni/hrate_lib/ecg_config.h \
- jni/hrate_lib/bandfilt.c
+ jni/hrate_lib/bandfilt.c jni/hrate_lib/hrate_detect.c \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/math.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/sys/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/linux/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/machine/internal_types.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/machine/limits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/sys/syslimits.h \
+ D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/asm/page.h \
+ jni/hrate_lib/pinghua.c jni/hrate_lib/bandfiltTEO.c \
+ jni/hrate_lib/mean_double_array.c jni/hrate_lib/find_maxv_maxloc.c
 
 D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/jni.h:
 
@@ -85,3 +95,29 @@ jni/hrate_lib/ecg_filter.h:
 jni/hrate_lib/ecg_config.h:
 
 jni/hrate_lib/bandfilt.c:
+
+jni/hrate_lib/hrate_detect.c:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/math.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/sys/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/linux/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/machine/internal_types.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/machine/limits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/sys/syslimits.h:
+
+D:/dev/android-ndk-r10b/platforms/android-18/arch-arm/usr/include/asm/page.h:
+
+jni/hrate_lib/pinghua.c:
+
+jni/hrate_lib/bandfiltTEO.c:
+
+jni/hrate_lib/mean_double_array.c:
+
+jni/hrate_lib/find_maxv_maxloc.c:

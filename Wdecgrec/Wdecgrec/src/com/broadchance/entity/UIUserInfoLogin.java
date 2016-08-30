@@ -1,9 +1,25 @@
 package com.broadchance.entity;
 
 import com.broadchance.entity.serverentity.BaseResponse;
+import com.broadchance.manager.DataManager;
+import com.broadchance.utils.BleDataUtil;
 
 public class UIUserInfoLogin extends BaseResponse<String> {
 	public UIUserInfoLogin() {
+	}
+
+	/**
+	 * -1未定义，0已绑定，1绑定了但设备过期
+	 */
+	public int isOverTime = -1;
+	private String macAddress;
+
+	public String getMacAddress() {
+		return macAddress;
+	}
+
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 
 	private String UserID;
@@ -24,6 +40,14 @@ public class UIUserInfoLogin extends BaseResponse<String> {
 
 	public void setLoginName(String _LoginName) {
 		this.LoginName = _LoginName;
+	}
+
+	public String getShowName() {
+		if (NickName != null && !NickName.toString().trim().isEmpty()) {
+			return NickName;
+		} else {
+			return DataManager.getUserInfo().getLoginName();
+		}
 	}
 
 	private String NickName;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.R.integer;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.adapter.DialogBleDevInfoAdapter;
 import com.broadchance.wdecgrec.adapter.DialogOffDataAdapter;
 import com.broadchance.wdecgrec.services.BleDataParserService;
+import com.broadchance.wdecgrec.services.BluetoothLeService;
 
 public class OptionSettingsActivity extends BaseActivity implements
 		OnCheckedChangeListener {
@@ -119,12 +121,21 @@ public class OptionSettingsActivity extends BaseActivity implements
 		List<BleDevInfo> devInfos = new ArrayList<BleDevInfo>();
 		BleDevInfo devInfo = new BleDevInfo();
 		devInfo.setDevInfoName("电压");
-		devInfo.setDevInfoValue(df.format(FrameDataMachine.getInstance()
-				.getPower()));
+		Float power = FrameDataMachine.getInstance().getPower();
+		if (power != null) {
+			devInfo.setDevInfoValue(df.format(power));
+		} else {
+			devInfo.setDevInfoValue("0.0");
+		}
 		devInfos.add(devInfo);
 		devInfo = new BleDevInfo();
 		devInfo.setDevInfoName("强度");
-		devInfo.setDevInfoValue(BleDataParserService.rssiValue + "");
+		Integer rssi = BluetoothLeService.rssiValue;
+		if (rssi != null) {
+			devInfo.setDevInfoValue(rssi + "");
+		} else {
+			devInfo.setDevInfoValue("0.0");
+		}
 		devInfos.add(devInfo);
 		devInfo = new BleDevInfo();
 		devInfo.setDevInfoName("温度");

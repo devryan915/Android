@@ -3,6 +3,14 @@
  */
 package com.broadchance.wdecgrec.test;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.util.Log;
+
 import com.broadchance.utils.LogUtil;
 
 /**
@@ -12,7 +20,53 @@ import com.broadchance.utils.LogUtil;
 public class Test {
 	private static final String TAG = Test.class.getSimpleName();
 
-	public static void testBit() {
+	public void test() {
+		testTimer();
+	}
+
+	long t;
+
+	public void testTimer() {
+		t = System.currentTimeMillis();
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+
+			@Override
+			public void run() {
+
+				Log.e(TAG, "testTimer" + (System.currentTimeMillis() - t)
+						/ 1000);
+			}
+		};
+		timer.schedule(task, 5000);
+		timer.cancel();
+		t = System.currentTimeMillis();
+		timer = new Timer();
+		task = new TimerTask() {
+
+			@Override
+			public void run() {
+
+				Log.e(TAG, "testTimer" + (System.currentTimeMillis() - t)
+						/ 1000);
+			}
+		};
+		timer.schedule(task, 8000);
+	}
+
+	public void testJSON() {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("test", "haha");
+			obj.put("test", "haha1");
+			obj.put("test", "haha2");
+			System.out.println(obj.get("test"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void testBit() {
 		// 测试bit位
 		byte b = (byte) -255;
 		int bit1 = (b & 0x80) >> 7;

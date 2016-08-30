@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
 public class DBHelper extends SQLiteOpenHelper {
-	private final static int DB_VERSION = 1;
+	private final static int DB_VERSION = 3;
 	private final static String DB_ROOT_DIR = "wdecgrec";
 	private final static String DB_NAME = "appdata";
 	private static DBHelper Instance = null;
@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		// status 状态0非当前用户，1当前用户
 		db.execSQL("CREATE TABLE "
 				+ TBL_USER
-				+ " (user_name TEXT PRIMARY KEY , pwd TEXT, userid TEXT,token TEXT,status integer);");
+				+ " (user_name TEXT PRIMARY KEY , pwd TEXT, nick_name TEXT, userid TEXT,token TEXT,status integer,macaddress TEXT);");
 		/**
 		 * file_name 文件名如:201601021525234(yyyyMMddHHmmssSSSZ) path 文件的绝对路径
 		 * status 0数据未做处理1正在上传2上传成功3上传失败 uploadtimes上传重试次数 filetype 1为补传文件
@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		 */
 		db.execSQL("CREATE TABLE "
 				+ TBL_UPLOAD
-				+ " (file_name TEXT PRIMARY KEY ,user_id TEXT,path TEXT,  status integer,uploadtimes integer,data_begintime TEXT,data_endtime TEXT,creation_date TEXT,upload_date TEXT, filetype integer);");
+				+ " (file_name TEXT PRIMARY KEY ,user_id TEXT,path TEXT,  status integer,uploadtimes integer,data_begintime TEXT,data_endtime TEXT,creation_date TEXT,upload_date TEXT, filetype integer,bpath TEXT,hrs TEXT);");
 	}
 
 	@Override

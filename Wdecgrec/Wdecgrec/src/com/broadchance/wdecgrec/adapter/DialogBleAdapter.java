@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.broadchance.entity.BleDev;
+import com.broadchance.utils.BleDataUtil;
+import com.broadchance.utils.ConstantConfig;
 import com.broadchance.wdecgrec.R;
 
 public class DialogBleAdapter extends BaseAdapter {
@@ -72,7 +74,12 @@ public class DialogBleAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		BleDev dev = devs.get(position);
-		holder.textViewBleName.setText(dev.getMacAddress());
+		String devName=BleDataUtil.getDeviceName(dev
+				.getMacAddress()) ;
+		if(ConstantConfig.Debug){
+			devName+= "\n" + dev.getMacAddress();
+		}
+		holder.textViewBleName.setText(devName);
 		holder.dev = dev;
 		return convertView;
 	}

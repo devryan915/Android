@@ -16,18 +16,19 @@
 
 package com.broadchance.wdecgrec.services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -44,19 +45,15 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.widget.TextView;
 
-import com.broadchance.entity.BleDev;
-import com.broadchance.manager.FrameDataMachine;
-import com.broadchance.manager.PreferencesManager;
-import com.broadchance.manager.SettingsManager;
+import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.manager.DataManager;
+import com.broadchance.utils.BleDataUtil;
+import com.broadchance.utils.CRC8;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.SampleGattAttributes;
 import com.broadchance.utils.UIUtil;
-import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.main.EcgActivity;
-import com.broadchance.wdecgrec.main.ModeActivity;
 
 /**
  * Service for managing connection and data communication with a GATT server
@@ -81,7 +78,7 @@ public class BluetoothLeService extends Service {
 	private static final int STATE_SERVICES_DISCOVERED = 3;
 
 	// private final static int ALIVE_PERIOD = 15 * 1000;
-	private final static int CHECK_PERIOD = 10 * 1000;
+	private final static int CHECK_PERIOD = 8 * 1000;
 	private final static int BLE_CON_DELAY = 3 * 1000;
 
 	/**
@@ -136,7 +133,7 @@ public class BluetoothLeService extends Service {
 	ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData = new ArrayList<ArrayList<HashMap<String, String>>>();
 	ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 	ArrayList<String> serviceUUIDList = new ArrayList<String>();
-
+	public static Integer rssiValue = null;
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -165,7 +162,7 @@ public class BluetoothLeService extends Service {
 						DataAliveTime = System.currentTimeMillis();
 						return;
 					}
-					reconnect();
+					connect();
 				}
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 				DataAliveTime = System.currentTimeMillis();
@@ -212,6 +209,7 @@ public class BluetoothLeService extends Service {
 					e.printStackTrace();
 				}
 				boolean isDiscoverServcies = mBluetoothGatt.discoverServices();
+				mBluetoothGatt.readRemoteRssi();
 				DataAliveTime = System.currentTimeMillis();
 				intentAction = ACTION_GATT_CONNECTED;
 				mConnectionState = STATE_CONNECTED;
@@ -233,13 +231,16 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
 			LogUtil.i(TAG, "ble rssi" + rssi);
-			Intent intent = new Intent(ACTION_GATT_RSSICHANGED);
-			intent.putExtra(EXTRA_DATA, rssi);
-			sendBroadcast(intent);
-			intent = new Intent(ACTION_GATT_POWERCHANGED);
-			intent.putExtra(EXTRA_DATA, FrameDataMachine.getInstance()
-					.getPower());
-			sendBroadcast(intent);
+			if (rssiValue == null || (rssiValue != null && rssi != rssiValue)) {
+				rssiValue = rssi;
+				Intent intent = new Intent(ACTION_GATT_RSSICHANGED);
+				// intent.putExtra(EXTRA_DATA, rssiValue);
+				sendBroadcast(intent);
+				// intent = new Intent(ACTION_GATT_POWERCHANGED);
+				// intent.putExtra(EXTRA_DATA, FrameDataMachine.getInstance()
+				// .getPower());
+				// sendBroadcast(intent);
+			}
 			super.onReadRemoteRssi(gatt, rssi, status);
 		}
 
@@ -281,7 +282,7 @@ public class BluetoothLeService extends Service {
 			// "onCharacteristicChanged\n"
 			// + "DateTime "
 			// + sdf.format(date)
-			// + " "
+			// + "\n"
 			// + BleDataUtil.dumpBytesAsString(characteristic
 			// .getValue()));
 			// }
@@ -313,6 +314,11 @@ public class BluetoothLeService extends Service {
 		} else {
 			// For all other profiles, writes the data formatted in HEX.
 			final byte[] data = characteristic.getValue();
+			// BleDataParserService parserService = BleDataParserService
+			// .getInstance();
+			// if (parserService != null) {
+			// parserService.receiveData(data);
+			// }
 			intent.putExtra(EXTRA_DATA, data);
 		}
 		sendBroadcast(intent);
@@ -511,11 +517,13 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi,
 				byte[] scanRecord) {
-			String deviceNumber = SettingsManager.getInstance()
-					.getDeviceNumber();
-			if (deviceNumber.equals(device.getAddress())) {
-				LogUtil.i(TAG, "扫描到指定蓝牙" + deviceNumber + " 尝试连接");
-				connect();
+			UIUserInfoLogin user = DataManager.getUserInfo();
+			if (user != null) {
+				String deviceNumber = user.getMacAddress();
+				if (deviceNumber.equals(device.getAddress())) {
+					LogUtil.i(TAG, "扫描到指定蓝牙" + deviceNumber + " 尝试连接");
+					connect();
+				}
 			}
 		}
 	};
@@ -531,28 +539,24 @@ public class BluetoothLeService extends Service {
 	 *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
 	 *         callback.
 	 */
-	public boolean connect() {
-		String deviceNumber = SettingsManager.getInstance().getDeviceNumber();
-		if (deviceNumber.trim().isEmpty()) {
+	// 连接之前必须释放BluetoothGatt,否则可能收到重复数据
+	public void connect() {
+
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		if (user == null) {
+			return;
+		}
+		String deviceNumber = user.getMacAddress();
+		// if (ConstantConfig.Debug) {
+		// deviceNumber = "33:44:55:66:79:75";
+		// }
+		if (!(deviceNumber != null && !deviceNumber.trim().isEmpty())) {
 			LogUtil.i(TAG, "无设备可连接");
-			return false;
+			return;
 		}
 		if (mBluetoothAdapter == null) {
-			return false;
+			return;
 		}
-		final BluetoothDevice device = mBluetoothAdapter
-				.getRemoteDevice(deviceNumber);
-		if (device == null) {
-			return false;
-		}
-		mConnectionState = STATE_CONNECTING;
-		DataAliveTime = System.currentTimeMillis();
-		mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
-		return true;
-	}
-
-	private void reconnect() {
-		LogUtil.i(TAG, "正在重连" + SettingsManager.getInstance().getDeviceNumber());
 		mConnectionState = STATE_CONNECTING;
 		broadcastUpdate(ACTION_GATT_RECONNECTING);
 		DataAliveTime = System.currentTimeMillis();
@@ -562,7 +566,21 @@ public class BluetoothLeService extends Service {
 		// mBluetoothGatt.connect();
 		// } else {
 		close();
-		connect();
+		if (ConstantConfig.Debug) {
+			UIUtil.showToast(BluetoothLeService.this, "正在重连：" + deviceNumber);
+		}
+		try {
+			final BluetoothDevice device = mBluetoothAdapter
+					.getRemoteDevice(deviceNumber);
+			if (device == null) {
+				return;
+			}
+			mConnectionState = STATE_CONNECTING;
+			DataAliveTime = System.currentTimeMillis();
+			mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+		} catch (Exception e) {
+			LogUtil.e(TAG, e);
+		}
 		// }
 		// close();
 		// scanLeDevice(true);
@@ -697,6 +715,7 @@ public class BluetoothLeService extends Service {
 			LogUtil.i(TAG, "[" + ConstantConfig.BLE_UUID_READ + "]"
 					+ "唤醒蓝牙数据，准备读取数据");
 			setCharacteristicNotification(characteristic, true);
+			DataAliveTime = System.currentTimeMillis();
 		}
 	}
 
@@ -787,7 +806,12 @@ public class BluetoothLeService extends Service {
 		setTimeFrame[17] = (byte) minute;
 		setTimeFrame[18] = (byte) second;
 
-		setTimeFrame[19] = (byte) 0xC0;
+		byte[] byteFrame = new byte[14];
+		for (int i = 0; i < byteFrame.length; i++) {
+			byteFrame[i] = setTimeFrame[i + 5];
+		}
+		byte checkSum = CRC8.calcCrc8(byteFrame);
+		setTimeFrame[19] = checkSum;
 	}
 
 	public void writeFrame(BluetoothGattCharacteristic characteristic,

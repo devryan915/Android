@@ -66,7 +66,7 @@ public class ModifyPwdActivity extends BaseActivity {
 			return;
 		} else if (newPwd.length() != 8) {
 			modifyPwd_NewPwd.requestFocusFromTouch();
-			showToast("密码必须为8为数字");
+			showToast("密码必须为8位数字");
 			return;
 		}
 		String newConfirmPwd = modifyPwdConfirmpwd.getText().toString();
@@ -100,9 +100,9 @@ public class ModifyPwdActivity extends BaseActivity {
 							startActivity(intent);
 						} else {
 							showToast(result.getMessage());
-							if (ConstantConfig.Debug) {
-								// showResponseMsg(result.Code);
-							}
+							// if (ConstantConfig.Debug) {
+							// showResponseMsg(result.Code);
+							// }
 						}
 					}
 
@@ -110,6 +110,8 @@ public class ModifyPwdActivity extends BaseActivity {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							showToast(result);
+						} else {
+							showToast("操作失败");
 						}
 					}
 				});
