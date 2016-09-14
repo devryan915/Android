@@ -1,14 +1,14 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -63,11 +63,12 @@
     </style>
 
     <style name="login_edittext">
-        <item name="android:layout_width">303dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">36dp</item>
         <item name="android:paddingLeft">95dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">#5c5c5e</item>
         <item name="android:textSize">15sp</item>
     </style>
 
@@ -103,7 +104,7 @@
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">#666666</item>
+        <item name="android:textColor">#5c5c5e</item>
     </style>
 
     <style name="myinfo_textview">

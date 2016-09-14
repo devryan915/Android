@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/login_pwd_nor" android:state_window_focused="false"/>
-    <item android:drawable="@drawable/login_pwd_sel" android:state_focused="true"/>
+    <item android:drawable="@drawable/login_pwd_nor" android:state_focused="true"/>
 
 </selector>

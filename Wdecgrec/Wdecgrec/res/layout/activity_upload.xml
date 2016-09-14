@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121820"
+    tools:context="com.broadchance.wdecgrec.UploadActivity" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="#2d2d31"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/buttonTitleBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="&lt;设置"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textViewUseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="一键上传"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="当前有待上传文件0个"
+        android:textColor="#33b4ad"
+        android:textSize="20sp" />
+
+</RelativeLayout>

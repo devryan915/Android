@@ -7,7 +7,7 @@
     <string name="title_activity_welcome">WelocomeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_mode">ModeActivity</string>
+    <string name="title_activity_mode">心电</string>
     <string name="title_activity_ecg">EcgActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_my_info">MyInfoActivity</string>
@@ -18,14 +18,16 @@
     <!-- 皮肤资源的资源名 -->
     <string name="skin_settings_changeskin">settings_changeskin</string>
     <!-- title -->
-    <string name="title_blestatus">蓝牙状态</string>
-    <string name="title_leftpower">电量剩余</string>
+    <string name="title_blestatus">蓝牙状态：</string>
+    <string name="title_leftpower">电量剩余：</string>
     <!-- 登录 -->
     <string name="login_user_label">用户名</string>
+    <string name="login_user_labelhint">请输入账号</string>
     <string name="login_pwd_label">密码</string>
+    <string name="login_pwd_labelhint">请输入密码</string>
     <string name="login_savepwd">记住密码</string>
     <string name="login_forgotpwd">忘记密码?</string>
-    <string name="login_login">立即登录</string>
+    <string name="login_login">登录</string>
     <string name="login_register">帐号注册</string>
     <string name="login_version">当前版本：</string>
     <!-- 注册 -->
@@ -57,8 +59,8 @@
     <string name="ecg_channel1">MⅡ</string>
     <string name="ecg_channel2">MV1</string>
     <string name="ecg_channel3">MV5</string>
-    <string name="ecg_curspeedadjust">当前速度调整</string>
-    <string name="ecg_curchannel">当前显示通道</string>
+    <string name="ecg_curspeedadjust">幅频（mV/mm）</string>
+    <string name="ecg_curchannel">当前速度（mm/s）</string>
     <string name="ecg_batch_mode">批量模式</string>
     <string name="ecg_realtime_mode">实时模式</string>
     <string name="ecg_threechannels">三通道</string>
@@ -73,6 +75,7 @@
     <string name="settings_changeskin">换肤</string>
     <string name="settings_appupdate">系统更新</string>
     <string name="settings_bindeddev">解除绑定设备</string>
+    <string name="settings_logout">退出账号</string>
     <!-- 定义对话框 -->
     <string name="dialog_title_changeskin">换肤</string>
     <string name="dialog_title_appupdate">系统更新	</string>
@@ -171,5 +174,7 @@
     <string name="modifypwd_newpwdhint">请输入新密码</string>
     <string name="modifypwd_confirmpwd">确认密码</string>
     <string name="modifypwd_confirmpwdhint">请再次输入新密码</string>
+    <string name="title_activity_upload">UploadActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

@@ -2,133 +2,131 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
+    android:background="#121820"
     tools:context="${relativePackage}.${activityClass}" >
+
+    <com.broadchance.wdecgrec.widget.CustomTitle
+        android:id="@+id/customTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.broadchance.wdecgrec.widget.CustomTitle>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/customTitle"
+        android:background="#2d2d31"
+        android:gravity="center_vertical" >
+
+        <View
+            android:id="@+id/btnSettings"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/common_title_contactshead"
+            android:onClick="settings" />
+
+        <TextView
+            android:id="@+id/textViewUseName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/btnSettings"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:text="13045659626"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="@string/title_activity_mode"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnECG"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/main_modebg"
+        android:onClick="wearMode" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="心电详情"
+            android:textColor="@android:color/white"
+            android:textSize="15dp" />
+
+        <View
+            android:id="@+id/modeHeart"
+            android:layout_width="50dp"
+            android:layout_height="43dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/main_mode_heart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/modeHeart"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/modeHeart"
+            android:text="心率"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/textViewHeart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/modeHeart"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/modeHeart"
+            android:text="次/分"
+            android:textColor="#ea804e"
+            android:textSize="18dp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_marginTop="-60dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mode_welcome"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/modeWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="18852408888"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="246dp"
-        android:layout_height="247dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/main_modebg" />
-
-    <LinearLayout
-        android:id="@+id/llContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="303dp"
-            android:layout_height="200dp"
-            android:gravity="center_vertical" >
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前版本号：V1.0.9"
+            android:textColor="#5c5c5e"
+            android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/buttonWearMode"
-                style="@style/mode_leftbutton"
-                android:text="@string/mode_wearmode" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="穿戴式动态心电记录仪软件"
+            android:textColor="#5c5c5e"
+            android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/buttonFamilyMode"
-                style="@style/mode_rightbutton"
-                android:text="@string/mode_familymode" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="303dp"
-            android:layout_height="200dp"
-            android:gravity="center_vertical" >
-
-            <Button
-                android:id="@+id/buttonSportsMode"
-                style="@style/mode_leftbutton"
-                android:text="@string/mode_sportsmode" />
-
-            <Button
-                android:id="@+id/buttonMonitorMode"
-                style="@style/mode_rightbutton"
-                android:text="@string/mode_monitormode" />
-
-            <!--
-                 <Button
-                android:id="@+id/buttonTest"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/buttonMonitorMode"
-                android:layout_toRightOf="@+id/buttonSportsMode"
-                android:text="Button" />
-            -->
-        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="苏械注准：20152211103"
+            android:textColor="#5c5c5e"
+            android:textSize="16sp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonSportsModeTip"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/llContent"
-        android:layout_marginTop="-55dp"
-        android:background="@drawable/mode_tip_bg"
-        android:text="@string/mode_waiting_new"
-        android:textColor="#000033"
-        android:textSize="14sp"
-        android:visibility="invisible" />
-
-    <Button
-        android:id="@+id/buttonMonitorModeTip"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/llContent"
-        android:layout_marginTop="-55dp"
-        android:background="@drawable/mode_tip_bg"
-        android:text="@string/mode_waiting_new"
-        android:textColor="#000033"
-        android:textSize="14sp"
-        android:visibility="invisible" />
-
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="126dp"
-        android:layout_height="34dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/mode_logoutbutton_selector" />
-
-    <Button
-        android:id="@+id/buttonSettings"
-        android:layout_width="98dp"
-        android:layout_height="34dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/mode_settingsbutton_selector" />
 
 </RelativeLayout>

@@ -3,9 +3,11 @@
     xmlns:wdecgrec="http://schemas.android.com/apk/res/com.broadchance.wdecgrec"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="#121820"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     tools:context="${relativePackage}.${activityClass}" >
 
     <ImageView
@@ -14,13 +16,7 @@
         android:layout_height="145dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/login_com_top" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:src="@drawable/login_appname" />
+    <!--  -->
 
     <com.broadchance.wdecgrec.widget.LabelEditText
         android:id="@+id/editTextUserName"
@@ -28,16 +24,11 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/login_username_selector"
         android:ems="11"
-        android:hint=""
+        android:hint="@string/login_user_labelhint"
+        android:imeOptions="actionGo"
         android:inputType="number"
         android:maxLength="11"
-        android:singleLine="true"
-        android:text="13790909090"
-        android:textColorHint="#91c3be"
-        wdecgrec:labelcolor="@android:color/white"
-        wdecgrec:labelpaddingleft="40dp"
-        wdecgrec:labeltext="@string/login_user_label"
-        wdecgrec:labeltextsize="15sp" >
+        android:text="" >
 
         <requestFocus />
     </com.broadchance.wdecgrec.widget.LabelEditText>
@@ -48,50 +39,11 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/login_pwd_selector"
         android:ems="8"
-        android:imeOptions="actionGo"
+        android:enabled="false"
+        android:hint="@string/login_pwd_labelhint"
         android:inputType="numberPassword"
         android:maxLength="8"
-        android:singleLine="true"
-        android:textColorHint="#91c3be"
-        android:visibility="gone"
-        wdecgrec:labelcolor="@android:color/white"
-        wdecgrec:labelpaddingleft="40dp"
-        wdecgrec:labeltext="@string/login_pwd_label"
-        wdecgrec:labeltextsize="15sp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone" >
-
-        <CheckBox
-            android:id="@+id/checkBoxSavePwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="-10dp"
-            android:button="@drawable/login_chk_selector"
-            android:checked="false"
-            android:paddingLeft="3dp"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
-            android:text="@string/login_savepwd"
-            android:textColor="@android:color/white"
-            android:textSize="36sp" />
-
-        <Button
-            android:id="@+id/buttonForgotPwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@null"
-            android:text="@string/login_forgotpwd"
-            android:textColor="#fdfd47"
-            android:textSize="18sp" />
-    </RelativeLayout>
+        android:text="888888" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -106,13 +58,11 @@
             <Button
                 android:id="@+id/buttonLogin"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
-                android:background="@drawable/login_loginbtn_bg"
+                android:background="@drawable/login_loginbutton_selector"
                 android:text="@string/login_login"
-                android:textColor="#ff6c00"
+                android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
             <Button
@@ -132,10 +82,44 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" >
+
+        <CheckBox
+            android:id="@+id/checkBoxSavePwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="-10dp"
+            android:button="@drawable/login_chk_selector"
+            android:checked="true"
+            android:enabled="false"
+            android:paddingLeft="3dp"
+            android:text="@string/login_savepwd"
+            android:textColor="#5c5c5e"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/buttonForgotPwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:text="@string/login_forgotpwd"
+            android:textColor="#fdfd47"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom|right"
         android:paddingBottom="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/textViewVertion"

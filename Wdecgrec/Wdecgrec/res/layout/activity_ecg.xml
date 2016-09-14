@@ -3,28 +3,31 @@
     xmlns:wdecgrec="http://schemas.android.com/apk/res/com.broadchance.wdecgrec"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="#10141f"
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
     <com.broadchance.wdecgrec.widget.CustomTitle
         android:id="@+id/customTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </com.broadchance.wdecgrec.widget.CustomTitle>
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:background="@null"
+        android:layout_height="50dp"
+        android:background="#2d2d31"
         android:gravity="center_vertical" >
 
-        <Button
+        <TextView
             android:id="@+id/buttonTitleBack"
-            android:layout_width="22dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/common_rebtn" />
+            android:gravity="center"
+            android:text="&lt;心电"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewUseName"
@@ -37,52 +40,36 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/viewChannel1"
         android:layout_width="match_parent"
-        android:layout_height="25dp" >
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
 
-        <TextView
-            android:id="@+id/ecg_curspeed"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/ecg_curspeed"
-            android:textColor="@color/light_green"
-            android:textSize="13sp" />
+        <com.broadchance.ecgview.ECGGLSurfaceView
+            android:id="@+id/ecgGLSurfaceViewChannelMII"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            wdecgrec:ecglinecolor="#000000"
+            wdecgrec:gridbgcolor="#ffffff"
+            wdecgrec:griddarkcolor="#ccced0"
+            wdecgrec:gridlightcolor="#ccced0"
+            wdecgrec:leftrightmargin="20dp" />
 
         <TextView
             android:id="@+id/ecg_curspeedvalue"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/ecg_curspeed"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="10mm/mV 25mm/s"
-            android:textColor="@color/light_green"
-            android:textSize="13sp" />
-
-        <ImageView
-            android:id="@+id/ecg_heartrate"
-            android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/ecg_curhearrate"
-            android:background="@drawable/ecg_heartrate" />
-
-        <TextView
-            android:id="@+id/ecg_curhearrate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textColor="@color/dark_red"
-            android:textSize="20sp" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/ecg_channel1"
+            android:textColor="#5c5c5e"
+            android:textSize="13sp" />
     </RelativeLayout>
 
     <ScrollView
-        android:id="@+id/scrollViewContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -92,121 +79,119 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/viewChannel1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="4dp" >
-
-                <com.broadchance.ecgview.ECGGLSurfaceView
-                    android:id="@+id/ecgGLSurfaceViewChannelMII"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#009900"
-                    wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#005200"
-                    wdecgrec:gridlightcolor="#002600"
-                    wdecgrec:leftrightmargin="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="20dp"
-                    android:text="@string/ecg_channel1"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/viewChannel2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="4dp"
-                android:visibility="gone" >
-
-                <com.broadchance.ecgview.ECGGLSurfaceView
-                    android:id="@+id/ecgGLSurfaceViewChannelMV1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#009900"
-                    wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#005200"
-                    wdecgrec:gridlightcolor="#002600"
-                    wdecgrec:leftrightmargin="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="20dp"
-                    android:text="@string/ecg_channel2"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/viewChannel3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="4dp"
-                android:visibility="gone" >
-
-                <com.broadchance.ecgview.ECGGLSurfaceView
-                    android:id="@+id/ecgGLSurfaceViewChannelMV5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    wdecgrec:ecglinecolor="#009900"
-                    wdecgrec:gridbgcolor="#ff000000"
-                    wdecgrec:griddarkcolor="#005200"
-                    wdecgrec:gridlightcolor="#002600"
-                    wdecgrec:leftrightmargin="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="20dp"
-                    android:text="@string/ecg_channel3"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#121820"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" >
 
                 <TextView
-                    android:layout_width="110dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/ecg_curspeedadjust"
-                    android:textColor="#266b03"
+                    android:textColor="#5c5c5e"
                     android:textSize="16sp" />
 
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="1dp"
+                <RadioGroup
+                    android:id="@+id/rgEcgRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:background="#266b03" />
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+
+                        <RadioButton
+                            android:id="@+id/ecgRangeLevel1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="0.1"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+
+                        <RadioButton
+                            android:id="@+id/ecgRangeLevel2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="0.2"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+
+                        <RadioButton
+                            android:id="@+id/ecgRangeLevel3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="0.5"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+
+                        <RadioButton
+                            android:id="@+id/ecgRangeLevel4"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="1.0"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/viewEcgChannel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#121820"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/ecg_curchannel"
+                    android:textColor="#5c5c5e"
+                    android:textSize="16sp" />
 
                 <RadioGroup
                     android:id="@+id/rgEcgSpeed"
@@ -217,175 +202,207 @@
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal" >
 
-                    <RadioButton
-                        android:id="@+id/ecgSpeedLow"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="5mm/mV\n12.5mm/s"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
+                        android:gravity="center" >
 
-                    <RadioButton
-                        android:id="@+id/ecgSpeedNormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:text="10mm/mV\n25mm/s"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
+                        <RadioButton
+                            android:id="@+id/ecgSpeedLevel1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="10"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
 
-                    <RadioButton
-                        android:id="@+id/ecgSpeedHigh"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="20mm/mV\n50mm/s"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
+                        android:gravity="center" >
+
+                        <RadioButton
+                            android:id="@+id/ecgSpeedLevel2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="20"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" >
+                    </LinearLayout>
                 </RadioGroup>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/viewEcgChannel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3px"
+                android:layout_marginTop="3px"
+                android:background="#121820"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:visibility="gone" >
+                android:padding="10dp" >
 
                 <TextView
-                    android:layout_width="110dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/ecg_curchannel"
-                    android:textColor="#266b03"
+                    android:text="当前心率"
+                    android:textColor="#5c5c5e"
                     android:textSize="16sp" />
 
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#266b03" />
+                <Button
+                    android:id="@+id/ecg_curhearrate"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ecg_heartrate"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textColor="@color/light_green"
+                    android:textSize="50dp" >
+                </Button>
+            </LinearLayout>
 
-                <RadioGroup
-                    android:id="@+id/rgEcgChannel"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3px"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginRight="1.5px"
+                    android:layout_weight="1"
+                    android:background="#121820"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" >
 
-                    <RadioButton
-                        android:id="@+id/ecgChannel1"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:text="@string/ecg_channel1"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/lblCurDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="当前日期"
+                        android:textColor="#5c5c5e" />
 
-                    <RadioButton
-                        android:id="@+id/ecgChannel2"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="@string/ecg_channel2"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tvCurDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lblCurDate"
+                        android:layout_centerHorizontal="true"
+                        android:text="2000-01-01"
+                        android:textColor="@color/light_green" />
+                </RelativeLayout>
 
-                    <RadioButton
-                        android:id="@+id/ecgChannel3"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ecg_radio_selector"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="@string/ecg_channel3"
-                        android:textColor="@drawable/ecg_radiotextcolor_selector"
-                        android:textSize="15sp" />
-                </RadioGroup>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1.5px"
+                    android:layout_weight="1"
+                    android:background="#121820"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/lblCurTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="当前时间"
+                        android:textColor="#5c5c5e" />
+
+                    <TextView
+                        android:id="@+id/tvCurTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lblCurTime"
+                        android:layout_centerHorizontal="true"
+                        android:text="00:00:00.000"
+                        android:textColor="@color/light_green" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3px"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1.5px"
+                    android:layout_weight="1"
+                    android:background="#121820"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/lblMacAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="MAC地址"
+                        android:textColor="#5c5c5e" />
+
+                    <TextView
+                        android:id="@+id/tvMacAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lblMacAddress"
+                        android:layout_centerHorizontal="true"
+                        android:text="00:00:00:00:00:00"
+                        android:textColor="@color/light_green" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1.5px"
+                    android:layout_weight="1"
+                    android:background="#121820"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/lbl2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#5c5c5e" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lbl2"
+                        android:textColor="@color/light_green" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_gravity="bottom"
-            android:background="#00121a" >
-
-            <Button
-                android:id="@+id/buttonUploadType"
-                android:layout_width="149dp"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/ecg_modebtn_bg"
-                android:text="@string/ecg_batch_mode"
-                android:textColor="@drawable/ecg_modebuttontextcolor_selector"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="149dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ecg_modebtn_bg"
-                android:gravity="center" >
-
-                <CheckBox
-                    android:id="@+id/checkBox3Channel"
-                    android:layout_width="298dp"
-                    android:layout_height="80dp"
-                    android:button="@drawable/ecg_chk_selector"
-                    android:checked="false"
-                    android:enabled="false"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:singleLine="true"
-                    android:text="@string/ecg_onechannel"
-                    android:textColor="@android:color/white"
-                    android:textSize="40sp" />
-            </LinearLayout>
-        </RelativeLayout>
-    </FrameLayout>
 
 </LinearLayout>
