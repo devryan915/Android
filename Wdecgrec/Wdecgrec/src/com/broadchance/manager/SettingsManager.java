@@ -38,6 +38,18 @@ public class SettingsManager {
 	 */
 	public final static int OFFDATA_SIZE_OFF = -1;
 
+	public String getServerURL() {
+		return PreferencesManager.getInstance().getString(
+				ConstantConfig.PREFERENCES_SERVERURL,
+				ConstantConfig.SERVER_URL_DEF);
+	}
+
+	public void setServerURL(String url) {
+		ConstantConfig.SERVER_URL = url;
+		PreferencesManager.getInstance().putString(
+				ConstantConfig.PREFERENCES_SERVERURL, url);
+	}
+
 	public void setDpiConfigX(float value) {
 		PreferencesManager.getInstance().putFloat(
 				ConstantConfig.PREFERENCES_XDPI, value);

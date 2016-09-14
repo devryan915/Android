@@ -7,10 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.broadchance.entity.AlertBody;
 import com.broadchance.entity.FileType;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFile;
@@ -20,11 +23,13 @@ import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.DBHelper;
 import com.broadchance.utils.LogUtil;
+import com.broadchance.wdecgrec.alert.AlertType;
 
 public class DataManager {
 	private final static String TAG = DataManager.class.getSimpleName();
 	private static UIUserInfoLogin USER;
 	private static Object objUploadFileLock = new Object();
+	private static Object objalertLock = new Object();
 
 	/**
 	 * 将用户密码置空
@@ -151,9 +156,18 @@ public class DataManager {
 		return pwd;
 	}
 
+	public static boolean isLogin() {
+		try {
+			UIUserInfoLogin user = getUserInfo();
+			return user != null && user.getUserID().trim().length() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public static UIUserInfoLogin getUserInfo() {
 		if (USER != null) {
-			ConstantConfig.ORDERNO = USER.getAccess_token();
 			return USER;
 		}
 		DBHelper dbHelper = DBHelper.getInstance();
@@ -179,7 +193,6 @@ public class DataManager {
 		db.close();
 		USER = (user.getUserID() != null && user.getUserID().trim().length() > 0) ? user
 				: null;
-		ConstantConfig.ORDERNO = USER != null ? USER.getAccess_token() : "";
 		return USER;
 	}
 
@@ -370,29 +383,32 @@ public class DataManager {
 	}
 
 	public static boolean isUploadFileExist(String fileName) {
-		DBHelper dbHelper = DBHelper.getInstance();
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Cursor cursor = null;
-		try {
-			String sql = "select file_name  from " + DBHelper.TBL_UPLOAD
-					+ " where file_name=?";
-			String[] selectionArgs = new String[] { fileName };
-			cursor = db.rawQuery(sql, selectionArgs);
-			boolean isExist = false;
-			for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
-					.moveToNext()) {
-				isExist = true;
-				break;
+		synchronized (objUploadFileLock) {
+
+			DBHelper dbHelper = DBHelper.getInstance();
+			SQLiteDatabase db = dbHelper.getReadableDatabase();
+			Cursor cursor = null;
+			try {
+				String sql = "select file_name  from " + DBHelper.TBL_UPLOAD
+						+ " where file_name=?";
+				String[] selectionArgs = new String[] { fileName };
+				cursor = db.rawQuery(sql, selectionArgs);
+				boolean isExist = false;
+				for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
+						.moveToNext()) {
+					isExist = true;
+					break;
+				}
+				return isExist;
+			} catch (Exception e) {
+				if (ConstantConfig.Debug) {
+					LogUtil.e(TAG, e);
+				}
+			} finally {
+				if (cursor != null)
+					cursor.close();
+				db.close();
 			}
-			return isExist;
-		} catch (Exception e) {
-			if (ConstantConfig.Debug) {
-				LogUtil.e(TAG, e);
-			}
-		} finally {
-			if (cursor != null)
-				cursor.close();
-			db.close();
 		}
 		return false;
 	}
@@ -405,75 +421,203 @@ public class DataManager {
 	 * @return
 	 */
 	public static List<UploadFile> getUploadFile(Date date, int limit) {
-		try {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user == null) {
-				LogUtil.d(TAG, "getUploadFile " + "用户数据不存在");
-				return null;
-			}
-			// SimpleDateFormat sdf = new SimpleDateFormat(
-			// ConstantConfig.DATA_DATE_FORMAT);
-			List<UploadFile> files = new ArrayList<UploadFile>();
-			DBHelper dbHelper = DBHelper.getInstance();
-			SQLiteDatabase db = dbHelper.getReadableDatabase();
-			// 查询给定时间之后且数据未上传或者上传失败或者上传超时(默认时间2min)发生异常导致数据状态未回写的数据，抓取指定条数
-			int timeoutData = 2;
-			String sql = "select file_name,path,uploadtimes,data_begintime,data_endtime,upload_date,status,filetype,bpath,hrs  from "
-					+ DBHelper.TBL_UPLOAD
-					+ " where creation_date>=? and (status=? or status=? or upload_date<?) and user_id=? "
-					+ (limit > 0 ? "limit ?" : "")
-					+ "  order by creation_date desc  ";
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.MINUTE, -timeoutData);
-			String[] selectionArgs = null;
-			if (limit > 0) {
-				selectionArgs = new String[] { CommonUtil.getTime_C(date),
-						UploadFileStatus.UnDeal.getValue() + "",
-						UploadFileStatus.UploadFailed.getValue() + "",
-						CommonUtil.getTime_C(calendar.getTime()),
-						user.getUserID(), limit + "" };
-			} else {
-				selectionArgs = new String[] { CommonUtil.getTime_C(date),
-						UploadFileStatus.UnDeal.getValue() + "",
-						UploadFileStatus.UploadFailed.getValue() + "",
-						CommonUtil.getTime_C(calendar.getTime()),
-						user.getUserID() };
-			}
+		synchronized (objUploadFileLock) {
 
-			UploadFile file = null;
-			Cursor cursor = db.rawQuery(sql, selectionArgs);
-			for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
-					.moveToNext()) {
-				file = new UploadFile();
-				file.setFileName(cursor.getString(cursor
-						.getColumnIndex("file_name")));
-				file.setPath(cursor.getString(cursor.getColumnIndex("path")));
-				file.setUploadtimes(cursor.getInt(cursor
-						.getColumnIndex("uploadtimes")));
-				// file.setStatus(UploadFileStatus.UnDeal.getFileStatus(cursor
-				// .getInt(cursor.getColumnIndex("status"))));
-				file.setStatus(UploadFileStatus.UnDeal);
-				file.setType(FileType.Default.getFileStatus(cursor
-						.getInt(cursor.getColumnIndex("filetype"))));
+			try {
+				UIUserInfoLogin user = DataManager.getUserInfo();
+				if (user == null) {
+					LogUtil.d(TAG, "getUploadFile " + "用户数据不存在");
+					return null;
+				}
+				// SimpleDateFormat sdf = new SimpleDateFormat(
+				// ConstantConfig.DATA_DATE_FORMAT);
+				List<UploadFile> files = new ArrayList<UploadFile>();
+				DBHelper dbHelper = DBHelper.getInstance();
+				SQLiteDatabase db = dbHelper.getReadableDatabase();
+				// 查询给定时间之后且数据未上传或者上传失败或者上传超时(默认时间2min)发生异常导致数据状态未回写的数据，抓取指定条数
+				int timeoutData = 2;
+				String sql = "select file_name,path,uploadtimes,data_begintime,data_endtime,upload_date,status,filetype,bpath,hrs  from "
+						+ DBHelper.TBL_UPLOAD
+						+ " where creation_date>=? and (status=? or status=? or upload_date<?) and user_id=? "
+						+ (limit > 0 ? "limit ?" : "")
+						+ "  order by creation_date desc  ";
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.MINUTE, -timeoutData);
+				String[] selectionArgs = null;
+				if (limit > 0) {
+					selectionArgs = new String[] { CommonUtil.getTime_C(date),
+							UploadFileStatus.UnDeal.getValue() + "",
+							UploadFileStatus.UploadFailed.getValue() + "",
+							CommonUtil.getTime_C(calendar.getTime()),
+							user.getUserID(), limit + "" };
+				} else {
+					selectionArgs = new String[] { CommonUtil.getTime_C(date),
+							UploadFileStatus.UnDeal.getValue() + "",
+							UploadFileStatus.UploadFailed.getValue() + "",
+							CommonUtil.getTime_C(calendar.getTime()),
+							user.getUserID() };
+				}
 
-				file.setDataBeginTime(CommonUtil.parseDate_C(cursor
-						.getString(cursor.getColumnIndex("data_begintime"))));
-				file.setDataEndTime(CommonUtil.parseDate_C(cursor
-						.getString(cursor.getColumnIndex("data_endtime"))));
-				file.setUploadDate(CommonUtil.parseDate_C(cursor
-						.getString(cursor.getColumnIndex("upload_date"))));
-				file.setBpath(cursor.getString(cursor.getColumnIndex("bpath")));
-				file.setHrs(cursor.getString(cursor.getColumnIndex("hrs")));
-				files.add(file);
+				UploadFile file = null;
+				Cursor cursor = db.rawQuery(sql, selectionArgs);
+				for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
+						.moveToNext()) {
+					file = new UploadFile();
+					file.setFileName(cursor.getString(cursor
+							.getColumnIndex("file_name")));
+					file.setPath(cursor.getString(cursor.getColumnIndex("path")));
+					file.setUploadtimes(cursor.getInt(cursor
+							.getColumnIndex("uploadtimes")));
+					// file.setStatus(UploadFileStatus.UnDeal.getFileStatus(cursor
+					// .getInt(cursor.getColumnIndex("status"))));
+					file.setStatus(UploadFileStatus.UnDeal);
+					file.setType(FileType.Default.getFileStatus(cursor
+							.getInt(cursor.getColumnIndex("filetype"))));
+
+					file.setDataBeginTime(CommonUtil.parseDate_C(cursor
+							.getString(cursor.getColumnIndex("data_begintime"))));
+					file.setDataEndTime(CommonUtil.parseDate_C(cursor
+							.getString(cursor.getColumnIndex("data_endtime"))));
+					file.setUploadDate(CommonUtil.parseDate_C(cursor
+							.getString(cursor.getColumnIndex("upload_date"))));
+					file.setBpath(cursor.getString(cursor
+							.getColumnIndex("bpath")));
+					file.setHrs(cursor.getString(cursor.getColumnIndex("hrs")));
+					files.add(file);
+				}
+				cursor.close();
+				db.close();
+				return files;
+			} catch (ParseException e) {
+				if (ConstantConfig.Debug) {
+					LogUtil.e(TAG, e);
+				}
 			}
-			cursor.close();
-			db.close();
-			return files;
-		} catch (ParseException e) {
-			if (ConstantConfig.Debug) {
+			return null;
+		}
+	}
+
+	/**
+	 * 保存预警信息
+	 * 
+	 * @param id
+	 *            预警id
+	 * @param state
+	 * @param time
+	 * @param value
+	 * @return
+	 */
+	public static boolean saveAlert(AlertType id, Integer state, String time,
+			JSONObject value) {
+		synchronized (objalertLock) {
+			try {
+				DBHelper dbHelper = DBHelper.getInstance();
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
+				UIUserInfoLogin user = DataManager.getUserInfo();
+				if (user == null) {
+					LogUtil.d(TAG, "saveAlert " + "用户数据不存在");
+					return false;
+				}
+				ContentValues cValue = new ContentValues();
+				cValue.put("creattime", CommonUtil.getTime_B());
+				cValue.put("id", id.getValue());
+				cValue.put("orderno", user.getAccess_token());
+				cValue.put("state", state);
+				cValue.put("time", time);
+				cValue.put("userid", user.getUserID());
+				// 只有触发事件才有
+				if (state == 1) {
+					cValue.put("value", value.toString());
+				}
+				long rowid = db.insert(DBHelper.TBL_ALERT, null, cValue);
+				db.close();
+				return rowid != -1;
+			} catch (Exception e) {
 				LogUtil.e(TAG, e);
 			}
+			return false;
 		}
-		return null;
 	}
+
+	/**
+	 * 抓取预警信息并上报
+	 * 
+	 * @return
+	 */
+	public static List<AlertBody> getAlert() {
+		synchronized (objalertLock) {
+			try {
+				UIUserInfoLogin user = DataManager.getUserInfo();
+				if (user == null) {
+					LogUtil.d(TAG, "getAlert " + "用户数据不存在");
+					return null;
+				}
+				List<AlertBody> bodys = new ArrayList<AlertBody>();
+				DBHelper dbHelper = DBHelper.getInstance();
+				SQLiteDatabase db = dbHelper.getReadableDatabase();
+				// 查询给定时间之后且数据未上传或者上传失败或者上传超时(默认时间2min)发生异常导致数据状态未回写的数据，抓取指定条数
+				String sql = "select *  from " + DBHelper.TBL_ALERT
+						+ " where userid=? and orderno=? "
+						+ "  order by creattime ";
+				String[] selectionArgs = null;
+				selectionArgs = new String[] { user.getUserID(),
+						user.getAccess_token() + "" };
+				AlertBody body = null;
+				Cursor cursor = db.rawQuery(sql, selectionArgs);
+				for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
+						.moveToNext()) {
+					body = new AlertBody();
+					body.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
+					body.setCreattime(cursor.getString(cursor
+							.getColumnIndex("creattime")));
+					body.setId(AlertType.valueOf(cursor.getString(cursor
+							.getColumnIndex("id"))));
+					body.setOrderno(cursor.getString(cursor
+							.getColumnIndex("orderno")));
+					body.setState(cursor.getInt(cursor.getColumnIndex("state")));
+					body.setTime(cursor.getString(cursor.getColumnIndex("time")));
+					body.setUserid(cursor.getString(cursor
+							.getColumnIndex("userid")));
+					if (body.getState() == 1) {
+						body.setValue(new JSONObject(cursor.getString(cursor
+								.getColumnIndex("value"))));
+					}
+					bodys.add(body);
+				}
+				cursor.close();
+				db.close();
+				return bodys;
+			} catch (Exception e) {
+				if (ConstantConfig.Debug) {
+					LogUtil.e(TAG, e);
+				}
+			}
+			return null;
+		}
+	}
+
+	/**
+	 * 根据主键删除预警信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static boolean deleteAlert(Integer id) {
+		synchronized (objalertLock) {
+			try {
+				DBHelper dbHelper = DBHelper.getInstance();
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
+				String whereClause = "_id=?";
+				String[] whereArgs = { id + "" };
+				int rows = db
+						.delete(DBHelper.TBL_ALERT, whereClause, whereArgs);
+				db.close();
+				return rows == 1;
+			} catch (Exception e) {
+				LogUtil.e(TAG, e);
+			}
+			return false;
+		}
+	}
+
 }

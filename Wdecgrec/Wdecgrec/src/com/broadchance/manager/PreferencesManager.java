@@ -93,6 +93,11 @@ public class PreferencesManager {
 		return sp.getString(key, "");
 	}
 
+	public String getString(String key, String def) {
+		SharedPreferences sp = getSharedPreferences();
+		return sp.getString(key, def);
+	}
+
 	/**
 	 * 
 	 * @param key

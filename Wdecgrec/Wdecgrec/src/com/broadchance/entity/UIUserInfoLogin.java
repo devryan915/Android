@@ -82,6 +82,11 @@ public class UIUserInfoLogin extends BaseResponse<String> {
 
 	private String access_token;
 
+	/**
+	 * 对应服务端orderNo
+	 * 
+	 * @return
+	 */
 	public String getAccess_token() {
 		return access_token;
 	}

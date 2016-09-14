@@ -51,6 +51,7 @@ import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.Skinable;
 import com.broadchance.wdecgrec.adapter.DialogSkinListAdapter;
 import com.broadchance.wdecgrec.login.LoginActivity;
+import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
@@ -66,13 +67,14 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	private View llChangeSkin;
 	private View llAppUpdate;
 	private View viewNewVer;
+	private View llAppLogout;
 
-	private View viewChangeSkinIcon;
+	// private View viewChangeSkinIcon;
 
 	// private DialogSkinListAdapter.ViewHolder viewHolder;
 	private String selSkinID;
 
-	private Button buttonTitleBack;
+	private View buttonTitleBack;
 	private TextView textViewWaitUpload;
 	private TextView textViewCurUpload;
 	private Dialog oneKeyUploadDialog;
@@ -138,34 +140,36 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		setContentView(R.layout.activity_settings);
 		llUpload = findViewById(R.id.llUpload);
 		llUpload.setOnClickListener(this);
-		llMyinfo = findViewById(R.id.llMyinfo);
-		llMyinfo.setOnClickListener(this);
-		llAddFamily = findViewById(R.id.llAddFamily);
-		llAddFamily.setOnClickListener(this);
-		llSetpwd = findViewById(R.id.llSetpwd);
-		llUnbind = findViewById(R.id.llUnbind);
-		llUnbind.setOnClickListener(this);
-		llSetpwd.setOnClickListener(this);
-		llSettingsDevInfo = findViewById(R.id.llSettingsDevInfo);
-		llSettingsDevInfo.setOnClickListener(this);
-		llChangeSkin = findViewById(R.id.llChangeSkin);
-		llChangeSkin.setOnClickListener(this);
-		llAppUpdate = findViewById(R.id.llAppUpdate);
-		llAppUpdate.setOnClickListener(this);
-		viewNewVer = findViewById(R.id.viewNewVer);
-		viewChangeSkinIcon = findViewById(R.id.viewChangeSkinIcon);
-		buttonTitleBack = (Button) findViewById(R.id.buttonTitleBack);
+		llAppLogout = findViewById(R.id.llAppLogout);
+		llAppLogout.setOnClickListener(this);
+		// llMyinfo = findViewById(R.id.llMyinfo);
+		// llMyinfo.setOnClickListener(this);
+		// llAddFamily = findViewById(R.id.llAddFamily);
+		// llAddFamily.setOnClickListener(this);
+		// llSetpwd = findViewById(R.id.llSetpwd);
+		// llUnbind = findViewById(R.id.llUnbind);
+		// llUnbind.setOnClickListener(this);
+		// llSetpwd.setOnClickListener(this);
+		// llSettingsDevInfo = findViewById(R.id.llSettingsDevInfo);
+		// llSettingsDevInfo.setOnClickListener(this);
+		// llChangeSkin = findViewById(R.id.llChangeSkin);
+		// llChangeSkin.setOnClickListener(this);
+		// llAppUpdate = findViewById(R.id.llAppUpdate);
+		// llAppUpdate.setOnClickListener(this);
+		// viewNewVer = findViewById(R.id.viewNewVer);
+		// viewChangeSkinIcon = findViewById(R.id.viewChangeSkinIcon);
+		buttonTitleBack = findViewById(R.id.buttonTitleBack);
 		buttonTitleBack.setOnClickListener(this);
 
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
 		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
 		// getNewVer();
-		String newVer = PreferencesManager.getInstance().getString(
-				ConstantConfig.PREFERENCES_NEWAPPVER);
-		// 有新的版本
-		viewNewVer.setVisibility(!newVer.trim().isEmpty()
-				&& newVer.compareTo(AppApplication.curVer) > 0 ? View.VISIBLE
-				: View.INVISIBLE);
+		// String newVer = PreferencesManager.getInstance().getString(
+		// ConstantConfig.PREFERENCES_NEWAPPVER);
+		// // 有新的版本
+		// viewNewVer.setVisibility(!newVer.trim().isEmpty()
+		// && newVer.compareTo(AppApplication.curVer) > 0 ? View.VISIBLE
+		// : View.INVISIBLE);
 	}
 
 	@Override
@@ -511,54 +515,62 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
+		Intent intent;
 		switch (v.getId()) {
 		case R.id.llUpload:
-			if (isRegistUpload.compareAndSet(false, true)) {
-				lodingDialog = UIUtil.showLoadingDialog(SettingsActivity.this,
-						"正在初始化...");
-				Handler handler = new Handler();
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						if (lodingDialog != null && isOneUpload) {
-							lodingDialog.show();
-						}
-					}
-				}, 500);
-				sendBroadcast(new Intent(
-						BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE));
-				registerReceiver(uploadBroadcastReceiver,
-						makeGattUpdateIntentFilter());
-				isOneUpload = true;
-			}
+			// if (isRegistUpload.compareAndSet(false, true)) {
+			// lodingDialog = UIUtil.showLoadingDialog(SettingsActivity.this,
+			// "正在初始化...");
+			// Handler handler = new Handler();
+			// handler.postDelayed(new Runnable() {
+			// @Override
+			// public void run() {
+			// if (lodingDialog != null && isOneUpload) {
+			// lodingDialog.show();
+			// }
+			// }
+			// }, 500);
+			// sendBroadcast(new Intent(
+			// BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE));
+			// registerReceiver(uploadBroadcastReceiver,
+			// makeGattUpdateIntentFilter());
+			// isOneUpload = true;
+			// }
+			intent = new Intent(SettingsActivity.this, UploadActivity.class);
+			startActivity(intent);
 			break;
-		case R.id.llMyinfo:
-			showMyInfo();
-			break;
-		case R.id.llAddFamily:
-			addFamily();
-			break;
-		case R.id.llSetpwd:
-			modifyPwd();
-			break;
-		case R.id.llUnbind:
-			showUnbindConfirm();
-			break;
-		case R.id.llSettingsDevInfo:
-			showOptionSettings();
-			break;
-		case R.id.llChangeSkin:
-			showChangeSkin();
-			break;
-		case R.id.llAppUpdate:
-			boolean hasNew = new AppDownLoadUtil()
-					.showAppUpdateDialog(SettingsActivity.this);
-			if (!hasNew) {
-				showToast("恭喜您，已经是最新版本！");
-			}
-			break;
+		// case R.id.llMyinfo:
+		// showMyInfo();
+		// break;
+		// case R.id.llAddFamily:
+		// addFamily();
+		// break;
+		// case R.id.llSetpwd:
+		// modifyPwd();
+		// break;
+		// case R.id.llUnbind:
+		// showUnbindConfirm();
+		// break;
+		// case R.id.llSettingsDevInfo:
+		// showOptionSettings();
+		// break;
+		// case R.id.llChangeSkin:
+		// showChangeSkin();
+		// break;
+		// case R.id.llAppUpdate:
+		// boolean hasNew = new AppDownLoadUtil()
+		// .showAppUpdateDialog(SettingsActivity.this);
+		// if (!hasNew) {
+		// showToast("恭喜您，已经是最新版本！");
+		// }
+		// break;
 		case R.id.buttonTitleBack:
 			returnModeAcitivity();
+			break;
+		case R.id.llAppLogout:
+			intent = new Intent(SettingsActivity.this, LoginActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 			break;
 		default:
 			break;
@@ -567,7 +579,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 
 	@Override
 	public void loadSkin() {
-		viewChangeSkinIcon
-				.setBackground(getSkinDrawable(R.string.skin_settings_changeskin));
+		// viewChangeSkinIcon
+		// .setBackground(getSkinDrawable(R.string.skin_settings_changeskin));
 	}
 }

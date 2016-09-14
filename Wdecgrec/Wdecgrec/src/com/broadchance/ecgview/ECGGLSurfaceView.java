@@ -1,17 +1,11 @@
 package com.broadchance.ecgview;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -25,31 +19,43 @@ import android.view.ViewGroup.LayoutParams;
 import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.manager.SettingsManager;
 import com.broadchance.utils.CommonUtil;
-import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.wdecgrec.R;
 
 public class ECGGLSurfaceView extends GLSurfaceView {
 	private final static String TAG = ECGGLSurfaceView.class.getSimpleName();
-	// 走纸速度5mm/mv 12.5mm/s
-	public static final int ECG_MODE_LOW = 1;
-	/**
-	 * 每个格子多少个点
-	 */
-	public static final int ECG_MODE_LOW_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 12.5);
-	// 默认走纸速度10mm/mv 25mm/s
-	public static final int ECG_MODE_NORMAL = 2;
-	/**
-	 * 每个格子多少个点
-	 */
-	public static final int ECG_MODE_NORMAL_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 25);
 
-	// 走纸速度20mm/mv 50mm/s
-	public static final int ECG_MODE_HIGH = 3;
-	/**
-	 * 每个格子多少个点
-	 */
-	public static final int ECG_MODE_HIGH_PERUNIT_POINT = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 50);
+	public enum EcgType {
+		Range// 电压幅频
+		, Speed// 速度
+	}
+
+	public enum EcgLevel {
+		Level1, Level2, Level3, Level4
+	}
+
+	// // 走纸速度5mm/mv 12.5mm/s
+	// public static final int ECG_MODE_LOW = 1;
+	// /**
+	// * 每个格子多少个点
+	// */
+	// public static final int ECG_MODE_LOW_PERUNIT_POINT = (int)
+	// (FrameDataMachine.FRAME_DOTS_FREQUENCY / 12.5);
+	// // 默认走纸速度10mm/mv 25mm/s
+	// public static final int ECG_MODE_NORMAL = 2;
+	// /**
+	// * 每个格子多少个点
+	// */
+	// public static final int ECG_MODE_NORMAL_PERUNIT_POINT = (int)
+	// (FrameDataMachine.FRAME_DOTS_FREQUENCY / 25);
+	//
+	// // 走纸速度20mm/mv 50mm/s
+	// public static final int ECG_MODE_HIGH = 3;
+	// /**
+	// * 每个格子多少个点
+	// */
+	// public static final int ECG_MODE_HIGH_PERUNIT_POINT = (int)
+	// (FrameDataMachine.FRAME_DOTS_FREQUENCY / 50);
 
 	public OpenGLECGGrid grid;
 
@@ -57,7 +63,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	float deltaX = 0;
 	/**
 	 * 单位mv的ecg电压差值即1mv对应ecg有效数据(分析样本数据散落值可以得出分布率最高的相对较大电压为最大电压，分布率相对较小电压为最小电压)
-	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值
+	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值 按照10mm/mV定的标
 	 */
 	public static Float BASEFACTOR = 200 / 0.65f;
 	/**
@@ -107,8 +113,8 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 
 	// private Date drawDate = null;
 
-	private int mEcgMode = ECG_MODE_NORMAL;
-	private final static int BLACK_LINE_POINTS = 20;
+	// private int mEcgMode = ECG_MODE_NORMAL;
+	// private final static int BLACK_LINE_POINTS = 20;
 
 	/**
 	 * grid小格线颜色
@@ -277,9 +283,9 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 		requestRender();
 	}
 
-	public int getMode() {
-		return mEcgMode;
-	}
+	// public int getMode() {
+	// return mEcgMode;
+	// }
 
 	void initParams(int gridVNum) {
 		currX = grid.HLINE_STARTX;
@@ -520,7 +526,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	// private float mPosition=-0.5f;
 	private void initVertexArray() {
 		currX = grid.HLINE_STARTX;
-		getDeltaX();
+
 		for (int i = 0; i < currTotalPointNumber; i++) {
 			vertexArray[i * 3] = currX;
 			currX = currX + deltaX;
@@ -581,39 +587,64 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	// requestRender();
 	// }
 
-	public void setEcgMode(int mode) {
-		if (ECG_MODE_NORMAL == mode || ECG_MODE_LOW == mode
-				|| ECG_MODE_HIGH == mode) {
-			mEcgMode = mode;
+	public void setEcgMode(EcgType type, EcgLevel level) {
+		if (type == EcgType.Range) {
+			float defaultFactor = (grid.getyUnitCellSize()) / BASEFACTOR;
+			if (level == EcgLevel.Level1) {
+				// 0.1mV/mm
+				factorV = defaultFactor / 0.1f;
+			} else if (level == EcgLevel.Level2) {
+				// 0.2mV/mm
+				factorV = defaultFactor / 0.2f;
+			} else if (level == EcgLevel.Level3) {
+				// mV/mm
+				factorV = defaultFactor / 0.5f;
+			} else if (level == EcgLevel.Level4) {
+				// mV/mm
+				factorV = defaultFactor / 1.0f;
+			}
+		} else {
+			float speed = 0;
+			if (level == EcgLevel.Level1) {
+				// 10mm/s
+				speed = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 10.0);
+				deltaX = grid.getxUnitCellSize() / speed;
+				currTotalPointNumber = (int) (grid.getGRID_NUM_H() * speed);
+			} else if (level == EcgLevel.Level2) {
+				// 20mm/s
+				speed = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 20.0);
+				deltaX = grid.getxUnitCellSize() / speed;
+				currTotalPointNumber = (int) (grid.getGRID_NUM_H() * speed);
+			}
+			vertexArray = new float[currTotalPointNumber * 3];
 			initVertexArray();
 			pointNumber = 0;
-			// curPointIndex.set(0);
 		}
 	}
 
-	private void getDeltaX() {
-		// grid.getyUnitCellSize()代表1mm(标准值1mm=0.1mv)对应opengl坐标值，
-		// grid.getyUnitCellSize()*10代表1mv映射到opengl坐标中的值
-		float defaultFactor = (grid.getyUnitCellSize() * 10) / BASEFACTOR;
-		if (ECG_MODE_LOW == mEcgMode) {
-			// 走纸速度12.5mm/s
-			deltaX = grid.getxUnitCellSize() / ECG_MODE_LOW_PERUNIT_POINT;
-			currTotalPointNumber = grid.getGRID_NUM_H()
-					* ECG_MODE_LOW_PERUNIT_POINT;
-			factorV = defaultFactor * 0.5f;
-		} else if (ECG_MODE_HIGH == mEcgMode) {
-			// 走纸速度50mm/s
-			deltaX = grid.getxUnitCellSize() / ECG_MODE_HIGH_PERUNIT_POINT;
-			currTotalPointNumber = grid.getGRID_NUM_H()
-					* ECG_MODE_HIGH_PERUNIT_POINT;
-			factorV = defaultFactor * 2;
-		} else {
-			// 默认走纸速度25mm/s
-			deltaX = grid.getxUnitCellSize() / ECG_MODE_NORMAL_PERUNIT_POINT;
-			currTotalPointNumber = grid.getGRID_NUM_H()
-					* ECG_MODE_NORMAL_PERUNIT_POINT;
-			factorV = defaultFactor;
-		}
-		vertexArray = new float[currTotalPointNumber * 3];
-	}
+	// private void getDeltaX() {
+	// // grid.getyUnitCellSize()代表1mm(标准值1mm=0.1mv)对应opengl坐标值，
+	// // grid.getyUnitCellSize()*10代表1mv映射到opengl坐标中的值
+	// float defaultFactor = (grid.getyUnitCellSize() * 10) / BASEFACTOR;
+	// if (ECG_MODE_LOW == mEcgMode) {
+	// // 走纸速度12.5mm/s
+	// deltaX = grid.getxUnitCellSize() / ECG_MODE_LOW_PERUNIT_POINT;
+	// currTotalPointNumber = grid.getGRID_NUM_H()
+	// * ECG_MODE_LOW_PERUNIT_POINT;
+	// factorV = defaultFactor * 0.5f;
+	// } else if (ECG_MODE_HIGH == mEcgMode) {
+	// // 走纸速度50mm/s
+	// deltaX = grid.getxUnitCellSize() / ECG_MODE_HIGH_PERUNIT_POINT;
+	// currTotalPointNumber = grid.getGRID_NUM_H()
+	// * ECG_MODE_HIGH_PERUNIT_POINT;
+	// factorV = defaultFactor * 2;
+	// } else {
+	// // 默认走纸速度25mm/s
+	// deltaX = grid.getxUnitCellSize() / ECG_MODE_NORMAL_PERUNIT_POINT;
+	// currTotalPointNumber = grid.getGRID_NUM_H()
+	// * ECG_MODE_NORMAL_PERUNIT_POINT;
+	// factorV = defaultFactor;
+	// }
+	// vertexArray = new float[currTotalPointNumber * 3];
+	// }
 }

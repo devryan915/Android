@@ -1,7 +1,9 @@
 package com.broadchance.utils;
 
+import com.broadchance.manager.SettingsManager;
+
 public class ConstantConfig {
-	public static boolean Debug = true;
+	public static boolean Debug = false;
 
 	public final static String ACTION_PREFIX = "com.broadchance.wdecgrec";
 	public final static String PKG_NAME = "com.broadchance.wdecgrec";
@@ -32,7 +34,7 @@ public class ConstantConfig {
 	public final static String PREFERENCES_OFFDATA = "offdata";
 	public final static String PREFERENCES_NEWAPPVER = "newappver";
 	public final static String PREFERENCES_NEWAPPURL = "newappurl";
-
+	public final static String PREFERENCES_SERVERURL = "serverurl";
 	/**
 	 * APP目录
 	 */
@@ -41,7 +43,10 @@ public class ConstantConfig {
 	// public final static String BREATHDATA_SUFFIX = ".bdat";
 	// http://192.168.0.196:60015/index.php/Api/index/mobileinterface.html
 	// http://123.59.129.119:8080/index.php/Api/index/mobileinterface.html
-	public static final String SERVER_URL = "http://123.59.129.119:8080/index.php/Api/index/mobileinterface.html";
+	// http://106.75.62.31:8080/index.php/Api/index/mobileinterface.html
+	public final static String SERVER_URL_DEF = "http://106.75.62.31:8080/index.php/Api/index/mobileinterface.html";
+	public static String SERVER_URL = SettingsManager.getInstance()
+			.getServerURL();
 	// public static final String SERVER_URL = "http://192.168.1.134:56285";
 	// public static final String SERVER_URL = "http://www.thoth-health.com";
 	/**
@@ -71,104 +76,7 @@ public class ConstantConfig {
 	 */
 	public static int Real_Interval = 4;
 	// public static int MAX_REAL_LIMIT = 4;
-	/**
-	 * 传感器电极脱落 A00001预警延迟发生时间s
-	 */
-	public static int AlertA00001_Delay_Raise = 8;
-	/**
-	 * 传感器电极脱落 A00001预警延迟取消时间
-	 */
-	public static int AlertA00001_Delay_Clear = 8;
-	/**
-	 * BLE信号断联 A00002预警延迟发生时间
-	 */
-	public static int AlertA00002_Delay_Raise = 8;
-	/**
-	 * BLE信号断联 A00002预警延迟取消时间
-	 */
-	public static int AlertA00002_Delay_Clear = 8;
-	/**
-	 * 网络无信号 A00003预警延迟发生时间
-	 */
-	public static int AlertA00003_Delay_Raise = 0;
-	/**
-	 * 网络无信号 A00003预警延迟取消时间
-	 */
-	public static int AlertA00003_Delay_Clear = 0;
-	/**
-	 * 网关电量低 A00004预警延迟发生时间
-	 */
-	public static int AlertA00004_Delay_Raise = 8;
-	/**
-	 * 网关电量低 <网关电量低百分比
-	 */
-	public static float AlertA00004_Limit_Raise = 0.15f;
-	/**
-	 * 网关电量低 A00004预警延迟取消时间
-	 */
-	public static int AlertA00004_Delay_Clear = 8;
-	/**
-	 * 网关电量低 >手机电量
-	 */
-	public static float AlertA00004_Limit_Clear = 0.25f;
-	/**
-	 * 传感器电量低 A00005预警延迟发生时间
-	 */
-	public static int AlertA00005_Delay_Raise = 0;
-	/**
-	 * 传感器电量低 <传感器电量低
-	 */
-	public static float AlertA00005_Limit_Raise = 2.6f;
-	/**
-	 * 传感器电量低 A00005预警延迟取消时间
-	 */
-	public static int AlertA00005_Delay_Clear = 0;
-	/**
-	 * 传感器电量低 >传感器电量取消预警阈值
-	 */
-	public static float AlertA00005_Limit_Clear = 2.8f;
-	/**
-	 * 心动过速 A00006预警延迟发生时间
-	 */
-	public static int AlertA00006_Delay_Raise = 8;
-	/**
-	 * 心动过速 >心动过速阈值
-	 */
-	public static int AlertA00006_Limit_Raise = 120;
-	/**
-	 * 心动过速 A00006预警延迟取消时间
-	 */
-	public static int AlertA00006_Delay_Clear = 8;
-	/**
-	 * 心动过速 <=阈值
-	 */
-	public static int AlertA00006_Limit_Clear = 120;
-	/**
-	 * 心动过缓 A00007预警延迟发生时间
-	 */
-	public static int AlertA00007_Delay_Raise = 8;
-	/**
-	 * 心动过缓 <心电过缓阈值
-	 */
-	public static int AlertA00007_Limit_Raise = 60;
-	/**
-	 * 心动过缓 A00007预警延迟取消时间
-	 */
-	public static int AlertA00007_Delay_Clear = 8;
-	/**
-	 * 心动过缓 >=阈值
-	 */
-	public static int AlertA00007_Limit_Clear = 60;
-	/**
-	 * 停搏 A00008预警延迟发生时间
-	 */
-	public static int AlertA00008_Delay_Raise = 4;
-	public static int AlertA00008_Limit_Raise = 0;
-	/**
-	 * 停搏 A00008预警延迟取消时间
-	 */
-	public static int AlertA00008_Delay_Clear = 4;
-	public static int AlertA00008_Limit_Clear = 0;
+
 	/**
 	 * 动态验证码
 	 */
@@ -176,7 +84,7 @@ public class ConstantConfig {
 	/**
 	 * 业务单号
 	 */
-	public static String ORDERNO;
+	// public static String ORDERNO;
 	/**
 	 * 心率保留数据
 	 */

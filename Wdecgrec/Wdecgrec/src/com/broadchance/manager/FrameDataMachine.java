@@ -189,9 +189,9 @@ public class FrameDataMachine {
 		synchronized (heartRateDatas) {
 			try {
 				heartRateDatas.put(rate);
-				if (isRealTimeMode) {
-					heartRealTimeRateDatas.put(rate);
-				}
+				// if (isRealTimeMode) {
+				// heartRealTimeRateDatas.put(rate);
+				// }
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -203,10 +203,10 @@ public class FrameDataMachine {
 	 * 
 	 * @return
 	 */
-	public Integer getHeartRealTimeRate() {
-		HeartRate rate = heartRealTimeRateDatas.poll();
-		return rate != null ? rate.heart : null;
-	}
+	// public Integer getHeartRealTimeRate() {
+	// HeartRate rate = heartRealTimeRateDatas.poll();
+	// return rate != null ? rate.heart : null;
+	// }
 
 	/**
 	 * 获取心率
@@ -531,24 +531,20 @@ public class FrameDataMachine {
 							fileBrthDatas.add(bdata);
 						}
 						count = 0;
-						int heartLimit = heartRealTimeRateDatas.size() - 1;
 						JSONArray jHeartRateArray = new JSONArray();
-						if (heartLimit > 0) {
-							while (count < heartLimit) {
-								JSONObject rate = new JSONObject();
-								try {
-									Integer hr = getHeartRealTimeRate();
-									if (hr == null)
-										break;
-									rate.put("hr", hr);
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-								count++;
-								jHeartRateArray.put(rate);
-							}
-						}
-
+						/*
+						 * int heartLimit = heartRealTimeRateDatas.size() - 1;
+						 * if (heartLimit > 0) { while (count < heartLimit) {
+						 * JSONObject rate = new JSONObject(); try { Integer hr
+						 * = getHeartRealTimeRate(); if (hr == null) break;
+						 * rate.put("hr", hr); } catch (JSONException e) {
+						 * e.printStackTrace(); } count++;
+						 * jHeartRateArray.put(rate); } }
+						 */
+						Integer hr = FilterUtil.Instance.getHeartRate();
+						JSONObject rate = new JSONObject();
+						rate.put("hr", hr);
+						jHeartRateArray.put(rate);
 						BleDomainService.startRealTimeMode(fileFrmDatas,
 								fileBrthDatas, jHeartRateArray);
 					}
@@ -686,7 +682,7 @@ public class FrameDataMachine {
 							+ seqDifference - 1;
 					if (ConstantConfig.Debug && frameCount > 0) {
 						LogUtil.d(TAG, "补了" + frameCount + "帧");
-						UIUtil.showToast("补了" + frameCount + "帧");
+						// UIUtil.showToast("补了" + frameCount + "帧");
 					}
 					for (int i = 0; i < frameCount; i++) {
 						byte[] byteData = buildFrameData(frameType,

@@ -577,7 +577,7 @@ public class BleDomainService extends Service {
 																.getInstance() != null) {
 															BluetoothLeService
 																	.getInstance()
-																	.disconnect();
+																	.close();
 															BluetoothLeService
 																	.getInstance()
 																	.connect();

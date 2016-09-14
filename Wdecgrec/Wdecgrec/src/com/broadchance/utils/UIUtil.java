@@ -1,11 +1,8 @@
 package com.broadchance.utils;
 
-import android.app.ActivityManager;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -21,17 +18,21 @@ import android.widget.Toast;
 
 import com.broadchance.manager.AppApplication;
 import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.main.ModeActivity;
+import com.broadchance.wdecgrec.main.EcgActivity;
 
 public class UIUtil {
-	private static Toast toast;
 
-	public static void showToast(String content) {
-		Context context = null;
+	public static void showToast(final String content) {
+		final Context context;
 		try {
-			if ((context = AppApplication.Instance.currentActivity) != null) {
-				showToast(context, context.getClass().getSimpleName() + "\n"
-						+ content);
+			if ((context = EcgActivity.Instance) != null) {
+				EcgActivity.Instance.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						showToast(context, content);
+					}
+				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,11 +40,7 @@ public class UIUtil {
 	}
 
 	public static void showToast(Context context, String content) {
-		if (toast != null) {
-			toast.cancel();
-		}
-		toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
-		toast.show();
+		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
 	}
 
 	public static void showLongToast(Context context, String content) {

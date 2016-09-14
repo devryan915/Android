@@ -1,7 +1,14 @@
 package com.broadchance.wdecgrec.alert;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,17 +16,17 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 
+import com.broadchance.entity.AlertBody;
+import com.broadchance.entity.AlertCFG;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.serverentity.ServerResponse;
-import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
+import com.broadchance.manager.PreferencesManager;
 import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
-import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.HttpReqCallBack;
-import com.broadchance.wdecgrec.login.LoginActivity;
 
 /**
  * 预警波管理器
@@ -29,104 +36,225 @@ import com.broadchance.wdecgrec.login.LoginActivity;
  */
 public class AlertMachine {
 
-	protected static final String TAG = AlertMachine.class.getSimpleName();
+	public static final String TAG = AlertMachine.class.getSimpleName();
 	private ClientGameService clientService = ClientGameService.getInstance();
+	private Map<AlertType, AlertWorker> alertWorkers = new HashMap<AlertType, AlertWorker>();
+	private Map<AlertType, AlertCFG> alertCFGs = new HashMap<AlertType, AlertCFG>();
+	List<Integer> alert_ids = new ArrayList<Integer>();
+	/**
+	 * 传感器电极脱落 A00001预警延迟发生时间s
+	 */
+	private final static int AlertA00001_Delay_Raise = 8;
+	/**
+	 * 传感器电极脱落 A00001预警延迟取消时间
+	 */
+	private final static int AlertA00001_Delay_Clear = 8;
+	/**
+	 * BLE信号断联 A00002预警延迟发生时间
+	 */
+	private final static int AlertA00002_Delay_Raise = 8;
+	/**
+	 * BLE信号断联 A00002预警延迟取消时间
+	 */
+	private final static int AlertA00002_Delay_Clear = 8;
+	/**
+	 * 网络无信号 A00003预警延迟发生时间
+	 */
+	private final static int AlertA00003_Delay_Raise = 0;
+	/**
+	 * 网络无信号 A00003预警延迟取消时间
+	 */
+	private final static int AlertA00003_Delay_Clear = 0;
+	/**
+	 * 网关电量低 A00004预警延迟发生时间
+	 */
+	private final static int AlertA00004_Delay_Raise = 8;
+	/**
+	 * 网关电量低 <网关电量低百分比
+	 */
+	private final static float AlertA00004_Limit_Raise = 0.15f;
+	/**
+	 * 网关电量低 A00004预警延迟取消时间
+	 */
+	private final static int AlertA00004_Delay_Clear = 8;
+	/**
+	 * 网关电量低 >手机电量
+	 */
+	private final static float AlertA00004_Limit_Clear = 0.25f;
+	/**
+	 * 传感器电量低 A00005预警延迟发生时间
+	 */
+	private final static int AlertA00005_Delay_Raise = 180;
+	/**
+	 * 传感器电量低 <传感器电量低
+	 */
+	private final static float AlertA00005_Limit_Raise = 2.6f;
+	/**
+	 * 传感器电量低 A00005预警延迟取消时间
+	 */
+	private final static int AlertA00005_Delay_Clear = 60;
+	/**
+	 * 传感器电量低 >传感器电量取消预警阈值
+	 */
+	private final static float AlertA00005_Limit_Clear = 2.8f;
+	/**
+	 * 心动过速 B00001预警延迟发生时间
+	 */
+	private final static int AlertB00001_Delay_Raise = 8;
+	/**
+	 * 心动过速 >心动过速阈值
+	 */
+	private final static int AlertB00001_Limit_Raise = 120;
+	/**
+	 * 心动过速 B00001预警延迟取消时间
+	 */
+	private final static int AlertB00001_Delay_Clear = 8;
+	/**
+	 * 心动过速 <=阈值
+	 */
+	private final static int AlertB00001_Limit_Clear = 120;
+	/**
+	 * 心动过缓 B00002预警延迟发生时间
+	 */
+	private final static int AlertB00002_Delay_Raise = 8;
+	/**
+	 * 心动过缓 <心电过缓阈值
+	 */
+	private final static int AlertB00002_Limit_Raise = 60;
+	/**
+	 * 心动过缓 B00002预警延迟取消时间
+	 */
+	private final static int AlertB00002_Delay_Clear = 8;
+	/**
+	 * 心动过缓 >=阈值
+	 */
+	private final static int AlertB00002_Limit_Clear = 60;
+	/**
+	 * 停搏 B00003预警延迟发生时间
+	 */
+	private final static int AlertB00003_Delay_Raise = 4;
+	private final static int AlertB00003_Limit_Raise = 0;
+	/**
+	 * 停搏 B00003预警延迟取消时间
+	 */
+	private final static int AlertB00003_Delay_Clear = 4;
+	private final static int AlertB00003_Limit_Clear = 0;
 
-	private AlertMachine() {
+	private AlertMachine() throws Exception {
+		init();
 	}
 
-	public static AlertMachine _Instance;
+	public void init() throws Exception {
+		AlertCFG value = null;
+		value = getAlertCFG(AlertType.A00001);
+		alertCFGs.put(AlertType.A00001, value);
+		alertWorkers.put(AlertType.A00001, new AlertWorker(AlertType.A00001,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.A00002);
+		alertCFGs.put(AlertType.A00002, value);
+		alertWorkers.put(AlertType.A00002, new AlertWorker(AlertType.A00002,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.A00003);
+		alertCFGs.put(AlertType.A00003, value);
+		alertWorkers.put(AlertType.A00003, new AlertWorker(AlertType.A00003,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.A00004);
+		alertCFGs.put(AlertType.A00004, value);
+		alertWorkers.put(AlertType.A00004, new AlertWorker(AlertType.A00004,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.A00005);
+		alertCFGs.put(AlertType.A00005, value);
+		alertWorkers.put(AlertType.A00005, new AlertWorker(AlertType.A00005,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.B00001);
+		alertCFGs.put(AlertType.B00001, value);
+		alertWorkers.put(AlertType.B00001, new AlertWorker(AlertType.B00001,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.B00002);
+		alertCFGs.put(AlertType.B00002, value);
+		alertWorkers.put(AlertType.B00002, new AlertWorker(AlertType.B00002,
+				value.getDelay_raise(), value.getDelay_clear()));
+
+		value = getAlertCFG(AlertType.B00003);
+		alertCFGs.put(AlertType.B00003, value);
+		alertWorkers.put(AlertType.B00003, new AlertWorker(AlertType.B00003,
+				value.getDelay_raise(), value.getDelay_clear()));
+	}
+
+	ScheduledExecutorService mEService = Executors.newScheduledThreadPool(16);
+	private static AlertMachine _Instance;
 
 	public static AlertMachine getInstance() {
 		if (_Instance == null) {
-			_Instance = new AlertMachine();
+			try {
+				_Instance = new AlertMachine();
+			} catch (Exception e) {
+			}
 		}
 		return _Instance;
 	}
 
-	/**
-	 * 传感器电极脱落
-	 */
-	private Timer timerA00001;
-	private Timer timerA00001X;
-	/**
-	 * BLE信号断联
-	 */
-	private Timer timerA00002;
-	private Timer timerA00002X;
-	/**
-	 * 网络无信号
-	 */
-	private Timer timerA00003;
-	private Timer timerA00003X;
-	/**
-	 * 记录上一次网络断开预警
-	 */
-	private JSONObject lastA00003Obj;
-	/**
-	 * 网关电量低
-	 */
-	private Timer timerA00004;
-	private Timer timerA00004X;
-	/**
-	 * 传感器电量低
-	 */
-	private Timer timerA00005;
-	private Timer timerA00005X;
-	/**
-	 * 心动过速
-	 */
-	private Timer timerA00006;
-	private Timer timerA00006X;
-	/**
-	 * 心动过缓
-	 */
-	private Timer timerA00007;
-	private Timer timerA00007X;
-	/**
-	 * 停搏
-	 */
-	private Timer timerA00008;
-	private Timer timerA00008X;
+	public AlertCFG getAlertConfig(AlertType type) {
+		if (alertCFGs.containsKey(type)) {
+			return alertCFGs.get(type);
+		}
+		return null;
+	}
 
-	private JSONObject getAlertParam(JSONObject... value) {
-		JSONObject param = new JSONObject();
-		try {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			param.put("device", user.getMacAddress());
-			param.put("orderno", ConstantConfig.ORDERNO);
-			param.put("time", CommonUtil.getTime_B());
-			JSONArray alertArray = new JSONArray();
-			for (int i = 0; i < value.length; i++) {
-				alertArray.put(value[i]);
+	private AtomicBoolean atSend = new AtomicBoolean(false);
+
+	private JSONObject getAlertParam() {
+		List<AlertBody> bodys = DataManager.getAlert();
+		JSONObject param = null;
+		if (bodys != null && bodys.size() > 0) {
+			param = new JSONObject();
+			try {
+				UIUserInfoLogin user = DataManager.getUserInfo();
+				param.put("device", user.getMacAddress());
+				param.put("orderno", user.getAccess_token());
+				param.put("time", CommonUtil.getTime_B());
+				JSONArray alertArray = new JSONArray();
+				alert_ids.clear();
+				for (int i = 0; i < bodys.size(); i++) {
+					JSONObject value = new JSONObject();
+					AlertBody body = bodys.get(i);
+					alert_ids.add(body.get_id());
+					value.put("id", body.getId());
+					value.put("state", body.getState());
+					value.put("time", body.getTime());
+					value.put("value", body.getState() == 1 ? body.getValue()
+							: new JSONObject());
+					alertArray.put(value);
+				}
+				param.put("alerteventarray", alertArray);
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-			param.put("alerteventarray", alertArray);
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		return param;
 	}
 
-	private JSONObject getCancelAlert(AlertType type) {
-		JSONObject alertObj = new JSONObject();
-		try {
-			alertObj.put("id", type.getValue());
-			alertObj.put("state", 0);
-			alertObj.put("time", CommonUtil.getTime_B());
-			JSONObject value = new JSONObject();
-			alertObj.put("value", value);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return alertObj;
-	}
-
-	interface BackCall {
-		void execute();
-	}
-
-	private void sendAlert(JSONObject param, final BackCall call) {
-		clientService.sendAlert(param, new HttpReqCallBack<ServerResponse>() {
+	// private JSONObject getCancelAlert(AlertType type) {
+	// JSONObject alertObj = new JSONObject();
+	// try {
+	// alertObj.put("id", type.getValue());
+	// alertObj.put("state", 0);
+	// alertObj.put("time", CommonUtil.getTime_B());
+	// JSONObject value = new JSONObject();
+	// alertObj.put("value", value);
+	// } catch (JSONException e) {
+	// e.printStackTrace();
+	// }
+	// return alertObj;
+	// }
+	private void updateCFG() {
+		clientService.getAlertCFG(new HttpReqCallBack<ServerResponse>() {
 
 			@Override
 			public Activity getReqActivity() {
@@ -135,10 +263,47 @@ public class AlertMachine {
 
 			@Override
 			public void doSuccess(ServerResponse result) {
-				if (!result.isOK())
-					return;
-				if (call != null)
-					call.execute();
+				if (result.isOK()) {
+					AlertCFG value = getAlertCFG(AlertType.A00001);
+					alertCFGs.put(AlertType.A00001, value);
+					alertWorkers.get(AlertType.A00001).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.A00002);
+					alertCFGs.put(AlertType.A00002, value);
+					alertWorkers.get(AlertType.A00002).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.A00003);
+					alertCFGs.put(AlertType.A00003, value);
+					alertWorkers.get(AlertType.A00003).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.A00004);
+					alertCFGs.put(AlertType.A00004, value);
+					alertWorkers.get(AlertType.A00004).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.A00005);
+					alertCFGs.put(AlertType.A00005, value);
+					alertWorkers.get(AlertType.A00005).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.B00001);
+					alertCFGs.put(AlertType.B00001, value);
+					alertWorkers.get(AlertType.B00001).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.B00002);
+					alertCFGs.put(AlertType.B00002, value);
+					alertWorkers.get(AlertType.B00002).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+
+					value = getAlertCFG(AlertType.B00003);
+					alertCFGs.put(AlertType.B00003, value);
+					alertWorkers.get(AlertType.B00003).updateCFG(
+							value.getDelay_raise(), value.getDelay_clear());
+				}
 			}
 
 			@Override
@@ -148,435 +313,233 @@ public class AlertMachine {
 		});
 	}
 
+	public void sendAlert() {
+		if (atSend.compareAndSet(false, true)) {
+			JSONObject param = getAlertParam();
+			if (param != null) {
+				clientService.sendAlert(param,
+						new HttpReqCallBack<ServerResponse>() {
+
+							@Override
+							public Activity getReqActivity() {
+								return null;
+							}
+
+							@Override
+							public void doSuccess(ServerResponse result) {
+								if (result.isOK()) {
+									if (ConstantConfig.Debug) {
+										LogUtil.d(TAG,
+												"预警发送成功" + alert_ids.size()
+														+ "条" + "\noutdata:"
+														+ result.getOutdata());
+										// UIUtil.showToast("预警发送成功"
+										// + alert_ids.size() + "条");
+									}
+									String outData = result.getOutdata();
+									if (outData != null
+											&& outData.trim().length() > 0) {
+										updateCFG();
+									}
+									int count = 0;
+									for (int i = 0; i < alert_ids.size(); i++) {
+										boolean ret = DataManager
+												.deleteAlert(alert_ids.get(i));
+										if (ret) {
+											count++;
+										}
+									}
+									if (ConstantConfig.Debug) {
+										LogUtil.d(TAG, "删除本地预警数据" + count + "条");
+									}
+								}
+								atSend.set(false);
+							}
+
+							@Override
+							public void doError(String result) {
+								atSend.set(false);
+							}
+						});
+			} else {
+				atSend.set(false);
+			}
+		}
+	}
+
+	public ScheduledFuture<?> schedule(Runnable command, long delay,
+			TimeUnit unit) {
+		return mEService.schedule(command, delay, unit);
+	}
+
+	public boolean canSendAlert(AlertType type, int state) {
+		return alertWorkers.get(type).canAlert(state);
+	}
+
+	private AlertCFG getAlertCFG(AlertType type) {
+		AlertCFG cfg = new AlertCFG();
+		JSONObject jobj = null;
+		try {
+			try {
+				jobj = new JSONObject(PreferencesManager.getInstance()
+						.getString(getCFGKeyType(type)));
+			} catch (Exception e1) {
+			}
+			AlertType id = type;
+			Integer limit_raise = null;
+			Float limit_raisef = null;
+			int delay_raise = 0;
+			Integer limit_clear = null;
+			Float limit_clearf = null;
+			int delay_clear = 0;
+			switch (type) {
+			case A00001:
+				delay_raise = AlertA00001_Delay_Raise;
+				delay_clear = AlertA00001_Delay_Clear;
+				break;
+			case A00002:
+				delay_raise = AlertA00002_Delay_Raise;
+				delay_clear = AlertA00002_Delay_Clear;
+				break;
+			case A00003:
+				delay_raise = AlertA00003_Delay_Raise;
+				delay_clear = AlertA00003_Delay_Clear;
+				break;
+			case A00004:
+				limit_raisef = AlertA00004_Limit_Raise;
+				limit_clearf = AlertA00004_Limit_Clear;
+				delay_raise = AlertA00004_Delay_Raise;
+				delay_clear = AlertA00004_Delay_Clear;
+				break;
+			case A00005:
+				limit_raisef = AlertA00005_Limit_Raise;
+				limit_clearf = AlertA00005_Limit_Clear;
+				delay_raise = AlertA00005_Delay_Raise;
+				delay_clear = AlertA00005_Delay_Clear;
+				break;
+			case B00001:
+				limit_raise = AlertB00001_Limit_Raise;
+				limit_clear = AlertB00001_Limit_Clear;
+				delay_raise = AlertB00001_Delay_Raise;
+				delay_clear = AlertB00001_Delay_Clear;
+				break;
+			case B00002:
+				limit_raise = AlertB00002_Limit_Raise;
+				limit_clear = AlertB00002_Limit_Clear;
+				delay_raise = AlertB00002_Delay_Raise;
+				delay_clear = AlertB00002_Delay_Clear;
+				break;
+			case B00003:
+				limit_raise = AlertB00003_Limit_Raise;
+				limit_clear = AlertB00003_Limit_Clear;
+				delay_raise = AlertB00003_Delay_Raise;
+				delay_clear = AlertB00003_Delay_Clear;
+				break;
+			default:
+				break;
+			}
+			if (jobj != null) {
+				cfg.setDelay_clear(Integer.parseInt(jobj
+						.getString("delay_clear")));
+				cfg.setDelay_raise(Integer.parseInt(jobj
+						.getString("delay_raise")));
+				String lclr = jobj.getString("limit_clear");
+				String lrse = jobj.getString("limit_raise");
+				cfg.setLimit_clear(lclr);
+				cfg.setLimit_raise(lrse);
+				try {
+					limit_raisef = Float.parseFloat(lrse);
+					limit_clearf = Float.parseFloat(lclr);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				if (limit_raisef != null) {
+					cfg.setFloatValueRaise(limit_raisef);
+					cfg.setFloatValueClear(limit_clearf);
+				}
+				cfg.setId(id);
+				try {
+					limit_raise = Integer.parseInt(lrse);
+					limit_clear = Integer.parseInt(lclr);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				if (limit_raise != null) {
+					cfg.setIntValueRaise(limit_raise);
+					cfg.setIntValueClear(limit_clear);
+				}
+			} else {
+				cfg.setDelay_clear(delay_clear);
+				cfg.setDelay_raise(delay_raise);
+				if (limit_raisef != null) {
+					cfg.setFloatValueRaise(limit_raisef);
+					cfg.setFloatValueClear(limit_clearf);
+					cfg.setLimit_clear(limit_clear + "");
+					cfg.setLimit_raise(limit_raise + "");
+				}
+				cfg.setId(id);
+				if (limit_raise != null) {
+					cfg.setIntValueRaise(limit_raise);
+					cfg.setIntValueClear(limit_clear);
+					cfg.setLimit_clear(limit_clear + "");
+					cfg.setLimit_raise(limit_raise + "");
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return cfg;
+	}
+
+	public static String getStatusKeyType(AlertType type) {
+		return getKeyType(type, "Status");
+	}
+
+	public static String getCFGKeyType(AlertType type) {
+		return getKeyType(type, "CFG");
+	}
+
+	private static String getKeyType(AlertType type, String suffix) {
+		try {
+			UIUserInfoLogin user = DataManager.getUserInfo();
+			return user.getUserID() + type.getValue() + "_" + suffix;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * 发送预警
 	 * 
 	 * @param type
 	 * @param value
 	 */
-	public void sendAlert(AlertType type, final JSONObject value) {
+	public void sendAlert(AlertType type, JSONObject value) {
 		try {
-			TimerTask task;
-			switch (type) {
-			case A00001:
-				// 如果发生脱落则取消停博报警
-				cancelAlert(AlertType.A00008);
-				if (timerA00001 != null) {
-					return;
-				}
-				if (timerA00001X != null) {
-					timerA00001X.cancel();
-					timerA00001X = null;
-				}
-				timerA00001 = new Timer();
-				task = new TimerTask() {
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00001 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00001");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00001X = new Timer();
-								timerA00001X.schedule(
-										new TimerTask() {
-											@Override
-											public void run() {
-												if (timerA00001 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00001));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00001X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00001_Delay_Clear * 1000);
-							}
-						});
-
-					}
-				};
-				timerA00001.schedule(task,
-						ConstantConfig.AlertA00001_Delay_Raise * 1000);
-				break;
-			case A00002:
-				if (timerA00002 != null) {
-					return;
-				}
-				if (timerA00002X != null) {
-					timerA00002X.cancel();
-					timerA00002X = null;
-				}
-				timerA00002 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-
-						// 取消预警
-						timerA00002 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00002");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00002X = new Timer();
-								timerA00002X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00002 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00002));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00002X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00002_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00002.schedule(task,
-						ConstantConfig.AlertA00002_Delay_Raise * 1000);
-				break;
-			case A00003:
-				if (timerA00003 != null) {
-					return;
-				}
-				if (timerA00003X != null) {
-					timerA00003X.cancel();
-					timerA00003X = null;
-				}
-				timerA00003 = new Timer();
-
-				task = new TimerTask() {
-
-					@SuppressWarnings("unused")
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00003 = null;
-						JSONObject param = null;
-						if (lastA00003Obj != null) {
-							param = getAlertParam(value, lastA00003Obj);
-						} else {
-							param = getAlertParam(value);
-						}
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								if (true) {
-									// 如果发送成功则清除上次记录
-									lastA00003Obj = null;
-								} else {
-									// 如果发送失败记录当前网络预警等待下次发送
-									lastA00003Obj = value;
-								}
-								LogUtil.d(TAG, "发送报警timerA00003");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00003X = new Timer();
-								timerA00003X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00003 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00003));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00003X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00003_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00003.schedule(task,
-						ConstantConfig.AlertA00003_Delay_Raise * 1000);
-				break;
-			case A00004:
-				if (timerA00004 != null) {
-					return;
-				}
-				if (timerA00004X != null) {
-					timerA00004X.cancel();
-					timerA00004X = null;
-				}
-				timerA00004 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00004 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00004");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00004X = new Timer();
-								timerA00004X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00004 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00004));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00004X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00004_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00004.schedule(task,
-						ConstantConfig.AlertA00004_Delay_Raise * 1000);
-				break;
-			case A00005:
-				if (timerA00005 != null) {
-					return;
-				}
-				if (timerA00005X != null) {
-					timerA00005X.cancel();
-					timerA00005X = null;
-				}
-				timerA00005 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00005 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00005");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00005X = new Timer();
-								timerA00005X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00005 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00005));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00005X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00005_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00005.schedule(task,
-						ConstantConfig.AlertA00005_Delay_Raise * 1000);
-				break;
-			case A00006:
-				if (timerA00006 != null) {
-					return;
-				}
-				if (timerA00006X != null) {
-					timerA00006X.cancel();
-					timerA00006X = null;
-				}
-				timerA00006 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00006 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00006");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00006X = new Timer();
-								timerA00006X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00006 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00006));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00006X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00006_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00006.schedule(task,
-						ConstantConfig.AlertA00006_Delay_Raise * 1000);
-				break;
-			case A00007:
-				if (timerA00007 != null) {
-					return;
-				}
-				if (timerA00007X != null) {
-					timerA00007X.cancel();
-					timerA00007X = null;
-				}
-				timerA00007 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00007 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00007");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00007X = new Timer();
-								timerA00007X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00007 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00007));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00007X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00007_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00007.schedule(task,
-						ConstantConfig.AlertA00007_Delay_Raise * 1000);
-				break;
-			case A00008:
-				if (timerA00008 != null) {
-					return;
-				}
-				if (timerA00008X != null) {
-					timerA00008X.cancel();
-					timerA00008X = null;
-				}
-				timerA00008 = new Timer();
-				task = new TimerTask() {
-
-					@Override
-					public void run() {
-						// 取消预警
-						timerA00008 = null;
-						JSONObject param = getAlertParam(value);
-						sendAlert(param, new BackCall() {
-							@Override
-							public void execute() {
-								LogUtil.d(TAG, "发送报警timerA00008");
-								// 发送预警信息 param
-								// 预报成功后，准备取消报警
-								timerA00008X = new Timer();
-								timerA00008X.schedule(
-										new TimerTask() {
-
-											@Override
-											public void run() {
-												if (timerA00008 == null) {
-													JSONObject param = getAlertParam(getCancelAlert(AlertType.A00008));
-													sendAlert(param,
-															new BackCall() {
-																@Override
-																public void execute() {
-																	LogUtil.d(
-																			TAG,
-																			"取消报警timerA00008X");
-																}
-															});
-												}
-											}
-										},
-										ConstantConfig.AlertA00008_Delay_Clear * 1000);
-							}
-						});
-					}
-				};
-				timerA00008.schedule(task,
-						ConstantConfig.AlertA00008_Delay_Raise * 1000);
-				break;
-			default:
-				break;
-			}
+			alertWorkers.get(type).send(value);
+			// TimerTask task;
+			// switch (type) {
+			// case A00001:
+			// // 如果发生脱落则取消停博报警
+			// break;
+			// case A00002:
+			// break;
+			// case A00003:
+			// break;
+			// case A00004:
+			// break;
+			// case A00005:
+			// break;
+			// case B00001:
+			// break;
+			// case B00002:
+			// break;
+			// case B00003:
+			// break;
+			// default:
+			// break;
+			// }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -588,82 +551,7 @@ public class AlertMachine {
 	 * @param type
 	 */
 	public void cancelAlert(AlertType type) {
-		switch (type) {
-		case A00001:
-			if (timerA00001 != null) {
-				timerA00001.cancel();
-				timerA00001 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00001X");
-				return;
-			}
-			break;
-		case A00002:
-			if (timerA00002 != null) {
-				timerA00002.cancel();
-				timerA00002 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00002X");
-				return;
-			}
-			break;
-		case A00003:
-			if (timerA00003 != null) {
-				timerA00003.cancel();
-				timerA00003 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00003X");
-				return;
-			}
-			break;
-		case A00004:
-			if (timerA00004 != null) {
-				timerA00004.cancel();
-				timerA00004 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00004X");
-				return;
-			}
-			break;
-		case A00005:
-			if (timerA00005 != null) {
-				timerA00005.cancel();
-				timerA00005 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00005X");
-				return;
-			}
-			break;
-		case A00006:
-			if (timerA00006 != null) {
-				timerA00006.cancel();
-				timerA00006 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00006X");
-				return;
-			}
-			break;
-		case A00007:
-			if (timerA00007 != null) {
-				timerA00007.cancel();
-				timerA00007 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00007X");
-				return;
-			}
-			break;
-		case A00008:
-			if (timerA00008 != null) {
-				timerA00008.cancel();
-				timerA00008 = null;
-				// 取消预警
-				LogUtil.d(TAG, "解除报警timerA00008X");
-				return;
-			}
-			break;
-		default:
-			break;
-		}
+		alertWorkers.get(type).cancel();
 	}
 
 }

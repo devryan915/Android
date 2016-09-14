@@ -14,7 +14,7 @@ public class OpenGLECGRenderer implements Renderer {
 	/**
 	 * 定义正交投影中心点到top的距离
 	 */
-	public final static float VIEWPORT_HALFHEIGHT = 22f;
+	public final static float VIEWPORT_HALFHEIGHT = 20f;
 	private final ECGGLSurfaceView surfaceView;
 	float[] vertex = new float[] { -0.9f, 0, 0, 0.9f, 0, 0, 0, 0.5f, 0, 0,
 			-0.5f, 0 };
@@ -82,9 +82,9 @@ public class OpenGLECGRenderer implements Renderer {
 		// 使用正交投影，以高度为基准，宽度尺寸保持和高度同比例缩放，保证行坐标和纵坐标显示尺寸相同
 		gl.glOrthof(-ratio * VIEWPORT_HALFHEIGHT, ratio * VIEWPORT_HALFHEIGHT,
 				-VIEWPORT_HALFHEIGHT, VIEWPORT_HALFHEIGHT, 0f, -5f);
-		vertex = new float[] { -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1,
-				1, -1, -1, 1, 1, 1, 1, 1, -1, 1 };
-		vertexBuffer = CommonUtil.floatBufferUtil(vertex);
+		// vertex = new float[] { -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1,
+		// 1, -1, -1, 1, 1, 1, 1, 1, -1, 1 };
+		// vertexBuffer = CommonUtil.floatBufferUtil(vertex);
 		// Select the modelview matrix
 		// gl.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix

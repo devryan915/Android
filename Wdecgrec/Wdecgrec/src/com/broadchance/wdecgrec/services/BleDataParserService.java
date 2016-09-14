@@ -4,7 +4,10 @@ import java.nio.IntBuffer;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONException;
@@ -52,11 +55,21 @@ public class BleDataParserService extends Service {
 	public final static float POWER_MAX = 2.9f;
 	public final static float POWER_MIN = 2.8f;
 	// public static int rssiValue = 0;
+	/**
+	 * 每一次最大处理ble数据帧数
+	 */
+	public final static int DEAL_MAX = 500;
+	/**
+	 * 每一次最大接受数据
+	 */
+	public final static int REC_MAX = 1000;
 
 	private LinkedBlockingQueue<FrameData> receivedQueue = new LinkedBlockingQueue<FrameData>();
 	private LinkedBlockingQueue<FrameData> dealQueue = new LinkedBlockingQueue<FrameData>();
 	private Timer processFrameDataTimer;
 	private TimerTask processFrameDataTask;
+	// private ScheduledExecutorService eServie = Executors
+	// .newScheduledThreadPool(3);
 
 	// private Timer mTimer = new Timer();
 	// private TimerTask mTask;
@@ -75,44 +88,8 @@ public class BleDataParserService extends Service {
 		return _Instance;
 	}
 
-	/**
-	 * 校验蓝牙数据 1、错位补零 2、丢帧补帧
-	 * 
-	 * @param bleData
-	 * @return
-	 * @throws Exception
-	 */
-	// private int[] checkBleData() {
-	// FrameDataMachine fdm = FrameDataMachine.getInstance();
-	// int length = dealQueue.size();
-	// int[] bleData = new byte[20 * length];
-	// for (int i = 0; i < length; i++) {
-	// byte[] temp = dealQueue.poll().data;
-	// fdm.processFrameData(dealQueue.poll());
-	// for (int j = 0; j < 20; j++) {
-	// bleData[i * 20 + j] = temp[j];
-	// }
-	// }
-	// return bleData;
-	// }
-	//
-	// private byte[] splitChannel(byte[] bleData) {
-	// return bleData;
-	// }
-	//
-	// /**
-	// * 滤波算法
-	// *
-	// * @param bleData
-	// * @return
-	// */
-	// private byte[] filterBleData(byte[] bleData) {
-	// return bleData;
-	// }
 	private int lastHeart = 0;
-	private boolean isHeartFast = false;
-	private boolean isHearLow = false;
-	private boolean isHeartStop = false;
+
 	private HeartRate lastHeartRate;
 
 	private void sendECGData(IntBuffer buffer, String action) throws Exception {
@@ -147,73 +124,103 @@ public class BleDataParserService extends Service {
 				if (lastHeart != heart) {
 					lastHeart = heart;
 					// 心动过速
-					if (heart > ConstantConfig.AlertA00006_Limit_Raise) {
-						JSONObject alertObj = new JSONObject();
-						try {
-							isHeartFast = true;
-							alertObj.put("id", AlertType.A00006.getValue());
-							alertObj.put("state", 1);
-							alertObj.put("time", CommonUtil.getTime_B());
-							JSONObject value = new JSONObject();
-							value.put("hr", heart);
-							value.put("hrlimithi",
-									ConstantConfig.AlertA00006_Limit_Raise);
-							alertObj.put("value", value);
-							AlertMachine.getInstance().sendAlert(
-									AlertType.A00006, alertObj);
-						} catch (JSONException e) {
-							e.printStackTrace();
+					if (heart > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00001)
+							.getIntValueRaise()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00001, 1)) {
+							JSONObject alertObj = new JSONObject();
+							try {
+								alertObj.put("id", AlertType.B00001.getValue());
+								alertObj.put("state", 1);
+								alertObj.put("time", CommonUtil.getTime_B());
+								JSONObject value = new JSONObject();
+								value.put("hr", heart);
+								value.put(
+										"hrlimithi",
+										AlertMachine
+												.getInstance()
+												.getAlertConfig(
+														AlertType.B00001)
+												.getIntValueRaise());
+								alertObj.put("value", value);
+								AlertMachine.getInstance().sendAlert(
+										AlertType.B00001, alertObj);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 						}
-					} else if (heart <= ConstantConfig.AlertA00006_Limit_Clear
-							&& isHeartFast) {
-						isHeartFast = false;
-						AlertMachine.getInstance()
-								.cancelAlert(AlertType.A00006);
+					} else if (heart <= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00001)
+							.getIntValueClear()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00001, 0)) {
+							AlertMachine.getInstance().cancelAlert(
+									AlertType.B00001);
+						}
 					}
 					// 心动过缓
-					if (heart < ConstantConfig.AlertA00007_Limit_Raise) {
-						JSONObject alertObj = new JSONObject();
-						try {
-							isHearLow = true;
-							alertObj.put("id", AlertType.A00007.getValue());
-							alertObj.put("state", 1);
-							alertObj.put("time", CommonUtil.getTime_B());
-							JSONObject value = new JSONObject();
-							value.put("hr", heart);
-							value.put("hrlimitlow",
-									ConstantConfig.AlertA00007_Limit_Raise);
-							alertObj.put("value", value);
-							AlertMachine.getInstance().sendAlert(
-									AlertType.A00007, alertObj);
-						} catch (JSONException e) {
-							e.printStackTrace();
+					if (heart < AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00002)
+							.getIntValueRaise()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00002, 1)) {
+							JSONObject alertObj = new JSONObject();
+							try {
+								alertObj.put("id", AlertType.B00002.getValue());
+								alertObj.put("state", 1);
+								alertObj.put("time", CommonUtil.getTime_B());
+								JSONObject value = new JSONObject();
+								value.put("hr", heart);
+								value.put(
+										"hrlimitlow",
+										AlertMachine
+												.getInstance()
+												.getAlertConfig(
+														AlertType.B00002)
+												.getIntValueRaise());
+								alertObj.put("value", value);
+								AlertMachine.getInstance().sendAlert(
+										AlertType.B00002, alertObj);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 						}
-					} else if (heart >= ConstantConfig.AlertA00007_Limit_Clear
-							&& isHearLow) {
-						isHearLow = false;
-						AlertMachine.getInstance()
-								.cancelAlert(AlertType.A00007);
+					} else if (heart >= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00002)
+							.getIntValueClear()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00002, 0)) {
+							AlertMachine.getInstance().cancelAlert(
+									AlertType.B00002);
+						}
 					}
-
-					if (heart <= ConstantConfig.AlertA00008_Limit_Raise) {
-						JSONObject alertObj = new JSONObject();
-						try {
-							isHeartStop = true;
-							alertObj.put("id", AlertType.A00008.getValue());
-							alertObj.put("state", 1);
-							alertObj.put("time", CommonUtil.getTime_B());
-							JSONObject value = new JSONObject();
-							alertObj.put("value", value);
-							AlertMachine.getInstance().sendAlert(
-									AlertType.A00008, alertObj);
-						} catch (JSONException e) {
-							e.printStackTrace();
+					if (heart <= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00003)
+							.getIntValueRaise()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00003, 1)) {
+							JSONObject alertObj = new JSONObject();
+							try {
+								alertObj.put("id", AlertType.B00003.getValue());
+								alertObj.put("state", 1);
+								alertObj.put("time", CommonUtil.getTime_B());
+								JSONObject value = new JSONObject();
+								alertObj.put("value", value);
+								AlertMachine.getInstance().sendAlert(
+										AlertType.B00003, alertObj);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 						}
-					} else if (heart > ConstantConfig.AlertA00008_Limit_Clear
-							&& isHeartStop) {
-						isHeartStop = false;
-						AlertMachine.getInstance()
-								.cancelAlert(AlertType.A00008);
+					} else if (heart > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.B00003)
+							.getIntValueClear()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.B00003, 0)) {
+							AlertMachine.getInstance().cancelAlert(
+									AlertType.B00003);
+						}
 					}
 				}
 
@@ -239,33 +246,39 @@ public class BleDataParserService extends Service {
 		Integer mv1Value = null;
 		Integer mv5Value = null;
 		FrameData data;
-		while ((data = dealQueue.poll()) != null) {
-			fdm.processFrameData(data);
-			while (true) {
-				miiValue = fdm.getMII();
-				if (miiValue != null) {
-					if (!miiBuffer.hasRemaining()) {
-						sendECGData(miiBuffer, ACTION_ECGMII_DATA_AVAILABLE);
+		int dCount = 0;
+		while (dCount++ < DEAL_MAX) {
+			if ((data = dealQueue.poll()) != null) {
+				fdm.processFrameData(data);
+				while (true) {
+					miiValue = fdm.getMII();
+					if (miiValue != null) {
+						if (!miiBuffer.hasRemaining()) {
+							sendECGData(miiBuffer, ACTION_ECGMII_DATA_AVAILABLE);
+						}
+						miiBuffer.put(miiValue);
 					}
-					miiBuffer.put(miiValue);
-				}
-				mv1Value = fdm.getMV1();
-				if (mv1Value != null) {
-					if (!mv1Buffer.hasRemaining()) {
-						sendECGData(mv1Buffer, ACTION_ECGMV1_DATA_AVAILABLE);
+					mv1Value = fdm.getMV1();
+					if (mv1Value != null) {
+						if (!mv1Buffer.hasRemaining()) {
+							sendECGData(mv1Buffer, ACTION_ECGMV1_DATA_AVAILABLE);
+						}
+						mv1Buffer.put(mv1Value);
 					}
-					mv1Buffer.put(mv1Value);
-				}
-				mv5Value = fdm.getMV5();
-				if (mv5Value != null) {
-					if (!mv5Buffer.hasRemaining()) {
-						sendECGData(mv5Buffer, ACTION_ECGMV5_DATA_AVAILABLE);
+					mv5Value = fdm.getMV5();
+					if (mv5Value != null) {
+						if (!mv5Buffer.hasRemaining()) {
+							sendECGData(mv5Buffer, ACTION_ECGMV5_DATA_AVAILABLE);
+						}
+						mv5Buffer.put(mv5Value);
 					}
-					mv5Buffer.put(mv5Value);
+					if (miiValue == null && mv1Value == null
+							&& mv5Value == null) {
+						break;
+					}
 				}
-				if (miiValue == null && mv1Value == null && mv5Value == null) {
-					break;
-				}
+			} else {
+				break;
 			}
 		}
 	}
@@ -294,7 +307,7 @@ public class BleDataParserService extends Service {
 		_Instance = this;
 		receivedQueue.clear();
 		dealQueue.clear();
-		startTimer();
+		startExeService();
 		// acquireWakeLock();
 	}
 
@@ -308,7 +321,7 @@ public class BleDataParserService extends Service {
 	@Override
 	public void onDestroy() {
 		this.unregisterReceiver(mGattUpdateReceiver);
-		cancelTimer();
+		cancelExeService();
 		receivedQueue.clear();
 		receivedQueue = null;
 		dealQueue.clear();
@@ -317,27 +330,56 @@ public class BleDataParserService extends Service {
 		super.onDestroy();
 	};
 
-	public void startTimer() {
+	public void startExeService() {
+		// eServie.scheduleAtFixedRate(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// try {
+		// if (atomicBooleanPro.compareAndSet(false, true)) {
+		// // int qLen = receivedQueue.size();
+		// // if (ConstantConfig.Debug) {
+		// // LogUtil.d(TAG, "当前接受的数据帧数:" + qLen);
+		// // }
+		// // for (int i = 0; i < qLen; i++) {
+		// FrameData data;
+		// int dCount = 0;
+		// while (dCount++ < REC_MAX) {
+		// if ((data = receivedQueue.poll()) != null) {
+		// dealQueue.offer(data);
+		// } else {
+		// break;
+		// }
+		// }
+		// processReceivedByte();
+		// atomicBooleanPro.set(false);
+		// }
+		// } catch (Exception e) {
+		// LogUtil.e(TAG, e);
+		// }
+		// }
+		// }, 0, 80, TimeUnit.MILLISECONDS);
+
 		processFrameDataTask = new TimerTask() {
 			@Override
 			public void run() {
-				try {
-					if (atomicBooleanPro.compareAndSet(false, true)) {
-						// int qLen = receivedQueue.size();
-						// if (ConstantConfig.Debug) {
-						// LogUtil.d(TAG, "当前接受的数据帧数:" + qLen);
-						// }
-						// for (int i = 0; i < qLen; i++) {
+				if (atomicBooleanPro.compareAndSet(false, true)) {
+					try {
 						FrameData data;
-						while ((data = receivedQueue.poll()) != null) {
-							dealQueue.offer(data);
+						int dCount = 0;
+						while (dCount++ < REC_MAX) {
+							if ((data = receivedQueue.poll()) != null) {
+								dealQueue.offer(data);
+							} else {
+								break;
+							}
 						}
-						// }
 						processReceivedByte();
+					} catch (Exception e) {
+						LogUtil.e(TAG, e);
+					} finally {
 						atomicBooleanPro.set(false);
 					}
-				} catch (Exception e) {
-					LogUtil.e(TAG, e);
 				}
 			}
 		};
@@ -346,7 +388,8 @@ public class BleDataParserService extends Service {
 
 	}
 
-	public void cancelTimer() {
+	public void cancelExeService() {
+		// eServie.shutdown();
 		if (processFrameDataTimer != null) {
 			processFrameDataTimer.cancel();
 			processFrameDataTimer = null;
@@ -394,7 +437,6 @@ public class BleDataParserService extends Service {
 	/**
 	 * 是否设备断开
 	 */
-	private boolean isDevOff = false;
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -431,11 +473,11 @@ public class BleDataParserService extends Service {
 				// }
 				// }
 			} else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-				if (isDevOff) {
+				if (AlertMachine.getInstance()
+						.canSendAlert(AlertType.A00002, 0)) {
 					AlertMachine.getInstance().cancelAlert(AlertType.A00002);
-					isDevOff = false;
 				}
-				startTimer();
+				startExeService();
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 					.equals(action)
 					|| BluetoothLeService.ACTION_GATT_RECONNECTING
@@ -445,22 +487,24 @@ public class BleDataParserService extends Service {
 						&& !user.getMacAddress().isEmpty()) {
 					// 设备断开
 					PlayerManager.getInstance().playDevOff();
-					JSONObject alertObj = new JSONObject();
-					try {
-						isDevOff = true;
-						alertObj.put("id", AlertType.A00002.getValue());
-						alertObj.put("state", 1);
-						alertObj.put("time", CommonUtil.getTime_B());
-						JSONObject value = new JSONObject();
-						value.put("bledevice", user.getMacAddress());
-						alertObj.put("value", value);
-						AlertMachine.getInstance().sendAlert(AlertType.A00002,
-								alertObj);
-					} catch (JSONException e) {
-						e.printStackTrace();
+					if (AlertMachine.getInstance().canSendAlert(
+							AlertType.A00002, 1)) {
+						JSONObject alertObj = new JSONObject();
+						try {
+							alertObj.put("id", AlertType.A00002.getValue());
+							alertObj.put("state", 1);
+							alertObj.put("time", CommonUtil.getTime_B());
+							JSONObject value = new JSONObject();
+							value.put("bledevice", user.getMacAddress());
+							alertObj.put("value", value);
+							AlertMachine.getInstance().sendAlert(
+									AlertType.A00002, alertObj);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 				}
-				cancelTimer();
+				cancelExeService();
 				FrameDataMachine.getInstance().resetData();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
@@ -483,47 +527,66 @@ public class BleDataParserService extends Service {
 
 			} else if (action
 					.equals(BluetoothLeService.ACTION_GATT_POWERCHANGED)) {
-				float power = intent.getFloatExtra(
-						BluetoothLeService.EXTRA_DATA, 0);
-				// UIUtil.showToast(context, "蓝牙电量 power:" + power);
-				// 传感器电量预警
-				if (power < ConstantConfig.AlertA00005_Limit_Raise) {
-					UIUserInfoLogin user = DataManager.getUserInfo();
-					if (user != null && user.getMacAddress() != null
-							&& !user.getMacAddress().isEmpty()) {
-						JSONObject alertObj = new JSONObject();
-						try {
-							alertObj.put("id", AlertType.A00005.getValue());
-							alertObj.put("state", 1);
-							alertObj.put("time", CommonUtil.getTime_B());
-							JSONObject value = new JSONObject();
-							value.put("bledevice", user.getMacAddress());
-							value.put("volt", power);
-							alertObj.put("value", value);
-							AlertMachine.getInstance().sendAlert(
-									AlertType.A00005, alertObj);
-						} catch (JSONException e) {
-							e.printStackTrace();
+				// float power = intent.getFloatExtra(
+				// BluetoothLeService.EXTRA_DATA, 0);
+				Float power = FrameDataMachine.getInstance().getPower();
+				if (power != null) {
+					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
+					// 传感器电量预警
+					if (power < AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()) {
+						UIUserInfoLogin user = DataManager.getUserInfo();
+						if (user != null && user.getMacAddress() != null
+								&& !user.getMacAddress().isEmpty()) {
+							if (AlertMachine.getInstance().canSendAlert(
+									AlertType.A00005, 1)) {
+								JSONObject alertObj = new JSONObject();
+								try {
+									alertObj.put("id",
+											AlertType.A00005.getValue());
+									alertObj.put("state", 1);
+									alertObj.put("time", CommonUtil.getTime_B());
+									JSONObject value = new JSONObject();
+									value.put("bledevice", user.getMacAddress());
+									value.put("volt", power);
+									alertObj.put("value", value);
+									AlertMachine.getInstance().sendAlert(
+											AlertType.A00005, alertObj);
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					} else if (power > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueClear()) {
+						if (AlertMachine.getInstance().canSendAlert(
+								AlertType.A00005, 0)) {
+							AlertMachine.getInstance().cancelAlert(
+									AlertType.A00005);
 						}
 					}
-				} else if (power > ConstantConfig.AlertA00005_Limit_Clear) {
-					AlertMachine.getInstance().cancelAlert(AlertType.A00005);
-				}
 
-				if (power <= POWER_MIN && power > 0) {
-					// 电量低
-					PlayerManager.getInstance().playLowPower();
-					Notification notification = new Notification(
-							R.drawable.ic_launcher,
-							getString(R.string.app_name),
-							System.currentTimeMillis());
-					// Intent intent = new Intent(context, EcgActivity.class);
-					PendingIntent pendingintent = PendingIntent.getActivity(
-							context, 0, null, 0);
-					notification.setLatestEventInfo(context, "穿戴设备",
-							"设备电量低，请更换电极片！", pendingintent);
-					startForeground(0x111, notification);
-					UIUtil.showLongToast(context, "设备电量低，请更换电极片！");
+					if (power <= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()
+							&& power > 0) {
+						// 电量低
+						PlayerManager.getInstance().playLowPower();
+						// Notification notification = new Notification(
+						// R.drawable.ic_launcher,
+						// getString(R.string.app_name),
+						// System.currentTimeMillis());
+						// // Intent intent = new Intent(context,
+						// // EcgActivity.class);
+						// PendingIntent pendingintent = PendingIntent
+						// .getActivity(context, 0, null, 0);
+						// notification.setLatestEventInfo(context, "穿戴设备",
+						// "设备电量低，请更换电极片！", pendingintent);
+						// startForeground(0x111, notification);
+						UIUtil.showToast(context, "设备电量低，请更换电极片！");
+					}
 				}
 			}
 		}

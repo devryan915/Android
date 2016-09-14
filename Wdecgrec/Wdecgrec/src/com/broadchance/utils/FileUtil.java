@@ -630,9 +630,9 @@ public class FileUtil {
 		}
 	}
 
-	public JSONArray getjHeartRateArray() {
-		return jHeartRateArray;
-	}
+	// public JSONArray getjHeartRateArray() {
+	// return jHeartRateArray;
+	// }
 
 	/**
 	 * 写入呼吸波数据，呼吸波文件路径和心电文件+呼吸波后缀
@@ -683,18 +683,19 @@ public class FileUtil {
 						+ (ret ? "存入数据库成功" : "存入数据库失败"));
 			}
 		} else {
-			FrameDataMachine machine = FrameDataMachine.getInstance();
-			jHeartRateArray = new JSONArray();
-			Integer hrate = null;
-			while ((hrate = machine.getHeartRealTimeRate()) != null) {
-				JSONObject rate = new JSONObject();
-				try {
-					rate.put("hr", hrate);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				jHeartRateArray.put(rate);
-			}
+			// 实时模式不再写文件
+			// FrameDataMachine machine = FrameDataMachine.getInstance();
+			// jHeartRateArray = new JSONArray();
+			// Integer hrate = null;
+			// while ((hrate = machine.getHeartRealTimeRate()) != null) {
+			// JSONObject rate = new JSONObject();
+			// try {
+			// rate.put("hr", hrate);
+			// } catch (JSONException e) {
+			// e.printStackTrace();
+			// }
+			// jHeartRateArray.put(rate);
+			// }
 		}
 	}
 

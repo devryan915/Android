@@ -7,9 +7,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -23,6 +25,8 @@ import com.broadchance.entity.serverentity.ServerResponse;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.PreferencesManager;
 import com.broadchance.wdecgrec.HttpReqCallBack;
+import com.broadchance.wdecgrec.alert.AlertMachine;
+import com.broadchance.wdecgrec.alert.AlertType;
 
 /**
  * @author ryan.wang
@@ -74,19 +78,128 @@ public class ClientGameService {
 		HttpAsyncTaskUtil.fetchData(reparams, backCall);
 	}
 
-	public void getAlertCFG(HttpReqCallBack<ServerResponse> backCall) {
+	public void getAlertCFG(final HttpReqCallBack<ServerResponse> backCall) {
 		try {
 			JSONObject param = new JSONObject();
 			UIUserInfoLogin user = DataManager.getUserInfo();
 			param.put("holtermobile", user.getLoginName());
-			param.put("holter_id", ConstantConfig.ORDERNO);
-			param.put("device", ConstantConfig.ORDERNO);
+			param.put("mobile", user.getLoginName());
+			param.put("orderno", user.getAccess_token());
+			param.put("device", user.getMacAddress());
 			String indata = param.toString();
 			Map<String, Object> reparams = new HashMap<String, Object>();
-			reparams.put("action", "login");
+			reparams.put("action", "get_alertcfg");
 			reparams.put("indata", indata);
 			reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
-			HttpAsyncTaskUtil.fetchData(reparams, backCall);
+			HttpAsyncTaskUtil.fetchData(reparams,
+					new HttpReqCallBack<ServerResponse>() {
+
+						@Override
+						public Activity getReqActivity() {
+							if (backCall != null)
+								return backCall.getReqActivity();
+							return null;
+						}
+
+						private void setCFG(JSONObject cfg, AlertType type) {
+							PreferencesManager.getInstance().putString(
+									AlertMachine.getCFGKeyType(type),
+									cfg.toString());
+						}
+
+						@Override
+						public void doSuccess(ServerResponse result) {
+							if (result.isOK()) {
+								JSONObject data = result.getDATA();
+								try {
+									JSONObject cfgs = data
+											.getJSONObject("alertcfg");
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.A00001
+														.getValue()),
+												AlertType.A00001);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.A00002
+														.getValue()),
+												AlertType.A00002);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.A00003
+														.getValue()),
+												AlertType.A00003);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.A00004
+														.getValue()),
+												AlertType.A00004);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.A00005
+														.getValue()),
+												AlertType.A00005);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.B00001
+														.getValue()),
+												AlertType.B00001);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.B00002
+														.getValue()),
+												AlertType.B00002);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									try {
+										setCFG(cfgs
+												.getJSONObject(AlertType.B00003
+														.getValue()),
+												AlertType.B00003);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									if (backCall != null) {
+										backCall.doSuccess(result);
+										return;
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							} else {
+								UIUtil.showToast(result.getErrmsg());
+							}
+							if (backCall != null) {
+								backCall.doError(result.getErrmsg());
+							}
+						}
+
+						@Override
+						public void doError(String result) {
+							if (backCall != null) {
+								backCall.doError(result);
+							}
+						}
+					});
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +234,7 @@ public class ClientGameService {
 		try {
 			param.put("mobile", user.getLoginName());
 			param.put("device", user.getMacAddress());
-			param.put("orderno", ConstantConfig.ORDERNO);
+			param.put("orderno", user.getAccess_token());
 			param.put("filetype", "1");
 			// ecgFile
 			// breathFile
@@ -177,7 +290,7 @@ public class ClientGameService {
 		try {
 			param.put("mobile", user.getLoginName());
 			param.put("device", user.getMacAddress());
-			param.put("orderno", ConstantConfig.ORDERNO);
+			param.put("orderno", user.getAccess_token());
 			param.put("filetype", "2");
 			// zipFile
 			// param.put("starttime", "");

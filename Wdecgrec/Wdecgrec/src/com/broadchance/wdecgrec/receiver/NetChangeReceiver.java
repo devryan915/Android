@@ -35,17 +35,27 @@ public class NetChangeReceiver extends BroadcastReceiver {
 						+ activeInfo.getSubtypeName(), 1).show();
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		if (user != null) {
-			JSONObject alertObj = new JSONObject();
-			try {
-				alertObj.put("id", AlertType.A00003.getValue());
-				alertObj.put("state", activeInfo == null ? 1 : 0);
-				alertObj.put("time", CommonUtil.getTime_B());
-				JSONObject value = new JSONObject();
-				alertObj.put("value", value);
-				AlertMachine.getInstance()
-						.sendAlert(AlertType.A00003, alertObj);
-			} catch (JSONException e) {
-				e.printStackTrace();
+			if (activeInfo == null) {
+				if (AlertMachine.getInstance()
+						.canSendAlert(AlertType.A00003, 1)) {
+					JSONObject alertObj = new JSONObject();
+					try {
+						alertObj.put("id", AlertType.A00003.getValue());
+						alertObj.put("state", 1);
+						alertObj.put("time", CommonUtil.getTime_B());
+						JSONObject value = new JSONObject();
+						alertObj.put("value", value);
+						AlertMachine.getInstance().sendAlert(AlertType.A00003,
+								alertObj);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			} else {
+				if (AlertMachine.getInstance()
+						.canSendAlert(AlertType.A00003, 0)) {
+					AlertMachine.getInstance().cancelAlert(AlertType.A00003);
+				}
 			}
 		}
 	}

@@ -12,14 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.broadchance.manager.FrameDataMachine;
-import com.broadchance.manager.PlayerManager;
-import com.broadchance.utils.ConstantConfig;
-import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.services.BleDataParserService;
-import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
 
 /**
@@ -29,7 +26,7 @@ import com.broadchance.wdecgrec.services.BluetoothLeService;
 public class CustomTitle extends RelativeLayout {
 	Context context;
 	private ImageView imageViewSignal;
-	private ImageView imageViewPower;
+	private TextView textViewPower;
 	BroadcastReceiver receiver = new BroadcastReceiver() {
 
 		@Override
@@ -57,24 +54,23 @@ public class CustomTitle extends RelativeLayout {
 					.equals(BluetoothLeService.ACTION_GATT_POWERCHANGED)) {
 				// float power = intent.getFloatExtra(
 				// BluetoothLeService.EXTRA_DATA, 0);
-				float power = FrameDataMachine.getInstance().getPower();
-				// UIUtil.showToast(context, "蓝牙电量 power:" + power);
-				if (power > BleDataParserService.POWER_MAX) {
-					imageViewPower
-							.setImageResource(R.drawable.common_blepower_3);
-				} else if (power > BleDataParserService.POWER_MIN
-						&& power <= BleDataParserService.POWER_MAX) {
-					imageViewPower
-							.setImageResource(R.drawable.common_blepower_2);
-				} else {
-					imageViewPower
-							.setImageResource(R.drawable.common_blepower_1);
+				Float power = FrameDataMachine.getInstance().getPower();
+				if (power != null) {
+					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
+					if (power > BleDataParserService.POWER_MAX) {
+						textViewPower.setText("高");
+					} else if (power > BleDataParserService.POWER_MIN
+							&& power <= BleDataParserService.POWER_MAX) {
+						textViewPower.setText("中");
+					} else {
+						textViewPower.setText("低");
+					}
 				}
 			} else if (action
 					.equals(BluetoothLeService.ACTION_GATT_DISCONNECTED)
 					|| action
 							.equals(BluetoothLeService.ACTION_GATT_RECONNECTING)) {
-				imageViewPower.setImageResource(R.drawable.common_blepower_0);
+				textViewPower.setText("-");
 				imageViewSignal
 						.setImageResource(R.drawable.common_blesingnal_0);
 			}
@@ -101,7 +97,7 @@ public class CustomTitle extends RelativeLayout {
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.common_title_status, this);
 		imageViewSignal = (ImageView) view.findViewById(R.id.imageViewSignal);
-		imageViewPower = (ImageView) view.findViewById(R.id.imageViewPower);
+		textViewPower = (TextView) view.findViewById(R.id.textViewPower);
 		Integer rssi = BluetoothLeService.rssiValue;
 		if (rssi == null) {
 			imageViewSignal.setImageResource(R.drawable.common_blesingnal_0);
@@ -120,15 +116,15 @@ public class CustomTitle extends RelativeLayout {
 		}
 		Float power = FrameDataMachine.getInstance().getPower();
 		if (power == null) {
-			imageViewPower.setImageResource(R.drawable.common_blepower_0);
+			textViewPower.setText("-");
 		} else {
 			if (power > BleDataParserService.POWER_MAX) {
-				imageViewPower.setImageResource(R.drawable.common_blepower_3);
+				textViewPower.setText("高");
 			} else if (power > BleDataParserService.POWER_MIN
 					&& power <= BleDataParserService.POWER_MAX) {
-				imageViewPower.setImageResource(R.drawable.common_blepower_2);
+				textViewPower.setText("中");
 			} else {
-				imageViewPower.setImageResource(R.drawable.common_blepower_1);
+				textViewPower.setText("低");
 			}
 		}
 

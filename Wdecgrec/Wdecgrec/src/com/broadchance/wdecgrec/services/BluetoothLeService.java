@@ -16,10 +16,8 @@
 
 package com.broadchance.wdecgrec.services;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -42,18 +40,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.DataManager;
-import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.CRC8;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.SampleGattAttributes;
 import com.broadchance.utils.UIUtil;
+import com.broadchance.wdecgrec.receiver.PowerChangeReceiver;
 
 /**
  * Service for managing connection and data communication with a GATT server
@@ -78,8 +75,8 @@ public class BluetoothLeService extends Service {
 	private static final int STATE_SERVICES_DISCOVERED = 3;
 
 	// private final static int ALIVE_PERIOD = 15 * 1000;
-	private final static int CHECK_PERIOD = 8 * 1000;
-	private final static int BLE_CON_DELAY = 3 * 1000;
+	private final static int CHECK_PERIOD = 5 * 1000;
+	private final static int BLE_CON_DELAY = 5 * 1000;
 
 	/**
 	 * 由于ble本身对蓝牙断开响应不够及时，所以自定义检查蓝牙是否超时 当蓝牙实际已经超时时，ble本身的状态依然是连接状态，延迟发出断开信号
@@ -125,7 +122,7 @@ public class BluetoothLeService extends Service {
 
 	private static final int SEND_FRAME_TYPE_SETTIME = 1;
 	// Stops scanning after 10 seconds.
-	private static final long SCAN_PERIOD = 5000;
+	private static final long SCAN_PERIOD = 3000;
 	private boolean mScanning;
 	private Handler mHandler;
 
@@ -138,30 +135,21 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String action = intent.getAction();
-			// if
-			// (BluetoothLeService.ACTION_ALARM_SEND_ALIVE_FRAME.equals(action))
-			// {
-			// if (mConnectionState == STATE_SERVICES_DISCOVERED) {
-			// sendCtrlFrame(SEND_FRAME_TYPE_SETTIME);
-			// }
-			// } else
+
 			if (BluetoothLeService.ACTION_ALARM_SEND_CHECKBLESTATE
 					.equals(action)) {
-				// if (mConnectionState == STATE_CONNECTING) {
-				// broadcastUpdate(ACTION_GATT_CONNECTING);
-				// return;
-				// }
-				// if (mConnectionState == STATE_SERVICES_DISCOVERED
-				// || mConnectionState == STATE_CONNECTED) {
-				// return;
-				// }
-				if (mBluetoothGatt != null)
-					mBluetoothGatt.readRemoteRssi();
+				if (mBluetoothGatt != null) {
+					try {
+						mBluetoothGatt.readRemoteRssi();
+					} catch (Exception e) {
+					}
+				}
 				if (System.currentTimeMillis() - DataAliveTime > CHECK_PERIOD) {
 					if (mScanning) {
 						DataAliveTime = System.currentTimeMillis();
 						return;
 					}
+					mConnectionState = STATE_DISCONNECTED;
 					connect();
 				}
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -193,7 +181,7 @@ public class BluetoothLeService extends Service {
 			}
 		}
 	};
-
+	private PowerChangeReceiver batteryReceiver = new PowerChangeReceiver();
 	// Implements callback methods for GATT events that the app cares about. For
 	// tiannma,
 	// connection change and services discovered.
@@ -203,11 +191,6 @@ public class BluetoothLeService extends Service {
 				int newState) {
 			String intentAction;
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				boolean isDiscoverServcies = mBluetoothGatt.discoverServices();
 				mBluetoothGatt.readRemoteRssi();
 				DataAliveTime = System.currentTimeMillis();
@@ -272,6 +255,7 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
+			mConnectionState = STATE_CONNECTED;
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 			// if (ConstantConfig.Debug) {
 			// SimpleDateFormat sdf = new SimpleDateFormat(
@@ -324,11 +308,11 @@ public class BluetoothLeService extends Service {
 		sendBroadcast(intent);
 	}
 
-	public class LocalBinder extends Binder {
-		public BluetoothLeService getService() {
-			return BluetoothLeService.this;
-		}
-	}
+	// public class LocalBinder extends Binder {
+	// public BluetoothLeService getService() {
+	// return BluetoothLeService.this;
+	// }
+	// }
 
 	// private void startAliveFrameTimer() {
 	// Intent intent = new Intent();
@@ -369,6 +353,11 @@ public class BluetoothLeService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (!DataManager.isLogin()) {
+			LogUtil.e(TAG, "用户未登录停止服务");
+			stopSelf();
+			return -1;
+		}
 		start();
 		flags = START_STICKY;
 		// Notification notification = new Notification(R.drawable.ic_launcher,
@@ -378,19 +367,21 @@ public class BluetoothLeService extends Service {
 		// notification.setLatestEventInfo(this, "穿戴设备", "请保持程序在后台运行",
 		// pendingintent);
 		// startForeground(0x111, notification);
-		LogUtil.e(TAG, "BluetoothLeService start");
+		// LogUtil.e(TAG, "BluetoothLeService start");
 		Instance = this;
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
 	public boolean stopService(Intent name) {
+		Instance = null;
+		end();
 		return super.stopService(name);
 	}
 
 	@Override
 	public void onDestroy() {
-		end();
+
 		LogUtil.e(TAG, "BluetoothLeService destroy");
 		super.onDestroy();
 	}
@@ -399,8 +390,10 @@ public class BluetoothLeService extends Service {
 		if (initialize()) {
 			createAliveFrame();
 			connect();
-			// scanLeDevice(true);
+			// scanLeDevice();
 			registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+			registerReceiver(batteryReceiver, makeBatteryIntentFilter());
+
 			// startAliveFrameTimer();
 			startCheckBleStateTimer();
 			Intent dataParserIntent = new Intent(BluetoothLeService.this,
@@ -414,6 +407,7 @@ public class BluetoothLeService extends Service {
 
 	private void end() {
 		unregisterReceiver(mGattUpdateReceiver);
+		unregisterReceiver(batteryReceiver);
 		// cancelAliveFrameTimer();
 		cancelCheckBleStateTimer();
 		close();
@@ -425,9 +419,15 @@ public class BluetoothLeService extends Service {
 		stopService(bleDomainIntent);
 	}
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return mBinder;
+	// @Override
+	// public IBinder onBind(Intent intent) {
+	// return mBinder;
+	// }
+
+	private static IntentFilter makeBatteryIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+		return intentFilter;
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
@@ -452,11 +452,10 @@ public class BluetoothLeService extends Service {
 		// such that resources are cleaned up properly. In this particular
 		// tiannma, close() is
 		// invoked when the UI is disconnected from the Service.
-
 		return super.onUnbind(intent);
 	}
 
-	private final IBinder mBinder = new LocalBinder();
+	// private final IBinder mBinder = new LocalBinder();
 
 	/**
 	 * Initializes a reference to the local Bluetooth adapter.
@@ -475,7 +474,6 @@ public class BluetoothLeService extends Service {
 				return false;
 			}
 		}
-
 		mBluetoothAdapter = mBluetoothManager.getAdapter();
 		if (mBluetoothAdapter == null) {
 			LogUtil.e(TAG,
@@ -491,9 +489,8 @@ public class BluetoothLeService extends Service {
 	 * 
 	 * @param enable
 	 */
-	private void scanLeDevice(final boolean enable) {
-		LogUtil.i(TAG, "scanLeDevice " + enable);
-		if (enable) {
+	private void scanLeDevice() {
+		if (!mScanning) {
 			// Stops scanning after a pre-defined scan period.
 			mHandler.postDelayed(new Runnable() {
 				@Override
@@ -501,9 +498,12 @@ public class BluetoothLeService extends Service {
 					LogUtil.i(TAG, " stop scanLeDevice ");
 					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					_connect();
+					// if (ConstantConfig.Debug) {
+					UIUtil.showToast("扫描超时尝试直接连接");
+					// }
 				}
 			}, SCAN_PERIOD);
-
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		} else {
@@ -521,8 +521,10 @@ public class BluetoothLeService extends Service {
 			if (user != null) {
 				String deviceNumber = user.getMacAddress();
 				if (deviceNumber.equals(device.getAddress())) {
-					LogUtil.i(TAG, "扫描到指定蓝牙" + deviceNumber + " 尝试连接");
-					connect();
+					_connect();
+					// if (ConstantConfig.Debug) {
+					UIUtil.showToast("扫描到指定蓝牙并开始连接");
+					// }
 				}
 			}
 		}
@@ -541,15 +543,18 @@ public class BluetoothLeService extends Service {
 	 */
 	// 连接之前必须释放BluetoothGatt,否则可能收到重复数据
 	public void connect() {
+		scanLeDevice();
+	}
 
+	private void _connect() {
+		if (mConnectionState != STATE_DISCONNECTED) {
+			return;
+		}
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		if (user == null) {
 			return;
 		}
 		String deviceNumber = user.getMacAddress();
-		// if (ConstantConfig.Debug) {
-		// deviceNumber = "33:44:55:66:79:75";
-		// }
 		if (!(deviceNumber != null && !deviceNumber.trim().isEmpty())) {
 			LogUtil.i(TAG, "无设备可连接");
 			return;
@@ -557,14 +562,8 @@ public class BluetoothLeService extends Service {
 		if (mBluetoothAdapter == null) {
 			return;
 		}
-		mConnectionState = STATE_CONNECTING;
 		broadcastUpdate(ACTION_GATT_RECONNECTING);
 		DataAliveTime = System.currentTimeMillis();
-		// if (mBluetoothGatt != null) {
-		// System.gc();
-		// mBluetoothGatt.close();
-		// mBluetoothGatt.connect();
-		// } else {
 		close();
 		if (ConstantConfig.Debug) {
 			UIUtil.showToast(BluetoothLeService.this, "正在重连：" + deviceNumber);
@@ -575,15 +574,11 @@ public class BluetoothLeService extends Service {
 			if (device == null) {
 				return;
 			}
-			mConnectionState = STATE_CONNECTING;
 			DataAliveTime = System.currentTimeMillis();
 			mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
 		} catch (Exception e) {
 			LogUtil.e(TAG, e);
 		}
-		// }
-		// close();
-		// scanLeDevice(true);
 	}
 
 	/**
@@ -591,14 +586,40 @@ public class BluetoothLeService extends Service {
 	 * disconnection result is reported asynchronously through the
 	 * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
 	 * callback.
+	 * 
+	 * @param dis是否强行关闭
 	 */
-	public void disconnect() {
-		// bleStateEnable = false;
-		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			return;
-		}
-		mBluetoothGatt.disconnect();
-	}
+	// public void disconnect() {
+	// // TODO Auto-generated method stub
+	// if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+	// Log.w(TAG, "disconnect: BluetoothAdapter not initialized");
+	// return;
+	// }
+	// mBluetoothGatt.disconnect();
+	// mBluetoothGatt.close();
+	// mBluetoothGatt = null;
+	// // String deviceNumber = null;
+	// // UIUserInfoLogin user = DataManager.getUserInfo();
+	// // if (user != null) {
+	// // deviceNumber = user.getMacAddress();
+	// // }
+	// // if (!(deviceNumber != null && !deviceNumber.trim().isEmpty())) {
+	// // final BluetoothDevice device = mBluetoothAdapter
+	// // .getRemoteDevice(deviceNumber);
+	// // int connectionState = mBluetoothManager.getConnectionState(device,
+	// // BluetoothProfile.GATT);
+	// // if (connectionState != BluetoothProfile.STATE_DISCONNECTED) {
+	// // mBluetoothGatt.disconnect();
+	// // mBluetoothGatt.close();
+	// // } else {
+	// // Log.w(TAG, "Attempt to disconnect in state: " + connectionState);
+	// // }
+	// // } else {
+	// // mBluetoothGatt.disconnect();
+	// // mBluetoothGatt.close();
+	// // }
+	//
+	// }
 
 	/**
 	 * After using a given BLE device, the app must call this method to ensure
@@ -611,7 +632,8 @@ public class BluetoothLeService extends Service {
 		mBluetoothGatt.disconnect();
 		mBluetoothGatt.close();
 		mBluetoothGatt = null;
-		mConnectionState = STATE_DISCONNECTED;
+		System.gc();
+		// mConnectionState = STATE_DISCONNECTED;
 	}
 
 	/**
@@ -836,5 +858,16 @@ public class BluetoothLeService extends Service {
 				writeFrame(characteristicToWrite, setTimeFrame);
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Service#onBind(android.content.Intent)
+	 */
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

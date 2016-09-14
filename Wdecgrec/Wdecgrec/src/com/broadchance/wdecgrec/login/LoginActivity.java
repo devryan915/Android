@@ -136,6 +136,7 @@ public class LoginActivity extends BaseActivity {
 		if (ConstantConfig.Debug) {
 			new Test().test();
 		}
+
 	}
 
 	/**
@@ -262,12 +263,11 @@ public class LoginActivity extends BaseActivity {
 			public void doSuccess(ServerResponse result) {
 				if (result.isOK()) {
 					try {
-						ConstantConfig.ORDERNO = result.getDATA().getString(
-								"orderno");
+						String orderno = result.getDATA().getString("orderno");
 						UIUserInfoLogin user = new UIUserInfoLogin();
 						String logName = pram.getString("holtermobile");
 						user.setUserID(logName);
-						user.setAccess_token(ConstantConfig.ORDERNO);
+						user.setAccess_token(orderno);
 						user.setLoginName(logName);
 						user.setNickName(pram.getString("holtermobile"));
 						user.setMacAddress(result.getDATA().getString("device"));
@@ -279,9 +279,13 @@ public class LoginActivity extends BaseActivity {
 						// 初始化用户皮肤
 						SkinManager.getInstance().initSkin();
 						if (BluetoothLeService.getInstance() != null) {
-							BluetoothLeService.getInstance().disconnect();
+							BluetoothLeService.getInstance().close();
 							BluetoothLeService.getInstance().connect();
 						}
+						/**
+						 * 更新配置
+						 */
+						clientService.getAlertCFG(null);
 						finish();
 						// Intent intent = new Intent(LoginActivity.this,
 						// EcgActivity.class);
@@ -407,7 +411,7 @@ public class LoginActivity extends BaseActivity {
 															.getInstance() != null) {
 														BluetoothLeService
 																.getInstance()
-																.disconnect();
+																.close();
 														BluetoothLeService
 																.getInstance()
 																.connect();

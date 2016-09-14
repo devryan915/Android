@@ -124,7 +124,7 @@ public class FrameData {
 	/**
 	 * 上一次MII通道是否发生脱落
 	 */
-	private boolean lastMIIOff = false;
+	// private boolean lastMIIOff = false;
 
 	public void parseData() {
 		try {
@@ -138,28 +138,37 @@ public class FrameData {
 			if (frameTypeHex.startsWith("8")) {// 第一通道帧类型0x8x
 				frameType = FrameType.MII;
 				action = FrameDataMachine.ACTION_ECGMII_DATAOFF_AVAILABLE;
-				if (frameTypeHex.endsWith("0") && lastMIIOff) {
+				if (frameTypeHex.endsWith("0")) {
 					// 取消脱落
-					lastMIIOff = false;
-					AlertMachine.getInstance().cancelAlert(AlertType.A00001);
+					if (AlertMachine.getInstance().canSendAlert(
+							AlertType.A00001, 0)) {
+						AlertMachine.getInstance()
+								.cancelAlert(AlertType.A00001);
+					}
 					// UIUtil.sendBroadcast(new Intent(
 					// FrameDataMachine.ACTION_ECGMII_DATAON_AVAILABLE));
 				} else {
-					// 发生脱落
-					lastMIIOff = true;
-					UIUserInfoLogin user = DataManager.getUserInfo();
-					if (user == null)
-						return;
-					JSONObject alertObj = new JSONObject();
-					alertObj.put("id", AlertType.A00001.getValue());
-					alertObj.put("state", 1);
-					alertObj.put("time", CommonUtil.getTime_B());
-					JSONObject value = new JSONObject();
-					value.put("bledevice", user.getMacAddress());
-					value.put("ch", "all");
-					alertObj.put("value", value);
-					AlertMachine.getInstance().sendAlert(AlertType.A00001,
-							alertObj);
+					// 如果电极脱落则取消过速过缓和停博预警
+					AlertMachine.getInstance().cancelAlert(AlertType.B00001);
+					AlertMachine.getInstance().cancelAlert(AlertType.B00002);
+					AlertMachine.getInstance().cancelAlert(AlertType.B00003);
+					if (AlertMachine.getInstance().canSendAlert(
+							AlertType.A00001, 1)) {
+						// 发生脱落
+						UIUserInfoLogin user = DataManager.getUserInfo();
+						if (user == null)
+							return;
+						JSONObject alertObj = new JSONObject();
+						alertObj.put("id", AlertType.A00001.getValue());
+						alertObj.put("state", 1);
+						alertObj.put("time", CommonUtil.getTime_B());
+						JSONObject value = new JSONObject();
+						value.put("bledevice", user.getMacAddress());
+						value.put("ch", "all");
+						alertObj.put("value", value);
+						AlertMachine.getInstance().sendAlert(AlertType.A00001,
+								alertObj);
+					}
 				}
 			} else if (frameTypeHex.startsWith("9")) {// 第二通道帧类型0x9x
 				frameType = FrameType.MV1;

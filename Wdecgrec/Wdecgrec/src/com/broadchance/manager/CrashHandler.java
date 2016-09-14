@@ -75,12 +75,20 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 * 当 UncaughtException 发生时会转入该函数来处理
 	 */
 	@Override
-	public void uncaughtException(Thread thread, Throwable ex) {
-		if (ConstantConfig.Debug) {
-			ex.printStackTrace();
-			// Toast.makeText(mContext, "程序发生未捕捉异常：" + ex.toString(),
-			// Toast.LENGTH_LONG).show();
-		}
+	public void uncaughtException(Thread thread, final Throwable ex) {
+		// if (ConstantConfig.Debug) {
+		ex.printStackTrace();
+		new Thread() {
+			@Override
+			public void run() {
+				Looper.prepare();
+				Toast.makeText(mContext, "程序发生未捕捉异常：" + ex.toString(),
+						Toast.LENGTH_LONG).show();
+				Looper.loop();
+			}
+		}.start();
+
+		// }
 		if (!handleException(ex) && mDefaultHandler != null) {
 			// 如果用户没有处理则让系统默认的异常处理器来处理
 			mDefaultHandler.uncaughtException(thread, ex);
@@ -91,8 +99,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				LogUtil.e(TAG, "error : ", e);
 			}
 			// 退出程序
-			// android.os.Process.killProcess(android.os.Process.myPid());
-			// System.exit(1);
+			android.os.Process.killProcess(android.os.Process.myPid());
+			System.exit(1);
 		}
 	}
 
@@ -110,11 +118,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		new Thread() {
 			@Override
 			public void run() {
-				// Looper.prepare();
-				// Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。",
-				// Toast.LENGTH_LONG)
-				// .show();
-				// Looper.loop();
+				Looper.prepare();
+				Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。", Toast.LENGTH_LONG)
+						.show();
+				Looper.loop();
 			}
 		}.start();
 

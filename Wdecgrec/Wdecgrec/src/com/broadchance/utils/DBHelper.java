@@ -12,17 +12,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
 public class DBHelper extends SQLiteOpenHelper {
-	private final static int DB_VERSION = 3;
+	private final static int DB_VERSION = 4;
 	private final static String DB_ROOT_DIR = "wdecgrec";
 	private final static String DB_NAME = "appdata";
 	private static DBHelper Instance = null;
 
 	public final static String TBL_USER = "user";
 	public final static String TBL_UPLOAD = "upload";
+	public final static String TBL_ALERT = "alert";
 
 	public synchronized static DBHelper getInstance() {
-		if (Instance == null)
-			Instance = new DBHelper(AppApplication.Instance);
+		// if (Instance == null)
+		Instance = new DBHelper(AppApplication.Instance);
 		return Instance;
 	}
 
@@ -72,12 +73,23 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE "
 				+ TBL_UPLOAD
 				+ " (file_name TEXT PRIMARY KEY ,user_id TEXT,path TEXT,  status integer,uploadtimes integer,data_begintime TEXT,data_endtime TEXT,creation_date TEXT,upload_date TEXT, filetype integer,bpath TEXT,hrs TEXT);");
+		/**
+		 * 预警信息表 _id 自定id userid 用户id orderno 业务单号 id 报警类型A00001... state 1触发0取消
+		 * time 触发时间yyyyMMdd HH:mm:ss.SSS value 报警内容JSON数据,creattime yyyyMMdd
+		 * HH:mm:ss.SSS
+		 */
+		db.execSQL("CREATE TABLE "
+				+ TBL_ALERT
+				+ " (_id INTEGER PRIMARY KEY AUTOINCREMENT,userid TEXT,orderno TEXT,id TEXT,state integer,time TEXT,value TEXT,creattime TEXT);");
+
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE " + TBL_USER + ";");
 		db.execSQL("DROP TABLE " + TBL_UPLOAD + ";");
+		if (oldVersion > 3)
+			db.execSQL("DROP TABLE " + TBL_ALERT + ";");
 		onCreate(db);
 	}
 
