@@ -1,91 +1,83 @@
-# view res/layout/activity_welcome.xml #generated:7
--keep class android.support.v4.view.ViewPager { <init>(...); }
-
-# view res/layout/activity_ecg.xml #generated:104
-# view res/layout/activity_ecg.xml #generated:136
-# view res/layout/activity_ecg.xml #generated:168
+# view res/layout/activity_ecg.xml #generated:48
 -keep class com.broadchance.ecgview.ECGGLSurfaceView { <init>(...); }
 
-# view AndroidManifest.xml #generated:48
+# view AndroidManifest.xml #generated:47
 -keep class com.broadchance.manager.AppApplication { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:74
 -keep class com.broadchance.utils.comparator.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:65
+# view AndroidManifest.xml #generated:74
 -keep class com.broadchance.wdecgrec.login.LoginActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:70
+# view AndroidManifest.xml #generated:84
 -keep class com.broadchance.wdecgrec.login.RegisterActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:74
+# view AndroidManifest.xml #generated:88
 -keep class com.broadchance.wdecgrec.login.ResetPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:55
--keep class com.broadchance.wdecgrec.login.WelcomeActivity { <init>(...); }
-
-# view AndroidManifest.xml #generated:82
+# view AndroidManifest.xml #generated:96
 -keep class com.broadchance.wdecgrec.main.EcgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:78
+# view AndroidManifest.xml #generated:92
 -keep class com.broadchance.wdecgrec.main.ModeActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:122
+# view AndroidManifest.xml #generated:138
 -keep class com.broadchance.wdecgrec.receiver.BootCompleteReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:117
+# view AndroidManifest.xml #generated:133
 -keep class com.broadchance.wdecgrec.receiver.GPSReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:107
+# view AndroidManifest.xml #generated:121
 -keep class com.broadchance.wdecgrec.receiver.NetChangeReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:112
--keep class com.broadchance.wdecgrec.receiver.PowerChangeReceiver { <init>(...); }
-
-# view AndroidManifest.xml #generated:138
+# view AndroidManifest.xml #generated:154
 -keep class com.broadchance.wdecgrec.services.BleDataParserService { <init>(...); }
 
-# view AndroidManifest.xml #generated:147
+# view AndroidManifest.xml #generated:163
 -keep class com.broadchance.wdecgrec.services.BleDomainService { <init>(...); }
 
-# view AndroidManifest.xml #generated:132
+# view AndroidManifest.xml #generated:148
 -keep class com.broadchance.wdecgrec.services.BluetoothLeService { <init>(...); }
 
-# view AndroidManifest.xml #generated:143
+# view AndroidManifest.xml #generated:159
 -keep class com.broadchance.wdecgrec.services.GpsService { <init>(...); }
 
-# view AndroidManifest.xml #generated:102
+# view AndroidManifest.xml #generated:116
 -keep class com.broadchance.wdecgrec.settings.AddContactActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:98
+# view AndroidManifest.xml #generated:112
 -keep class com.broadchance.wdecgrec.settings.AddFamilyActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:152
+# view AndroidManifest.xml #generated:168
 -keep class com.broadchance.wdecgrec.settings.ModifyPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:90
+# view AndroidManifest.xml #generated:104
 -keep class com.broadchance.wdecgrec.settings.MyInfoActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:94
+# view AndroidManifest.xml #generated:108
 -keep class com.broadchance.wdecgrec.settings.OptionSettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:86
+# view AndroidManifest.xml #generated:100
 -keep class com.broadchance.wdecgrec.settings.SettingsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:172
+-keep class com.broadchance.wdecgrec.settings.UploadActivity { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:9
 # view res/layout/activity_add_family.xml #generated:9
 # view res/layout/activity_ecg.xml #generated:10
+# view res/layout/activity_mode.xml #generated:8
 # view res/layout/activity_modify_pwd.xml #generated:9
 # view res/layout/activity_my_info.xml #generated:9
 # view res/layout/activity_option_settings.xml #generated:9
-# view res/layout/activity_settings.xml #generated:9
 -keep class com.broadchance.wdecgrec.widget.CustomTitle { <init>(...); }
 
 # view res/layout/listview_addfamily_item.xml #generated:2
 -keep class com.broadchance.wdecgrec.widget.GridItemLayout { <init>(...); }
 
-# view res/layout/activity_login.xml #generated:25
-# view res/layout/activity_login.xml #generated:45
+# view res/layout/activity_login.xml #generated:21
+# view res/layout/activity_login.xml #generated:36
 # view res/layout/activity_login_resetpwd.xml #generated:114
 # view res/layout/activity_login_resetpwd.xml #generated:35
 # view res/layout/activity_login_resetpwd.xml #generated:85
@@ -99,4 +91,10 @@
 
 # onClick res/layout/listview_choosecontact_item.xml #generated:20
 -keepclassmembers class * { *** addFamily(...); }
+
+# onClick res/layout/activity_mode.xml #generated:21
+-keepclassmembers class * { *** settings(...); }
+
+# onClick res/layout/activity_mode.xml #generated:53
+-keepclassmembers class * { *** wearMode(...); }
 

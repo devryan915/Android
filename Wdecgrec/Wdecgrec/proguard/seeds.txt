@@ -11549,6 +11549,10 @@ com.alibaba.fastjson.serializer.SerializerFeature: com.alibaba.fastjson.serializ
 com.broadchance.ecgview.ECGGLSurfaceView
 com.broadchance.ecgview.ECGGLSurfaceView: ECGGLSurfaceView(android.content.Context)
 com.broadchance.ecgview.ECGGLSurfaceView: ECGGLSurfaceView(android.content.Context,android.util.AttributeSet)
+com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel: com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel[] values()
+com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel: com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel valueOf(java.lang.String)
+com.broadchance.ecgview.ECGGLSurfaceView$EcgType: com.broadchance.ecgview.ECGGLSurfaceView$EcgType[] values()
+com.broadchance.ecgview.ECGGLSurfaceView$EcgType: com.broadchance.ecgview.ECGGLSurfaceView$EcgType valueOf(java.lang.String)
 com.broadchance.entity.DownLoadAPPResponse
 com.broadchance.entity.DownLoadAPPResponse: java.io.File downLoadFile
 com.broadchance.entity.DownLoadAPPResponse: DownLoadAPPResponse()
@@ -11866,8 +11870,8 @@ com.broadchance.utils.comparator.SideBar: SideBar(android.content.Context)
 com.broadchance.wdecgrec.BaseActivity
 com.broadchance.wdecgrec.BaseActivity: BaseActivity()
 com.broadchance.wdecgrec.BaseActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.adapter.WecomeViewPagerAdapter
-com.broadchance.wdecgrec.adapter.WelcomePagerAdapter
+com.broadchance.wdecgrec.alert.AlertStatus: com.broadchance.wdecgrec.alert.AlertStatus[] values()
+com.broadchance.wdecgrec.alert.AlertStatus: com.broadchance.wdecgrec.alert.AlertStatus valueOf(java.lang.String)
 com.broadchance.wdecgrec.alert.AlertType: com.broadchance.wdecgrec.alert.AlertType[] values()
 com.broadchance.wdecgrec.alert.AlertType: com.broadchance.wdecgrec.alert.AlertType valueOf(java.lang.String)
 com.broadchance.wdecgrec.login.LoginActivity
@@ -11879,15 +11883,13 @@ com.broadchance.wdecgrec.login.RegisterActivity: void onClick(android.view.View)
 com.broadchance.wdecgrec.login.ResetPwdActivity
 com.broadchance.wdecgrec.login.ResetPwdActivity: ResetPwdActivity()
 com.broadchance.wdecgrec.login.ResetPwdActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.login.WelcomeActivity
-com.broadchance.wdecgrec.login.WelcomeActivity: WelcomeActivity()
-com.broadchance.wdecgrec.login.WelcomeActivity: void onClick(android.view.View)
 com.broadchance.wdecgrec.main.EcgActivity
 com.broadchance.wdecgrec.main.EcgActivity: EcgActivity()
 com.broadchance.wdecgrec.main.EcgActivity: void onClick(android.view.View)
 com.broadchance.wdecgrec.main.ModeActivity
 com.broadchance.wdecgrec.main.ModeActivity: ModeActivity()
-com.broadchance.wdecgrec.main.ModeActivity: void onClick(android.view.View)
+com.broadchance.wdecgrec.main.ModeActivity: void wearMode(android.view.View)
+com.broadchance.wdecgrec.main.ModeActivity: void settings(android.view.View)
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver: BootCompleteReceiver()
 com.broadchance.wdecgrec.receiver.GPSReceiver
@@ -11895,7 +11897,6 @@ com.broadchance.wdecgrec.receiver.GPSReceiver: GPSReceiver()
 com.broadchance.wdecgrec.receiver.NetChangeReceiver
 com.broadchance.wdecgrec.receiver.NetChangeReceiver: NetChangeReceiver()
 com.broadchance.wdecgrec.receiver.PowerChangeReceiver
-com.broadchance.wdecgrec.receiver.PowerChangeReceiver: PowerChangeReceiver()
 com.broadchance.wdecgrec.services.BleDataParserService
 com.broadchance.wdecgrec.services.BleDataParserService: BleDataParserService()
 com.broadchance.wdecgrec.services.BleDomainService
@@ -11926,6 +11927,9 @@ com.broadchance.wdecgrec.settings.SettingsActivity
 com.broadchance.wdecgrec.settings.SettingsActivity: SettingsActivity()
 com.broadchance.wdecgrec.settings.SettingsActivity: void addFamily()
 com.broadchance.wdecgrec.settings.SettingsActivity: void onClick(android.view.View)
+com.broadchance.wdecgrec.settings.UploadActivity
+com.broadchance.wdecgrec.settings.UploadActivity: UploadActivity()
+com.broadchance.wdecgrec.settings.UploadActivity: void onClick(android.view.View)
 com.broadchance.wdecgrec.test.TestJNI
 com.broadchance.wdecgrec.test.TestJNI: java.lang.String stringFromJNI()
 com.broadchance.wdecgrec.test.TestJNI: java.lang.String stringFromJNIStatic()
@@ -11937,6 +11941,8 @@ com.broadchance.wdecgrec.widget.CustomTitle
 com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context)
 com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet,int)
 com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet)
+com.broadchance.wdecgrec.widget.DigitalClock
+com.broadchance.wdecgrec.widget.DigitalClock: DigitalClock(android.content.Context,android.util.AttributeSet)
 com.broadchance.wdecgrec.widget.GridItemLayout
 com.broadchance.wdecgrec.widget.GridItemLayout: GridItemLayout(android.content.Context)
 com.broadchance.wdecgrec.widget.GridItemLayout: GridItemLayout(android.content.Context,android.util.AttributeSet,int)
