@@ -47,6 +47,7 @@ import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GpsService;
+import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.test.Test;
 import com.broadchance.wdecgrec.widget.LabelEditText;
 
@@ -240,8 +241,69 @@ public class LoginActivity extends BaseActivity {
 
 				@Override
 				public void doError(String result) {
-					showToast(result);
-					current = null;
+					if (!ConstantConfig.Debug) {
+						showToast(result);
+						current = null;
+					} else {
+						if (!NetUtil.isConnectNet()) {
+							user = DataManager.getUserInfo();
+							if (user != null && !user.getLoginName().isEmpty()) {
+								String pwd = DataManager.getUserPwd();
+								if (pwd != null && !pwd.isEmpty()) {
+									try {
+										offDialog = UIUtil
+												.buildTipDialog(
+														LoginActivity.this,
+														getString(R.string.dialog_title_offlogin),
+														getString(R.string.dialog_offlogin_content),
+														new OnClickListener() {
+															@Override
+															public void onClick(
+																	View v) {
+																if (offDialog != null) {
+																	offDialog
+																			.cancel();
+																	offDialog
+																			.dismiss();
+																}
+																Intent intent = new Intent(
+																		LoginActivity.this,
+																		ModeActivity.class);
+																startActivity(intent);
+																finish();
+															}
+														},
+														new OnClickListener() {
+
+															@Override
+															public void onClick(
+																	View v) {
+																if (offDialog != null) {
+																	offDialog
+																			.cancel();
+																	offDialog
+																			.dismiss();
+																}
+															}
+														},
+														getString(R.string.dialog_button_ok),
+														getString(R.string.dialog_button_cancel));
+										offDialog.show();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}
+
+						} else {
+							if (ConstantConfig.Debug) {
+								showToast(result);
+							} else {
+								showToast("操作失败");
+							}
+						}
+					}
+
 				}
 			});
 		} catch (JSONException e) {
@@ -249,8 +311,8 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-	private void _logon(final JSONObject pram) {
 
+	private void _logon(final JSONObject pram) {
 		clientService.login(pram, new HttpReqCallBack<ServerResponse>() {
 
 			@Override
@@ -272,15 +334,12 @@ public class LoginActivity extends BaseActivity {
 						user.setNickName(pram.getString("holtermobile"));
 						user.setMacAddress(result.getDATA().getString("device"));
 						user.isOverTime = 0;
-						if (user.isOverTime == 0) {
-							// user.setMacAddress("D4:F5:13:79:75:FA");
-						}
+						// user.setMacAddress("D4:F5:13:79:75:FA");
 						DataManager.saveUser(user, "mima");
 						// 初始化用户皮肤
 						SkinManager.getInstance().initSkin();
-						if (BluetoothLeService.getInstance() != null) {
-							BluetoothLeService.getInstance().close();
-							BluetoothLeService.getInstance().connect();
+						if (GuardService.Instance != null) {
+							GuardService.Instance.resetBleCon();
 						}
 						/**
 						 * 更新配置
@@ -407,14 +466,9 @@ public class LoginActivity extends BaseActivity {
 																	+ ConstantConfig.PREFERENCES_USERPWDCHK,
 															checkBoxSavePwd
 																	.isChecked());
-													if (BluetoothLeService
-															.getInstance() != null) {
-														BluetoothLeService
-																.getInstance()
-																.close();
-														BluetoothLeService
-																.getInstance()
-																.connect();
+													if (GuardService.Instance != null) {
+														GuardService.Instance
+																.resetBleCon();
 													}
 													finish();
 													Intent intent = new Intent(

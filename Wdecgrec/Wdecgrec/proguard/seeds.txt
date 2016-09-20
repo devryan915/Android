@@ -11891,7 +11891,6 @@ com.broadchance.wdecgrec.main.ModeActivity: ModeActivity()
 com.broadchance.wdecgrec.main.ModeActivity: void wearMode(android.view.View)
 com.broadchance.wdecgrec.main.ModeActivity: void settings(android.view.View)
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver
-com.broadchance.wdecgrec.receiver.BootCompleteReceiver: BootCompleteReceiver()
 com.broadchance.wdecgrec.receiver.GPSReceiver
 com.broadchance.wdecgrec.receiver.GPSReceiver: GPSReceiver()
 com.broadchance.wdecgrec.receiver.NetChangeReceiver
@@ -11905,6 +11904,8 @@ com.broadchance.wdecgrec.services.BluetoothLeService
 com.broadchance.wdecgrec.services.BluetoothLeService: BluetoothLeService()
 com.broadchance.wdecgrec.services.GpsService
 com.broadchance.wdecgrec.services.GpsService: GpsService()
+com.broadchance.wdecgrec.services.GuardService
+com.broadchance.wdecgrec.services.GuardService: GuardService()
 com.broadchance.wdecgrec.settings.AddContactActivity
 com.broadchance.wdecgrec.settings.AddContactActivity: AddContactActivity()
 com.broadchance.wdecgrec.settings.AddContactActivity: void addFamily(android.view.View)

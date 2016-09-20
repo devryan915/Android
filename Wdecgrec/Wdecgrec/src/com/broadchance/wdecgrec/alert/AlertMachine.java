@@ -451,7 +451,6 @@ public class AlertMachine {
 					limit_raisef = Float.parseFloat(lrse);
 					limit_clearf = Float.parseFloat(lclr);
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
 				}
 				if (limit_raisef != null) {
 					cfg.setFloatValueRaise(limit_raisef);
@@ -462,7 +461,6 @@ public class AlertMachine {
 					limit_raise = Integer.parseInt(lrse);
 					limit_clear = Integer.parseInt(lclr);
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
 				}
 				if (limit_raise != null) {
 					cfg.setIntValueRaise(limit_raise);
@@ -486,7 +484,6 @@ public class AlertMachine {
 				}
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		return cfg;
 	}

@@ -1,5 +1,6 @@
 package com.broadchance.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,15 +20,18 @@ import android.widget.Toast;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.main.EcgActivity;
+import com.broadchance.wdecgrec.main.ModeActivity;
 
 public class UIUtil {
+	static Activity context;
 
 	public static void showToast(final String content) {
-		final Context context;
 		try {
-			if ((context = EcgActivity.Instance) != null) {
-				EcgActivity.Instance.runOnUiThread(new Runnable() {
-
+			if ((context = ModeActivity.Instance) == null) {
+				context = EcgActivity.Instance;
+			}
+			if (context != null) {
+				context.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						showToast(context, content);

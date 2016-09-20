@@ -18,6 +18,7 @@ import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.services.BleDataParserService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
+import com.broadchance.wdecgrec.services.GuardService;
 
 /**
  * @author ryan.wang
@@ -32,7 +33,7 @@ public class CustomTitle extends RelativeLayout {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (action.equals(BluetoothLeService.ACTION_GATT_RSSICHANGED)) {
+			if (action.equals(GuardService.ACTION_GATT_RSSICHANGED)) {
 				// int rssi = intent.getIntExtra(BluetoothLeService.EXTRA_DATA,
 				// 0);
 				int rssi = BluetoothLeService.rssiValue;
@@ -50,8 +51,7 @@ public class CustomTitle extends RelativeLayout {
 					imageViewSignal
 							.setImageResource(R.drawable.common_blesingnal_1);
 				}
-			} else if (action
-					.equals(BluetoothLeService.ACTION_GATT_POWERCHANGED)) {
+			} else if (action.equals(GuardService.ACTION_GATT_POWERCHANGED)) {
 				// float power = intent.getFloatExtra(
 				// BluetoothLeService.EXTRA_DATA, 0);
 				Float power = FrameDataMachine.getInstance().getPower();
@@ -67,9 +67,7 @@ public class CustomTitle extends RelativeLayout {
 					}
 				}
 			} else if (action
-					.equals(BluetoothLeService.ACTION_GATT_DISCONNECTED)
-					|| action
-							.equals(BluetoothLeService.ACTION_GATT_RECONNECTING)) {
+					.equals(BluetoothLeService.ACTION_GATT_DISCONNECTED)) {
 				textViewPower.setText("-");
 				imageViewSignal
 						.setImageResource(R.drawable.common_blesingnal_0);
@@ -132,8 +130,8 @@ public class CustomTitle extends RelativeLayout {
 
 	private IntentFilter makeIntentFilter() {
 		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_RSSICHANGED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_POWERCHANGED);
+		intentFilter.addAction(GuardService.ACTION_GATT_RSSICHANGED);
+		intentFilter.addAction(GuardService.ACTION_GATT_POWERCHANGED);
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
 		return intentFilter;
 	}

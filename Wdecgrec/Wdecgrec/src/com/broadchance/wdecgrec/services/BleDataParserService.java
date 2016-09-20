@@ -375,6 +375,10 @@ public class BleDataParserService extends Service {
 							}
 						}
 						processReceivedByte();
+						// if (ConstantConfig.Debug) {
+						// LogUtil.d(TAG, "已接收数据：" + receivedQueue.size()
+						// + " 待处理数据：" + dealQueue.size());
+						// }
 					} catch (Exception e) {
 						LogUtil.e(TAG, e);
 					} finally {
@@ -384,7 +388,7 @@ public class BleDataParserService extends Service {
 			}
 		};
 		processFrameDataTimer = new Timer();
-		processFrameDataTimer.schedule(processFrameDataTask, 0, 80);
+		processFrameDataTimer.schedule(processFrameDataTask, 0, 160);
 
 	}
 
@@ -479,9 +483,7 @@ public class BleDataParserService extends Service {
 				}
 				startExeService();
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-					.equals(action)
-					|| BluetoothLeService.ACTION_GATT_RECONNECTING
-							.equals(action)) {
+					.equals(action)) {
 				UIUserInfoLogin user = DataManager.getUserInfo();
 				if (user != null && user.getMacAddress() != null
 						&& !user.getMacAddress().isEmpty()) {
@@ -508,8 +510,7 @@ public class BleDataParserService extends Service {
 				FrameDataMachine.getInstance().resetData();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
-			} else if (action
-					.equals(BluetoothLeService.ACTION_GATT_RSSICHANGED)) {
+			} else if (action.equals(GuardService.ACTION_GATT_RSSICHANGED)) {
 				Integer rssi;
 				// rssi = intent.getIntExtra(BluetoothLeService.EXTRA_DATA, 0);
 				rssi = BluetoothLeService.rssiValue;
@@ -525,8 +526,7 @@ public class BleDataParserService extends Service {
 				// UIUtil.showToast(context, "蓝牙信号 rssi:" + rssi + " rssiValue:"
 				// + rssiValue);
 
-			} else if (action
-					.equals(BluetoothLeService.ACTION_GATT_POWERCHANGED)) {
+			} else if (action.equals(GuardService.ACTION_GATT_POWERCHANGED)) {
 				// float power = intent.getFloatExtra(
 				// BluetoothLeService.EXTRA_DATA, 0);
 				Float power = FrameDataMachine.getInstance().getPower();
@@ -596,13 +596,11 @@ public class BleDataParserService extends Service {
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_RECONNECTING);
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
 		intentFilter
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_RSSICHANGED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_POWERCHANGED);
+		intentFilter.addAction(GuardService.ACTION_GATT_RSSICHANGED);
+		intentFilter.addAction(GuardService.ACTION_GATT_POWERCHANGED);
 		return intentFilter;
 	}
 

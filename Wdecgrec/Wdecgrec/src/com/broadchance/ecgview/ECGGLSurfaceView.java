@@ -63,9 +63,9 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	float deltaX = 0;
 	/**
 	 * 单位mv的ecg电压差值即1mv对应ecg有效数据(分析样本数据散落值可以得出分布率最高的相对较大电压为最大电压，分布率相对较小电压为最小电压)
-	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值 按照10mm/mV定的标
+	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值 按照10mm/mV定的标 200 / 0.65f
 	 */
-	public static Float BASEFACTOR = 200 / 0.65f;
+	public static Float BASEFACTOR = 163f;
 	/**
 	 * 电压系数 每个ecg数据单位值对应的opengl坐标值
 	 */

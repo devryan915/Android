@@ -93,7 +93,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/modeHeart"
-            android:text="次/分"
+            android:text="-次/分"
             android:textColor="#ea804e"
             android:textSize="18dp" />
     </RelativeLayout>

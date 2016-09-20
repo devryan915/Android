@@ -3,13 +3,14 @@ package com.broadchance.utils;
 import com.broadchance.manager.SettingsManager;
 
 public class ConstantConfig {
-	public static boolean Debug = false;
+	public static boolean Debug = true;
 
-	public final static String ACTION_PREFIX = "com.broadchance.wdecgrec";
 	public final static String PKG_NAME = "com.broadchance.wdecgrec";
+	public final static String ACTION_PREFIX = PKG_NAME + ".";
 	// public final static String BLE_UUID_READ =
 	// 单通道"0000fff4-0000-1000-8000-00805f9b34fb";
 	// 三通道8ac32d3f-5cb9-4d44-bec2-ee689169f626
+	public final static String BLE_UUID_SERVICE = "0000fff0-0000-1000-8000-00805f9b34fb";
 	public final static String BLE_UUID_READ = "0000fff4-0000-1000-8000-00805f9b34fb";
 	public final static String BLE_UUID_WRITE = "0000fff1-0000-1000-8000-00805f9b34fb";
 	/**
@@ -89,5 +90,7 @@ public class ConstantConfig {
 	 * 心率保留数据
 	 */
 	public static int HeartRateFrequency = 3800;
+	public final static int Alert_HR_Up = 200;
+	public final static int Alert_HR_Down = 36;
 
 }

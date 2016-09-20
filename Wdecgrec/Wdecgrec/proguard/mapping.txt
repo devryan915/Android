@@ -13893,40 +13893,43 @@ com.broadchance.utils.CommonUtil -> com.broadchance.utils.u:
     java.nio.FloatBuffer floatBufferUtil(float[]) -> a
 com.broadchance.utils.ConstantConfig -> com.broadchance.utils.v:
     boolean Debug -> a
-    java.lang.String ACTION_PREFIX -> b
-    java.lang.String PKG_NAME -> c
-    java.lang.String BLE_UUID_READ -> d
-    java.lang.String BLE_UUID_WRITE -> e
-    java.lang.String PREFERENCES_SKINID -> f
-    java.lang.String PREFERENCES_USERPWDCHK -> g
-    java.lang.String PREFERENCES_ISHIDEWELCOME -> h
-    java.lang.String PREFERENCES_DEVIVCENUMBER -> i
-    java.lang.String PREFERENCES_UPLOADNETTYPE -> j
-    java.lang.String PREFERENCES_LOWSINGNAL -> k
-    java.lang.String PREFERENCES_LOWPOWER -> l
-    java.lang.String PREFERENCES_DEVOFF -> m
-    java.lang.String PREFERENCES_DEVFALLOFF -> n
-    java.lang.String PREFERENCES_GPS -> o
-    java.lang.String PREFERENCES_GPSLON -> p
-    java.lang.String PREFERENCES_XDPI -> q
-    java.lang.String PREFERENCES_YDPI -> r
-    java.lang.String PREFERENCES_GPSLAT -> s
-    java.lang.String PREFERENCES_OFFDATA -> t
-    java.lang.String PREFERENCES_NEWAPPVER -> u
-    java.lang.String PREFERENCES_NEWAPPURL -> v
-    java.lang.String PREFERENCES_SERVERURL -> w
-    java.lang.String APP_DIR -> x
-    java.lang.String ECGDATA_SUFFIX -> y
-    java.lang.String SERVER_URL_DEF -> z
-    java.lang.String SERVER_URL -> A
-    java.lang.String SERVER_REALTIME_URL -> B
-    int SERVER_REALTIME_PORT -> C
-    java.lang.String AUTHOR_TOKEN -> D
-    int TIME_DELAY -> E
-    int Batch_Interval -> F
-    int Real_Interval -> G
-    java.lang.String CERTKEY -> H
-    int HeartRateFrequency -> I
+    java.lang.String PKG_NAME -> b
+    java.lang.String ACTION_PREFIX -> c
+    java.lang.String BLE_UUID_SERVICE -> d
+    java.lang.String BLE_UUID_READ -> e
+    java.lang.String BLE_UUID_WRITE -> f
+    java.lang.String PREFERENCES_SKINID -> g
+    java.lang.String PREFERENCES_USERPWDCHK -> h
+    java.lang.String PREFERENCES_ISHIDEWELCOME -> i
+    java.lang.String PREFERENCES_DEVIVCENUMBER -> j
+    java.lang.String PREFERENCES_UPLOADNETTYPE -> k
+    java.lang.String PREFERENCES_LOWSINGNAL -> l
+    java.lang.String PREFERENCES_LOWPOWER -> m
+    java.lang.String PREFERENCES_DEVOFF -> n
+    java.lang.String PREFERENCES_DEVFALLOFF -> o
+    java.lang.String PREFERENCES_GPS -> p
+    java.lang.String PREFERENCES_GPSLON -> q
+    java.lang.String PREFERENCES_XDPI -> r
+    java.lang.String PREFERENCES_YDPI -> s
+    java.lang.String PREFERENCES_GPSLAT -> t
+    java.lang.String PREFERENCES_OFFDATA -> u
+    java.lang.String PREFERENCES_NEWAPPVER -> v
+    java.lang.String PREFERENCES_NEWAPPURL -> w
+    java.lang.String PREFERENCES_SERVERURL -> x
+    java.lang.String APP_DIR -> y
+    java.lang.String ECGDATA_SUFFIX -> z
+    java.lang.String SERVER_URL_DEF -> A
+    java.lang.String SERVER_URL -> B
+    java.lang.String SERVER_REALTIME_URL -> C
+    int SERVER_REALTIME_PORT -> D
+    java.lang.String AUTHOR_TOKEN -> E
+    int TIME_DELAY -> F
+    int Batch_Interval -> G
+    int Real_Interval -> H
+    java.lang.String CERTKEY -> I
+    int HeartRateFrequency -> J
+    int Alert_HR_Up -> K
+    int Alert_HR_Down -> L
 com.broadchance.utils.DBHelper -> com.broadchance.utils.w:
     int DB_VERSION -> d
     java.lang.String DB_ROOT_DIR -> e
@@ -14140,6 +14143,7 @@ com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.ak:
     java.lang.String lookup(java.lang.String) -> a
     java.lang.String lookup(java.lang.String,java.lang.String) -> a
 com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
+    android.app.Activity context -> a
     void showToast(java.lang.String) -> a
     void showToast(android.content.Context,java.lang.String) -> a
     void showLongToast(android.content.Context,java.lang.String) -> b
@@ -14150,8 +14154,7 @@ com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
     android.app.Dialog buildDialog(android.content.Context,android.view.View) -> a
     android.app.Dialog buildTipDialog(android.content.Context,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,java.lang.String,java.lang.String) -> a
 com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.am:
-    android.content.Context val$context -> a
-    java.lang.String val$content -> b
+    java.lang.String val$content -> a
     void run() -> run
 com.broadchance.utils.ZipUtil -> com.broadchance.utils.an:
     int BUFF_SIZE -> a
@@ -15007,10 +15010,10 @@ com.broadchance.wdecgrec.login.LoginActivity -> com.broadchance.wdecgrec.login.L
     void access$2(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String,java.lang.String) -> a
     void access$3(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String) -> a
     void access$4(com.broadchance.wdecgrec.login.LoginActivity,org.json.JSONObject) -> a
-    com.broadchance.utils.ClientGameService access$5(com.broadchance.wdecgrec.login.LoginActivity) -> c
-    void access$6(com.broadchance.wdecgrec.login.LoginActivity,com.broadchance.entity.UIUserInfoLogin) -> a
-    com.broadchance.utils.SSXLXService access$7(com.broadchance.wdecgrec.login.LoginActivity) -> d
-    com.broadchance.entity.UIUserInfoLogin access$8(com.broadchance.wdecgrec.login.LoginActivity) -> e
+    void access$5(com.broadchance.wdecgrec.login.LoginActivity,com.broadchance.entity.UIUserInfoLogin) -> a
+    com.broadchance.entity.UIUserInfoLogin access$6(com.broadchance.wdecgrec.login.LoginActivity) -> c
+    com.broadchance.utils.ClientGameService access$7(com.broadchance.wdecgrec.login.LoginActivity) -> d
+    com.broadchance.utils.SSXLXService access$8(com.broadchance.wdecgrec.login.LoginActivity) -> e
     android.widget.CheckBox access$9(com.broadchance.wdecgrec.login.LoginActivity) -> f
     void access$10(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String,boolean) -> a
     java.lang.String access$11() -> b
@@ -15034,14 +15037,21 @@ com.broadchance.wdecgrec.login.LoginActivity$4 -> com.broadchance.wdecgrec.login
     void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.LoginActivity$5 -> com.broadchance.wdecgrec.login.e:
+    com.broadchance.wdecgrec.login.LoginActivity access$1(com.broadchance.wdecgrec.login.LoginActivity$4) -> a
+com.broadchance.wdecgrec.login.LoginActivity$4$1 -> com.broadchance.wdecgrec.login.e:
+    com.broadchance.wdecgrec.login.LoginActivity$4 this$1 -> a
+    void onClick(android.view.View) -> onClick
+com.broadchance.wdecgrec.login.LoginActivity$4$2 -> com.broadchance.wdecgrec.login.f:
+    com.broadchance.wdecgrec.login.LoginActivity$4 this$1 -> a
+    void onClick(android.view.View) -> onClick
+com.broadchance.wdecgrec.login.LoginActivity$5 -> com.broadchance.wdecgrec.login.g:
     com.broadchance.wdecgrec.login.LoginActivity this$0 -> a
     org.json.JSONObject val$pram -> c
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6 -> com.broadchance.wdecgrec.login.f:
+com.broadchance.wdecgrec.login.LoginActivity$6 -> com.broadchance.wdecgrec.login.h:
     com.broadchance.wdecgrec.login.LoginActivity this$0 -> a
     java.lang.String val$pwd -> c
     android.app.Activity getReqActivity() -> a
@@ -15049,17 +15059,17 @@ com.broadchance.wdecgrec.login.LoginActivity$6 -> com.broadchance.wdecgrec.login
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
     com.broadchance.wdecgrec.login.LoginActivity access$1(com.broadchance.wdecgrec.login.LoginActivity$6) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6$1 -> com.broadchance.wdecgrec.login.g:
+com.broadchance.wdecgrec.login.LoginActivity$6$1 -> com.broadchance.wdecgrec.login.i:
     com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
     java.lang.String val$pwd -> c
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.UIDeviceResponseList) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6$2 -> com.broadchance.wdecgrec.login.h:
+com.broadchance.wdecgrec.login.LoginActivity$6$2 -> com.broadchance.wdecgrec.login.j:
     com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
     void onClick(android.view.View) -> onClick
-com.broadchance.wdecgrec.login.LoginActivity$6$3 -> com.broadchance.wdecgrec.login.i:
+com.broadchance.wdecgrec.login.LoginActivity$6$3 -> com.broadchance.wdecgrec.login.k:
     com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
     void onClick(android.view.View) -> onClick
 com.broadchance.wdecgrec.login.RegisterActivity -> com.broadchance.wdecgrec.login.RegisterActivity:
@@ -15095,16 +15105,16 @@ com.broadchance.wdecgrec.login.RegisterActivity -> com.broadchance.wdecgrec.logi
     android.view.View access$5(com.broadchance.wdecgrec.login.RegisterActivity) -> d
     void access$6(com.broadchance.wdecgrec.login.RegisterActivity) -> e
     com.broadchance.wdecgrec.widget.LabelEditText access$7(com.broadchance.wdecgrec.login.RegisterActivity) -> f
-com.broadchance.wdecgrec.login.RegisterActivity$1 -> com.broadchance.wdecgrec.login.j:
+com.broadchance.wdecgrec.login.RegisterActivity$1 -> com.broadchance.wdecgrec.login.l:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.UIUserInfoRegistResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.RegisterActivity$2 -> com.broadchance.wdecgrec.login.k:
+com.broadchance.wdecgrec.login.RegisterActivity$2 -> com.broadchance.wdecgrec.login.m:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.login.RegisterActivity$3 -> com.broadchance.wdecgrec.login.l:
+com.broadchance.wdecgrec.login.RegisterActivity$3 -> com.broadchance.wdecgrec.login.n:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
@@ -15137,16 +15147,16 @@ com.broadchance.wdecgrec.login.ResetPwdActivity -> com.broadchance.wdecgrec.logi
     android.view.View access$5(com.broadchance.wdecgrec.login.ResetPwdActivity) -> d
     void access$6(com.broadchance.wdecgrec.login.ResetPwdActivity) -> e
     com.broadchance.wdecgrec.widget.LabelEditText access$7(com.broadchance.wdecgrec.login.ResetPwdActivity) -> f
-com.broadchance.wdecgrec.login.ResetPwdActivity$1 -> com.broadchance.wdecgrec.login.m:
+com.broadchance.wdecgrec.login.ResetPwdActivity$1 -> com.broadchance.wdecgrec.login.o:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.ResetPwdActivity$2 -> com.broadchance.wdecgrec.login.n:
+com.broadchance.wdecgrec.login.ResetPwdActivity$2 -> com.broadchance.wdecgrec.login.p:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.login.ResetPwdActivity$3 -> com.broadchance.wdecgrec.login.o:
+com.broadchance.wdecgrec.login.ResetPwdActivity$3 -> com.broadchance.wdecgrec.login.q:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
@@ -15286,17 +15296,18 @@ com.broadchance.wdecgrec.main.EcgActivity$EcgData -> com.broadchance.wdecgrec.ma
     int pointNumber -> b
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> c
 com.broadchance.wdecgrec.main.ModeActivity -> com.broadchance.wdecgrec.main.ModeActivity:
-    java.lang.String TAG -> d
-    int REQUEST_ENABLE_BT -> e
-    android.widget.TextView textViewHeart -> f
-    java.util.concurrent.ScheduledExecutorService executor -> g
-    android.os.Handler handlerTime -> h
-    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> i
-    long SCAN_PERIOD -> j
-    boolean mScanning -> k
-    android.os.Handler mHandler -> l
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> m
-    android.bluetooth.BluetoothManager mBluetoothManager -> n
+    java.lang.String TAG -> e
+    com.broadchance.wdecgrec.main.ModeActivity Instance -> d
+    int REQUEST_ENABLE_BT -> f
+    android.widget.TextView textViewHeart -> g
+    java.util.concurrent.ScheduledExecutorService executor -> h
+    android.os.Handler handlerTime -> i
+    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> j
+    long SCAN_PERIOD -> k
+    boolean mScanning -> l
+    android.os.Handler mHandler -> m
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> n
+    android.bluetooth.BluetoothManager mBluetoothManager -> o
     void onCreate(android.os.Bundle) -> onCreate
     void onResume() -> onResume
     void onPause() -> onPause
@@ -15491,105 +15502,57 @@ com.broadchance.wdecgrec.services.BleDomainService$5 -> com.broadchance.wdecgrec
     com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
     void run() -> run
 com.broadchance.wdecgrec.services.BluetoothLeService -> com.broadchance.wdecgrec.services.BluetoothLeService:
-    java.lang.String TAG -> r
-    com.broadchance.wdecgrec.services.BluetoothLeService Instance -> s
-    android.bluetooth.BluetoothManager mBluetoothManager -> t
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> u
-    android.bluetooth.BluetoothGatt mBluetoothGatt -> v
-    int mConnectionState -> w
-    int STATE_DISCONNECTED -> x
-    int STATE_CONNECTING -> y
-    int STATE_CONNECTED -> z
-    int STATE_SERVICES_DISCOVERED -> A
-    int CHECK_PERIOD -> B
-    int BLE_CON_DELAY -> C
-    long DataAliveTime -> D
+    java.lang.String TAG -> h
+    android.bluetooth.BluetoothManager mBluetoothManager -> i
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> j
+    java.lang.String mBluetoothDeviceAddress -> k
+    android.bluetooth.BluetoothGatt mBluetoothGatt -> l
+    int mConnectionState -> m
+    int STATE_DISCONNECTED -> n
+    int STATE_CONNECTING -> o
+    int STATE_CONNECTED -> p
     java.lang.String ACTION_GATT_CONNECTED -> a
     java.lang.String ACTION_GATT_DISCONNECTED -> b
     java.lang.String ACTION_GATT_SERVICES_DISCOVERED -> c
-    java.lang.String ACTION_GATT_RECONNECTING -> d
-    java.lang.String ACTION_GATT_CONNECTING -> e
-    java.lang.String ACTION_DATA_AVAILABLE -> f
-    java.lang.String ACTION_ALARM_SEND_CHECKBLESTATE -> E
-    java.lang.String ACTION_GATT_RSSICHANGED -> g
-    java.lang.String ACTION_GATT_POWERCHANGED -> h
-    java.lang.String EXTRA_DATA -> i
-    java.util.UUID UUID_HEART_RATE_MEASUREMENT -> j
-    android.bluetooth.BluetoothGattCharacteristic characteristicToWrite -> F
-    byte[] setTimeFrame -> G
-    java.lang.String LIST_NAME -> k
-    java.lang.String LIST_UUID -> l
-    int SEND_FRAME_TYPE_SETTIME -> H
-    long SCAN_PERIOD -> I
-    boolean mScanning -> J
-    android.os.Handler mHandler -> K
-    java.util.ArrayList gattServiceData -> m
-    java.util.ArrayList gattCharacteristicData -> n
-    java.util.ArrayList mGattCharacteristics -> o
-    java.util.ArrayList serviceUUIDList -> p
-    java.lang.Integer rssiValue -> q
-    android.content.BroadcastReceiver mGattUpdateReceiver -> L
-    com.broadchance.wdecgrec.receiver.PowerChangeReceiver batteryReceiver -> M
-    android.bluetooth.BluetoothGattCallback mGattCallback -> N
-    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> O
-    com.broadchance.wdecgrec.services.BluetoothLeService getInstance() -> a
-    void broadcastUpdate(java.lang.String) -> c
+    java.lang.String ACTION_DATA_AVAILABLE -> d
+    java.lang.String EXTRA_DATA -> e
+    java.util.UUID UUID_HEART_RATE_MEASUREMENT -> f
+    java.lang.Integer rssiValue -> g
+    android.bluetooth.BluetoothGattCharacteristic characteristicToWrite -> q
+    byte[] setTimeFrame -> r
+    int SEND_FRAME_TYPE_SETTIME -> s
+    android.bluetooth.BluetoothGattCallback mGattCallback -> t
+    android.os.IBinder mBinder -> u
+    void broadcastUpdate(java.lang.String) -> b
     void broadcastUpdate(java.lang.String,android.bluetooth.BluetoothGattCharacteristic) -> a
-    void startCheckBleStateTimer() -> h
-    void cancelCheckBleStateTimer() -> i
-    int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    boolean stopService(android.content.Intent) -> stopService
-    void onDestroy() -> onDestroy
-    void start() -> j
-    void end() -> k
-    android.content.IntentFilter makeBatteryIntentFilter() -> l
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> m
+    void createAliveFrame() -> a
+    void sendCtrlFrame(int) -> a
+    android.bluetooth.BluetoothGattCharacteristic getCommunicateCharacteristic(java.lang.String) -> a
+    void writeFrame(android.bluetooth.BluetoothGattCharacteristic,byte[]) -> a
+    android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     boolean initialize() -> b
-    void scanLeDevice() -> n
-    void connect() -> c
-    void _connect() -> o
-    void close() -> d
+    boolean connect() -> c
+    void disconnect() -> d
+    void close() -> e
     void readCharacteristic(android.bluetooth.BluetoothGattCharacteristic) -> a
     void setCharacteristicNotification(android.bluetooth.BluetoothGattCharacteristic,boolean) -> a
-    java.util.List getSupportedGattServices() -> e
-    void clearGattServices() -> p
-    void displayGattServices() -> q
-    android.bluetooth.BluetoothGattCharacteristic getCharacteristicByUUID(java.lang.String) -> a
-    java.util.ArrayList getGattCharacteristicList(java.lang.String) -> b
-    void createAliveFrame() -> f
-    void writeFrame(android.bluetooth.BluetoothGattCharacteristic,byte[]) -> a
-    void sendCtrlFrame(int) -> a
-    android.os.IBinder onBind(android.content.Intent) -> onBind
-    android.bluetooth.BluetoothGatt access$0(com.broadchance.wdecgrec.services.BluetoothLeService) -> a
-    long access$1(com.broadchance.wdecgrec.services.BluetoothLeService) -> b
-    boolean access$2(com.broadchance.wdecgrec.services.BluetoothLeService) -> c
-    void access$3(com.broadchance.wdecgrec.services.BluetoothLeService,long) -> a
-    void access$4(com.broadchance.wdecgrec.services.BluetoothLeService,int) -> a
-    java.lang.String access$5() -> g
-    void access$6(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String) -> a
-    void access$7(com.broadchance.wdecgrec.services.BluetoothLeService) -> d
-    void access$8(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String,android.bluetooth.BluetoothGattCharacteristic) -> a
-    void access$9(com.broadchance.wdecgrec.services.BluetoothLeService) -> e
-    void access$10(com.broadchance.wdecgrec.services.BluetoothLeService,boolean) -> a
-    android.bluetooth.BluetoothAdapter access$11(com.broadchance.wdecgrec.services.BluetoothLeService) -> f
-    android.bluetooth.BluetoothAdapter$LeScanCallback access$12(com.broadchance.wdecgrec.services.BluetoothLeService) -> g
+    java.util.List getSupportedGattServices() -> f
+    void access$0(com.broadchance.wdecgrec.services.BluetoothLeService,int) -> a
+    void access$1(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String) -> a
+    java.lang.String access$2() -> g
+    android.bluetooth.BluetoothGatt access$3(com.broadchance.wdecgrec.services.BluetoothLeService) -> a
+    void access$4(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String,android.bluetooth.BluetoothGattCharacteristic) -> a
 com.broadchance.wdecgrec.services.BluetoothLeService$1 -> com.broadchance.wdecgrec.services.l:
     com.broadchance.wdecgrec.services.BluetoothLeService this$0 -> a
-    void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.broadchance.wdecgrec.services.BluetoothLeService$2 -> com.broadchance.wdecgrec.services.m:
-    com.broadchance.wdecgrec.services.BluetoothLeService this$0 -> a
     void onConnectionStateChange(android.bluetooth.BluetoothGatt,int,int) -> onConnectionStateChange
-    void onReadRemoteRssi(android.bluetooth.BluetoothGatt,int,int) -> onReadRemoteRssi
     void onServicesDiscovered(android.bluetooth.BluetoothGatt,int) -> onServicesDiscovered
     void onCharacteristicRead(android.bluetooth.BluetoothGatt,android.bluetooth.BluetoothGattCharacteristic,int) -> onCharacteristicRead
     void onCharacteristicChanged(android.bluetooth.BluetoothGatt,android.bluetooth.BluetoothGattCharacteristic) -> onCharacteristicChanged
-com.broadchance.wdecgrec.services.BluetoothLeService$3 -> com.broadchance.wdecgrec.services.n:
+    void onReadRemoteRssi(android.bluetooth.BluetoothGatt,int,int) -> onReadRemoteRssi
+com.broadchance.wdecgrec.services.BluetoothLeService$LocalBinder -> com.broadchance.wdecgrec.services.m:
     com.broadchance.wdecgrec.services.BluetoothLeService this$0 -> a
-    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
-com.broadchance.wdecgrec.services.BluetoothLeService$4 -> com.broadchance.wdecgrec.services.o:
-    com.broadchance.wdecgrec.services.BluetoothLeService this$0 -> a
-    void run() -> run
+    com.broadchance.wdecgrec.services.BluetoothLeService getService() -> a
 com.broadchance.wdecgrec.services.GpsService -> com.broadchance.wdecgrec.services.GpsService:
     java.util.ArrayList cellIds -> a
     com.broadchance.wdecgrec.services.GpsService$Gps gps -> c
@@ -15602,10 +15565,10 @@ com.broadchance.wdecgrec.services.GpsService -> com.broadchance.wdecgrec.service
     boolean access$0(com.broadchance.wdecgrec.services.GpsService) -> a
     com.broadchance.wdecgrec.services.GpsService$Gps access$1(com.broadchance.wdecgrec.services.GpsService) -> b
     java.lang.String access$2() -> a
-com.broadchance.wdecgrec.services.GpsService$1 -> com.broadchance.wdecgrec.services.p:
+com.broadchance.wdecgrec.services.GpsService$1 -> com.broadchance.wdecgrec.services.n:
     com.broadchance.wdecgrec.services.GpsService this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.services.GpsService$Gps -> com.broadchance.wdecgrec.services.q:
+com.broadchance.wdecgrec.services.GpsService$Gps -> com.broadchance.wdecgrec.services.o:
     android.location.Location location -> b
     android.location.LocationManager locationManager -> c
     android.content.Context context -> d
@@ -15616,12 +15579,76 @@ com.broadchance.wdecgrec.services.GpsService$Gps -> com.broadchance.wdecgrec.ser
     void closeLocation() -> b
     void access$0(com.broadchance.wdecgrec.services.GpsService$Gps,android.location.Location) -> a
     android.location.LocationManager access$1(com.broadchance.wdecgrec.services.GpsService$Gps) -> a
-com.broadchance.wdecgrec.services.GpsService$Gps$1 -> com.broadchance.wdecgrec.services.r:
+com.broadchance.wdecgrec.services.GpsService$Gps$1 -> com.broadchance.wdecgrec.services.p:
     com.broadchance.wdecgrec.services.GpsService$Gps this$1 -> a
     void onLocationChanged(android.location.Location) -> onLocationChanged
     void onProviderDisabled(java.lang.String) -> onProviderDisabled
     void onProviderEnabled(java.lang.String) -> onProviderEnabled
     void onStatusChanged(java.lang.String,int,android.os.Bundle) -> onStatusChanged
+com.broadchance.wdecgrec.services.GuardService -> com.broadchance.wdecgrec.services.GuardService:
+    java.lang.String TAG -> a
+    com.broadchance.wdecgrec.receiver.PowerChangeReceiver batteryReceiver -> f
+    com.broadchance.wdecgrec.services.BluetoothLeService mBluetoothLeService -> g
+    java.lang.String ServiceName -> h
+    java.util.concurrent.ScheduledExecutorService mEService -> i
+    java.util.concurrent.ScheduledFuture mFuture -> j
+    com.broadchance.wdecgrec.services.GuardService Instance -> b
+    java.lang.String ACTION_GATT_RSSICHANGED -> c
+    java.lang.String ACTION_GATT_POWERCHANGED -> d
+    long DataALiveTime -> e
+    int CHECK_BLE_TIMEOUT -> k
+    int CHECK_BLE_DELAY -> l
+    long SCAN_PERIOD -> m
+    boolean mScanning -> n
+    android.os.Handler mHandler -> o
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> p
+    android.content.ServiceConnection mServiceConnection -> q
+    android.content.BroadcastReceiver bluetoothStatusChangeReceiver -> r
+    android.content.BroadcastReceiver mGattUpdateReceiver -> s
+    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> t
+    void resetBleCon() -> a
+    void scanLeDevice() -> b
+    void _connect() -> c
+    void checkBleStatus() -> d
+    void cancelCheckBleStatus() -> e
+    void bindBleService() -> f
+    void unBindBLeService() -> g
+    void start() -> h
+    void end() -> i
+    android.content.IntentFilter makeBLEStatusIntentFilter() -> j
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> k
+    android.content.IntentFilter makeBatteryIntentFilter() -> l
+    android.os.IBinder onBind(android.content.Intent) -> onBind
+    int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    boolean stopService(android.content.Intent) -> stopService
+    void onDestroy() -> onDestroy
+    void onLowMemory() -> onLowMemory
+    void access$0(com.broadchance.wdecgrec.services.GuardService,com.broadchance.wdecgrec.services.BluetoothLeService) -> a
+    com.broadchance.wdecgrec.services.BluetoothLeService access$1(com.broadchance.wdecgrec.services.GuardService) -> a
+    void access$2(com.broadchance.wdecgrec.services.GuardService) -> b
+    void access$3(com.broadchance.wdecgrec.services.GuardService,boolean) -> a
+    android.bluetooth.BluetoothAdapter access$4(com.broadchance.wdecgrec.services.GuardService) -> c
+    android.bluetooth.BluetoothAdapter$LeScanCallback access$5(com.broadchance.wdecgrec.services.GuardService) -> d
+    void access$6(com.broadchance.wdecgrec.services.GuardService) -> e
+com.broadchance.wdecgrec.services.GuardService$1 -> com.broadchance.wdecgrec.services.q:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
+    void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
+com.broadchance.wdecgrec.services.GuardService$2 -> com.broadchance.wdecgrec.services.r:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.broadchance.wdecgrec.services.GuardService$3 -> com.broadchance.wdecgrec.services.s:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.broadchance.wdecgrec.services.GuardService$4 -> com.broadchance.wdecgrec.services.t:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
+com.broadchance.wdecgrec.services.GuardService$5 -> com.broadchance.wdecgrec.services.u:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void run() -> run
+com.broadchance.wdecgrec.services.GuardService$6 -> com.broadchance.wdecgrec.services.v:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void run() -> run
 com.broadchance.wdecgrec.settings.AddContactActivity -> com.broadchance.wdecgrec.settings.AddContactActivity:
     java.lang.String[] PHONES_PROJECTION -> f
     int PHONES_DISPLAY_NAME_INDEX -> g

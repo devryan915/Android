@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 
+import com.broadchance.entity.AlertCFG;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.PreferencesManager;
 import com.broadchance.utils.CommonUtil;
@@ -132,10 +133,12 @@ public class AlertWorker {
 				boolean ret = DataManager.saveAlert(type, 1,
 						CommonUtil.getTime_B(), alertValue);
 				if (ConstantConfig.Debug) {
+					AlertCFG cfg = AlertMachine.getInstance().getAlertConfig(
+							type);
 					LogUtil.d(TAG, "保存触发预警" + type.getValue()
-							+ (ret ? "成功" : "失败"));
+							+ (ret ? "成功" : "失败") + " " + cfg.getLimit_raise());
 					UIUtil.showToast("保存触发预警" + type.getValue()
-							+ (ret ? "成功" : "失败"));
+							+ (ret ? "成功" : "失败") + " " + cfg.getLimit_raise());
 				}
 				mStatus = AlertStatus.NONE;
 				setLastStatus(true);
@@ -162,10 +165,12 @@ public class AlertWorker {
 				boolean ret = DataManager.saveAlert(type, 0,
 						CommonUtil.getTime_B(), null);
 				if (ConstantConfig.Debug) {
+					AlertCFG cfg = AlertMachine.getInstance().getAlertConfig(
+							type);
 					LogUtil.d(TAG, "保存取消预警" + type.getValue()
-							+ (ret ? "成功" : "失败"));
+							+ (ret ? "成功" : "失败") + " " + cfg.getLimit_clear());
 					UIUtil.showToast("保存取消预警" + type.getValue()
-							+ (ret ? "成功" : "失败"));
+							+ (ret ? "成功" : "失败") + " " + cfg.getLimit_clear());
 				}
 				mStatus = AlertStatus.NONE;
 				setLastStatus(false);

@@ -26,6 +26,7 @@ import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
+import com.broadchance.wdecgrec.services.GuardService;
 
 /**
  * @author ryan.wang
@@ -644,7 +645,7 @@ public class FrameDataMachine {
 					float curPower = frameData.getPower();
 					if (power == null || (power != null && curPower != power)) {
 						Intent intent = new Intent(
-								BluetoothLeService.ACTION_GATT_POWERCHANGED);
+								GuardService.ACTION_GATT_POWERCHANGED);
 						// intent.putExtra(BluetoothLeService.EXTRA_DATA,
 						// curPower);
 						UIUtil.sendBroadcast(intent);

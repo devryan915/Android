@@ -428,7 +428,7 @@ public class BleDomainService extends Service {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, msg + "，上传失败 result: " + result);
-							UIUtil.showToast("批量上传失败");
+							UIUtil.showToast("批量上传失败：\n"+result);
 						}
 						UIUtil.showToast(getApplicationContext(), "上传失败!");
 						setUploadByStatus(UploadFileStatus.UploadFailed);
@@ -573,14 +573,9 @@ public class BleDomainService extends Service {
 																		.getMAC());
 															}
 														}
-														if (BluetoothLeService
-																.getInstance() != null) {
-															BluetoothLeService
-																	.getInstance()
-																	.close();
-															BluetoothLeService
-																	.getInstance()
-																	.connect();
+														if (GuardService.Instance!= null) {
+															GuardService.Instance
+																	.resetBleCon();
 														}
 													} else {
 													}

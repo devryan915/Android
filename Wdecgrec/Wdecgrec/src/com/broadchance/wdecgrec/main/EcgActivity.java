@@ -141,12 +141,8 @@ public class EcgActivity extends BaseActivity {
 			final String action = intent.getAction();
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				miiQueue.clear();
-			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-					.equals(action)) {
-				// scanLeDevice();
-			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
-					.equals(action)) {
-			} else if (BleDataParserService.ACTION_ECGMII_DATA_AVAILABLE
+			}
+			if (BleDataParserService.ACTION_ECGMII_DATA_AVAILABLE
 					.equals(action)) {
 				synchronized (miiQueue) {
 					int[] ecgData = intent
@@ -281,7 +277,8 @@ public class EcgActivity extends BaseActivity {
 			public void run() {
 				// 小于20大于200的异常心率值，过滤一下，让不要显示
 				hearRate = filter.getHeartRate();
-				if (hearRate >= 20 && hearRate <= 200) {
+				if (hearRate >= ConstantConfig.Alert_HR_Down
+						&& hearRate <= ConstantConfig.Alert_HR_Up) {
 					// hearRate = filter.getHeartRate();
 					// ecg_curhearrate.setText(BleDataUtil
 					// .paddRight(hearRate + "", 3, ' '));
@@ -289,7 +286,7 @@ public class EcgActivity extends BaseActivity {
 				} else {
 					// ecg_curhearrate.setText("0  ");
 					if (ConstantConfig.Debug) {
-						UIUtil.showToast("当前心率" + hearRate);
+						LogUtil.w(TAG, "当前心率" + hearRate);
 					}
 					ecg_curhearrate.setText("-");
 				}
@@ -570,12 +567,6 @@ public class EcgActivity extends BaseActivity {
 	// private AtomicBoolean atomicBooleanDrawMV1 = new AtomicBoolean(false);
 	// private AtomicBoolean atomicBooleanDrawMV5 = new AtomicBoolean(false);
 
-	// private void startBleService() {
-	// Intent bleServiceintent = new Intent(EcgActivity.this,
-	// BluetoothLeService.class);
-	// startService(bleServiceintent);
-	// }
-
 	private void startExecutor() {
 		executor = Executors.newScheduledThreadPool(3);
 		executor.scheduleAtFixedRate(new Runnable() {
@@ -595,7 +586,7 @@ public class EcgActivity extends BaseActivity {
 
 				}
 			}
-		}, 500, 40, TimeUnit.MILLISECONDS);
+		}, 0, 40, TimeUnit.MILLISECONDS);
 		// executor.scheduleWithFixedDelay(new Runnable() {
 		// @Override
 		// public void run() {
@@ -634,8 +625,6 @@ public class EcgActivity extends BaseActivity {
 	private IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_RECONNECTING);
 		intentFilter
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
 		intentFilter
@@ -660,6 +649,7 @@ public class EcgActivity extends BaseActivity {
 			executorReceive.shutdown();
 		}
 		Instance = null;
+		LogUtil.e(TAG, "onDestroy");
 		super.onDestroy();
 	}
 

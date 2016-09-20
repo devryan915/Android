@@ -3,7 +3,7 @@
     package="com.broadchance.wdecgrec"
     android:sharedUserId="com.broadchance.skin"
     android:versionCode="1"
-    android:versionName="1.2.09.4" >
+    android:versionName="1.2.09.6" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -40,7 +40,7 @@
     <!-- 检测手机是否支持ble，如果非必须检测则可以设置为false(可在代码中做支持性检查) -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="false" />
+        android:required="true" />
     <!-- 开机启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -63,7 +63,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <activity
             android:name=".login.LoginActivity"
@@ -85,22 +85,27 @@
         </activity>
         <activity
             android:name=".main.ModeActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".main.EcgActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".settings.SettingsActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".settings.MyInfoActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".settings.OptionSettingsActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -123,13 +128,7 @@
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
-        -->
-        <receiver android:name=".receiver.GPSReceiver" >
-            <intent-filter>
-                <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
-            </intent-filter>
-        </receiver>
-        <receiver
+         <receiver
             android:name=".receiver.BootCompleteReceiver"
             android:label="@string/app_name" >
             <intent-filter>
@@ -137,18 +136,29 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </receiver>
+        -->
+        <receiver android:name=".receiver.GPSReceiver" >
+            <intent-filter>
+                <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
+            </intent-filter>
         </receiver>
 
         <service
             android:name=".services.BluetoothLeService"
             android:enabled="true"
+            android:priority="88888" >
+        </service>
+        <service
+            android:name=".services.GuardService"
+            android:enabled="true"
             android:persistent="true"
-            android:priority="1000" >
+            android:priority="99999" >
         </service>
         <service
             android:name=".services.BleDataParserService"
             android:enabled="true"
-            android:priority="1000" >
+            android:priority="88888" >
         </service>
         <service
             android:name=".services.GpsService"

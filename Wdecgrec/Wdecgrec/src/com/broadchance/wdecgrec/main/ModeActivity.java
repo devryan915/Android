@@ -27,22 +27,23 @@ import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.services.BluetoothLeService;
+import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.settings.SettingsActivity;
 
 public class ModeActivity extends BaseActivity {
 	private final static String TAG = ModeActivity.class.getSimpleName();
-
+	public static ModeActivity Instance;
 	private static final int REQUEST_ENABLE_BT = 189;
 	private TextView textViewHeart;
 	private ScheduledExecutorService executor;
 	private Handler handlerTime = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			int heart = FilterUtil.Instance.getHeartRate();
-			String heartStr = heart + "";
-			if (heart < 20 || heart > 200) {
-				heartStr = "-";
+			int hearRate = FilterUtil.Instance.getHeartRate();
+			String heartStr = "-";
+			if (hearRate >= ConstantConfig.Alert_HR_Down
+					&& hearRate <= ConstantConfig.Alert_HR_Up) {
+				heartStr = hearRate + "";
 			}
 			textViewHeart.setText(heartStr + "次/分");
 		}
@@ -58,7 +59,9 @@ public class ModeActivity extends BaseActivity {
 		textViewHeart = (TextView) findViewById(R.id.textViewHeart);
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
 		textViewUseName.setText(DataManager.getUserInfo().getShowName());
+		Instance = this;
 		startBleService();
+
 	}
 
 	@Override
@@ -78,13 +81,13 @@ public class ModeActivity extends BaseActivity {
 	 */
 	private void startBleService() {
 		Intent bleServiceintent = new Intent(ModeActivity.this,
-				BluetoothLeService.class);
+				GuardService.class);
 		startService(bleServiceintent);
 	}
 
 	private void stopBleService() {
 		Intent bleServiceintent = new Intent(ModeActivity.this,
-				BluetoothLeService.class);
+				GuardService.class);
 		stopService(bleServiceintent);
 	}
 
