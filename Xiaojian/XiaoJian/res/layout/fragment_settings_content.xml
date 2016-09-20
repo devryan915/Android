@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/settings_upbg"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/settings_settings"
+        android:textColor="@color/settings_title"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/settings_downbg"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/settings_linetext"
+            android:drawableLeft="@drawable/settings_account"
+            android:text="@string/settings_change_mobilephone" />
+
+        <LinearLayout style="@style/settings_linetext" >
+
+            <TextView
+                style="@style/settings_linetext"
+                android:layout_marginTop="0dp"
+                android:layout_weight="2"
+                android:drawableLeft="@drawable/settings_music"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/settings_bgmusic" />
+
+            <CheckBox
+                android:id="@+id/settings_chkmusic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:button="@drawable/settings_checkbox"
+                android:checked="true"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/settings_linetext" >
+
+            <TextView
+                style="@style/settings_linetext"
+                android:layout_marginTop="0dp"
+                android:layout_weight="2"
+                android:drawableLeft="@drawable/settings_pushmsg"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/settings_pushmsg" />
+
+            <CheckBox
+                android:id="@+id/settings_chkpushmsg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:button="@drawable/settings_checkbox"
+                android:checked="true"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/settings_linetext"
+            android:drawableLeft="@drawable/settings_userguide"
+            android:text="@string/settings_userguide" />
+
+        <TextView
+            style="@style/settings_linetext"
+            android:drawableLeft="@drawable/settings_about"
+            android:text="@string/settings_about" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/settings_linetext"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/settings_logout"
+        android:drawableLeft="@drawable/settings_logout"
+        android:text="@string/settings_logout" />
+
+</LinearLayout>

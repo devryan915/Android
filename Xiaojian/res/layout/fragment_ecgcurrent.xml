@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:paddingBottom="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="50dp" >
+
+        <com.langlang.activity.EcgPainterBase.ECGGLSurfaceView
+            android:id="@+id/hte_GLSurfaceView_ecg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/hte_up_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/hte_GLSurfaceView_ecg"
+            android:layout_alignLeft="@+id/hte_GLSurfaceView_ecg"
+            android:layout_alignRight="@+id/hte_GLSurfaceView_ecg"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/hte_left_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/hte_GLSurfaceView_ecg"
+            android:layout_alignTop="@+id/hte_GLSurfaceView_ecg"
+            android:layout_toLeftOf="@+id/hte_GLSurfaceView_ecg"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/hte_down_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/hte_GLSurfaceView_ecg"
+            android:layout_alignRight="@+id/hte_GLSurfaceView_ecg"
+            android:layout_below="@+id/hte_GLSurfaceView_ecg"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/hte_right_tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/hte_GLSurfaceView_ecg"
+            android:layout_alignTop="@+id/hte_GLSurfaceView_ecg"
+            android:layout_toRightOf="@+id/hte_GLSurfaceView_ecg"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+</LinearLayout>

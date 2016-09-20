@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="slidingmenu_offset">150dp</dimen>
+    <dimen name="shadow_width">5dp</dimen>
+    <dimen name="settings_line_height">40dp</dimen>
+    <dimen name="product_words">18sp</dimen>
+    <dimen name="company_copyrighten">12sp</dimen>
+    <dimen name="company_copyrightcn">15sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="personalhealth_todaycomments">18sp</dimen>
+    <dimen name="cloudservice_padding">10dp</dimen>
+
+</resources>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/personalhealth_bg"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/personalhealth_ecg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="15dp"
+        android:src="@drawable/personalhealth_ecg" />
+
+    <LinearLayout
+        android:id="@+id/personalhealth_ss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_ecg"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal" >
+
+        <ImageView
+            android:id="@+id/personalhealth_sleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/personalhealth_sleep" />
+
+        <ImageView
+            android:id="@+id/personalhealth_sports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/personalhealth_sleep"
+            android:layout_alignTop="@+id/personalhealth_sleep"
+            android:layout_toRightOf="@+id/personalhealth_sleep"
+            android:padding="15dp"
+            android:src="@drawable/personalhealth_sports" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/personalhealth_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/personalhealth_ss"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/personalhealth_line" />
+
+    <LinearLayout
+        android:id="@+id/personalhealth_commentstip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_line"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personalhealth_todaycomments"
+            android:textColor="@color/personalhealth_todaycomments"
+            android:textSize="@dimen/personalhealth_todaycomments" />
+
+        <RatingBar
+            style="@style/personalhealth_ratebar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:rating="2.5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/personalhealth_bloodtip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_commentstip"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/personalhealth_ecgstatusgreen" />
+
+        <TextView
+            style="@style/personalhealth_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您最近刚刚的，很好大幅度发斯蒂" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/personalhealth_timetip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_bloodtip"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/personalhealth_sleepstatusorange" />
+
+        <TextView
+            style="@style/personalhealth_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您最近刚刚的，很好大幅度发斯蒂"
+            android:textColor="@color/personalhealth_statusorange" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/personalhealth_sportstip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalhealth_timetip"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/personalhealth_sportsstatusred" />
+
+        <TextView
+            style="@style/personalhealth_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您最近刚刚的，很好大幅度发斯蒂"
+            android:textColor="@color/personalhealth_statusread" />
+    </LinearLayout>
+
+</RelativeLayout>

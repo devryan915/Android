@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/heart_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2" >
+
+        <TextView
+            android:id="@+id/heart_set_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center"
+            android:text="@string/ecg_p"
+            android:textColor="@color/golden"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/heart_userimage_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_jin_03" />
+
+            <TextView
+                android:id="@+id/heart_userimage_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/username"
+                android:textColor="#eed596" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/heart_share_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/share_click"
+            android:gravity="center"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/hte_bg_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.4"
+        android:background="@drawable/xindian_02"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.langlang.activity.EcgPainterBase.ECGGLSurfaceView
+                android:id="@+id/hte_GLSurfaceView_ecg"
+                android:layout_width="250dip"
+                android:layout_height="170dip"
+                android:layout_margin="5dip" />
+
+            <TextView
+                android:id="@+id/hte_up_tw"
+                android:layout_width="256dip"
+                android:layout_height="5dip"
+                android:layout_marginLeft="3dip"
+                android:layout_marginTop="4dip"
+                android:background="@drawable/bianshang_06" />
+
+            <TextView
+                android:id="@+id/hte_left_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="164dip"
+                android:layout_marginLeft="3dip"
+                android:layout_marginTop="9dip"
+                android:background="@drawable/bianzuo_08" />
+
+            <TextView
+                android:id="@+id/hte_down_tw"
+                android:layout_width="256.5dip"
+                android:layout_height="5dip"
+                android:layout_marginLeft="3dip"
+                android:layout_marginTop="172dip"
+                android:background="@drawable/bianxia_12" />
+
+            <TextView
+                android:id="@+id/hte_right_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="164dip"
+                android:layout_marginLeft="254dip"
+                android:layout_marginTop="9dip"
+                android:background="@drawable/bianyou_10" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.6"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/heart_hcount_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/xiabian_03" >
+
+            <TextView
+                android:id="@+id/heart_hcount_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="#e39b0f"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/heart_warnin_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dip"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/heart_waringcoutn_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="报警次数"
+                android:textColor="#a26842"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/heart_waring_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/attention_07" />
+
+                <TextView
+                    android:id="@+id/heart_whearcount_tw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="#e52828"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.8"
+        android:gravity="bottom" >
+
+        <RelativeLayout
+            android:id="@+id/heart_notiva_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/item_notice"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="40dip"
+            android:paddingRight="40dip"
+            android:paddingTop="10dp" >
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/heart_suggest_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/heart_evaluate_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/heart_knowledge_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

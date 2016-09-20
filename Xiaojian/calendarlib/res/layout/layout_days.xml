@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_week" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_1"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_2"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_3"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_4"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_5"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_6"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_7"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_8"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_9"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_10"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_11"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_12"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_13"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_14"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_15"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_16"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_17"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_18"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_19"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_20"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_21"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_22"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_23"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_24"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_25"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_26"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_27"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_28"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_29"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_30"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_31"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_32"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_33"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_34"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_35"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_36"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_37"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_38"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_39"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_40"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_41"
+            style="@style/DaysItem" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/Day_42"
+            style="@style/DaysItem" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/calendar_title" />
+
+    <include layout="@layout/layout_week" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_monday"
+            style="@style/DaysItem"
+            android:text="1" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_tuesday"
+            style="@style/DaysItem"
+            android:text="2" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_wednesday"
+            style="@style/DaysItem"
+            android:text="3" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_thursday"
+            style="@style/DaysItem"
+            android:text="4" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_friday"
+            style="@style/DaysItem"
+            android:text="5" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_saturday"
+            style="@style/DaysItem"
+            android:text="6" />
+
+        <com.ryan.calendar.CardGridItem
+            android:id="@+id/week_sunday"
+            style="@style/DaysItem"
+            android:text="7" />
+    </LinearLayout>
+
+</LinearLayout>
