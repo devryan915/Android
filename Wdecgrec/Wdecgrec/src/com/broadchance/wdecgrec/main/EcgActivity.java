@@ -365,6 +365,7 @@ public class EcgActivity extends BaseActivity {
 		buttonTitleBack.setOnClickListener(this);
 		findViewById(R.id.ecgSpeedLevel1).setOnClickListener(this);
 		findViewById(R.id.ecgSpeedLevel2).setOnClickListener(this);
+		findViewById(R.id.ecgSpeedLevel3).setOnClickListener(this);
 		findViewById(R.id.ecgRangeLevel1).setOnClickListener(this);
 		findViewById(R.id.ecgRangeLevel2).setOnClickListener(this);
 		findViewById(R.id.ecgRangeLevel3).setOnClickListener(this);
