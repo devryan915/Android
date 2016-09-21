@@ -29,6 +29,7 @@ import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.settings.SettingsActivity;
+import com.example.bluetooth.le.DeviceScanActivity;
 
 public class ModeActivity extends BaseActivity {
 	private final static String TAG = ModeActivity.class.getSimpleName();
@@ -61,7 +62,15 @@ public class ModeActivity extends BaseActivity {
 		textViewUseName.setText(DataManager.getUserInfo().getShowName());
 		Instance = this;
 		startBleService();
+	}
 
+	@Override
+	protected void onStart() {
+		// if (GuardService.Instance != null) {
+		// GuardService.Instance.bindBleService();
+		// }
+		LogUtil.d(TAG, "onStart");
+		super.onStart();
 	}
 
 	@Override
@@ -158,7 +167,7 @@ public class ModeActivity extends BaseActivity {
 				UIUtil.setMessage(handlerTime, 0);
 			}
 		}, 0, 1000, TimeUnit.MILLISECONDS);
-		scanLeDevice();
+		// scanLeDevice();
 	}
 
 	private void endExecutor() {
@@ -188,6 +197,11 @@ public class ModeActivity extends BaseActivity {
 		// unregisterReceiver(receiver);
 		// // 结束服务，如果想让服务一直运行就注销此句
 		// stopGPSService();
+		// if (GuardService.Instance != null) {
+		// GuardService.Instance.unBindBLeService();
+		// }
+		Instance = null;
+		LogUtil.d(TAG, "onDestroy");
 		super.onDestroy();
 	}
 
@@ -234,6 +248,8 @@ public class ModeActivity extends BaseActivity {
 		if (user.getMacAddress() != null
 				&& !user.getMacAddress().trim().isEmpty()) {
 			Intent intent = new Intent(ModeActivity.this, EcgActivity.class);
+			// Intent intent = new Intent(ModeActivity.this,
+			// DeviceScanActivity.class);
 			startActivity(intent);
 		} else {
 			if (user.isOverTime == 1) {

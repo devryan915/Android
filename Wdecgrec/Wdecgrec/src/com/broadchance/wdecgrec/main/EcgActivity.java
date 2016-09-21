@@ -277,19 +277,17 @@ public class EcgActivity extends BaseActivity {
 			public void run() {
 				// 小于20大于200的异常心率值，过滤一下，让不要显示
 				hearRate = filter.getHeartRate();
-				if (hearRate >= ConstantConfig.Alert_HR_Down
-						&& hearRate <= ConstantConfig.Alert_HR_Up) {
-					// hearRate = filter.getHeartRate();
-					// ecg_curhearrate.setText(BleDataUtil
-					// .paddRight(hearRate + "", 3, ' '));
-					ecg_curhearrate.setText(hearRate + "");
-				} else {
-					// ecg_curhearrate.setText("0  ");
-					if (ConstantConfig.Debug) {
-						LogUtil.w(TAG, "当前心率" + hearRate);
-					}
-					ecg_curhearrate.setText("-");
-				}
+				ecg_curhearrate.setText(hearRate + "");
+				// if (hearRate >= ConstantConfig.Alert_HR_Down
+				// && hearRate <= ConstantConfig.Alert_HR_Up) {
+				// ecg_curhearrate.setText(hearRate + "");
+				// } else {
+				// // ecg_curhearrate.setText("0  ");
+				// if (ConstantConfig.Debug) {
+				// LogUtil.w(TAG, "当前心率" + hearRate);
+				// }
+				// ecg_curhearrate.setText("-");
+				// }
 				setHeartRate();
 			}
 		}, 2000);
@@ -717,6 +715,10 @@ public class EcgActivity extends BaseActivity {
 		case R.id.ecgSpeedLevel2:
 			setSpeed(v);
 			setEcgMode(EcgType.Speed, EcgLevel.Level2);
+			break;
+		case R.id.ecgSpeedLevel3:
+			setSpeed(v);
+			setEcgMode(EcgType.Speed, EcgLevel.Level3);
 			break;
 		case R.id.ecgRangeLevel1:
 			setRange(v);

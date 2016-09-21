@@ -155,6 +155,12 @@ public class BluetoothLeService extends Service {
 
 	};
 
+	public void readRemoteRssi() {
+		if (mBluetoothGatt != null && mBluetoothAdapter.isEnabled()) {
+			mBluetoothGatt.readRemoteRssi();
+		}
+	}
+
 	private void broadcastUpdate(final String action) {
 		final Intent intent = new Intent(action);
 		sendBroadcast(intent);

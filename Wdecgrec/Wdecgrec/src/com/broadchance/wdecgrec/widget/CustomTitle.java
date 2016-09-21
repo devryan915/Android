@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.wdecgrec.R;
+import com.broadchance.wdecgrec.alert.AlertMachine;
+import com.broadchance.wdecgrec.alert.AlertType;
 import com.broadchance.wdecgrec.services.BleDataParserService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GuardService;
@@ -57,10 +59,16 @@ public class CustomTitle extends RelativeLayout {
 				Float power = FrameDataMachine.getInstance().getPower();
 				if (power != null) {
 					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
-					if (power > BleDataParserService.POWER_MAX) {
+					if (power > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()) {
 						textViewPower.setText("高");
-					} else if (power > BleDataParserService.POWER_MIN
-							&& power <= BleDataParserService.POWER_MAX) {
+					} else if (power > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()
+							&& power <= AlertMachine.getInstance()
+									.getAlertConfig(AlertType.A00005)
+									.getFloatValueClear()) {
 						textViewPower.setText("中");
 					} else {
 						textViewPower.setText("低");
@@ -116,10 +124,14 @@ public class CustomTitle extends RelativeLayout {
 		if (power == null) {
 			textViewPower.setText("-");
 		} else {
-			if (power > BleDataParserService.POWER_MAX) {
+			if (power > AlertMachine.getInstance()
+					.getAlertConfig(AlertType.A00005).getFloatValueClear()) {
 				textViewPower.setText("高");
-			} else if (power > BleDataParserService.POWER_MIN
-					&& power <= BleDataParserService.POWER_MAX) {
+			} else if (power > AlertMachine.getInstance()
+					.getAlertConfig(AlertType.A00005).getFloatValueRaise()
+					&& power <= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueClear()) {
 				textViewPower.setText("中");
 			} else {
 				textViewPower.setText("低");

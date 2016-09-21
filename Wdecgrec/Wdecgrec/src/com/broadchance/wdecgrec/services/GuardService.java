@@ -11,6 +11,7 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,12 +20,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.DataManager;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
+import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.receiver.PowerChangeReceiver;
 
 public class GuardService extends Service {
@@ -49,8 +52,9 @@ public class GuardService extends Service {
 	private final static int CHECK_BLE_DELAY = 15 * 1000;
 	private static final long SCAN_PERIOD = 3000;
 	private boolean mScanning;
-	private Handler mHandler;
+	private Handler mHandler = new Handler();
 	private BluetoothAdapter mBluetoothAdapter;
+	private BluetoothManager mBluetoothManager;
 
 	class LostBleEL {
 		public long FirstLostTime;
@@ -78,7 +82,7 @@ public class GuardService extends Service {
 			}
 			// Automatically connects to the device upon successful start-up
 			// initialization.
-			_connect();
+			scanLeDevice();
 			LogUtil.d(TAG, "ble Service connected");
 		}
 
@@ -88,7 +92,7 @@ public class GuardService extends Service {
 			LogUtil.d(TAG, "ble Service disconnected");
 		}
 	};
-	
+
 	private final BroadcastReceiver bluetoothStatusChangeReceiver = new BroadcastReceiver() {
 
 		public void onReceive(Context context, Intent intent) {
@@ -139,7 +143,7 @@ public class GuardService extends Service {
 	public void resetBleCon() {
 		if (mBluetoothLeService != null) {
 			mBluetoothLeService.close();
-			_connect();
+			scanLeDevice();
 		}
 	}
 
@@ -224,6 +228,9 @@ public class GuardService extends Service {
 			@Override
 			public void run() {
 				try {
+					if (mBluetoothLeService != null) {
+						mBluetoothLeService.readRemoteRssi();
+					}
 					long timeout = System.currentTimeMillis() - DataALiveTime;
 					if (timeout > CHECK_BLE_TIMEOUT) {
 						if (mBluetoothLeService != null) {
@@ -255,17 +262,42 @@ public class GuardService extends Service {
 		}
 	}
 
-	private void bindBleService() {
-		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+	public void bindBleService() {
+		try {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (ModeActivity.Instance != null) {
+			Intent gattServiceIntent = new Intent(ModeActivity.Instance,
+					BluetoothLeService.class);
+			bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+		}
 	}
 
-	private void unBindBLeService() {
-		unbindService(mServiceConnection);
-		mBluetoothLeService = null;
+	public void unBindBLeService() {
+		try {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (ModeActivity.Instance != null) {
+			unbindService(mServiceConnection);
+			mBluetoothLeService = null;
+		}
 	}
 
 	private void start() {
+		if (mBluetoothManager == null) {
+			mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+			if (mBluetoothManager == null) {
+				Log.e(TAG, "Unable to initialize BluetoothManager.");
+				return;
+			}
+		}
+		mBluetoothAdapter = mBluetoothManager.getAdapter();
+		if (mBluetoothAdapter == null) {
+			Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
+			return;
+		}
 		registerReceiver(batteryReceiver, makeBatteryIntentFilter());
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 		registerReceiver(bluetoothStatusChangeReceiver,

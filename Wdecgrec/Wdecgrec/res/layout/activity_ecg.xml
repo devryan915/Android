@@ -241,6 +241,15 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center" >
+                        <RadioButton
+                            android:id="@+id/ecgSpeedLevel3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="25"
+                            android:textColor="@drawable/ecg_radiotextcolor_selector"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout

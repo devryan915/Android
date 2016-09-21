@@ -126,7 +126,8 @@
             android:layout_height="wrap_content"
             android:text="苏械注准：20152211103"
             android:textColor="#5c5c5e"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

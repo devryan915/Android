@@ -12,7 +12,8 @@ import com.broadchance.utils.ConstantConfig;
 public class AppApplication extends Application {
 
 	public static String curVer;
-//	public Activity currentActivity;
+
+	// public Activity currentActivity;
 
 	@Override
 	public void onCreate() {
@@ -63,8 +64,9 @@ public class AppApplication extends Application {
 	public static AppApplication Instance;
 
 	void initInstance() {
-		// TODO 上线前打开
+		// if (!ConstantConfig.Debug) {
 		CrashHandler.getInstance().init(AppApplication.this);
+		// }
 		try {
 			PackageManager pm = getPackageManager();
 			PackageInfo pinfo = pm.getPackageInfo(ConstantConfig.PKG_NAME,

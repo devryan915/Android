@@ -52,8 +52,8 @@ public class BleDataParserService extends Service {
 
 	public final static int SIGNAL_MAX = -50;
 	public final static int SIGNAL_MIN = -70;
-	public final static float POWER_MAX = 2.9f;
-	public final static float POWER_MIN = 2.8f;
+	// public final static float POWER_MAX = 2.9f;
+	// public final static float POWER_MIN = 2.8f;
 	// public static int rssiValue = 0;
 	/**
 	 * 每一次最大处理ble数据帧数

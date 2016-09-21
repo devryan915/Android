@@ -78,7 +78,7 @@ public class ClientGameService {
 		HttpAsyncTaskUtil.fetchData(reparams, backCall);
 	}
 
-	public void getAlertCFG(final HttpReqCallBack<ServerResponse> backCall) {
+	public void getAlertCFG() {
 		try {
 			JSONObject param = new JSONObject();
 			UIUserInfoLogin user = DataManager.getUserInfo();
@@ -96,8 +96,6 @@ public class ClientGameService {
 
 						@Override
 						public Activity getReqActivity() {
-							if (backCall != null)
-								return backCall.getReqActivity();
 							return null;
 						}
 
@@ -178,9 +176,10 @@ public class ClientGameService {
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-									if (backCall != null) {
-										backCall.doSuccess(result);
-										return;
+									AlertMachine alertMachine = AlertMachine
+											.getInstance();
+									if (alertMachine != null) {
+										alertMachine.refreshCFG();
 									}
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -188,16 +187,10 @@ public class ClientGameService {
 							} else {
 								UIUtil.showToast(result.getErrmsg());
 							}
-							if (backCall != null) {
-								backCall.doError(result.getErrmsg());
-							}
 						}
 
 						@Override
 						public void doError(String result) {
-							if (backCall != null) {
-								backCall.doError(result);
-							}
 						}
 					});
 		} catch (JSONException e) {

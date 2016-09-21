@@ -224,6 +224,7 @@ public class LoginActivity extends BaseActivity {
 
 				@Override
 				public void doSuccess(ServerResponse result) {
+					current = null;
 					if (result.isOK()) {
 						try {
 							ConstantConfig.CERTKEY = result.getDATA()
@@ -235,15 +236,14 @@ public class LoginActivity extends BaseActivity {
 						}
 					} else {
 						showToast(result.getErrmsg());
-						current = null;
 					}
 				}
 
 				@Override
 				public void doError(String result) {
+					current = null;
 					if (!ConstantConfig.Debug) {
 						showToast(result);
-						current = null;
 					} else {
 						if (!NetUtil.isConnectNet()) {
 							user = DataManager.getUserInfo();
@@ -311,7 +311,6 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-
 	private void _logon(final JSONObject pram) {
 		clientService.login(pram, new HttpReqCallBack<ServerResponse>() {
 
@@ -323,6 +322,7 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void doSuccess(ServerResponse result) {
+				current = null;
 				if (result.isOK()) {
 					try {
 						String orderno = result.getDATA().getString("orderno");
@@ -344,7 +344,7 @@ public class LoginActivity extends BaseActivity {
 						/**
 						 * 更新配置
 						 */
-						clientService.getAlertCFG(null);
+						clientService.getAlertCFG();
 						finish();
 						// Intent intent = new Intent(LoginActivity.this,
 						// EcgActivity.class);
@@ -356,14 +356,13 @@ public class LoginActivity extends BaseActivity {
 					}
 				} else {
 					showToast(result.getErrmsg());
-					current = null;
 				}
 			}
 
 			@Override
 			public void doError(String result) {
-				showToast(result);
 				current = null;
+				showToast(result);
 			}
 		});
 	}

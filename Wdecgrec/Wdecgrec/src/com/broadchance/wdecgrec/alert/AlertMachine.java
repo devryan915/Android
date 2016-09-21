@@ -253,64 +253,59 @@ public class AlertMachine {
 	// }
 	// return alertObj;
 	// }
+	public void refreshCFG() {
+		AlertCFG value = getAlertCFG(AlertType.A00001);
+		alertCFGs.put(AlertType.A00001, value);
+		alertWorkers.get(AlertType.A00001).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.A00002);
+		alertCFGs.put(AlertType.A00002, value);
+		alertWorkers.get(AlertType.A00002).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.A00003);
+		alertCFGs.put(AlertType.A00003, value);
+		alertWorkers.get(AlertType.A00003).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.A00004);
+		alertCFGs.put(AlertType.A00004, value);
+		alertWorkers.get(AlertType.A00004).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.A00005);
+		alertCFGs.put(AlertType.A00005, value);
+		alertWorkers.get(AlertType.A00005).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.B00001);
+		alertCFGs.put(AlertType.B00001, value);
+		alertWorkers.get(AlertType.B00001).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.B00002);
+		alertCFGs.put(AlertType.B00002, value);
+		alertWorkers.get(AlertType.B00002).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+
+		value = getAlertCFG(AlertType.B00003);
+		alertCFGs.put(AlertType.B00003, value);
+		alertWorkers.get(AlertType.B00003).updateCFG(value.getDelay_raise(),
+				value.getDelay_clear());
+		LogUtil.d(TAG,
+				"更新预警配置：B00001：\nraise:"
+						+ alertCFGs.get(AlertType.B00001).getIntValueRaise()
+						+ " clear"
+						+ alertCFGs.get(AlertType.B00001).getIntValueClear()
+						+ "\n B00002：\nraise:"
+						+ alertCFGs.get(AlertType.B00002).getIntValueRaise()
+						+ " clear"
+						+ alertCFGs.get(AlertType.B00002).getIntValueClear());
+	}
+
 	private void updateCFG() {
-		clientService.getAlertCFG(new HttpReqCallBack<ServerResponse>() {
-
-			@Override
-			public Activity getReqActivity() {
-				return null;
-			}
-
-			@Override
-			public void doSuccess(ServerResponse result) {
-				if (result.isOK()) {
-					AlertCFG value = getAlertCFG(AlertType.A00001);
-					alertCFGs.put(AlertType.A00001, value);
-					alertWorkers.get(AlertType.A00001).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.A00002);
-					alertCFGs.put(AlertType.A00002, value);
-					alertWorkers.get(AlertType.A00002).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.A00003);
-					alertCFGs.put(AlertType.A00003, value);
-					alertWorkers.get(AlertType.A00003).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.A00004);
-					alertCFGs.put(AlertType.A00004, value);
-					alertWorkers.get(AlertType.A00004).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.A00005);
-					alertCFGs.put(AlertType.A00005, value);
-					alertWorkers.get(AlertType.A00005).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.B00001);
-					alertCFGs.put(AlertType.B00001, value);
-					alertWorkers.get(AlertType.B00001).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.B00002);
-					alertCFGs.put(AlertType.B00002, value);
-					alertWorkers.get(AlertType.B00002).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-
-					value = getAlertCFG(AlertType.B00003);
-					alertCFGs.put(AlertType.B00003, value);
-					alertWorkers.get(AlertType.B00003).updateCFG(
-							value.getDelay_raise(), value.getDelay_clear());
-				}
-			}
-
-			@Override
-			public void doError(String result) {
-
-			}
-		});
+		clientService.getAlertCFG();
 	}
 
 	public void sendAlert() {

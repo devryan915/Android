@@ -65,7 +65,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	 * 单位mv的ecg电压差值即1mv对应ecg有效数据(分析样本数据散落值可以得出分布率最高的相对较大电压为最大电压，分布率相对较小电压为最小电压)
 	 * 中最大电压和最小电压之差 此值是通过实际设备测试得出的有效值 按照10mm/mV定的标 200 / 0.65f
 	 */
-	public static Float BASEFACTOR = 163f;
+	public static Float BASEFACTOR = 156f;
 	/**
 	 * 电压系数 每个ecg数据单位值对应的opengl坐标值
 	 */
@@ -613,6 +613,11 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 			} else if (level == EcgLevel.Level2) {
 				// 20mm/s
 				speed = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 20.0);
+				deltaX = grid.getxUnitCellSize() / speed;
+				currTotalPointNumber = (int) (grid.getGRID_NUM_H() * speed);
+			} else if (level == EcgLevel.Level3) {
+				// 20mm/s
+				speed = (int) (FrameDataMachine.FRAME_DOTS_FREQUENCY / 25.0);
 				deltaX = grid.getxUnitCellSize() / speed;
 				currTotalPointNumber = (int) (grid.getGRID_NUM_H() * speed);
 			}

@@ -20,6 +20,7 @@ import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FrameData;
 import com.broadchance.entity.FrameType;
 import com.broadchance.entity.HeartRate;
+import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
@@ -151,7 +152,7 @@ public class FrameDataMachine {
 	/**
 	 * 批量上传数据触发上限
 	 */
-	private static int MAX_BATCH_LIMIT = Integer.MAX_VALUE;
+	private static int MAX_BATCH_LIMIT = 0;
 	/**
 	 * 批量上传60s的数据
 	 */
@@ -520,9 +521,9 @@ public class FrameDataMachine {
 						FileFrameData fileFrameData = null;
 						int count = 0;
 						while (count < MAX_REAL_LIMIT) {
-							count++;
 							fileFrameData = fileRealTimeFrameDatas.poll();
 							fileFrmDatas.add(fileFrameData);
+							count++;
 						}
 						count = 0;
 						int breathLimit = MAX_REAL_LIMIT / 5;
@@ -549,21 +550,42 @@ public class FrameDataMachine {
 						BleDomainService.startRealTimeMode(fileFrmDatas,
 								fileBrthDatas, jHeartRateArray);
 					}
+					FileFrameData fileFrameData = fileFrameDatas.element();
+					if (fileFrameData != null) {
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(fileFrameData.date);
+						cal.add(Calendar.MINUTE, 1);
+						cal.set(Calendar.SECOND, 0);
+						cal.set(Calendar.MILLISECOND, 0);
+						// 计算距离下一个整分会产生多少个点
+						int lost = (int) ((cal.getTime().getTime() - fileFrameData.date
+								.getTime()) / 8);
+						if (MAX_BATCH_LIMIT != lost) {
+							MAX_BATCH_LIMIT = lost;
+							LogUtil.d(
+									TAG,
+									"第一帧数据不是整点，"
+											+ CommonUtil
+													.getTime_B(fileFrameData.date)
+											+ " 丢掉" + lost);
+						}
+					}
 					// 心电数据达到上限
 					if (fileFrameDatas.size() > MAX_BATCH_LIMIT) {
 						List<FileFrameData> fileFrmDatas = new ArrayList<FileFrameData>();
 						List<Short> fileBrthDatas = new ArrayList<Short>();
 						Short bdata = null;
-						FileFrameData fileFrameData = null;
 						int count = 0;
-						while (count < MAX_BATCH_LIMIT) {
-							count++;
+						while (count < MAX_BATCH_LIMIT
+								&& fileFrameDatas.size() > 0) {
 							fileFrameData = fileFrameDatas.poll();
+							count++;
 							fileFrmDatas.add(fileFrameData);
 						}
 						count = 0;
 						int breathLimit = MAX_BATCH_LIMIT / 5;
-						while (count < breathLimit) {
+						while (count < breathLimit
+								&& fileBreathDatas.size() > 0) {
 							count++;
 							bdata = fileBreathDatas.poll();
 							fileBrthDatas.add(bdata);
@@ -582,15 +604,15 @@ public class FrameDataMachine {
 		}
 	}
 
-	public void resetData() {
+	public synchronized void resetData() {
 		synchronized (miiQueue) {
 			miiQueue.clear();
 		}
 		synchronized (mv1Queue) {
-			miiQueue.clear();
+			mv1Queue.clear();
 		}
 		synchronized (mv5Queue) {
-			miiQueue.clear();
+			mv5Queue.clear();
 		}
 		synchronized (fileFrameDatas) {
 			fileFrameDatas.clear();
@@ -601,7 +623,7 @@ public class FrameDataMachine {
 		lastMIIFrameData = null;
 		lastMV1FrameData = null;
 		lastMV5FrameData = null;
-		MAX_BATCH_LIMIT = Integer.MAX_VALUE;
+		MAX_BATCH_LIMIT = 0;
 	}
 
 	// private void testData(FrameData data) throws Exception {
@@ -620,7 +642,7 @@ public class FrameDataMachine {
 	 * 
 	 * @param frameData
 	 */
-	public void processFrameData(FrameData frameData) {
+	public synchronized void processFrameData(FrameData frameData) {
 		try {
 			// 取消非空和长度检查以减少不必要运算
 			// if(frameData==null)

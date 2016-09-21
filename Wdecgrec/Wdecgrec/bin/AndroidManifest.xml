@@ -3,7 +3,7 @@
     package="com.broadchance.wdecgrec"
     android:sharedUserId="com.broadchance.skin"
     android:versionCode="1"
-    android:versionName="1.2.09.6" >
+    android:versionName="1.2.09.9" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -63,7 +63,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <activity
             android:name=".login.LoginActivity"
@@ -87,6 +87,9 @@
             android:name=".main.ModeActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|orientation|screenLayout|uiMode|screenSize|mcc|mnc|touchscreen|navigation|smallestScreenSize|layoutDirection"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".main.EcgActivity"
@@ -136,7 +139,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
         <receiver android:name=".receiver.GPSReceiver" >
             <intent-filter>
@@ -177,6 +180,17 @@
             android:name=".settings.UploadActivity"
             android:label="@string/title_activity_upload" >
         </activity>
+        <activity
+            android:name="com.example.bluetooth.le.DeviceScanActivity"
+            android:label="@string/title_devices" >
+        </activity>
+        <activity
+            android:name="com.example.bluetooth.le.DeviceControlActivity"
+            android:label="@string/title_devices" />
+
+        <service
+            android:name="com.example.bluetooth.le.BluetoothLeService"
+            android:enabled="true" />
     </application>
 
 </manifest>
