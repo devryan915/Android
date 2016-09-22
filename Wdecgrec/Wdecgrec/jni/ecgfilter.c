@@ -57,9 +57,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataII(JNIEnv* env,
     jint * nSum ;
 
 	jobjectArray joArray = 0;
-	//获取数组长度
+	//��ȡ���鳤��
 	jsize jsLen = (*env)->GetArrayLength(env, intArray);
-	//获取数组指针
+	//��ȡ����ָ��
 	jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -69,7 +69,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataII(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-		    //操作数组
+		    //��������
 
             v = jpIAry1[nIdx];
 
@@ -96,12 +96,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataII(JNIEnv* env,
             buf_out[nIdx * ECG_WORD_SIZE], buf_out[nIdx * ECG_WORD_SIZE+1], nSum[nIdx]);
     }
 
-	//构建输出数组
+	//�����������
 	joArray = (*env)->NewIntArray(env, jsLen);
 
-	//填充输出数组
+	//����������
 	(*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-	//释放
+	//�ͷ�
 	(*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -126,9 +126,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1(JNIEnv* env,
     jint * nSum ;
 
     jobjectArray joArray = 0;
-    //获取数组长度
+    //��ȡ���鳤��
     jsize jsLen = (*env)->GetArrayLength(env, intArray);
-    //获取数组指针
+    //��ȡ����ָ��
     jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -137,7 +137,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-            //操作数组
+            //��������
             buf_in[nIdx*ECG_WORD_SIZE]     =  (jpIAry1[nIdx] >> 8) & 0xff;
             buf_in[nIdx*ECG_WORD_SIZE + 1] =  (jpIAry1[nIdx])      & 0xff;
         }
@@ -154,12 +154,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1(JNIEnv* env,
         nSum[nIdx] = (buf_out[nIdx * ECG_WORD_SIZE] << 8) | buf_out[nIdx * ECG_WORD_SIZE + 1];
     }
 
-    //构建输出数组
+    //�����������
     joArray = (*env)->NewIntArray(env, jsLen);
 
-    //填充输出数组
+    //����������
     (*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-    //释放
+    //�ͷ�
     (*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -185,9 +185,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5(JNIEnv* env,
     jint * nSum ;
 
     jobjectArray joArray = 0;
-    //获取数组长度
+    //��ȡ���鳤��
     jsize jsLen = (*env)->GetArrayLength(env, intArray);
-    //获取数组指针
+    //��ȡ����ָ��
     jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -196,7 +196,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-            //操作数组
+            //��������
             buf_in[nIdx*2]     =  (jpIAry1[nIdx] >> 8) & 0xff;
             buf_in[nIdx*2 + 1] =  (jpIAry1[nIdx])      & 0xff;
         }
@@ -213,12 +213,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5(JNIEnv* env,
         nSum[nIdx] = (buf_out[nIdx * ECG_WORD_SIZE] << 8) | buf_out[nIdx * ECG_WORD_SIZE + 1];
     }
 
-    //构建输出数组
+    //�����������
     joArray = (*env)->NewIntArray(env, jsLen);
 
-    //填充输出数组
+    //����������
     (*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-    //释放
+    //�ͷ�
     (*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -236,6 +236,10 @@ jint Java_com_broadchance_utils_FilterUtil_getHeartRate(JNIEnv* env,
     {
         hnd = hnd_l2 = ecg_init(0);
     }
+
+    if(hnd->hr_pass)
+
+        return (jint) -99;
 
     return (jint)(hnd->hrate);
 
@@ -283,9 +287,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataIIR(JNIEnv* env,
     jint * nSum ;
 
 	jobjectArray joArray = 0;
-	//获取数组长度
+	//��ȡ���鳤��
 	jsize jsLen = (*env)->GetArrayLength(env, intArray);
-	//获取数组指针
+	//��ȡ����ָ��
 	jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -295,7 +299,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataIIR(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-		    //操作数组
+		    //��������
 
             v = jpIAry1[nIdx];
 
@@ -322,12 +326,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataIIR(JNIEnv* env,
             buf_out[nIdx * ECG_WORD_SIZE], buf_out[nIdx * ECG_WORD_SIZE+1], nSum[nIdx]);
     }
 
-	//构建输出数组
+	//�����������
 	joArray = (*env)->NewIntArray(env, jsLen);
 
-	//填充输出数组
+	//����������
 	(*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-	//释放
+	//�ͷ�
 	(*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -352,9 +356,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1R(JNIEnv* env,
     jint * nSum ;
 
     jobjectArray joArray = 0;
-    //获取数组长度
+    //��ȡ���鳤��
     jsize jsLen = (*env)->GetArrayLength(env, intArray);
-    //获取数组指针
+    //��ȡ����ָ��
     jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -363,7 +367,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1R(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-            //操作数组
+            //��������
             buf_in[nIdx*ECG_WORD_SIZE]     =  (jpIAry1[nIdx] >> 8) & 0xff;
             buf_in[nIdx*ECG_WORD_SIZE + 1] =  (jpIAry1[nIdx])      & 0xff;
         }
@@ -380,12 +384,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV1R(JNIEnv* env,
         nSum[nIdx] = (buf_out[nIdx * ECG_WORD_SIZE] << 8) | buf_out[nIdx * ECG_WORD_SIZE + 1];
     }
 
-    //构建输出数组
+    //�����������
     joArray = (*env)->NewIntArray(env, jsLen);
 
-    //填充输出数组
+    //����������
     (*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-    //释放
+    //�ͷ�
     (*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -411,9 +415,9 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5R(JNIEnv* env,
     jint * nSum ;
 
     jobjectArray joArray = 0;
-    //获取数组长度
+    //��ȡ���鳤��
     jsize jsLen = (*env)->GetArrayLength(env, intArray);
-    //获取数组指针
+    //��ȡ����ָ��
     jint *jpIAry1 = (*env)->GetIntArrayElements(env, intArray, 0);
 
     buf_in = malloc(jsLen *2 *2);
@@ -422,7 +426,7 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5R(JNIEnv* env,
         buf_out = buf_in + jsLen * 2;
 
         for (nIdx = 0; nIdx < jsLen; nIdx++) {
-            //操作数组
+            //��������
             buf_in[nIdx*2]     =  (jpIAry1[nIdx] >> 8) & 0xff;
             buf_in[nIdx*2 + 1] =  (jpIAry1[nIdx])      & 0xff;
         }
@@ -439,12 +443,12 @@ jintArray Java_com_broadchance_utils_FilterUtil_getECGDataV5R(JNIEnv* env,
         nSum[nIdx] = (buf_out[nIdx * ECG_WORD_SIZE] << 8) | buf_out[nIdx * ECG_WORD_SIZE + 1];
     }
 
-    //构建输出数组
+    //�����������
     joArray = (*env)->NewIntArray(env, jsLen);
 
-    //填充输出数组
+    //����������
     (*env)->SetIntArrayRegion(env, joArray, 0, jsLen, nSum);
-    //释放
+    //�ͷ�
     (*env)->ReleaseIntArrayElements(env, intArray, jpIAry1, 0);
 
     free(buf_in);
@@ -462,6 +466,10 @@ jint Java_com_broadchance_utils_FilterUtil_getHeartRateR(JNIEnv* env,
     {
         hnd = hnd_l2_r = ecg_init(0);
     }
+
+    if(hnd->hr_pass)
+
+        return (jint) -99;
 
     return (jint)(hnd->hrate);
 

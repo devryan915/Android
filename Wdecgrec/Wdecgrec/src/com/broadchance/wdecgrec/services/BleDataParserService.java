@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,6 +25,7 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.broadchance.entity.AlertCFG;
 import com.broadchance.entity.FrameData;
 import com.broadchance.entity.HeartRate;
 import com.broadchance.entity.UIUserInfoLogin;
@@ -37,6 +39,7 @@ import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.alert.AlertMachine;
+import com.broadchance.wdecgrec.alert.AlertStatus;
 import com.broadchance.wdecgrec.alert.AlertType;
 
 @SuppressLint("NewApi")
@@ -49,7 +52,17 @@ public class BleDataParserService extends Service {
 			+ "ACTION_ECGMV1_DATA_AVAILABLE";
 	public final static String ACTION_ECGMV5_DATA_AVAILABLE = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_ECGMV5_DATA_AVAILABLE";
-
+	private ScheduledExecutorService mEService = Executors
+			.newScheduledThreadPool(2);
+	/**
+	 * 延迟判断心率是否可用
+	 */
+	private ScheduledFuture<?> mSendSdl;
+	/**
+	 * 心率是否有效
+	 */
+	private AtomicBoolean isHeartAvl = new AtomicBoolean(false);
+	private final static int heartDelay = 10;
 	public final static int SIGNAL_MAX = -50;
 	public final static int SIGNAL_MIN = -70;
 	// public final static float POWER_MAX = 2.9f;
@@ -121,7 +134,7 @@ public class BleDataParserService extends Service {
 					lastHeartRate.date = CommonUtil.getDate();
 					machine.addHeartRate(lastHeartRate);
 				}
-				if (lastHeart != heart) {
+				if (lastHeart != heart && heart >= 0 && isHeartAvl.get()) {
 					lastHeart = heart;
 					// 心动过速
 					if (heart > AlertMachine.getInstance()
@@ -482,8 +495,18 @@ public class BleDataParserService extends Service {
 					AlertMachine.getInstance().cancelAlert(AlertType.A00002);
 				}
 				startExeService();
+				if (mSendSdl != null && !mSendSdl.isDone()) {
+					mSendSdl.cancel(true);
+				}
+				isHeartAvl.set(false);
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 					.equals(action)) {
+				mSendSdl = mEService.schedule(new Runnable() {
+					@Override
+					public void run() {
+						isHeartAvl.set(true);
+					}
+				}, heartDelay, TimeUnit.SECONDS);
 				UIUserInfoLogin user = DataManager.getUserInfo();
 				if (user != null && user.getMacAddress() != null
 						&& !user.getMacAddress().isEmpty()) {
