@@ -264,12 +264,13 @@ public class HttpUtil {
 		/**
 		 * 是否开启所有网络上传
 		 */
-		boolean netType = SettingsManager.getInstance().getSettingsNetType();
+		// boolean netType = SettingsManager.getInstance().getSettingsNetType();
 		// 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
-		if (!netType && !NetUtil.isWifi()) {
-			response.setData("当前网络为移动网络，停止上传");
-			return response;
-		}
+		// 暂时取消网络限制
+		// if (!netType && !NetUtil.isWifi()) {
+		// response.setData("当前网络为移动网络，停止上传");
+		// return response;
+		// }
 		try {
 			String strResult = null;
 			// File ecgFile = (File) reparams.get("ecgFile");
@@ -358,12 +359,13 @@ public class HttpUtil {
 		/**
 		 * 是否开启所有网络上传
 		 */
-		boolean netType = SettingsManager.getInstance().getSettingsNetType();
-		// 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
-		if (!netType && !NetUtil.isWifi()) {
-			response.setData("当前网络为移动网络，停止上传");
-			return response;
-		}
+		//暂时去掉数据流量限制
+		// boolean netType = SettingsManager.getInstance().getSettingsNetType();
+		// // 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
+		// if (!netType && !NetUtil.isWifi()) {
+		// response.setData("当前网络为移动网络，停止上传");
+		// return response;
+		// }
 		try {
 			String strResult = null;
 			File zipFile = (File) reparams.get("zipFile");
