@@ -43,6 +43,7 @@ import com.broadchance.utils.CRC8;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.SampleGattAttributes;
+import com.broadchance.utils.UIUtil;
 
 /**
  * Service for managing connection and data communication with a GATT server
@@ -115,8 +116,8 @@ public class BluetoothLeService extends Service {
 							+ "监听特征数据");
 					setCharacteristicNotification(characteristic, true);
 					if (GuardService.Instance != null) {
-						GuardService.Instance.DataALiveTime = System
-								.currentTimeMillis();
+						GuardService.Instance.setDataAliveTime(System
+								.currentTimeMillis());
 					}
 				}
 			} else {
@@ -136,8 +137,8 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
 			try {
-				GuardService.Instance.DataALiveTime = System
-						.currentTimeMillis();
+				GuardService.Instance.setDataAliveTime(System
+						.currentTimeMillis());
 			} catch (Exception e) {
 			}
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -170,6 +171,8 @@ public class BluetoothLeService extends Service {
 		sendBroadcast(intent);
 	}
 
+	long count = 0;
+
 	private void broadcastUpdate(final String action,
 			final BluetoothGattCharacteristic characteristic) {
 		final Intent intent = new Intent(action);
@@ -195,9 +198,12 @@ public class BluetoothLeService extends Service {
 		// For all other profiles, writes the data formatted in HEX.
 		final byte[] data = characteristic.getValue();
 		// if (data != null && data.length > 0) {
-		// final StringBuilder stringBuilder = new StringBuilder(data.length);
-		// for (byte byteChar : data)
-		// stringBuilder.append(String.format("%02X ", byteChar));
+		if (ConstantConfig.Debug && count++ % 50 == 0) {
+			final StringBuilder stringBuilder = new StringBuilder(data.length);
+			for (byte byteChar : data)
+				stringBuilder.append(String.format("%02X ", byteChar));
+			UIUtil.showToast(stringBuilder.toString());
+		}
 		intent.putExtra(EXTRA_DATA, data);
 		// }
 		// }

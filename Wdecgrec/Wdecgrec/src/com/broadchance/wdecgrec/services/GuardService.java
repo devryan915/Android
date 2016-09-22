@@ -47,7 +47,7 @@ public class GuardService extends Service {
 			+ "ACTION_GATT_RSSICHANGED";
 	public final static String ACTION_GATT_POWERCHANGED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_GATT_POWERCHANGED";
-	public long DataALiveTime = 0;
+	private long DataALiveTime = 0;
 	/**
 	 * 蓝牙服务启动后延迟初始化蓝牙
 	 */
@@ -193,13 +193,14 @@ public class GuardService extends Service {
 					// _connect();
 				}
 			}, SCAN_PERIOD);
-			if (GuardService.Instance != null) {
-				GuardService.Instance.DataALiveTime = System
-						.currentTimeMillis() + SCAN_PERIOD ;
-			}
+			setDataAliveTime(System.currentTimeMillis() + SCAN_PERIOD);
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		}
+	}
+
+	public void setDataAliveTime(long time) {
+		DataALiveTime = time;
 	}
 
 	// Device scan callback.
@@ -224,10 +225,6 @@ public class GuardService extends Service {
 		if (mBluetoothLeService != null) {
 			final boolean result = mBluetoothLeService.connect();
 			LogUtil.d(TAG, "Connect request result=" + result);
-			if (GuardService.Instance != null) {
-				GuardService.Instance.DataALiveTime = System
-						.currentTimeMillis() + CHECK_BLE_TIMEOUT;
-			}
 		}
 	}
 
@@ -271,12 +268,19 @@ public class GuardService extends Service {
 							if (timeout < 3 * CHECK_BLE_TIMEOUT) {
 								// 断开连接BluetoothGatt
 								mBluetoothLeService.disconnect();
+								if (ConstantConfig.Debug) {
+									UIUtil.showToast("连接蓝牙");
+								}
 								_connect();
 							} else {
 								// 关闭BluetoothGatt，重新获取新的BluetoothGatt
 								mBluetoothLeService.close();
 								scanLeDevice();
-								DataALiveTime = System.currentTimeMillis();
+								DataALiveTime = System.currentTimeMillis()
+										+ SCAN_PERIOD;
+								if (ConstantConfig.Debug) {
+									UIUtil.showToast("扫描蓝牙");
+								}
 							}
 						} else {
 							DataALiveTime = System.currentTimeMillis();
@@ -340,9 +344,9 @@ public class GuardService extends Service {
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		startService(dataParserIntent);
-		Intent bleDomainIntent = new Intent(GuardService.this,
-				BleDomainService.class);
-		startService(bleDomainIntent);
+		// Intent bleDomainIntent = new Intent(GuardService.this,
+		// BleDomainService.class);
+		// startService(bleDomainIntent);
 		checkBleStatus();
 		Instance = this;
 		acquireWakeLock();
@@ -356,9 +360,9 @@ public class GuardService extends Service {
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		stopService(dataParserIntent);
-		Intent bleDomainIntent = new Intent(GuardService.this,
-				BleDomainService.class);
-		stopService(bleDomainIntent);
+		// Intent bleDomainIntent = new Intent(GuardService.this,
+		// BleDomainService.class);
+		// stopService(bleDomainIntent);
 		cancelCheckBleStatus();
 		Instance = null;
 		releaseWarkLock();
