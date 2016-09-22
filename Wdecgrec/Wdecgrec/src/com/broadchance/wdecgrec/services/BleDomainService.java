@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -87,7 +88,9 @@ public class BleDomainService extends Service {
 	// private Timer pkgFrameDataTimer = new Timer();
 	// private TimerTask pkgFrameDataTask;
 
-	private ScheduledExecutorService executor;
+	private ScheduledExecutorService executor = Executors
+			.newScheduledThreadPool(3);
+	private ScheduledFuture<?> mFuture = null;
 	AtomicBoolean atomicBooleanExecutor = new AtomicBoolean(false);
 
 	// private AtomicBoolean isRealMode = new AtomicBoolean(false);
@@ -428,7 +431,7 @@ public class BleDomainService extends Service {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, msg + "，上传失败 result: " + result);
-							UIUtil.showToast("批量上传失败：\n"+result);
+							UIUtil.showToast("批量上传失败：\n" + result);
 						}
 						UIUtil.showToast(getApplicationContext(), "上传失败!");
 						setUploadByStatus(UploadFileStatus.UploadFailed);
@@ -573,7 +576,7 @@ public class BleDomainService extends Service {
 																		.getMAC());
 															}
 														}
-														if (GuardService.Instance!= null) {
+														if (GuardService.Instance != null) {
 															GuardService.Instance
 																	.resetBleCon();
 														}
@@ -1101,10 +1104,15 @@ public class BleDomainService extends Service {
 	}
 
 	private void start() {
-		executor = Executors.newScheduledThreadPool(3);
-		executor.scheduleAtFixedRate(new Runnable() {
+		if (mFuture != null && !mFuture.isDone()) {
+			mFuture.cancel(true);
+		}
+		mFuture = executor.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
+				// if (ConstantConfig.Debug) {
+				// LogUtil.d(TAG, "启动上传");
+				// }
 				if (atomicBooleanExecutor.compareAndSet(false, true)) {
 					try {
 						// 批量写文件
@@ -1122,8 +1130,6 @@ public class BleDomainService extends Service {
 					} finally {
 						atomicBooleanExecutor.set(false);
 					}
-				} else {
-
 				}
 			}
 		}, 1, ConstantConfig.Batch_Interval, TimeUnit.SECONDS);
@@ -1132,6 +1138,9 @@ public class BleDomainService extends Service {
 
 	private void end() {
 		unregisterReceiver(mGattUpdateReceiver);
+		if (mFuture != null && !mFuture.isDone()) {
+			mFuture.cancel(true);
+		}
 		if (executor != null) {
 			executor.shutdown();
 		}
@@ -1148,7 +1157,6 @@ public class BleDomainService extends Service {
 
 	@Override
 	public void onDestroy() {
-
 		end();
 		super.onDestroy();
 	}

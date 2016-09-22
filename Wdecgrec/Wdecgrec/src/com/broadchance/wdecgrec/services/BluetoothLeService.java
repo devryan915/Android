@@ -156,8 +156,12 @@ public class BluetoothLeService extends Service {
 	};
 
 	public void readRemoteRssi() {
-		if (mBluetoothGatt != null && mBluetoothAdapter.isEnabled()) {
-			mBluetoothGatt.readRemoteRssi();
+		try {
+			if (mBluetoothGatt != null && mBluetoothAdapter != null) {
+				mBluetoothGatt.readRemoteRssi();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -333,25 +337,28 @@ public class BluetoothLeService extends Service {
 		// For API level 18 and above, get a reference to BluetoothAdapter
 		// through
 		// BluetoothManager.
+		mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		if (mBluetoothManager == null) {
-			mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-			if (mBluetoothManager == null) {
-				Log.e(TAG, "Unable to initialize BluetoothManager.");
-				return false;
-			}
+			Log.e(TAG, "Unable to initialize BluetoothManager.");
+			return false;
 		}
-
 		mBluetoothAdapter = mBluetoothManager.getAdapter();
 		if (mBluetoothAdapter == null) {
 			Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
 			return false;
 		}
-
 		return true;
 	}
 
-	public boolean connect() {
-		return connect(false);
+	public void enableBleService() {
+		if (mBluetoothAdapter != null) {
+			mBluetoothAdapter.enable();
+		}
+	}
+
+	public void lostService() {
+		mBluetoothManager = null;
+		mBluetoothGatt = null;
 	}
 
 	/**
@@ -365,24 +372,24 @@ public class BluetoothLeService extends Service {
 	 *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
 	 *         callback.
 	 */
-	public boolean connect(boolean isNew) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user == null) {
-			return false;
-		}
-		mBluetoothDeviceAddress = user.getMacAddress();
-		if (!(mBluetoothDeviceAddress != null && !mBluetoothDeviceAddress
-				.trim().isEmpty())) {
-			LogUtil.i(TAG, "无设备可连接");
-			return false;
-		}
-		if (mBluetoothAdapter == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized .");
-			return false;
-		}
+	public boolean connect() {
+		try {
+			UIUserInfoLogin user = DataManager.getUserInfo();
+			if (user == null) {
+				return false;
+			}
+			mBluetoothDeviceAddress = user.getMacAddress();
+			if (!(mBluetoothDeviceAddress != null && !mBluetoothDeviceAddress
+					.trim().isEmpty())) {
+				LogUtil.i(TAG, "无设备可连接");
+				return false;
+			}
+			if (mBluetoothAdapter == null) {
+				Log.w(TAG, "BluetoothAdapter not initialized .");
+				return false;
+			}
 
-		// Previously connected device. Try to reconnect.
-		if (!isNew) {
+			// Previously connected device. Try to reconnect.
 			if (mBluetoothGatt != null) {
 				Log.d(TAG,
 						"Trying to use an existing mBluetoothGatt for connection.");
@@ -393,20 +400,23 @@ public class BluetoothLeService extends Service {
 					return false;
 				}
 			}
+			final BluetoothDevice device = mBluetoothAdapter
+					.getRemoteDevice(mBluetoothDeviceAddress);
+			if (device == null) {
+				Log.w(TAG, "Device not found.  Unable to connect.");
+				return false;
+			}
+			// We want to directly connect to the device, so we are setting the
+			// autoConnect
+			// parameter to false.
+			mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+			Log.d(TAG, "Trying to create a new connection.");
+			mConnectionState = STATE_CONNECTING;
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		final BluetoothDevice device = mBluetoothAdapter
-				.getRemoteDevice(mBluetoothDeviceAddress);
-		if (device == null) {
-			Log.w(TAG, "Device not found.  Unable to connect.");
-			return false;
-		}
-		// We want to directly connect to the device, so we are setting the
-		// autoConnect
-		// parameter to false.
-		mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-		Log.d(TAG, "Trying to create a new connection.");
-		mConnectionState = STATE_CONNECTING;
-		return true;
+		return false;
 	}
 
 	/**
@@ -416,11 +426,15 @@ public class BluetoothLeService extends Service {
 	 * callback.
 	 */
 	public void disconnect() {
-		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized");
-			return;
+		try {
+			if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+				Log.w(TAG, "BluetoothAdapter not initialized");
+				return;
+			}
+			mBluetoothGatt.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		mBluetoothGatt.disconnect();
 	}
 
 	/**
@@ -428,11 +442,15 @@ public class BluetoothLeService extends Service {
 	 * resources are released properly.
 	 */
 	public void close() {
-		if (mBluetoothGatt == null) {
-			return;
+		try {
+			if (mBluetoothGatt == null) {
+				return;
+			}
+			mBluetoothGatt.close();
+			mBluetoothGatt = null;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		mBluetoothGatt.close();
-		mBluetoothGatt = null;
 	}
 
 	/**

@@ -55,6 +55,7 @@ import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
+import com.broadchance.wdecgrec.services.GuardService;
 
 public class SettingsActivity extends BaseActivity implements Skinable {
 	protected static final String TAG = SettingsActivity.class.getSimpleName();
@@ -568,6 +569,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			returnModeAcitivity();
 			break;
 		case R.id.llAppLogout:
+			stopBleService();
 			intent = new Intent(SettingsActivity.this, LoginActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
@@ -576,7 +578,11 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			break;
 		}
 	}
-
+	private void stopBleService() {
+		Intent bleServiceintent = new Intent(SettingsActivity.this,
+				GuardService.class);
+		stopService(bleServiceintent);
+	}
 	@Override
 	public void loadSkin() {
 		// viewChangeSkinIcon

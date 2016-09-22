@@ -20,6 +20,8 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 import com.broadchance.entity.UIUserInfoLogin;
@@ -37,14 +39,19 @@ public class GuardService extends Service {
 	private final static String ServiceName = ConstantConfig.PKG_NAME
 			+ ".services.GuardService";
 	private ScheduledExecutorService mEService = Executors
-			.newSingleThreadScheduledExecutor();
+			.newScheduledThreadPool(2);
 	private ScheduledFuture<?> mFuture = null;
+	private ScheduledFuture<?> mDelayFuture = null;
 	public static GuardService Instance = null;
 	public final static String ACTION_GATT_RSSICHANGED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_GATT_RSSICHANGED";
 	public final static String ACTION_GATT_POWERCHANGED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_GATT_POWERCHANGED";
 	public long DataALiveTime = 0;
+	/**
+	 * 蓝牙服务启动后延迟初始化蓝牙
+	 */
+	private final static int BLE_INIT_DELAY = 5 * 1000;
 	/**
 	 * 检查ble连接是否超时
 	 */
@@ -97,12 +104,31 @@ public class GuardService extends Service {
 
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			DataALiveTime = System.currentTimeMillis() + CHECK_BLE_TIMEOUT;
+			DataALiveTime = System.currentTimeMillis() + 10 * CHECK_BLE_DELAY;
 			if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
 				if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
 					LogUtil.d(TAG, "蓝牙服务关闭");
+					if (mBluetoothLeService != null) {
+						mBluetoothLeService.enableBleService();
+						mBluetoothLeService.lostService();
+					}
 				} else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
 					LogUtil.d(TAG, "蓝牙服务开启");
+					if (mDelayFuture != null && !mDelayFuture.isDone()) {
+						mDelayFuture.cancel(true);
+					}
+					// 延迟初始化
+					mDelayFuture = mEService.schedule(new Runnable() {
+
+						@Override
+						public void run() {
+							if (mBluetoothLeService != null) {
+								mBluetoothLeService.initialize();
+								DataALiveTime = System.currentTimeMillis()
+										+ CHECK_BLE_DELAY;
+							}
+						}
+					}, BLE_INIT_DELAY, TimeUnit.MILLISECONDS);
 				}
 			}
 		}
@@ -162,11 +188,15 @@ public class GuardService extends Service {
 					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					// if (ConstantConfig.Debug) {
-					UIUtil.showToast("扫描超时尝试直接连接");
+					UIUtil.showToast("未能找到指定设备");
 					// }
-					_connect();
+					// _connect();
 				}
 			}, SCAN_PERIOD);
+			if (GuardService.Instance != null) {
+				GuardService.Instance.DataALiveTime = System
+						.currentTimeMillis() + SCAN_PERIOD ;
+			}
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		}
@@ -194,6 +224,10 @@ public class GuardService extends Service {
 		if (mBluetoothLeService != null) {
 			final boolean result = mBluetoothLeService.connect();
 			LogUtil.d(TAG, "Connect request result=" + result);
+			if (GuardService.Instance != null) {
+				GuardService.Instance.DataALiveTime = System
+						.currentTimeMillis() + CHECK_BLE_TIMEOUT;
+			}
 		}
 	}
 
@@ -241,8 +275,8 @@ public class GuardService extends Service {
 							} else {
 								// 关闭BluetoothGatt，重新获取新的BluetoothGatt
 								mBluetoothLeService.close();
-								DataALiveTime = System.currentTimeMillis();
 								scanLeDevice();
+								DataALiveTime = System.currentTimeMillis();
 							}
 						} else {
 							DataALiveTime = System.currentTimeMillis();
@@ -311,6 +345,7 @@ public class GuardService extends Service {
 		startService(bleDomainIntent);
 		checkBleStatus();
 		Instance = this;
+		acquireWakeLock();
 	}
 
 	private void end() {
@@ -326,6 +361,7 @@ public class GuardService extends Service {
 		stopService(bleDomainIntent);
 		cancelCheckBleStatus();
 		Instance = null;
+		releaseWarkLock();
 	}
 
 	private static IntentFilter makeBLEStatusIntentFilter() {
@@ -354,7 +390,7 @@ public class GuardService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		start();
-		flags = START_REDELIVER_INTENT;
+		flags = START_STICKY;
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -374,4 +410,27 @@ public class GuardService extends Service {
 		super.onLowMemory();
 	}
 
+	private WakeLock wakeLock = null;
+
+	/**
+	 * 请求唤醒锁防止休眠
+	 */
+	private void acquireWakeLock() {
+		if (wakeLock == null) {
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this
+					.getClass().getCanonicalName());
+			wakeLock.acquire();
+		}
+	}
+
+	/**
+	 * 释放唤醒锁
+	 */
+	private void releaseWarkLock() {
+		if (wakeLock != null && wakeLock.isHeld()) {
+			wakeLock.release();
+			wakeLock = null;
+		}
+	}
 }

@@ -346,14 +346,19 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 
 	// private AtomicBoolean atomicBooleanDrawLock = new AtomicBoolean(false);
 	// private int chkCount = 0;
+	public void clearDraw() {
+		pointNumber = 0;
+	}
 
 	public void drawECG(Integer[] data) {
 		synchronized (objectDrawLock) {
 			try {
 				// long useTime = System.currentTimeMillis();
 				int pointCount = data.length;
-				if (pointCount == 0)
+				if (pointCount == 0) {
+
 					return;
+				}
 				// normalized = true;
 
 				// 用于存放data数组中实际的最大值和最小值

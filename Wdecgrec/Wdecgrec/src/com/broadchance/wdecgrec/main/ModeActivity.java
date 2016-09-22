@@ -100,24 +100,25 @@ public class ModeActivity extends BaseActivity {
 		stopService(bleServiceintent);
 	}
 
-	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-		@Override
-		public void onLeScan(final BluetoothDevice device, int rssi,
-				byte[] scanRecord) {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user != null) {
-				String deviceNumber = user.getMacAddress();
-				if (deviceNumber.equals(device.getAddress())) {
-					if (ConstantConfig.Debug) {
-						UIUtil.showToast(ModeActivity.this, "扫描到指定蓝牙");
-					}
-				}
-			}
-		}
-	};
-	private static final long SCAN_PERIOD = 3000;
-	private boolean mScanning;
-	private Handler mHandler = new Handler();
+	// private BluetoothAdapter.LeScanCallback mLeScanCallback = new
+	// BluetoothAdapter.LeScanCallback() {
+	// @Override
+	// public void onLeScan(final BluetoothDevice device, int rssi,
+	// byte[] scanRecord) {
+	// UIUserInfoLogin user = DataManager.getUserInfo();
+	// if (user != null) {
+	// String deviceNumber = user.getMacAddress();
+	// if (deviceNumber.equals(device.getAddress())) {
+	// if (ConstantConfig.Debug) {
+	// UIUtil.showToast(ModeActivity.this, "扫描到指定蓝牙");
+	// }
+	// }
+	// }
+	// }
+	// };
+	// private static final long SCAN_PERIOD = 3000;
+	// private boolean mScanning;
+	// private Handler mHandler = new Handler();
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothManager mBluetoothManager;
 
@@ -126,38 +127,39 @@ public class ModeActivity extends BaseActivity {
 	 * 
 	 * @param enable
 	 */
-	public void scanLeDevice() {
-		// BluetoothManager.
-		if (mBluetoothManager == null) {
-			mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-			if (mBluetoothManager == null) {
-				return;
-			}
-		}
-		mBluetoothAdapter = mBluetoothManager.getAdapter();
-		if (mBluetoothAdapter == null) {
-			return;
-		}
-		if (!mScanning) {
-			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					LogUtil.i(TAG, " stop scanLeDevice ");
-					mScanning = false;
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					if (ConstantConfig.Debug) {
-						UIUtil.showToast(ModeActivity.this, "扫描超时");
-					}
-				}
-			}, SCAN_PERIOD);
-			mScanning = true;
-			mBluetoothAdapter.startLeScan(mLeScanCallback);
-		} else {
-			mScanning = false;
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-		}
-	}
+	// public void scanLeDevice() {
+	// // BluetoothManager.
+	// if (mBluetoothManager == null) {
+	// mBluetoothManager = (BluetoothManager)
+	// getSystemService(Context.BLUETOOTH_SERVICE);
+	// if (mBluetoothManager == null) {
+	// return;
+	// }
+	// }
+	// mBluetoothAdapter = mBluetoothManager.getAdapter();
+	// if (mBluetoothAdapter == null) {
+	// return;
+	// }
+	// if (!mScanning) {
+	// // Stops scanning after a pre-defined scan period.
+	// mHandler.postDelayed(new Runnable() {
+	// @Override
+	// public void run() {
+	// LogUtil.i(TAG, " stop scanLeDevice ");
+	// mScanning = false;
+	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// if (ConstantConfig.Debug) {
+	// UIUtil.showToast(ModeActivity.this, "扫描超时");
+	// }
+	// }
+	// }, SCAN_PERIOD);
+	// mScanning = true;
+	// mBluetoothAdapter.startLeScan(mLeScanCallback);
+	// } else {
+	// mScanning = false;
+	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// }
+	// }
 
 	private void startExecutor() {
 		executor = Executors.newScheduledThreadPool(3);

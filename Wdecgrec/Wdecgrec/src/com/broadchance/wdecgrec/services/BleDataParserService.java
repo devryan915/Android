@@ -336,9 +336,7 @@ public class BleDataParserService extends Service {
 		this.unregisterReceiver(mGattUpdateReceiver);
 		cancelExeService();
 		receivedQueue.clear();
-		receivedQueue = null;
 		dealQueue.clear();
-		dealQueue = null;
 		// releaseWarkLock();
 		super.onDestroy();
 	};
@@ -372,10 +370,13 @@ public class BleDataParserService extends Service {
 		// }
 		// }
 		// }, 0, 80, TimeUnit.MILLISECONDS);
-
+		cancelExeService();
 		processFrameDataTask = new TimerTask() {
 			@Override
 			public void run() {
+				// if (ConstantConfig.Debug) {
+				// LogUtil.d(TAG, "处理数据");
+				// }
 				if (atomicBooleanPro.compareAndSet(false, true)) {
 					try {
 						FrameData data;
@@ -388,10 +389,6 @@ public class BleDataParserService extends Service {
 							}
 						}
 						processReceivedByte();
-						// if (ConstantConfig.Debug) {
-						// LogUtil.d(TAG, "已接收数据：" + receivedQueue.size()
-						// + " 待处理数据：" + dealQueue.size());
-						// }
 					} catch (Exception e) {
 						LogUtil.e(TAG, e);
 					} finally {
@@ -407,6 +404,10 @@ public class BleDataParserService extends Service {
 
 	public void cancelExeService() {
 		// eServie.shutdown();
+		if (processFrameDataTask != null) {
+			processFrameDataTask.cancel();
+			processFrameDataTask = null;
+		}
 		if (processFrameDataTimer != null) {
 			processFrameDataTimer.cancel();
 			processFrameDataTimer = null;

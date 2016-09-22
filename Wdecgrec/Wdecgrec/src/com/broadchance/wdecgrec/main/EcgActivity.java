@@ -141,8 +141,12 @@ public class EcgActivity extends BaseActivity {
 			final String action = intent.getAction();
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				miiQueue.clear();
-			}
-			if (BleDataParserService.ACTION_ECGMII_DATA_AVAILABLE
+			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+					.equals(action)) {
+				if (ConstantConfig.Debug) {
+					ecgGLSurfaceViewChannelMII.clearDraw();
+				}
+			} else if (BleDataParserService.ACTION_ECGMII_DATA_AVAILABLE
 					.equals(action)) {
 				synchronized (miiQueue) {
 					int[] ecgData = intent
@@ -293,60 +297,63 @@ public class EcgActivity extends BaseActivity {
 		}, 2000);
 	}
 
-	private static final long SCAN_PERIOD = 3000;
-	private boolean mScanning;
-	private Handler mHandler = new Handler();
+	// private static final long SCAN_PERIOD = 3000;
+	// private boolean mScanning;
+	// private Handler mHandler = new Handler();
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothManager mBluetoothManager;
-	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-		@Override
-		public void onLeScan(final BluetoothDevice device, int rssi,
-				byte[] scanRecord) {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user != null) {
-				String deviceNumber = user.getMacAddress();
-				if (deviceNumber.equals(device.getAddress())) {
-					UIUtil.showToast(EcgActivity.this, "扫描到指定蓝牙");
-				}
-			}
-		}
-	};
+
+	// private BluetoothAdapter.LeScanCallback mLeScanCallback = new
+	// BluetoothAdapter.LeScanCallback() {
+	// @Override
+	// public void onLeScan(final BluetoothDevice device, int rssi,
+	// byte[] scanRecord) {
+	// UIUserInfoLogin user = DataManager.getUserInfo();
+	// if (user != null) {
+	// String deviceNumber = user.getMacAddress();
+	// if (deviceNumber.equals(device.getAddress())) {
+	// UIUtil.showToast(EcgActivity.this, "扫描到指定蓝牙");
+	// }
+	// }
+	// }
+	// };
 
 	/**
 	 * 扫描蓝牙设备
 	 * 
 	 * @param enable
 	 */
-	public void scanLeDevice() {
-		// BluetoothManager.
-		if (mBluetoothManager == null) {
-			mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-			if (mBluetoothManager == null) {
-				return;
-			}
-		}
-		mBluetoothAdapter = mBluetoothManager.getAdapter();
-		if (mBluetoothAdapter == null) {
-			return;
-		}
-		if (!mScanning) {
-			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					LogUtil.i(TAG, " stop scanLeDevice ");
-					mScanning = false;
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					UIUtil.showToast(EcgActivity.this, "扫描超时");
-				}
-			}, SCAN_PERIOD);
-			mScanning = true;
-			mBluetoothAdapter.startLeScan(mLeScanCallback);
-		} else {
-			mScanning = false;
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-		}
-	}
+	// public void scanLeDevice() {
+	// // BluetoothManager.
+	// if (mBluetoothManager == null) {
+	// mBluetoothManager = (BluetoothManager)
+	// getSystemService(Context.BLUETOOTH_SERVICE);
+	// if (mBluetoothManager == null) {
+	// return;
+	// }
+	// }
+	// mBluetoothAdapter = mBluetoothManager.getAdapter();
+	// if (mBluetoothAdapter == null) {
+	// return;
+	// }
+	// if (!mScanning) {
+	// // Stops scanning after a pre-defined scan period.
+	// mHandler.postDelayed(new Runnable() {
+	// @Override
+	// public void run() {
+	// LogUtil.i(TAG, " stop scanLeDevice ");
+	// mScanning = false;
+	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// UIUtil.showToast(EcgActivity.this, "扫描超时");
+	// }
+	// }, SCAN_PERIOD);
+	// mScanning = true;
+	// mBluetoothAdapter.startLeScan(mLeScanCallback);
+	// } else {
+	// mScanning = false;
+	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// }
+	// }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -624,6 +631,7 @@ public class EcgActivity extends BaseActivity {
 	private IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
 		intentFilter
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
 		intentFilter
