@@ -3,7 +3,7 @@
     package="com.broadchance.wdecgrec"
     android:sharedUserId="com.broadchance.skin"
     android:versionCode="1"
-    android:versionName="1.2.09.10" >
+    android:versionName="1.2.09.11" >
 
     <uses-sdk
         android:minSdkVersion="18"

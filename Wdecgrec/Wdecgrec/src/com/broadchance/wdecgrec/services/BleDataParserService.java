@@ -496,18 +496,18 @@ public class BleDataParserService extends Service {
 					AlertMachine.getInstance().cancelAlert(AlertType.A00002);
 				}
 				startExeService();
-				if (mSendSdl != null && !mSendSdl.isDone()) {
-					mSendSdl.cancel(true);
-				}
-				isHeartAvl.set(false);
-			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-					.equals(action)) {
 				mSendSdl = mEService.schedule(new Runnable() {
 					@Override
 					public void run() {
 						isHeartAvl.set(true);
 					}
 				}, heartDelay, TimeUnit.SECONDS);
+			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+					.equals(action)) {
+				if (mSendSdl != null && !mSendSdl.isDone()) {
+					mSendSdl.cancel(true);
+				}
+				isHeartAvl.set(false);
 				UIUserInfoLogin user = DataManager.getUserInfo();
 				if (user != null && user.getMacAddress() != null
 						&& !user.getMacAddress().isEmpty()) {
