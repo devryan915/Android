@@ -298,6 +298,7 @@ public class GuardService extends Service {
 		if (mFuture != null && !mFuture.isDone()) {
 			mFuture.cancel(true);
 		}
+		ActivityManager a;
 	}
 
 	public void bindBleService() {
