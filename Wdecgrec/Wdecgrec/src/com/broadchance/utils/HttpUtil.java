@@ -38,6 +38,8 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -359,7 +361,7 @@ public class HttpUtil {
 		/**
 		 * 是否开启所有网络上传
 		 */
-		//暂时去掉数据流量限制
+		// 暂时去掉数据流量限制
 		// boolean netType = SettingsManager.getInstance().getSettingsNetType();
 		// // 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
 		// if (!netType && !NetUtil.isWifi()) {
@@ -405,6 +407,9 @@ public class HttpUtil {
 			// builder.addTextBody("userID", userID);
 			post.setEntity(builder.build());
 			HttpClient client = new DefaultHttpClient();
+			HttpParams httpParam = client.getParams();
+			//超时时间
+			HttpConnectionParams.setConnectionTimeout(httpParam, 5000);
 			HttpResponse res = client.execute(post);
 			zipin.close();
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

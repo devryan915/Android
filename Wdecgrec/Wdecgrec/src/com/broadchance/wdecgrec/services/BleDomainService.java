@@ -1042,10 +1042,6 @@ public class BleDomainService extends Service {
 				File zipFile = new File(zipPath);
 				final String zipFileName;
 				if (zipFile.exists()) {
-					if (ConstantConfig.Debug) {
-						LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
-						UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
-					}
 					zipFileName = zipFile.getAbsolutePath();
 					JSONObject param = new JSONObject();
 					param.put("zipFile", zipFile.getAbsolutePath());
@@ -1054,6 +1050,10 @@ public class BleDomainService extends Service {
 					// param.put("hrs", hrs.toString());
 					// param.put("fileinfo", jarray);
 					param.put("fileinfo", upLoadDatas);
+					if (ConstantConfig.Debug) {
+						LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
+						UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
+					}
 					ClientGameService.getInstance().uploadBleFile(param,
 
 					new HttpReqCallBack<UploadFileResponse>() {

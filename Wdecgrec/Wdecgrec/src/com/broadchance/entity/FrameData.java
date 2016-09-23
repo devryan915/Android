@@ -187,8 +187,9 @@ public class FrameData {
 			}
 			if (isECG) {
 				seq = BleDataUtil.byteToInt(frameData[1]);
-				if (!frameTypeHex.endsWith("0")) {// 电极脱落/数据发生错误置为0
-					resetData();
+				if (!frameTypeHex.endsWith("0")) {// 电极脱落/数据发生错误置不为0
+					// 取消置零
+					// resetData();
 					UIUtil.sendBroadcast(new Intent(action));
 				}
 			}

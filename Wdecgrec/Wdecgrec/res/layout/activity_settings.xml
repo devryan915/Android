@@ -150,6 +150,24 @@
                 style="@style/settings_textview"
                 android:text="@string/settings_appupdate" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llAppFactory"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:orientation="horizontal" >
+
+            <View
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/settings_appupdate" />
+
+            <TextView
+                android:id="@+id/textViewFactory"
+                style="@style/settings_textview"
+                android:text="工程模式" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

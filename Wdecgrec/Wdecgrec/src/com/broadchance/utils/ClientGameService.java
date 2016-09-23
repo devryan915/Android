@@ -223,57 +223,66 @@ public class ClientGameService {
 	@SuppressWarnings("unchecked")
 	public void uploadRealBleFile(JSONObject param,
 			final HttpReqCallBack<UploadFileResponse> backCall) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
 		try {
-			param.put("mobile", user.getLoginName());
-			param.put("device", user.getMacAddress());
-			param.put("orderno", user.getAccess_token());
-			param.put("filetype", "1");
-			// ecgFile
-			// breathFile
-			// param.put("starttime", "");
-			// param.put("endtime", "");
-			// param.put("hrs", "");
-			// param.put("fileinfo", "");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		String indata = param.toString();
-		Map<String, Object> reparams = new HashMap<String, Object>();
-		reparams.put("action", "send_data");
-		reparams.put("indata", indata);
-		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
-		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
-			// HttpReqCallBack<UploadFileResponse> backCall;
-
-			@Override
-			protected UploadFileResponse doInBackground(
-					Map<String, Object>... params) {
-				Map<String, Object> paramsIn = params[0];
-				// backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
-				// .get("backCall");
-				// String url = "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";
-				// url = ConstantConfig.SERVER_URL;
-				// url = "http://192.168.1.109:56285/api/Data/AddRemote_Data";
-				return HttpUtil.uploadRealBleFile(ConstantConfig.SERVER_URL,
-						paramsIn);
-			}
-
-			@Override
-			protected void onPostExecute(UploadFileResponse result) {
-				if (result.isOk()) {
-					backCall.doSuccess(result);
-				} else {
-					backCall.doError(result.getData());
+			UIUserInfoLogin user = DataManager.getUserInfo();
+			try {
+				param.put("mobile", user.getLoginName());
+				param.put("device", user.getMacAddress());
+				param.put("orderno", user.getAccess_token());
+				param.put("filetype", "1");
+				// ecgFile
+				// breathFile
+				// param.put("starttime", "");
+				// param.put("endtime", "");
+				// param.put("hrs", "");
+				// param.put("fileinfo", "");
+			} catch (JSONException e) {
+				if (backCall != null) {
+					backCall.doError(e.toString());
 				}
 			}
+			String indata = param.toString();
+			Map<String, Object> reparams = new HashMap<String, Object>();
+			reparams.put("action", "send_data");
+			reparams.put("indata", indata);
+			reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+			new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
+				// HttpReqCallBack<UploadFileResponse> backCall;
 
-			@Override
-			protected void onProgressUpdate(Integer... values) {
+				@Override
+				protected UploadFileResponse doInBackground(
+						Map<String, Object>... params) {
+					Map<String, Object> paramsIn = params[0];
+					// backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
+					// .get("backCall");
+					// String url =
+					// "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";
+					// url = ConstantConfig.SERVER_URL;
+					// url =
+					// "http://192.168.1.109:56285/api/Data/AddRemote_Data";
+					return HttpUtil.uploadRealBleFile(
+							ConstantConfig.SERVER_URL, paramsIn);
+				}
 
+				@Override
+				protected void onPostExecute(UploadFileResponse result) {
+					if (result.isOk()) {
+						backCall.doSuccess(result);
+					} else {
+						backCall.doError(result.getData());
+					}
+				}
+
+				@Override
+				protected void onProgressUpdate(Integer... values) {
+
+				}
+			}.execute(reparams);
+		} catch (Exception e) {
+			if (backCall != null) {
+				backCall.doError(e.toString());
 			}
-
-		}.execute(reparams);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -291,24 +300,30 @@ public class ClientGameService {
 			// param.put("hrs", "");
 			// param.put("fileinfo", "");
 		} catch (JSONException e) {
-			e.printStackTrace();
+			if (backCall != null) {
+				backCall.doError(e.toString());
+			}
 		}
 		File zipFile = null;
 		try {
 			zipFile = new File(param.getString("zipFile"));
 			if (!zipFile.exists()) {
+				if (backCall != null) {
+					backCall.doError("批量文件不存在" + zipFile.getName());
+				}
 				return;
 			}
 			param.remove("zipFile");
 		} catch (JSONException e) {
-			e.printStackTrace();
+			if (backCall != null) {
+				backCall.doError(e.toString());
+			}
 		}
 		String indata = param.toString();
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "send_data");
 		reparams.put("indata", indata);
 		reparams.put("zipFile", zipFile);
-
 		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
 		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
 			// HttpReqCallBack<UploadFileResponse> backCall;

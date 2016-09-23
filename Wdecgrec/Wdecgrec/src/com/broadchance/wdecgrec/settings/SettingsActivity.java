@@ -69,6 +69,8 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	private View llAppUpdate;
 	private View viewNewVer;
 	private View llAppLogout;
+	private View llAppFactory;
+	private TextView textViewFactory;
 
 	// private View viewChangeSkinIcon;
 
@@ -143,6 +145,10 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		llUpload.setOnClickListener(this);
 		llAppLogout = findViewById(R.id.llAppLogout);
 		llAppLogout.setOnClickListener(this);
+		llAppFactory = findViewById(R.id.llAppFactory);
+		llAppFactory.setOnClickListener(this);
+		textViewFactory = (TextView) findViewById(R.id.textViewFactory);
+		setFactoryText();
 		// llMyinfo = findViewById(R.id.llMyinfo);
 		// llMyinfo.setOnClickListener(this);
 		// llAddFamily = findViewById(R.id.llAddFamily);
@@ -171,6 +177,11 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		// viewNewVer.setVisibility(!newVer.trim().isEmpty()
 		// && newVer.compareTo(AppApplication.curVer) > 0 ? View.VISIBLE
 		// : View.INVISIBLE);
+	}
+
+	private void setFactoryText() {
+		textViewFactory
+				.setText("工程模式" + (ConstantConfig.Debug ? "(开)" : "(关)"));
 	}
 
 	@Override
@@ -574,15 +585,21 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			break;
+		case R.id.llAppFactory:
+			ConstantConfig.Debug = !ConstantConfig.Debug;
+			setFactoryText();
+			break;
 		default:
 			break;
 		}
 	}
+
 	private void stopBleService() {
 		Intent bleServiceintent = new Intent(SettingsActivity.this,
 				GuardService.class);
 		stopService(bleServiceintent);
 	}
+
 	@Override
 	public void loadSkin() {
 		// viewChangeSkinIcon

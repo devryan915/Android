@@ -188,9 +188,9 @@ public class GuardService extends Service {
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					if (!isScanedUserMac) {
 						// if (ConstantConfig.Debug) {
-						UIUtil.showToast("未能找到指定设备");
+						UIUtil.showToast("未能找到指定设备,尝试直接连接");
 						// }
-						// _connect();
+						_connect();
 					}
 				}
 			}, SCAN_PERIOD);
@@ -283,23 +283,24 @@ public class GuardService extends Service {
 					long timeout = System.currentTimeMillis() - DataALiveTime;
 					if (timeout > CHECK_BLE_TIMEOUT) {
 						if (mBluetoothLeService != null) {
-							if (timeout < CHECK_BLE_TIMEOUT) {
-								// 断开连接BluetoothGatt
-								mBluetoothLeService.disconnect();
-								if (ConstantConfig.Debug) {
-									UIUtil.showToast("连接蓝牙");
-								}
-								_connect();
-							} else {
-								// 关闭BluetoothGatt，重新获取新的BluetoothGatt
-								mBluetoothLeService.close();
-								scanLeDevice();
-								DataALiveTime = System.currentTimeMillis()
-										+ SCAN_PERIOD;
-								if (ConstantConfig.Debug) {
-									UIUtil.showToast("扫描蓝牙");
-								}
-							}
+							// if (timeout < CHECK_BLE_TIMEOUT) {
+							// // 断开连接BluetoothGatt
+							// mBluetoothLeService.disconnect();
+							// if (ConstantConfig.Debug) {
+							// UIUtil.showToast("连接蓝牙");
+							// }
+							// _connect();
+							// } else {
+							// 关闭BluetoothGatt，重新获取新的BluetoothGatt
+							mBluetoothLeService.disconnect();
+							mBluetoothLeService.close();
+							scanLeDevice();
+							 DataALiveTime = System.currentTimeMillis()
+							 + SCAN_PERIOD;
+							// if (ConstantConfig.Debug) {
+							// UIUtil.showToast("扫描蓝牙");
+							// }
+							// }
 						} else {
 							DataALiveTime = System.currentTimeMillis();
 						}
