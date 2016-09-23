@@ -56,7 +56,7 @@ public class GuardService extends Service {
 	 * 检查ble连接是否超时
 	 */
 	private final static int CHECK_BLE_TIMEOUT = 5 * 1000;
-	private final static int CHECK_BLE_DELAY = 15 * 1000;
+	private final static int CHECK_BLE_DELAY = 10 * 1000;
 	private static final long SCAN_PERIOD = 3000;
 	private boolean mScanning;
 	private Handler mHandler = new Handler();
@@ -109,7 +109,6 @@ public class GuardService extends Service {
 				if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
 					LogUtil.d(TAG, "蓝牙服务关闭");
 					if (mBluetoothLeService != null) {
-						mBluetoothLeService.enableBleService();
 						mBluetoothLeService.lostService();
 					}
 				} else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
@@ -187,22 +186,30 @@ public class GuardService extends Service {
 					LogUtil.i(TAG, " stop scanLeDevice ");
 					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					// if (ConstantConfig.Debug) {
-					UIUtil.showToast("未能找到指定设备");
-					// }
-					// _connect();
+					if (!isScanedUserMac) {
+						// if (ConstantConfig.Debug) {
+						UIUtil.showToast("未能找到指定设备");
+						// }
+						// _connect();
+					}
 				}
 			}, SCAN_PERIOD);
 			setDataAliveTime(System.currentTimeMillis() + SCAN_PERIOD);
 			mScanning = true;
+			isScanedUserMac = false;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		}
 	}
 
-	public void setDataAliveTime(long time) {
+	private void setDataAliveTime(long time) {
 		DataALiveTime = time;
 	}
 
+	public void setDelayDataAliveTime() {
+		setDataAliveTime(System.currentTimeMillis() + CHECK_BLE_TIMEOUT);
+	}
+
+	private boolean isScanedUserMac = false;
 	// Device scan callback.
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
@@ -216,6 +223,10 @@ public class GuardService extends Service {
 					UIUtil.showToast("扫描到指定蓝牙并开始连接");
 					// }
 					_connect();
+					if (mBluetoothLeService != null) {
+						mBluetoothLeService.sendRemoteRssi(rssi);
+					}
+					isScanedUserMac = true;
 				}
 			}
 		}
@@ -223,7 +234,10 @@ public class GuardService extends Service {
 
 	private void _connect() {
 		if (mBluetoothLeService != null) {
-			final boolean result = mBluetoothLeService.connect();
+			boolean result = mBluetoothLeService.connect();
+			if (result) {
+				setDelayDataAliveTime();
+			}
 			LogUtil.d(TAG, "Connect request result=" + result);
 		}
 	}
@@ -255,6 +269,10 @@ public class GuardService extends Service {
 	}
 
 	private void checkBleStatus() {
+		if (mFuture != null && !mFuture.isDone()) {
+			mFuture.cancel(true);
+		}
+		DataALiveTime = System.currentTimeMillis();
 		mFuture = mEService.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
@@ -265,7 +283,7 @@ public class GuardService extends Service {
 					long timeout = System.currentTimeMillis() - DataALiveTime;
 					if (timeout > CHECK_BLE_TIMEOUT) {
 						if (mBluetoothLeService != null) {
-							if (timeout < 3 * CHECK_BLE_TIMEOUT) {
+							if (timeout < CHECK_BLE_TIMEOUT) {
 								// 断开连接BluetoothGatt
 								mBluetoothLeService.disconnect();
 								if (ConstantConfig.Debug) {
@@ -288,7 +306,6 @@ public class GuardService extends Service {
 						LogUtil.d(TAG, "Connect request timeout");
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		}, CHECK_BLE_DELAY, CHECK_BLE_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -345,9 +362,9 @@ public class GuardService extends Service {
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		startService(dataParserIntent);
-		// Intent bleDomainIntent = new Intent(GuardService.this,
-		// BleDomainService.class);
-		// startService(bleDomainIntent);
+		Intent bleDomainIntent = new Intent(GuardService.this,
+				BleDomainService.class);
+		startService(bleDomainIntent);
 		checkBleStatus();
 		Instance = this;
 		acquireWakeLock();
@@ -361,9 +378,9 @@ public class GuardService extends Service {
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		stopService(dataParserIntent);
-		// Intent bleDomainIntent = new Intent(GuardService.this,
-		// BleDomainService.class);
-		// stopService(bleDomainIntent);
+		Intent bleDomainIntent = new Intent(GuardService.this,
+				BleDomainService.class);
+		stopService(bleDomainIntent);
 		cancelCheckBleStatus();
 		Instance = null;
 		releaseWarkLock();

@@ -61,6 +61,9 @@ public class PowerChangeReceiver extends BroadcastReceiver {
 				context.sendBroadcast(new Intent(
 						BleDomainService.ACTION_UPLOAD_ENDREALMODE));
 			}
+			if (ConstantConfig.Debug) {
+				UIUtil.showToast("触发 " + (isCharging ? "开启" : "关闭") + "实时上传");
+			}
 			int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED,
 					-1);
 			boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;

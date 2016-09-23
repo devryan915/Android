@@ -96,7 +96,9 @@ public class BluetoothLeService extends Service {
 				// Attempts to discover services after successful connection.
 				Log.i(TAG, "Attempting to start service discovery:"
 						+ mBluetoothGatt.discoverServices());
-
+				if (GuardService.Instance != null) {
+					GuardService.Instance.setDelayDataAliveTime();
+				}
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				intentAction = ACTION_GATT_DISCONNECTED;
 				mConnectionState = STATE_DISCONNECTED;
@@ -115,10 +117,9 @@ public class BluetoothLeService extends Service {
 					LogUtil.i(TAG, "[" + ConstantConfig.BLE_UUID_READ + "]"
 							+ "监听特征数据");
 					setCharacteristicNotification(characteristic, true);
-					if (GuardService.Instance != null) {
-						GuardService.Instance.setDataAliveTime(System
-								.currentTimeMillis());
-					}
+				}
+				if (GuardService.Instance != null) {
+					GuardService.Instance.setDelayDataAliveTime();
 				}
 			} else {
 				Log.w(TAG, "onServicesDiscovered received: " + status);
@@ -137,8 +138,7 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
 			try {
-				GuardService.Instance.setDataAliveTime(System
-						.currentTimeMillis());
+				GuardService.Instance.setDelayDataAliveTime();
 			} catch (Exception e) {
 			}
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -146,15 +146,23 @@ public class BluetoothLeService extends Service {
 
 		@Override
 		public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-			if (rssiValue == null || (rssiValue != null && rssi != rssiValue)) {
-				rssiValue = rssi;
-				Intent intent = new Intent(GuardService.ACTION_GATT_RSSICHANGED);
-				sendBroadcast(intent);
-			}
+			sendRemoteRssi(rssi);
 			super.onReadRemoteRssi(gatt, rssi, status);
 		}
 
 	};
+
+	public void sendRemoteRssi(int rssi) {
+		if (rssiValue == null || (rssiValue != null && rssi != rssiValue)) {
+			rssiValue = rssi;
+			Intent intent = new Intent(GuardService.ACTION_GATT_RSSICHANGED);
+			sendBroadcast(intent);
+		}
+		// try {
+		// GuardService.Instance.setDelayDataAliveTime();
+		// } catch (Exception e) {
+		// }
+	}
 
 	public void readRemoteRssi() {
 		try {
@@ -198,12 +206,12 @@ public class BluetoothLeService extends Service {
 		// For all other profiles, writes the data formatted in HEX.
 		final byte[] data = characteristic.getValue();
 		// if (data != null && data.length > 0) {
-		if (ConstantConfig.Debug && count++ % 50 == 0) {
-			final StringBuilder stringBuilder = new StringBuilder(data.length);
-			for (byte byteChar : data)
-				stringBuilder.append(String.format("%02X ", byteChar));
-			UIUtil.showToast(stringBuilder.toString());
-		}
+		// if (ConstantConfig.Debug && count++ % 50 == 0) {
+		// final StringBuilder stringBuilder = new StringBuilder(data.length);
+		// for (byte byteChar : data)
+		// stringBuilder.append(String.format("%02X ", byteChar));
+		// UIUtil.showToast(stringBuilder.toString());
+		// }
 		intent.putExtra(EXTRA_DATA, data);
 		// }
 		// }

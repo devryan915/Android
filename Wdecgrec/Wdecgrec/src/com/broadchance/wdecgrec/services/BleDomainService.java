@@ -95,9 +95,9 @@ public class BleDomainService extends Service {
 
 	// private AtomicBoolean isRealMode = new AtomicBoolean(false);
 	// private boolean isOneKeyMode = false;
-	private boolean isUploading = false;
+	private AtomicBoolean isUploading = new AtomicBoolean(false);
 	private Object objLock = new Object();
-	private Object objLockUpload = new Object();
+	// private Object objLockUpload = new Object();
 	private String msg;
 	private int uploadedFileRetryTimes;
 	List<UploadFile> waitUploadFiles;
@@ -129,6 +129,7 @@ public class BleDomainService extends Service {
 				// isRealMode.compareAndSet(false, true);
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "开启实时上传");
+					UIUtil.showToast("开启实时上传");
 				}
 				// startRealTimeMode();
 			} else if (BleDomainService.ACTION_UPLOAD_ENDREALMODE
@@ -136,6 +137,7 @@ public class BleDomainService extends Service {
 				// isRealMode.compareAndSet(true, false);
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "结束实时上传");
+					UIUtil.showToast("结束实时上传");
 				}
 				FrameDataMachine.getInstance().endRealTimeMode();
 			} else if (BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE
@@ -284,14 +286,6 @@ public class BleDomainService extends Service {
 				}
 				File[] wFiles = new File[] { new File(uploadFile.getPath()),
 						new File(uploadFile.getBpath()) };
-				// try {
-				// JSONArray tHrs = new JSONArray(uploadFile.getHrs());
-				// for (int j = 0; j < tHrs.length(); j++) {
-				// hrs.put(tHrs.get(j));
-				// }
-				// } catch (JSONException e) {
-				// e.printStackTrace();
-				// }
 				for (int j = 0; j < wFiles.length; j++) {
 					File file = wFiles[j];
 					if (file.exists()) {
@@ -308,16 +302,6 @@ public class BleDomainService extends Service {
 						data.put("endtime", eTime);
 						data.put("filename", file.getName());
 						data.put("datatype", j == 0 ? "1" : "2");
-						/*
-						 * data.setStarttime(sdf.format(uploadFile
-						 * .getDataBeginTime()));
-						 * data.setEndtime(sdf.format(uploadFile
-						 * .getDataEndTime())); //
-						 * data.setUserID(DataManager.getUserInfo
-						 * ().getUserID()); // data.setDeviceID(devID);
-						 * data.setFilename(file.getName()); data.setDatatype(j
-						 * == 0 ? "1" : "2");
-						 */
 						// 抓取文件对应ble的期间段
 						if (sTime.compareTo(starttime) < 0
 								|| starttime.isEmpty()) {
@@ -328,9 +312,7 @@ public class BleDomainService extends Service {
 						}
 						if (j == 0) {
 							data.put("hrs", new JSONArray(uploadFile.getHrs()));
-							// data.setHrs(uploadFile.getHrs());
 						}
-						// upLoadDatas.add(data);
 						upLoadDatas.put(data);
 					} else {
 						if (ConstantConfig.Debug) {
@@ -355,6 +337,7 @@ public class BleDomainService extends Service {
 			if (files.size() < 1) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "无文件可以上传");
+					UIUtil.showToast("无数据可上传");
 				}
 				endUpload();
 				return;
@@ -365,6 +348,7 @@ public class BleDomainService extends Service {
 			if (zipFile.exists()) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
+					UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
 				}
 				zipFileName = zipFile.getAbsolutePath();
 				// fileinfo = JSON.toJSONString(upLoadDatas);
@@ -396,33 +380,43 @@ public class BleDomainService extends Service {
 					@Override
 					public void doSuccess(UploadFileResponse result) {
 						if (result.isOk()) {
+							if (ConstantConfig.Debug) {
+								LogUtil.d(TAG, "批量上传成功");
+								UIUtil.showToast("批量上传成功");
+							}
 							if (curUploadWay == UploadWay.OneKey) {
 								sendUploadBroadCast(
 										getCountByStatus(UploadFileStatus.Uploaded),
 										waitUploadFiles != null ? waitUploadFiles
 												.size() : 0);
 							}
-							if (ConstantConfig.Debug) {
-								LogUtil.d(TAG, "批量上传成功");
-								UIUtil.showToast("批量上传成功");
-							}
 							setUploadByStatus(UploadFileStatus.Uploaded);
 							int undeal = getCountByStatus(UploadFileStatus.UnDeal);
 							int failed = getCountByStatus(UploadFileStatus.UploadFailed);
-							if (undeal + failed > 0) {
+							if (undeal + failed > 0
+									&& uploadedFileRetryTimes < UPLOAD_RETRYTIMES) {
 								if (ConstantConfig.Debug) {
-									LogUtil.d(TAG, msg + "，上传列表中还有 " + undeal
-											+ failed + "需要上传，继续上传");
+									LogUtil.d(TAG, msg + "，上传列表中还有 "
+											+ (undeal + failed) + "需要上传，继续上传");
+									UIUtil.showToast(msg + "，上传列表中还有 "
+											+ (undeal + failed)
+											+ "需要上传，尝试重新上传，尝试次数"
+											+ uploadedFileRetryTimes);
 								}
+								uploadedFileRetryTimes++;
 								uploadECGFile();
 							} else {
 								endUpload();
 							}
 						} else {
-							// 是否需要重新登录
-							if (result.Code.endsWith("401")) {
-								reLogin();
+							if (ConstantConfig.Debug) {
+								LogUtil.d(TAG, "批量上传失败" + result.getMessage());
+								UIUtil.showToast("批量上传失败" + result.getMessage());
 							}
+							// 是否需要重新登录
+							// if (result.Code.endsWith("401")) {
+							// reLogin();
+							// }
 							endUpload();
 						}
 					}
@@ -431,9 +425,8 @@ public class BleDomainService extends Service {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, msg + "，上传失败 result: " + result);
-							UIUtil.showToast("批量上传失败：\n" + result);
+							UIUtil.showToast(msg + "，上传失败result:" + result);
 						}
-						UIUtil.showToast(getApplicationContext(), "上传失败!");
 						setUploadByStatus(UploadFileStatus.UploadFailed);
 						int undeal = getCountByStatus(UploadFileStatus.UnDeal);
 						int failed = getCountByStatus(UploadFileStatus.UploadFailed);
@@ -441,6 +434,9 @@ public class BleDomainService extends Service {
 								&& uploadedFileRetryTimes < UPLOAD_RETRYTIMES) {
 							if (ConstantConfig.Debug) {
 								LogUtil.d(TAG, msg + "，上传列表中还有 " + undeal
+										+ failed + "需要上传，尝试重新上传，尝试次数"
+										+ uploadedFileRetryTimes);
+								UIUtil.showToast(msg + "，上传列表中还有 " + undeal
 										+ failed + "需要上传，尝试重新上传，尝试次数"
 										+ uploadedFileRetryTimes);
 							}
@@ -453,51 +449,10 @@ public class BleDomainService extends Service {
 						}
 					}
 				});
-				/******
-				 * ClientGameService.getInstance().uploadFile(zipFile,
-				 * 
-				 * desDataJson, curUploadWay, new
-				 * HttpReqCallBack<UploadFileResponse>() {
-				 * 
-				 * @Override public Activity getReqActivity() { return null; }
-				 * @Override public void doSuccess(UploadFileResponse result) {
-				 *           if (result.isOk()) { if (curUploadWay ==
-				 *           UploadWay.OneKey) { sendUploadBroadCast(
-				 *           getCountByStatus(UploadFileStatus.Uploaded),
-				 *           waitUploadFiles != null ? waitUploadFiles .size() :
-				 *           0); } if (ConstantConfig.Debug) { LogUtil.i(TAG,
-				 *           msg + zipFileName + "，上传成功"); }
-				 *           setUploadByStatus(UploadFileStatus.Uploaded); int
-				 *           undeal = getCountByStatus(UploadFileStatus.UnDeal);
-				 *           int failed =
-				 *           getCountByStatus(UploadFileStatus.UploadFailed); if
-				 *           (undeal + failed > 0) { if (ConstantConfig.Debug) {
-				 *           LogUtil.d(TAG, msg + "，上传列表中还有 " + undeal + failed
-				 *           + "需要上传，继续上传"); } uploadECGFile(); } else {
-				 *           endUpload(); } } else { // 是否需要重新登录 if
-				 *           (result.Code.endsWith("401")) { reLogin(); }
-				 *           endUpload(); } }
-				 * @Override public void doError(String result) { if
-				 *           (ConstantConfig.Debug) { LogUtil.d(TAG, msg +
-				 *           "，上传失败 " + result); }
-				 *           UIUtil.showToast(getApplicationContext(), "上传失败!");
-				 *           setUploadByStatus(UploadFileStatus.UploadFailed);
-				 *           int undeal =
-				 *           getCountByStatus(UploadFileStatus.UnDeal); int
-				 *           failed =
-				 *           getCountByStatus(UploadFileStatus.UploadFailed); if
-				 *           (undeal + failed > 0 && uploadedFileRetryTimes <
-				 *           UPLOAD_RETRYTIMES) { if (ConstantConfig.Debug) {
-				 *           LogUtil.d(TAG, msg + "，上传列表中还有 " + undeal + failed
-				 *           + "需要上传，尝试重新上传，尝试次数" + uploadedFileRetryTimes); }
-				 *           // 最多尝试三次如果还是失败放弃上传，等待下次批量上传
-				 *           uploadedFileRetryTimes++; DataManager
-				 *           .updateUploadFileTimes(waitUploadFiles);
-				 *           uploadECGFile(); } else { endUpload(); } } });
-				 ****/
 			} else {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "正在上传的文件不存在" + zipFile.getAbsolutePath());
+					UIUtil.showToast("正在上传的文件不存在" + zipFile.getAbsolutePath());
 				}
 				setUploadByStatus(UploadFileStatus.UploadFailed);
 				// 最多尝试三次如果还是失败放弃上传，等待下次批量上传
@@ -512,11 +467,12 @@ public class BleDomainService extends Service {
 				}
 			}
 		} catch (Exception e) {
-			setUploadByStatus(UploadFileStatus.UploadFailed);
-			endUpload();
 			if (ConstantConfig.Debug) {
 				LogUtil.e(TAG + " startUpload", e);
+				UIUtil.showToast("上传失败：\n" + e.toString());
 			}
+			setUploadByStatus(UploadFileStatus.UploadFailed);
+			endUpload();
 		}
 	}
 
@@ -665,7 +621,6 @@ public class BleDomainService extends Service {
 			// 因此做出此检查，来自动启动上述情况中，自动启动一键上传
 			boolean isNeedOneKeyUpload = nUploadWay == UploadWay.OneKey
 					&& curUploadWay == UploadWay.Batch;
-
 			resetUpload();
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, msg + "，上传结束 ");
@@ -683,8 +638,10 @@ public class BleDomainService extends Service {
 		if (ConstantConfig.Debug) {
 			LogUtil.d(TAG, curUploadWay == UploadWay.OneKey ? "结束一键上传"
 					: "结束批量上传");
+			UIUtil.showToast(curUploadWay == UploadWay.OneKey ? "结束一键上传"
+					: "结束批量上传");
 		}
-		isUploading = false;
+		isUploading.set(false);
 		nUploadWay = UploadWay.Batch;
 	}
 
@@ -695,12 +652,12 @@ public class BleDomainService extends Service {
 		/**
 		 * 是否开启所有网络上传
 		 */
-		boolean netType = SettingsManager.getInstance().getSettingsNetType();
-		// 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
-		if (!netType && !NetUtil.isWifi()) {
-			LogUtil.d(TAG, "当前网络为移动网络，停止上传");
-			return;
-		}
+		// boolean netType = SettingsManager.getInstance().getSettingsNetType();
+		// // 如果仅限定wifi，检查当前是否Wifi网络，如果不是取消本次上传
+		// if (!netType && !NetUtil.isWifi()) {
+		// LogUtil.d(TAG, "当前网络为移动网络，停止上传");
+		// return;
+		// }
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		if (user == null) {
 			LogUtil.d(TAG, "用户数据不存在");
@@ -716,14 +673,7 @@ public class BleDomainService extends Service {
 			sendUploadBroadCast(0,
 					waitUploadFiles != null ? waitUploadFiles.size() : 0);
 		}
-		synchronized (objLockUpload) {
-			if (isUploading) {
-				if (ConstantConfig.Debug) {
-					LogUtil.d(TAG, "文件正在上传中");
-				}
-				return;
-			}
-			isUploading = true;
+		if (isUploading.compareAndSet(false, true)) {
 			msg = "";
 			curUploadWay = nUploadWay;
 			if (curUploadWay == UploadWay.OneKey) {
@@ -748,20 +698,25 @@ public class BleDomainService extends Service {
 				cal.add(Calendar.MINUTE, -1);
 				waitUploadFiles = getUploadFile(cal.getTime(), -1);
 			}
-			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, "开始" + msg);
-			}
 			if (waitUploadFiles != null && waitUploadFiles.size() > 0) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "准备" + msg);
+					UIUtil.showToast("准备" + msg);
 				}
 				uploadECGFile();
 			} else {
-				resetUpload();
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "无文件可上传");
+					UIUtil.showToast("无文件可上传" + msg);
 				}
+				resetUpload();
 			}
+		} else {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "文件正在上传中");
+				UIUtil.showToast("文件正在上传中");
+			}
+			return;
 		}
 	}
 
@@ -773,18 +728,10 @@ public class BleDomainService extends Service {
 			@Override
 			protected String doInBackground(Void... params) {
 				try {
-					// if (!isRealMode.get()) {
-					// return "";
-					// }
-					// 生成实时数据文件，并上传
-					/*
-					 * FileUtil fileUtil = writeECGData2File(true); if (fileUtil
-					 * == null) { if (ConstantConfig.Debug) { LogUtil.d(TAG,
-					 * "无数据可实时上传"); } return null; } if (ConstantConfig.Debug) {
-					 * LogUtil.d(TAG, "正在实时上传" +
-					 * fileUtil.getECGFile().getAbsolutePath() + " " +
-					 * fileUtil.getBreathFile().getAbsolutePath()); }
-					 */
+					if (ConstantConfig.Debug) {
+						LogUtil.d(TAG, "准备实时上传");
+						UIUtil.showToast("准备实时上传");
+					}
 					FrameDataMachine machine = FrameDataMachine.getInstance();
 					StringBuffer data1 = new StringBuffer();
 					StringBuffer data2 = new StringBuffer();
@@ -795,8 +742,6 @@ public class BleDomainService extends Service {
 					Date sDate = null;
 					Date eDate = null;
 					String endtime = "";
-					// SimpleDateFormat sdf = new SimpleDateFormat(
-					// "yyyyMMdd HH:mm:ss.SSS");
 					long datasLength = 0;
 					for (int i = 0; i < fileFrameDatas.size(); i++) {
 						fileFrameData = fileFrameDatas.get(i);
@@ -811,37 +756,11 @@ public class BleDomainService extends Service {
 						}
 						datasLength++;
 					}
-					// while ((fileFrameData = machine.getRealTimeFrameData())
-					// != null) {
-					// data1.append(fileFrameData.ch1 + ",");
-					// // String timeStr = CommonUtil
-					// // .getTime_B(fileFrameData.date);
-					// // if (timeStr.compareTo(starttime) < 0
-					// // || starttime.isEmpty()) {
-					// // starttime = timeStr;
-					// // }
-					// // if (timeStr.compareTo(endtime) > 0 ||
-					// // endtime.isEmpty()) {
-					// // endtime = timeStr;
-					// // }
-					// if ((sDate != null && fileFrameData.date.getTime() <
-					// sDate
-					// .getTime()) || sDate == null) {
-					// sDate = fileFrameData.date;
-					// }
-					// if ((eDate != null && fileFrameData.date.getTime() >
-					// eDate
-					// .getTime()) || eDate == null) {
-					// eDate = fileFrameData.date;
-					// }
-					// datasLength++;
-					// }
 					if (datasLength <= 0) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, "实时上传  心率为空");
 						}
-						// retryStartRealTimeUp();
-						return "";
+						return "实时上传无数据";
 					}
 					starttime = CommonUtil.getTime_B(sDate);
 					endtime = CommonUtil.getTime_B(eDate);
@@ -855,12 +774,14 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, "实时上传 " + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
+								UIUtil.showToast("实时上传 " + starttime + "-"
+										+ endtime + " 时差" + dataTime + " 数据长度"
+										+ datasLength);
 							} else {
 								LogUtil.d(TAG, "实时上传 不符合规则  时差" + dataTime
 										+ " 数据长度" + datasLength);
 							}
 						} catch (Exception e) {
-							e.printStackTrace();
 						}
 					}
 					datasLength = 0;
@@ -870,40 +791,18 @@ public class BleDomainService extends Service {
 						datasLength++;
 
 					}
-					// while ((bdata = machine.getRealTimeBreathData()) != null
-					// && datasLength < Upload_BreathData) {
-					// data2.append(bdata + ",");
-					// datasLength++;
-					// }
 					if (datasLength <= 0) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, "实时上传  呼吸为空");
 						}
-						// retryStartRealTimeUp();
-						return "";
+						return "实时上传  呼吸为空";
 					}
-					// JSONArray jHeartRateArray = new JSONArray();
-					// Integer hrate = null;
-					// while ((hrate = machine.getHeartRealTimeRate()) != null)
-					// {
-					// JSONObject rate = new JSONObject();
-					// try {
-					// rate.put("hr", hrate);
-					// } catch (JSONException e) {
-					// e.printStackTrace();
-					// }
-					// jHeartRateArray.put(rate);
-					// }
-					// lastRealUpTime = System.currentTimeMillis();
 					JSONObject param = new JSONObject();
 					// param.put("ecgFile", fileUtil.getECGFile());
 					// param.put("breathFile", fileUtil.getBreathFile());
 					param.put("starttime", starttime);
 					param.put("endtime", endtime);
 					param.put("hrs", jHeartRateArray);
-					/**
-					 * 
-					 */
 					param.put("data1", data1.toString());
 					param.put("data2", data2.toString());
 					param.put("fileinfo", "");
@@ -922,22 +821,16 @@ public class BleDomainService extends Service {
 											LogUtil.d(TAG, "实时上传成功");
 											UIUtil.showToast("实时上传成功");
 										}
+									} else {
+										if (ConstantConfig.Debug) {
+											LogUtil.d(
+													TAG,
+													"实时上传失败"
+															+ result.getMessage());
+											UIUtil.showToast("实时上传失败"
+													+ result.getMessage());
+										}
 									}
-									// // 实时模式改成定时4s
-									// long sec = (long) ((System
-									// .currentTimeMillis() - lastRealUpTime) *
-									// 0.001);
-									// // 如果两次间隔时间大于4s则立即实时上传，否则定时延后执行
-									// if (sec > ConstantConfig.Real_Interval) {
-									// startRealTimeMode();
-									// } else {
-									// executor.schedule(new Runnable() {
-									// @Override
-									// public void run() {
-									// startRealTimeMode();
-									// }
-									// }, sec, TimeUnit.SECONDS);
-									// }
 								}
 
 								@Override
@@ -949,39 +842,18 @@ public class BleDomainService extends Service {
 									// retryStartRealTimeUp();
 								}
 							});
-					// ClientGameService.getInstance().uploadRealTimeFile(file,
-					// new HttpReqCallBack<UploadFileResponse>() {
-					// @Override
-					// public Activity getReqActivity() {
-					// return null;
-					// }
-					//
-					// @Override
-					// public void doSuccess(UploadFileResponse result) {
-					// if (result.isOk()) {
-					// if (ConstantConfig.Debug) {
-					// LogUtil.d(TAG, "实时上传成功");
-					// }
-					// }
-					// }
-					//
-					// @Override
-					// public void doError(String result) {
-					// if (ConstantConfig.Debug) {
-					// LogUtil.d(TAG, "实时上传失败" + result);
-					// }
-					// }
-					// });
-					return "";
+					return ResponseCode.Ok;
 				} catch (Exception e) {
-					LogUtil.e(TAG, e);
-					// retryStartRealTimeUp();
+					return e.toString();
 				}
-				return null;
 			}
 
 			@Override
 			protected void onPostExecute(String result) {
+				if (ConstantConfig.Debug && !ResponseCode.Ok.equals(result)) {
+					LogUtil.d(TAG, "实时上传失败" + result);
+					UIUtil.showToast("实时上传失败" + result);
+				}
 				super.onPostExecute(result);
 
 			}
@@ -1012,20 +884,6 @@ public class BleDomainService extends Service {
 
 	public static FileUtil writeECGData2File(
 			List<FileFrameData> fileFrameDatas, List<Short> fileBreathDatas) {
-		// FrameDataMachine machine = FrameDataMachine.getInstance();
-		// List<FileFrameData> fileFrameDatas = new ArrayList<FileFrameData>();
-		// List<Short> fileBreathDatas = new ArrayList<Short>();
-		// Short bdata = null;
-		// FileFrameData fileFrameData = null;
-		// while ((fileFrameData = isRealMode ? machine.getRealTimeFrameData()
-		// : machine.getFileFrameData()) != null) {
-		// fileFrameDatas.add(fileFrameData);
-		// }
-		// while ((bdata = isRealMode ? machine.getRealTimeBreathData() :
-		// machine
-		// .getFileBreathData()) != null) {
-		// fileBreathDatas.add(bdata);
-		// }
 		if (fileFrameDatas.size() > 0) {
 			try {
 				int capacity = SettingsManager.getInstance()
@@ -1060,11 +918,11 @@ public class BleDomainService extends Service {
 									- CommonUtil.parseDate_B(starttime)
 											.getTime();
 							if (datasLength == (int) (dataTime / 8) + 1) {
-								LogUtil.d(TAG, "批量上传 " + starttime + "-"
+								LogUtil.d(TAG, "批量写文件" + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
 							} else {
-								LogUtil.e(TAG, "批量上传 不符合规则  时差" + dataTime
+								LogUtil.e(TAG, "批量写文件不符合规则  时差" + dataTime
 										+ " 数据长度" + datasLength);
 							}
 						} catch (Exception e) {
@@ -1120,12 +978,17 @@ public class BleDomainService extends Service {
 						// 不用限制是否有数据
 						// if (file == null)
 						// return;
-						if (curUploadWay == UploadWay.OneKey)
+						if (curUploadWay == UploadWay.OneKey) {
+							if (ConstantConfig.Debug) {
+								UIUtil.showToast("当前一键上传中，取消本次批量上传");
+							}
 							return;
+						}
 						startUpload();
 					} catch (Exception e) {
 						if (ConstantConfig.Debug) {
 							LogUtil.e(TAG, e);
+							UIUtil.showToast("批量上传发生异常" + e.toString());
 						}
 					} finally {
 						atomicBooleanExecutor.set(false);

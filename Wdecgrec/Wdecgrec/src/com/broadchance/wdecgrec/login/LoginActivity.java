@@ -307,6 +307,7 @@ public class LoginActivity extends BaseActivity {
 				}
 			});
 		} catch (JSONException e) {
+			current = null;
 			e.printStackTrace();
 		}
 	}
