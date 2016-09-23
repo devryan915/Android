@@ -841,9 +841,9 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, "实时上传 " + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
-								UIUtil.showToast("实时上传 " + starttime + "-"
-										+ endtime + " 时差" + dataTime + " 数据长度"
-										+ datasLength);
+								// UIUtil.showToast("实时上传 " + starttime + "-"
+								// + endtime + " 时差" + dataTime + " 数据长度"
+								// + datasLength);
 							} else {
 								LogUtil.d(TAG, "实时上传 不符合规则  时差" + dataTime
 										+ " 数据长度" + datasLength);
@@ -1159,8 +1159,13 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, "批量写文件" + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
+								UIUtil.showToast("批量写文件" + starttime + "-"
+										+ endtime + " 时差" + dataTime + " 数据长度"
+										+ datasLength);
 							} else {
 								LogUtil.e(TAG, "批量写文件不符合规则  时差" + dataTime
+										+ " 数据长度" + datasLength);
+								UIUtil.showToast("批量写文件不符合规则  时差" + dataTime
 										+ " 数据长度" + datasLength);
 							}
 						} catch (Exception e) {
