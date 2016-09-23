@@ -82,16 +82,17 @@ public class BleDomainService extends Service {
 
 	public final static String ACTION_UPLOAD_UPLOADCHANGED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_UPLOAD_UPLOADCHANGED";
+	private static BleDomainService Instance;
 	// private final static int Upload_EcgData = 480;
 	// private final static int Upload_BreathData = Upload_EcgData / 5;
 
 	// private Timer pkgFrameDataTimer = new Timer();
 	// private TimerTask pkgFrameDataTask;
 
-	private ScheduledExecutorService executor = Executors
-			.newScheduledThreadPool(3);
-	private ScheduledFuture<?> mFuture = null;
-	AtomicBoolean atomicBooleanExecutor = new AtomicBoolean(false);
+	// private ScheduledExecutorService executor = Executors
+	// .newScheduledThreadPool(3);
+	// private ScheduledFuture<?> mFuture = null;
+	// AtomicBoolean atomicBooleanExecutor = new AtomicBoolean(false);
 
 	// private AtomicBoolean isRealMode = new AtomicBoolean(false);
 	// private boolean isOneKeyMode = false;
@@ -239,9 +240,14 @@ public class BleDomainService extends Service {
 	 *            限定UploadFileStatus.UploadFailed UploadFileStatus.Uploaded
 	 */
 	private void setUploadByStatus(UploadFileStatus status) {
-		if (waitUploadFiles == null)
+		setUploadByStatus(waitUploadFiles, status);
+	}
+
+	private void setUploadByStatus(List<UploadFile> uploadFiles,
+			UploadFileStatus status) {
+		if (uploadFiles == null)
 			return;
-		for (UploadFile uploadedFile : waitUploadFiles) {
+		for (UploadFile uploadedFile : uploadFiles) {
 			if (uploadedFile.getStatus() == UploadFileStatus.Uploading) {
 				uploadedFile.setStatus(status);
 			}
@@ -557,6 +563,71 @@ public class BleDomainService extends Service {
 				});
 	}
 
+	private void endBatchUpload(List<UploadFile> batchUploadFiles) {
+		try {
+			List<UploadFile> failedFile = new ArrayList<UploadFile>();
+			if (batchUploadFiles != null && batchUploadFiles.size() > 0) {
+				for (UploadFile file : batchUploadFiles) {
+					if (file.getStatus() == UploadFileStatus.Uploaded) {
+						boolean retDelete = new File(file.getPath()).delete();
+						if (!retDelete) {
+							if (ConstantConfig.Debug) {
+								LogUtil.e(
+										TAG,
+										new Exception("删除文件失败："
+												+ file.getPath()));
+								UIUtil.showToast("删除文件失败：" + file.getPath());
+							}
+						}
+						retDelete = new File(file.getBpath()).delete();
+						if (!retDelete) {
+							if (ConstantConfig.Debug) {
+								LogUtil.e(
+										TAG,
+										new Exception("删除文件失败："
+												+ file.getBpath()));
+								UIUtil.showToast("删除文件失败：" + file.getBpath());
+							}
+						}
+						boolean retDeleteDB = DataManager.deleteUploadFile(file
+								.getFileName());
+						if (!retDeleteDB) {
+							if (ConstantConfig.Debug) {
+								LogUtil.e(TAG, new Exception("删除数据库记录失败："
+										+ file.getFileName()));
+								UIUtil.showToast("删除数据库记录失败："
+										+ file.getFileName());
+							}
+						}
+					} else if (file.getStatus() == UploadFileStatus.UploadFailed) {
+						failedFile.add(file);
+					}
+				}
+			}
+			// 回写数据库
+			if (failedFile.size() > 0) {
+				boolean retFailedStatus = DataManager.updateUploadFileStatus(
+						failedFile, UploadFileStatus.UploadFailed);
+				if (!retFailedStatus) {
+					if (ConstantConfig.Debug) {
+						LogUtil.e(TAG, "更新批量上传数据库状态失败" + failedFile.size());
+						UIUtil.showToast("更新批量上传数据库状态失败" + failedFile.size());
+					}
+				}
+			}
+		} catch (Exception e) {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, e.toString());
+				UIUtil.showToast("批量上传失败" + e.toString());
+			}
+		} finally {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "批量上传结束");
+				UIUtil.showToast("批量上传结束");
+			}
+		}
+	}
+
 	/**
 	 * 结束上传
 	 */
@@ -579,6 +650,7 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getPath()));
+								UIUtil.showToast("删除文件失败：" + file.getPath());
 							}
 						}
 						retDelete = new File(file.getBpath()).delete();
@@ -588,6 +660,7 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getBpath()));
+								UIUtil.showToast("删除文件失败：" + file.getBpath());
 							}
 						}
 						boolean retDeleteDB = DataManager.deleteUploadFile(file
@@ -596,6 +669,8 @@ public class BleDomainService extends Service {
 							if (ConstantConfig.Debug) {
 								LogUtil.e(TAG, new Exception("删除数据库记录失败："
 										+ file.getFileName()));
+								UIUtil.showToast("删除数据库记录失败："
+										+ file.getFileName());
 							}
 						}
 					} else if (file.getStatus() == UploadFileStatus.UploadFailed) {
@@ -609,27 +684,20 @@ public class BleDomainService extends Service {
 						failedFile, UploadFileStatus.UploadFailed);
 				if (!retFailedStatus) {
 					if (ConstantConfig.Debug) {
-						LogUtil.e(TAG, new Exception("更新上传文件失败"));
+						LogUtil.e(TAG, "更新批量上传数据库状态失败" + failedFile.size());
+						UIUtil.showToast("更新批量上传数据库状态失败" + failedFile.size());
 					}
 				}
 			}
-			waitUploadFiles = null;
 		} catch (Exception e) {
-		} finally {
-			// 如果下一次是一键上传，本次是批次上传，则启动批次上传
-			// 为了避免通过广播启动一键上传时正在进行批次上传，导致本次批次上传失效
-			// 因此做出此检查，来自动启动上述情况中，自动启动一键上传
-			boolean isNeedOneKeyUpload = nUploadWay == UploadWay.OneKey
-					&& curUploadWay == UploadWay.Batch;
-			resetUpload();
 			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, msg + "，上传结束 ");
+				LogUtil.d(TAG, e.toString());
+				UIUtil.showToast("批量上传失败" + e.toString());
 			}
-			if (isNeedOneKeyUpload) {
-				if (ConstantConfig.Debug) {
-					LogUtil.d(TAG, "自动启动一键上传 ");
-				}
-				startUpload();
+		} finally {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "批量上传结束");
+				UIUtil.showToast("批量上传结束");
 			}
 		}
 	}
@@ -732,7 +800,6 @@ public class BleDomainService extends Service {
 						LogUtil.d(TAG, "准备实时上传");
 						UIUtil.showToast("准备实时上传");
 					}
-					FrameDataMachine machine = FrameDataMachine.getInstance();
 					StringBuffer data1 = new StringBuffer();
 					StringBuffer data2 = new StringBuffer();
 
@@ -879,7 +946,178 @@ public class BleDomainService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		flags = START_STICKY;
 		start();
+		Instance = this;
 		return super.onStartCommand(intent, flags, startId);
+	}
+
+	private void startBatchUpload() {
+		if (ConstantConfig.Debug) {
+			LogUtil.d(TAG, "开始批量上传");
+			UIUtil.showToast("开始批量上传");
+		}
+		UIUserInfoLogin user = DataManager.getUserInfo();
+		if (user == null) {
+			LogUtil.d(TAG, "用户数据不存在");
+			return;
+		}
+		Calendar cal = null;
+		cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -1);
+		final List<UploadFile> batchUploadFiles = getUploadFile(cal.getTime(),
+				-1);
+		if (batchUploadFiles != null && batchUploadFiles.size() > 0) {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "批量上传文件数量" + batchUploadFiles.size());
+				UIUtil.showToast("批量上传文件数量" + batchUploadFiles.size());
+			}
+			try {
+				List<File> files = null;
+				JSONArray upLoadDatas = new JSONArray();
+				String zipPath = FileUtil.ECG_BATCH_UPLOADDIR + "uploadData_"
+						+ cal.getTimeInMillis() + ".zip";
+				files = new ArrayList<File>();
+				int count = 0;
+				String starttime = "";
+				String endtime = "";
+				for (int i = 0; i < batchUploadFiles.size(); i++) {
+					UploadFile uploadFile = batchUploadFiles.get(i);
+					if (uploadFile.getStatus() == UploadFileStatus.Uploaded
+							|| uploadFile.getStatus() == UploadFileStatus.Uploading) {
+						continue;
+					}
+					File[] wFiles = new File[] {
+							new File(uploadFile.getPath()),
+							new File(uploadFile.getBpath()) };
+					for (int j = 0; j < wFiles.length; j++) {
+						File file = wFiles[j];
+						if (file.exists()) {
+							count++;
+							uploadFile.setStatus(UploadFileStatus.Uploading);
+							files.add(file);
+							JSONObject data = new JSONObject();
+							String sTime = CommonUtil.getTime_B(uploadFile
+									.getDataBeginTime());
+							String eTime = CommonUtil.getTime_B(uploadFile
+									.getDataEndTime());
+							data.put("starttime", sTime);
+							data.put("endtime", eTime);
+							data.put("filename", file.getName());
+							data.put("datatype", j == 0 ? "1" : "2");
+							// 抓取文件对应ble的期间段
+							if (sTime.compareTo(starttime) < 0
+									|| starttime.isEmpty()) {
+								starttime = sTime;
+							}
+							if (eTime.compareTo(endtime) > 0
+									|| endtime.isEmpty()) {
+								endtime = eTime;
+							}
+							if (j == 0) {
+								data.put("hrs",
+										new JSONArray(uploadFile.getHrs()));
+							}
+							upLoadDatas.put(data);
+						} else {
+							if (ConstantConfig.Debug) {
+								LogUtil.d(TAG, "数据库中存在此文件，但是文件目录中找不到："
+										+ uploadFile.getFileName());
+							}
+							uploadFile.setStatus(UploadFileStatus.Uploaded);
+							DataManager.deleteUploadFile(uploadFile
+									.getFileName());
+						}
+					}
+
+				}
+				// 无文件可以上传
+				if (files.size() < 1) {
+					if (ConstantConfig.Debug) {
+						LogUtil.d(TAG, "无文件可以上传");
+						UIUtil.showToast("无数据可上传");
+					}
+					endBatchUpload(batchUploadFiles);
+					return;
+				}
+				ZipUtil.zipFiles(files, zipPath);
+				File zipFile = new File(zipPath);
+				final String zipFileName;
+				if (zipFile.exists()) {
+					if (ConstantConfig.Debug) {
+						LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
+						UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
+					}
+					zipFileName = zipFile.getAbsolutePath();
+					JSONObject param = new JSONObject();
+					param.put("zipFile", zipFile.getAbsolutePath());
+					param.put("starttime", starttime);
+					param.put("endtime", endtime);
+					// param.put("hrs", hrs.toString());
+					// param.put("fileinfo", jarray);
+					param.put("fileinfo", upLoadDatas);
+					ClientGameService.getInstance().uploadBleFile(param,
+
+					new HttpReqCallBack<UploadFileResponse>() {
+						@Override
+						public Activity getReqActivity() {
+							return null;
+						}
+
+						@Override
+						public void doSuccess(UploadFileResponse result) {
+							if (result.isOk()) {
+								if (ConstantConfig.Debug) {
+									LogUtil.d(TAG, "批量上传成功");
+									UIUtil.showToast("批量上传成功");
+								}
+								setUploadByStatus(batchUploadFiles,
+										UploadFileStatus.Uploaded);
+							} else {
+								if (ConstantConfig.Debug) {
+									LogUtil.d(TAG,
+											"批量上传失败" + result.getMessage());
+									UIUtil.showToast("批量上传失败"
+											+ result.getMessage());
+								}
+							}
+							endBatchUpload(batchUploadFiles);
+						}
+
+						@Override
+						public void doError(String result) {
+							if (ConstantConfig.Debug) {
+								LogUtil.d(TAG, "批量上传失败 result: " + result);
+								UIUtil.showToast("批量上传失败result:" + result);
+							}
+							setUploadByStatus(batchUploadFiles,
+									UploadFileStatus.UploadFailed);
+							endBatchUpload(batchUploadFiles);
+						}
+					});
+				} else {
+					if (ConstantConfig.Debug) {
+						LogUtil.d(TAG, "正在上传的文件不存在" + zipFile.getAbsolutePath());
+						UIUtil.showToast("正在上传的文件不存在"
+								+ zipFile.getAbsolutePath());
+					}
+					setUploadByStatus(batchUploadFiles,
+							UploadFileStatus.UploadFailed);
+					endBatchUpload(batchUploadFiles);
+				}
+			} catch (Exception e) {
+				if (ConstantConfig.Debug) {
+					LogUtil.e(TAG + "批量上传", e);
+					UIUtil.showToast("批量上传：\n" + e.toString());
+				}
+				setUploadByStatus(batchUploadFiles,
+						UploadFileStatus.UploadFailed);
+				endBatchUpload(batchUploadFiles);
+			}
+		} else {
+			if (ConstantConfig.Debug) {
+				LogUtil.d(TAG, "无批量文件可上传");
+				UIUtil.showToast("无批量文件可上传");
+			}
+		}
 	}
 
 	public static FileUtil writeECGData2File(
@@ -931,14 +1169,12 @@ public class BleDomainService extends Service {
 
 					}
 					FileUtil fileUtil = new FileUtil();
-					// if (isRealMode) {
-					// fileUtil.setTempMode();
-					// fileUtil.clearFiles(FileUtil.ECGTEALTIMEDIR);
-					// }
 					fileUtil.beginWriteFile();
 					fileUtil.writeBlock(fileFrameDatas);
 					fileUtil.endWriteFile();
 					fileUtil.writeBreathData(fileBreathDatas);
+					if (BleDomainService.Instance != null)
+						BleDomainService.Instance.startBatchUpload();
 					return fileUtil;
 				} else {
 					if (ConstantConfig.Debug) {
@@ -962,51 +1198,51 @@ public class BleDomainService extends Service {
 	}
 
 	private void start() {
-		if (mFuture != null && !mFuture.isDone()) {
-			mFuture.cancel(true);
-		}
-		mFuture = executor.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				// if (ConstantConfig.Debug) {
-				// LogUtil.d(TAG, "启动上传");
-				// }
-				if (atomicBooleanExecutor.compareAndSet(false, true)) {
-					try {
-						// 批量写文件
-						// writeECGData2File(false);
-						// 不用限制是否有数据
-						// if (file == null)
-						// return;
-						if (curUploadWay == UploadWay.OneKey) {
-							if (ConstantConfig.Debug) {
-								UIUtil.showToast("当前一键上传中，取消本次批量上传");
-							}
-							return;
-						}
-						startUpload();
-					} catch (Exception e) {
-						if (ConstantConfig.Debug) {
-							LogUtil.e(TAG, e);
-							UIUtil.showToast("批量上传发生异常" + e.toString());
-						}
-					} finally {
-						atomicBooleanExecutor.set(false);
-					}
-				}
-			}
-		}, 1, ConstantConfig.Batch_Interval, TimeUnit.SECONDS);
+		// if (mFuture != null && !mFuture.isDone()) {
+		// mFuture.cancel(true);
+		// }
+		// mFuture = executor.scheduleAtFixedRate(new Runnable() {
+		// @Override
+		// public void run() {
+		// // if (ConstantConfig.Debug) {
+		// // LogUtil.d(TAG, "启动上传");
+		// // }
+		// if (atomicBooleanExecutor.compareAndSet(false, true)) {
+		// try {
+		// // 批量写文件
+		// // writeECGData2File(false);
+		// // 不用限制是否有数据
+		// // if (file == null)
+		// // return;
+		// if (curUploadWay == UploadWay.OneKey) {
+		// if (ConstantConfig.Debug) {
+		// UIUtil.showToast("当前一键上传中，取消本次批量上传");
+		// }
+		// return;
+		// }
+		// startUpload();
+		// } catch (Exception e) {
+		// if (ConstantConfig.Debug) {
+		// LogUtil.e(TAG, e);
+		// UIUtil.showToast("批量上传发生异常" + e.toString());
+		// }
+		// } finally {
+		// atomicBooleanExecutor.set(false);
+		// }
+		// }
+		// }
+		// }, 1, ConstantConfig.Batch_Interval, TimeUnit.SECONDS);
 		registerReceiver(mGattUpdateReceiver, makeUploadIntentFilter());
 	}
 
 	private void end() {
 		unregisterReceiver(mGattUpdateReceiver);
-		if (mFuture != null && !mFuture.isDone()) {
-			mFuture.cancel(true);
-		}
-		if (executor != null) {
-			executor.shutdown();
-		}
+		// if (mFuture != null && !mFuture.isDone()) {
+		// mFuture.cancel(true);
+		// }
+		// if (executor != null) {
+		// executor.shutdown();
+		// }
 	}
 
 	private static IntentFilter makeUploadIntentFilter() {
@@ -1021,6 +1257,7 @@ public class BleDomainService extends Service {
 	@Override
 	public void onDestroy() {
 		end();
+		Instance = null;
 		super.onDestroy();
 	}
 }
