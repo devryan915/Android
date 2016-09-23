@@ -134,109 +134,116 @@ public class BleDataParserService extends Service {
 					lastHeartRate.date = CommonUtil.getDate();
 					machine.addHeartRate(lastHeartRate);
 				}
-				if (lastHeart != heart && heart >= 0 && isHeartAvl.get()) {
-					lastHeart = heart;
-					// 心动过速
-					if (heart > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00001)
-							.getIntValueRaise()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00001, 1)) {
-							JSONObject alertObj = new JSONObject();
-							try {
-								alertObj.put("id", AlertType.B00001.getValue());
-								alertObj.put("state", 1);
-								alertObj.put("time", CommonUtil.getTime_B());
-								JSONObject value = new JSONObject();
-								value.put("hr", heart);
-								value.put(
-										"hrlimithi",
-										AlertMachine
-												.getInstance()
-												.getAlertConfig(
-														AlertType.B00001)
-												.getIntValueRaise());
-								alertObj.put("value", value);
-								AlertMachine.getInstance().sendAlert(
-										AlertType.B00001, alertObj);
-							} catch (JSONException e) {
-								e.printStackTrace();
+				if (lastHeart != heart && heart >= 0) {
+					if (isHeartAvl.get()) {
+						lastHeart = heart;
+						// 心动过速
+						if (heart > AlertMachine.getInstance()
+								.getAlertConfig(AlertType.B00001)
+								.getIntValueRaise()) {
+							if (AlertMachine.getInstance().canSendAlert(
+									AlertType.B00001, 1)) {
+								JSONObject alertObj = new JSONObject();
+								try {
+									alertObj.put("id",
+											AlertType.B00001.getValue());
+									alertObj.put("state", 1);
+									alertObj.put("time", CommonUtil.getTime_B());
+									JSONObject value = new JSONObject();
+									value.put("hr", heart);
+									value.put(
+											"hrlimithi",
+											AlertMachine
+													.getInstance()
+													.getAlertConfig(
+															AlertType.B00001)
+													.getIntValueRaise());
+									alertObj.put("value", value);
+									AlertMachine.getInstance().sendAlert(
+											AlertType.B00001, alertObj);
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						} else if (heart <= AlertMachine.getInstance()
+								.getAlertConfig(AlertType.B00001)
+								.getIntValueClear()) {
+							if (AlertMachine.getInstance().canSendAlert(
+									AlertType.B00001, 0)) {
+								AlertMachine.getInstance().cancelAlert(
+										AlertType.B00001);
 							}
 						}
-					} else if (heart <= AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00001)
-							.getIntValueClear()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00001, 0)) {
-							AlertMachine.getInstance().cancelAlert(
-									AlertType.B00001);
-						}
-					}
-					// 心动过缓
-					if (heart < AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00002)
-							.getIntValueRaise()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00002, 1)) {
-							JSONObject alertObj = new JSONObject();
-							try {
-								alertObj.put("id", AlertType.B00002.getValue());
-								alertObj.put("state", 1);
-								alertObj.put("time", CommonUtil.getTime_B());
-								JSONObject value = new JSONObject();
-								value.put("hr", heart);
-								value.put(
-										"hrlimitlow",
-										AlertMachine
-												.getInstance()
-												.getAlertConfig(
-														AlertType.B00002)
-												.getIntValueRaise());
-								alertObj.put("value", value);
-								AlertMachine.getInstance().sendAlert(
-										AlertType.B00002, alertObj);
-							} catch (JSONException e) {
-								e.printStackTrace();
+						// 心动过缓
+						if (heart < AlertMachine.getInstance()
+								.getAlertConfig(AlertType.B00002)
+								.getIntValueRaise()) {
+							if (AlertMachine.getInstance().canSendAlert(
+									AlertType.B00002, 1)) {
+								JSONObject alertObj = new JSONObject();
+								try {
+									alertObj.put("id",
+											AlertType.B00002.getValue());
+									alertObj.put("state", 1);
+									alertObj.put("time", CommonUtil.getTime_B());
+									JSONObject value = new JSONObject();
+									value.put("hr", heart);
+									value.put(
+											"hrlimitlow",
+											AlertMachine
+													.getInstance()
+													.getAlertConfig(
+															AlertType.B00002)
+													.getIntValueRaise());
+									alertObj.put("value", value);
+									AlertMachine.getInstance().sendAlert(
+											AlertType.B00002, alertObj);
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						} else if (heart >= AlertMachine.getInstance()
+								.getAlertConfig(AlertType.B00002)
+								.getIntValueClear()) {
+							if (AlertMachine.getInstance().canSendAlert(
+									AlertType.B00002, 0)) {
+								AlertMachine.getInstance().cancelAlert(
+										AlertType.B00002);
 							}
 						}
-					} else if (heart >= AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00002)
-							.getIntValueClear()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00002, 0)) {
-							AlertMachine.getInstance().cancelAlert(
-									AlertType.B00002);
-						}
-					}
-					if (heart <= AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00003)
-							.getIntValueRaise()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00003, 1)) {
-							JSONObject alertObj = new JSONObject();
-							try {
-								alertObj.put("id", AlertType.B00003.getValue());
-								alertObj.put("state", 1);
-								alertObj.put("time", CommonUtil.getTime_B());
-								JSONObject value = new JSONObject();
-								alertObj.put("value", value);
-								AlertMachine.getInstance().sendAlert(
-										AlertType.B00003, alertObj);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-						}
-					} else if (heart > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.B00003)
-							.getIntValueClear()) {
-						if (AlertMachine.getInstance().canSendAlert(
-								AlertType.B00003, 0)) {
-							AlertMachine.getInstance().cancelAlert(
-									AlertType.B00003);
+						// if (heart <= AlertMachine.getInstance()
+						// .getAlertConfig(AlertType.B00003)
+						// .getIntValueRaise()) {
+						// if (AlertMachine.getInstance().canSendAlert(
+						// AlertType.B00003, 1)) {
+						// JSONObject alertObj = new JSONObject();
+						// try {
+						// alertObj.put("id", AlertType.B00003.getValue());
+						// alertObj.put("state", 1);
+						// alertObj.put("time", CommonUtil.getTime_B());
+						// JSONObject value = new JSONObject();
+						// alertObj.put("value", value);
+						// AlertMachine.getInstance().sendAlert(
+						// AlertType.B00003, alertObj);
+						// } catch (JSONException e) {
+						// e.printStackTrace();
+						// }
+						// }
+						// } else if (heart > AlertMachine.getInstance()
+						// .getAlertConfig(AlertType.B00003)
+						// .getIntValueClear()) {
+						// if (AlertMachine.getInstance().canSendAlert(
+						// AlertType.B00003, 0)) {
+						// AlertMachine.getInstance().cancelAlert(
+						// AlertType.B00003);
+						// }
+						// }
+					} else {
+						if (ConstantConfig.Debug) {
+							UIUtil.showToast("当前处于断开状态，延迟生理报警heart:" + heart);
 						}
 					}
 				}
-
 			} else if (ACTION_ECGMV1_DATA_AVAILABLE.equals(action)) {
 				// filterData = FilterUtil.Instance.getECGDataV1(dst);
 				filterData = dst;
@@ -490,24 +497,34 @@ public class BleDataParserService extends Service {
 				// + bleData);
 				// }
 				// }
+
 			} else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				if (AlertMachine.getInstance()
 						.canSendAlert(AlertType.A00002, 0)) {
 					AlertMachine.getInstance().cancelAlert(AlertType.A00002);
 				}
 				startExeService();
-				mSendSdl = mEService.schedule(new Runnable() {
-					@Override
-					public void run() {
-						isHeartAvl.set(true);
-					}
-				}, heartDelay, TimeUnit.SECONDS);
-			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-					.equals(action)) {
 				if (mSendSdl != null && !mSendSdl.isDone()) {
 					mSendSdl.cancel(true);
 				}
 				isHeartAvl.set(false);
+				if (ConstantConfig.Debug) {
+					UIUtil.showToast("蓝牙已连接，准备生理报警");
+				}
+				mSendSdl = mEService.schedule(new Runnable() {
+					@Override
+					public void run() {
+						isHeartAvl.set(true);
+						if (ConstantConfig.Debug) {
+							UIUtil.showToast("蓝牙已连接，开始生理报警");
+						}
+					}
+				}, heartDelay, TimeUnit.SECONDS);
+			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+					.equals(action)) {
+				if (ConstantConfig.Debug) {
+					UIUtil.showToast("蓝牙断开");
+				}
 				UIUserInfoLogin user = DataManager.getUserInfo();
 				if (user != null && user.getMacAddress() != null
 						&& !user.getMacAddress().isEmpty()) {
