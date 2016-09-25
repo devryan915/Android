@@ -313,6 +313,9 @@ public class HttpUtil {
 			// builder.addTextBody("userID", userID);
 			post.setEntity(builder.build());
 			HttpClient client = new DefaultHttpClient();
+			HttpParams httpParam = client.getParams();
+			// 超时时间
+			HttpConnectionParams.setConnectionTimeout(httpParam, 3000);
 			HttpResponse res = client.execute(post);
 			// ecgin.close();
 			// breathin.close();
@@ -408,8 +411,8 @@ public class HttpUtil {
 			post.setEntity(builder.build());
 			HttpClient client = new DefaultHttpClient();
 			HttpParams httpParam = client.getParams();
-			//超时时间
-			HttpConnectionParams.setConnectionTimeout(httpParam, 5000);
+			// 超时时间
+			HttpConnectionParams.setConnectionTimeout(httpParam, 3000);
 			HttpResponse res = client.execute(post);
 			zipin.close();
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

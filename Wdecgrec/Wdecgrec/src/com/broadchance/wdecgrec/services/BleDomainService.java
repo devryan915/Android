@@ -4,23 +4,16 @@
 package com.broadchance.wdecgrec.services;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
@@ -29,9 +22,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FileType;
 import com.broadchance.entity.UIUserInfoLogin;
@@ -42,26 +41,21 @@ import com.broadchance.entity.UploadWay;
 import com.broadchance.entity.serverentity.ResponseCode;
 import com.broadchance.entity.serverentity.UIDevice;
 import com.broadchance.entity.serverentity.UIDeviceResponseList;
-import com.broadchance.entity.serverentity.UpLoadData;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
-import com.broadchance.manager.PreferencesManager;
 import com.broadchance.manager.SettingsManager;
-import com.broadchance.manager.SkinManager;
 import com.broadchance.utils.AESEncryptor;
 import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FileUtil;
+import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
-import com.broadchance.utils.NetUtil;
 import com.broadchance.utils.SSXLXService;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.utils.ZipUtil;
 import com.broadchance.wdecgrec.HttpReqCallBack;
-import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.login.LoginActivity;
-import com.broadchance.wdecgrec.main.ModeActivity;
+import com.broadchance.wdecgrec.receiver.PowerChangeReceiver;
 
 /**
  * @author ryan.wang
@@ -69,7 +63,7 @@ import com.broadchance.wdecgrec.main.ModeActivity;
  */
 public class BleDomainService extends Service {
 	private static final String TAG = BleDomainService.class.getSimpleName();
-
+	private PowerChangeReceiver batteryReceiver = new PowerChangeReceiver();
 	public final static String ACTION_UPLOAD_STARTREALMODE = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_UPLOAD_STARTREALMODE";
 	public final static String ACTION_UPLOAD_ENDREALMODE = ConstantConfig.ACTION_PREFIX
@@ -82,7 +76,7 @@ public class BleDomainService extends Service {
 
 	public final static String ACTION_UPLOAD_UPLOADCHANGED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_UPLOAD_UPLOADCHANGED";
-	private static BleDomainService Instance;
+	public static BleDomainService Instance;
 	// private final static int Upload_EcgData = 480;
 	// private final static int Upload_BreathData = Upload_EcgData / 5;
 
@@ -130,7 +124,7 @@ public class BleDomainService extends Service {
 				// isRealMode.compareAndSet(false, true);
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "开启实时上传");
-					UIUtil.showToast("开启实时上传");
+					UIUtil.showRemoteToast("开启实时上传");
 				}
 				// startRealTimeMode();
 			} else if (BleDomainService.ACTION_UPLOAD_ENDREALMODE
@@ -138,7 +132,7 @@ public class BleDomainService extends Service {
 				// isRealMode.compareAndSet(true, false);
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "结束实时上传");
-					UIUtil.showToast("结束实时上传");
+					UIUtil.showRemoteToast("结束实时上传");
 				}
 				FrameDataMachine.getInstance().endRealTimeMode();
 			} else if (BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE
@@ -343,7 +337,7 @@ public class BleDomainService extends Service {
 			if (files.size() < 1) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "无文件可以上传");
-					UIUtil.showToast("无数据可上传");
+					UIUtil.showRemoteToast("无数据可上传");
 				}
 				endUpload();
 				return;
@@ -354,7 +348,7 @@ public class BleDomainService extends Service {
 			if (zipFile.exists()) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
-					UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
+					UIUtil.showRemoteToast("正在上传" + zipFile.getAbsolutePath());
 				}
 				zipFileName = zipFile.getAbsolutePath();
 				// fileinfo = JSON.toJSONString(upLoadDatas);
@@ -388,7 +382,7 @@ public class BleDomainService extends Service {
 						if (result.isOk()) {
 							if (ConstantConfig.Debug) {
 								LogUtil.d(TAG, "批量上传成功");
-								UIUtil.showToast("批量上传成功");
+								UIUtil.showRemoteToast("批量上传成功");
 							}
 							if (curUploadWay == UploadWay.OneKey) {
 								sendUploadBroadCast(
@@ -404,7 +398,7 @@ public class BleDomainService extends Service {
 								if (ConstantConfig.Debug) {
 									LogUtil.d(TAG, msg + "，上传列表中还有 "
 											+ (undeal + failed) + "需要上传，继续上传");
-									UIUtil.showToast(msg + "，上传列表中还有 "
+									UIUtil.showRemoteToast(msg + "，上传列表中还有 "
 											+ (undeal + failed)
 											+ "需要上传，尝试重新上传，尝试次数"
 											+ uploadedFileRetryTimes);
@@ -417,7 +411,8 @@ public class BleDomainService extends Service {
 						} else {
 							if (ConstantConfig.Debug) {
 								LogUtil.d(TAG, "批量上传失败" + result.getMessage());
-								UIUtil.showToast("批量上传失败" + result.getMessage());
+								UIUtil.showRemoteToast("批量上传失败"
+										+ result.getMessage());
 							}
 							// 是否需要重新登录
 							// if (result.Code.endsWith("401")) {
@@ -431,7 +426,8 @@ public class BleDomainService extends Service {
 					public void doError(String result) {
 						if (ConstantConfig.Debug) {
 							LogUtil.d(TAG, msg + "，上传失败 result: " + result);
-							UIUtil.showToast(msg + "，上传失败result:" + result);
+							UIUtil.showRemoteToast(msg + "，上传失败result:"
+									+ result);
 						}
 						setUploadByStatus(UploadFileStatus.UploadFailed);
 						int undeal = getCountByStatus(UploadFileStatus.UnDeal);
@@ -442,8 +438,8 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, msg + "，上传列表中还有 " + undeal
 										+ failed + "需要上传，尝试重新上传，尝试次数"
 										+ uploadedFileRetryTimes);
-								UIUtil.showToast(msg + "，上传列表中还有 " + undeal
-										+ failed + "需要上传，尝试重新上传，尝试次数"
+								UIUtil.showRemoteToast(msg + "，上传列表中还有 "
+										+ undeal + failed + "需要上传，尝试重新上传，尝试次数"
 										+ uploadedFileRetryTimes);
 							}
 							// 最多尝试三次如果还是失败放弃上传，等待下次批量上传
@@ -458,7 +454,8 @@ public class BleDomainService extends Service {
 			} else {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "正在上传的文件不存在" + zipFile.getAbsolutePath());
-					UIUtil.showToast("正在上传的文件不存在" + zipFile.getAbsolutePath());
+					UIUtil.showRemoteToast("正在上传的文件不存在"
+							+ zipFile.getAbsolutePath());
 				}
 				setUploadByStatus(UploadFileStatus.UploadFailed);
 				// 最多尝试三次如果还是失败放弃上传，等待下次批量上传
@@ -475,7 +472,7 @@ public class BleDomainService extends Service {
 		} catch (Exception e) {
 			if (ConstantConfig.Debug) {
 				LogUtil.e(TAG + " startUpload", e);
-				UIUtil.showToast("上传失败：\n" + e.toString());
+				UIUtil.showRemoteToast("上传失败：\n" + e.toString());
 			}
 			setUploadByStatus(UploadFileStatus.UploadFailed);
 			endUpload();
@@ -576,7 +573,8 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getPath()));
-								UIUtil.showToast("删除文件失败：" + file.getPath());
+								UIUtil.showRemoteToast("删除文件失败："
+										+ file.getPath());
 							}
 						}
 						retDelete = new File(file.getBpath()).delete();
@@ -586,7 +584,8 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getBpath()));
-								UIUtil.showToast("删除文件失败：" + file.getBpath());
+								UIUtil.showRemoteToast("删除文件失败："
+										+ file.getBpath());
 							}
 						}
 						boolean retDeleteDB = DataManager.deleteUploadFile(file
@@ -595,7 +594,7 @@ public class BleDomainService extends Service {
 							if (ConstantConfig.Debug) {
 								LogUtil.e(TAG, new Exception("删除数据库记录失败："
 										+ file.getFileName()));
-								UIUtil.showToast("删除数据库记录失败："
+								UIUtil.showRemoteToast("删除数据库记录失败："
 										+ file.getFileName());
 							}
 						}
@@ -611,19 +610,20 @@ public class BleDomainService extends Service {
 				if (!retFailedStatus) {
 					if (ConstantConfig.Debug) {
 						LogUtil.e(TAG, "更新批量上传数据库状态失败" + failedFile.size());
-						UIUtil.showToast("更新批量上传数据库状态失败" + failedFile.size());
+						UIUtil.showRemoteToast("更新批量上传数据库状态失败"
+								+ failedFile.size());
 					}
 				}
 			}
 		} catch (Exception e) {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, e.toString());
-				UIUtil.showToast("批量上传失败" + e.toString());
+				UIUtil.showRemoteToast("批量上传失败" + e.toString());
 			}
 		} finally {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, "批量上传结束");
-				UIUtil.showToast("批量上传结束");
+				UIUtil.showRemoteToast("批量上传结束");
 			}
 		}
 	}
@@ -650,7 +650,8 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getPath()));
-								UIUtil.showToast("删除文件失败：" + file.getPath());
+								UIUtil.showRemoteToast("删除文件失败："
+										+ file.getPath());
 							}
 						}
 						retDelete = new File(file.getBpath()).delete();
@@ -660,7 +661,8 @@ public class BleDomainService extends Service {
 										TAG,
 										new Exception("删除文件失败："
 												+ file.getBpath()));
-								UIUtil.showToast("删除文件失败：" + file.getBpath());
+								UIUtil.showRemoteToast("删除文件失败："
+										+ file.getBpath());
 							}
 						}
 						boolean retDeleteDB = DataManager.deleteUploadFile(file
@@ -669,7 +671,7 @@ public class BleDomainService extends Service {
 							if (ConstantConfig.Debug) {
 								LogUtil.e(TAG, new Exception("删除数据库记录失败："
 										+ file.getFileName()));
-								UIUtil.showToast("删除数据库记录失败："
+								UIUtil.showRemoteToast("删除数据库记录失败："
 										+ file.getFileName());
 							}
 						}
@@ -685,19 +687,20 @@ public class BleDomainService extends Service {
 				if (!retFailedStatus) {
 					if (ConstantConfig.Debug) {
 						LogUtil.e(TAG, "更新批量上传数据库状态失败" + failedFile.size());
-						UIUtil.showToast("更新批量上传数据库状态失败" + failedFile.size());
+						UIUtil.showRemoteToast("更新批量上传数据库状态失败"
+								+ failedFile.size());
 					}
 				}
 			}
 		} catch (Exception e) {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, e.toString());
-				UIUtil.showToast("批量上传失败" + e.toString());
+				UIUtil.showRemoteToast("批量上传失败" + e.toString());
 			}
 		} finally {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, "批量上传结束");
-				UIUtil.showToast("批量上传结束");
+				UIUtil.showRemoteToast("批量上传结束");
 			}
 		}
 	}
@@ -706,7 +709,7 @@ public class BleDomainService extends Service {
 		if (ConstantConfig.Debug) {
 			LogUtil.d(TAG, curUploadWay == UploadWay.OneKey ? "结束一键上传"
 					: "结束批量上传");
-			UIUtil.showToast(curUploadWay == UploadWay.OneKey ? "结束一键上传"
+			UIUtil.showRemoteToast(curUploadWay == UploadWay.OneKey ? "结束一键上传"
 					: "结束批量上传");
 		}
 		isUploading.set(false);
@@ -769,20 +772,20 @@ public class BleDomainService extends Service {
 			if (waitUploadFiles != null && waitUploadFiles.size() > 0) {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "准备" + msg);
-					UIUtil.showToast("准备" + msg);
+					UIUtil.showRemoteToast("准备" + msg);
 				}
 				uploadECGFile();
 			} else {
 				if (ConstantConfig.Debug) {
 					LogUtil.d(TAG, "无文件可上传");
-					UIUtil.showToast("无文件可上传" + msg);
+					UIUtil.showRemoteToast("无文件可上传" + msg);
 				}
 				resetUpload();
 			}
 		} else {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, "文件正在上传中");
-				UIUtil.showToast("文件正在上传中");
+				UIUtil.showRemoteToast("文件正在上传中");
 			}
 			return;
 		}
@@ -798,7 +801,7 @@ public class BleDomainService extends Service {
 				try {
 					if (ConstantConfig.Debug) {
 						LogUtil.d(TAG, "准备实时上传");
-						UIUtil.showToast("准备实时上传");
+						UIUtil.showRemoteToast("准备实时上传");
 					}
 					StringBuffer data1 = new StringBuffer();
 					StringBuffer data2 = new StringBuffer();
@@ -806,19 +809,19 @@ public class BleDomainService extends Service {
 					Short bdata = null;
 					FileFrameData fileFrameData = null;
 					String starttime = "";
-					Date sDate = null;
-					Date eDate = null;
+					Long sDate = null;
+					Long eDate = null;
 					String endtime = "";
 					long datasLength = 0;
 					for (int i = 0; i < fileFrameDatas.size(); i++) {
 						fileFrameData = fileFrameDatas.get(i);
 						data1.append(fileFrameData.ch1 + ",");
-						if ((sDate != null && fileFrameData.date.getTime() < sDate
-								.getTime()) || sDate == null) {
+						if ((sDate != null && fileFrameData.date < sDate)
+								|| sDate == null) {
 							sDate = fileFrameData.date;
 						}
-						if ((eDate != null && fileFrameData.date.getTime() > eDate
-								.getTime()) || eDate == null) {
+						if ((eDate != null && fileFrameData.date > eDate)
+								|| eDate == null) {
 							eDate = fileFrameData.date;
 						}
 						datasLength++;
@@ -829,8 +832,8 @@ public class BleDomainService extends Service {
 						}
 						return "实时上传无数据";
 					}
-					starttime = CommonUtil.getTime_B(sDate);
-					endtime = CommonUtil.getTime_B(eDate);
+					starttime = CommonUtil.getTime_B(new Date(sDate));
+					endtime = CommonUtil.getTime_B(new Date(eDate));
 					if (ConstantConfig.Debug) {
 						try {
 							long dataTime = CommonUtil.parseDate_B(endtime)
@@ -841,7 +844,8 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, "实时上传 " + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
-								// UIUtil.showToast("实时上传 " + starttime + "-"
+								// UIUtil.UIUtil.showBleToast("实时上传 " +
+								// starttime + "-"
 								// + endtime + " 时差" + dataTime + " 数据长度"
 								// + datasLength);
 							} else {
@@ -886,7 +890,7 @@ public class BleDomainService extends Service {
 									if (result.isOk()) {
 										if (ConstantConfig.Debug) {
 											LogUtil.d(TAG, "实时上传成功");
-											UIUtil.showToast("实时上传成功");
+											UIUtil.showRemoteToast("实时上传成功");
 										}
 									} else {
 										if (ConstantConfig.Debug) {
@@ -894,7 +898,7 @@ public class BleDomainService extends Service {
 													TAG,
 													"实时上传失败"
 															+ result.getMessage());
-											UIUtil.showToast("实时上传失败"
+											UIUtil.showRemoteToast("实时上传失败"
 													+ result.getMessage());
 										}
 									}
@@ -904,7 +908,8 @@ public class BleDomainService extends Service {
 								public void doError(String result) {
 									if (ConstantConfig.Debug) {
 										LogUtil.d(TAG, "实时上传失败" + result);
-										UIUtil.showToast("实时上传失败" + result);
+										UIUtil.showRemoteToast("实时上传失败"
+												+ result);
 									}
 									// retryStartRealTimeUp();
 								}
@@ -919,7 +924,7 @@ public class BleDomainService extends Service {
 			protected void onPostExecute(String result) {
 				if (ConstantConfig.Debug && !ResponseCode.Ok.equals(result)) {
 					LogUtil.d(TAG, "实时上传失败" + result);
-					UIUtil.showToast("实时上传失败" + result);
+					UIUtil.showRemoteToast("实时上传失败" + result);
 				}
 				super.onPostExecute(result);
 
@@ -937,23 +942,149 @@ public class BleDomainService extends Service {
 	// // }, 1, TimeUnit.SECONDS);
 	// }
 
+	public class LocalBinder extends Binder {
+		public BleDomainService getService() {
+			return BleDomainService.this;
+		}
+	}
+
+	private final IBinder mBinder = new LocalBinder();
+	/** 用于Handler里的消息类型 */
+	public static final int MSG_GET_HEART = 1;
+	public static final int MSG_SET_HEART = 2;
+	public static final int MSG_SEND_MSG = 3;
+	public static final int MSG_SEND_LONGMSG = 4;
+	public static final int MSG_OPEN_DEBUG = 5;
+	public static final int MSG_CLOSE_DEBUG = 6;
+	/**
+	 * 获取芯片电量
+	 */
+	public static final int MSG_GET_POWER = 7;
+
+	/**
+	 * 在Service处理Activity传过来消息的Handler
+	 */
+	class IncomingHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_GET_HEART:
+				// UIUtil.showBleToast("" + FilterUtil.Instance.getHeartRate());
+				if (msg.replyTo != null) {
+					Message reply = Message.obtain();
+					reply.what = MSG_SET_HEART;
+					// reply.replyTo = mMessenger;
+					// reply.obj = FilterUtil.Instance.getHeartRate();
+					// reply.obj = 0;
+					Bundle bundle = new Bundle();
+					bundle.putInt("heart", FilterUtil.Instance.getHeartRate());
+					reply.setData(bundle);
+					try {
+						msg.replyTo.send(reply);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				break;
+			case MSG_GET_POWER:
+				if (msg.replyTo != null) {
+					Message reply = Message.obtain();
+					reply.what = MSG_GET_POWER;
+					Bundle bundle = new Bundle();
+					Float power = FrameDataMachine.getInstance().getPower();
+					if (power != null) {
+						bundle.putFloat("power", power);
+					}
+					reply.setData(bundle);
+					try {
+						msg.replyTo.send(reply);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				break;
+			case MSG_SEND_MSG:
+				if (msg.replyTo != null) {
+					mRemoteMessenger = msg.replyTo;
+				}
+				break;
+			case MSG_OPEN_DEBUG:
+				ConstantConfig.Debug = true;
+				break;
+			case MSG_CLOSE_DEBUG:
+				ConstantConfig.Debug = false;
+				break;
+			default:
+				super.handleMessage(msg);
+			}
+		}
+	}
+
+	public void showToast(String content) {
+		if (mRemoteMessenger != null) {
+			Message reply = Message.obtain();
+			reply.what = MSG_SEND_MSG;
+			Bundle bundle = new Bundle();
+			bundle.putString("msg", content);
+			reply.setData(bundle);
+			try {
+				mRemoteMessenger.send(reply);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void showLongToast(String content) {
+		if (mRemoteMessenger != null) {
+			Message reply = Message.obtain();
+			reply.what = MSG_SEND_LONGMSG;
+			Bundle bundle = new Bundle();
+			bundle.putString("msg", content);
+			reply.setData(bundle);
+			try {
+				mRemoteMessenger.send(reply);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 这个Messenger可以关联到Service里的Handler，Activity用这个对象发送Message给Service，
+	 * Service通过Handler进行处理。
+	 */
+	final Messenger mMessenger = new Messenger(new IncomingHandler());
+	private Messenger mRemoteMessenger = null;
+
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		start();
+		Instance = this;
+		// return mBinder;
+		return mMessenger.getBinder();
+	}
+
+	@Override
+	public boolean onUnbind(Intent intent) {
+		Instance = null;
+		return super.onUnbind(intent);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		flags = START_STICKY;
-		start();
-		Instance = this;
+
+		// Notification notification = new Notification();
+		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
+		// startForeground(3, notification);
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	private void startBatchUpload() {
 		if (ConstantConfig.Debug) {
 			LogUtil.d(TAG, "开始批量上传");
-			UIUtil.showToast("开始批量上传");
+			UIUtil.showRemoteToast("开始批量上传");
 		}
 		UIUserInfoLogin user = DataManager.getUserInfo();
 		if (user == null) {
@@ -968,13 +1099,13 @@ public class BleDomainService extends Service {
 		if (batchUploadFiles != null && batchUploadFiles.size() > 0) {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, "批量上传文件数量" + batchUploadFiles.size());
-				UIUtil.showToast("批量上传文件数量" + batchUploadFiles.size());
+				UIUtil.showRemoteToast("批量上传文件数量" + batchUploadFiles.size());
 			}
 			try {
 				List<File> files = null;
 				JSONArray upLoadDatas = new JSONArray();
-				String zipPath = FileUtil.ECG_BATCH_UPLOADDIR + "uploadData_"
-						+ cal.getTimeInMillis() + ".zip";
+				String zipPath = FileUtil.ECG_BATCH_UPLOADDIR + "uploadData"
+						+ ".zip";
 				files = new ArrayList<File>();
 				int count = 0;
 				String starttime = "";
@@ -1033,7 +1164,7 @@ public class BleDomainService extends Service {
 				if (files.size() < 1) {
 					if (ConstantConfig.Debug) {
 						LogUtil.d(TAG, "无文件可以上传");
-						UIUtil.showToast("无数据可上传");
+						UIUtil.showRemoteToast("无数据可上传");
 					}
 					endBatchUpload(batchUploadFiles);
 					return;
@@ -1052,7 +1183,8 @@ public class BleDomainService extends Service {
 					param.put("fileinfo", upLoadDatas);
 					if (ConstantConfig.Debug) {
 						LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
-						UIUtil.showToast("正在上传" + zipFile.getAbsolutePath());
+						UIUtil.showRemoteToast("正在上传"
+								+ zipFile.getAbsolutePath());
 					}
 					ClientGameService.getInstance().uploadBleFile(param,
 
@@ -1067,7 +1199,7 @@ public class BleDomainService extends Service {
 							if (result.isOk()) {
 								if (ConstantConfig.Debug) {
 									LogUtil.d(TAG, "批量上传成功");
-									UIUtil.showToast("批量上传成功");
+									UIUtil.showRemoteToast("批量上传成功");
 								}
 								setUploadByStatus(batchUploadFiles,
 										UploadFileStatus.Uploaded);
@@ -1075,7 +1207,7 @@ public class BleDomainService extends Service {
 								if (ConstantConfig.Debug) {
 									LogUtil.d(TAG,
 											"批量上传失败" + result.getMessage());
-									UIUtil.showToast("批量上传失败"
+									UIUtil.showRemoteToast("批量上传失败"
 											+ result.getMessage());
 								}
 							}
@@ -1086,7 +1218,7 @@ public class BleDomainService extends Service {
 						public void doError(String result) {
 							if (ConstantConfig.Debug) {
 								LogUtil.d(TAG, "批量上传失败 result: " + result);
-								UIUtil.showToast("批量上传失败result:" + result);
+								UIUtil.showRemoteToast("批量上传失败result:" + result);
 							}
 							setUploadByStatus(batchUploadFiles,
 									UploadFileStatus.UploadFailed);
@@ -1096,7 +1228,7 @@ public class BleDomainService extends Service {
 				} else {
 					if (ConstantConfig.Debug) {
 						LogUtil.d(TAG, "正在上传的文件不存在" + zipFile.getAbsolutePath());
-						UIUtil.showToast("正在上传的文件不存在"
+						UIUtil.showRemoteToast("正在上传的文件不存在"
 								+ zipFile.getAbsolutePath());
 					}
 					setUploadByStatus(batchUploadFiles,
@@ -1106,7 +1238,7 @@ public class BleDomainService extends Service {
 			} catch (Exception e) {
 				if (ConstantConfig.Debug) {
 					LogUtil.e(TAG + "批量上传", e);
-					UIUtil.showToast("批量上传：\n" + e.toString());
+					UIUtil.showRemoteToast("批量上传：\n" + e.toString());
 				}
 				setUploadByStatus(batchUploadFiles,
 						UploadFileStatus.UploadFailed);
@@ -1115,9 +1247,16 @@ public class BleDomainService extends Service {
 		} else {
 			if (ConstantConfig.Debug) {
 				LogUtil.d(TAG, "无批量文件可上传");
-				UIUtil.showToast("无批量文件可上传");
+				UIUtil.showRemoteToast("无批量文件可上传");
 			}
 		}
+	}
+
+	/**
+	 * 进程间通信
+	 */
+	public Integer getHeartRate() {
+		return FilterUtil.Instance.getHeartRate();
 	}
 
 	public static FileUtil writeECGData2File(
@@ -1132,24 +1271,24 @@ public class BleDomainService extends Service {
 				if (capacity > 0) {
 					if (ConstantConfig.Debug) {
 						String starttime = "";
-						Date sDate = null;
-						Date eDate = null;
+						Long sDate = null;
+						Long eDate = null;
 						String endtime = "";
 						long datasLength = 0;
 						for (int i = 0; i < fileFrameDatas.size(); i++) {
 							FileFrameData fileFrameData = fileFrameDatas.get(i);
-							if ((sDate != null && fileFrameData.date.getTime() < sDate
-									.getTime()) || sDate == null) {
+							if ((sDate != null && fileFrameData.date < sDate)
+									|| sDate == null) {
 								sDate = fileFrameData.date;
 							}
-							if ((eDate != null && fileFrameData.date.getTime() > eDate
-									.getTime()) || eDate == null) {
+							if ((eDate != null && fileFrameData.date > eDate)
+									|| eDate == null) {
 								eDate = fileFrameData.date;
 							}
 							datasLength++;
 						}
-						starttime = CommonUtil.getTime_B(sDate);
-						endtime = CommonUtil.getTime_B(eDate);
+						starttime = CommonUtil.getTime_B(new Date(sDate));
+						endtime = CommonUtil.getTime_B(new Date(eDate));
 						try {
 							long dataTime = CommonUtil.parseDate_B(endtime)
 									.getTime()
@@ -1159,14 +1298,14 @@ public class BleDomainService extends Service {
 								LogUtil.d(TAG, "批量写文件" + starttime + "-"
 										+ endtime + " 时差" + dataTime + " 数据长度"
 										+ datasLength);
-								UIUtil.showToast("批量写文件" + starttime + "-"
-										+ endtime + " 时差" + dataTime + " 数据长度"
-										+ datasLength);
+								UIUtil.showRemoteLongToast("批量写文件" + starttime
+										+ "-" + endtime + " 时差" + dataTime
+										+ " 数据长度" + datasLength);
 							} else {
 								LogUtil.e(TAG, "批量写文件不符合规则  时差" + dataTime
 										+ " 数据长度" + datasLength);
-								UIUtil.showToast("批量写文件不符合规则  时差" + dataTime
-										+ " 数据长度" + datasLength);
+								UIUtil.showRemoteToast("批量写文件不符合规则  时差"
+										+ dataTime + " 数据长度" + datasLength);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -1221,7 +1360,7 @@ public class BleDomainService extends Service {
 		// // return;
 		// if (curUploadWay == UploadWay.OneKey) {
 		// if (ConstantConfig.Debug) {
-		// UIUtil.showToast("当前一键上传中，取消本次批量上传");
+		// UIUtil.showBleToast("当前一键上传中，取消本次批量上传");
 		// }
 		// return;
 		// }
@@ -1229,7 +1368,7 @@ public class BleDomainService extends Service {
 		// } catch (Exception e) {
 		// if (ConstantConfig.Debug) {
 		// LogUtil.e(TAG, e);
-		// UIUtil.showToast("批量上传发生异常" + e.toString());
+		// UIUtil.showBleToast("批量上传发生异常" + e.toString());
 		// }
 		// } finally {
 		// atomicBooleanExecutor.set(false);
@@ -1238,10 +1377,18 @@ public class BleDomainService extends Service {
 		// }
 		// }, 1, ConstantConfig.Batch_Interval, TimeUnit.SECONDS);
 		registerReceiver(mGattUpdateReceiver, makeUploadIntentFilter());
+		registerReceiver(batteryReceiver, makeBatteryIntentFilter());
+	}
+
+	private IntentFilter makeBatteryIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+		return intentFilter;
 	}
 
 	private void end() {
 		unregisterReceiver(mGattUpdateReceiver);
+		unregisterReceiver(batteryReceiver);
 		// if (mFuture != null && !mFuture.isDone()) {
 		// mFuture.cancel(true);
 		// }
@@ -1257,6 +1404,19 @@ public class BleDomainService extends Service {
 		intentFilter.addAction(BleDomainService.ACTION_UPLOAD_STARTONEKEYMODE);
 		intentFilter.addAction(BleDomainService.ACTION_UPLOAD_ENDONEKEYMODE);
 		return intentFilter;
+	}
+
+	@Override
+	public void onLowMemory() {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "onLowMemory");
+		super.onLowMemory();
+	}
+
+	@Override
+	public boolean stopService(Intent name) {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "stopService");
+		showLongToast("LowMemory");
+		return super.stopService(name);
 	}
 
 	@Override

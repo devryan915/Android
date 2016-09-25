@@ -342,7 +342,7 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 		// System.out.println(minY + (maxY - minY) * 0.5f);
 	}
 
-	private Object objectDrawLock = new Object();
+	// private Object objectDrawLock = new Object();
 
 	// private AtomicBoolean atomicBooleanDrawLock = new AtomicBoolean(false);
 	// private int chkCount = 0;
@@ -351,102 +351,102 @@ public class ECGGLSurfaceView extends GLSurfaceView {
 	}
 
 	public void drawECG(Integer[] data) {
-		synchronized (objectDrawLock) {
-			try {
-				// long useTime = System.currentTimeMillis();
-				int pointCount = data.length;
-				if (pointCount == 0) {
+		// synchronized (objectDrawLock) {
+		try {
+			// long useTime = System.currentTimeMillis();
+			int pointCount = data.length;
+			if (pointCount == 0) {
 
-					return;
-				}
-				// normalized = true;
+				return;
+			}
+			// normalized = true;
 
-				// 用于存放data数组中实际的最大值和最小值
-				// float maxDataValue = 0.0f;
-				// float minDataValue = 0.0f;
+			// 用于存放data数组中实际的最大值和最小值
+			// float maxDataValue = 0.0f;
+			// float minDataValue = 0.0f;
 
-				// 用于存放最大的几何坐标值和最小的几何坐标值
-				// float max = 0.0f;
-				// float min = 0.0f;
+			// 用于存放最大的几何坐标值和最小的几何坐标值
+			// float max = 0.0f;
+			// float min = 0.0f;
 
-				// yGridValue用于表示每个单元格之间对应的实际电压差
-				// 每个单位的ECG数值对应的电压差为0.006V
-				// float yGridValue = 0.0f;
-				// int maxIdx = 0;
-				// int maxIIdx = 1;
-				if (!normalized) {
-					// if (callback != null) {
-					// callback.notifyCanvasReady();
-					// }
+			// yGridValue用于表示每个单元格之间对应的实际电压差
+			// 每个单位的ECG数值对应的电压差为0.006V
+			// float yGridValue = 0.0f;
+			// int maxIdx = 0;
+			// int maxIIdx = 1;
+			if (!normalized) {
+				// if (callback != null) {
+				// callback.notifyCanvasReady();
+				// }
 
-					maxY = data[0];
-					minY = data[0];
+				maxY = data[0];
+				minY = data[0];
 
-					// maxDataValue = maxY;
-					// minDataValue = minY;
-					normalizePoints(data);
+				// maxDataValue = maxY;
+				// minDataValue = minY;
+				normalizePoints(data);
+				prevMaxY = maxY;
+				prevMinY = minY;
+
+				middleY = minY + (maxY - minY) * 0.5f;
+				normalized = true;
+			} else if (normalized) {
+				// 检查是否需要重新归一化
+				maxY = data[0];
+				minY = data[0];
+				normalizePoints(data);
+				int dealtMaxY = Math.abs((int) (prevMaxY - maxY));
+				int dealtMinY = Math.abs((int) (prevMinY - minY));
+				if (dealtMaxY > Math.abs((int) (prevMaxY * 0.25f))
+						|| dealtMinY > Math.abs((int) (prevMinY * 0.25f))) {
 					prevMaxY = maxY;
 					prevMinY = minY;
-
-					middleY = minY + (maxY - minY) * 0.5f;
-					normalized = true;
-				} else if (normalized) {
-					// 检查是否需要重新归一化
-					maxY = data[0];
-					minY = data[0];
-					normalizePoints(data);
-					int dealtMaxY = Math.abs((int) (prevMaxY - maxY));
-					int dealtMinY = Math.abs((int) (prevMinY - minY));
-					if (dealtMaxY > Math.abs((int) (prevMaxY * 0.25f))
-							|| dealtMinY > Math.abs((int) (prevMinY * 0.25f))) {
-						prevMaxY = maxY;
-						prevMinY = minY;
-					}
-					middleY = prevMinY + (prevMaxY - prevMinY) * 0.5f;
 				}
-
-				if (normalized) {
-					// for (int i = 0; i < pointCount; i++) {
-					// int curPoint = curPointIndex.get();
-					// vertexArray[curPoint * 3 + 1] = middle_y
-					// + (data[i] - middleY) * factorV;
-					// // 限定边界，最小不超过下限，最大不超过上限
-					// vertexArray[curPoint * 3 + 1] = Math.min(
-					// vertexArray[curPoint * 3 + 1], grid.VLINE_ENDY);
-					// vertexArray[curPoint * 3 + 1] = Math.max(
-					// vertexArray[curPoint * 3 + 1],
-					// grid.VLINE_STARTY);
-					// curPointIndex.getAndIncrement();
-					// curPointIndex.set(curPointIndex.get()
-					// % currTotalPointNumber);
-					// }
-					for (int i = currTotalPointNumber - 1, j = queueArray.length - 1; i >= 0
-							&& j >= 0; i--, j--) {
-						// 将原来的数据往前
-						vertexArray[i * 3 + 1] = middle_y
-								+ (queueArray[j] - middleY) * factorV;
-						// 限定边界，最小不超过下限，最大不超过上限
-						vertexArray[i * 3 + 1] = Math.min(
-								vertexArray[i * 3 + 1], grid.VLINE_ENDY);
-						vertexArray[i * 3 + 1] = Math.max(
-								vertexArray[i * 3 + 1], grid.VLINE_STARTY);
-					}
-					// LogUtil.d(TAG, "drawEcg data：" + "prevMaxY " + prevMaxY
-					// + " prevMinY" + prevMinY + "  当前中线：" + middleY
-					// + " currTotalPointNumber/currTotalPointNumber："
-					// + currTotalPointNumber + "/" + currTotalPointNumber);
-				}
-				if (pointNumber < currTotalPointNumber) {
-					pointNumber += pointCount;
-					pointNumber = Math.min(pointNumber, currTotalPointNumber);
-				}
-				requestRender();
-			} catch (Exception e) {
-				LogUtil.e(TAG, e);
-			} finally {
-				// atomicBooleanDrawLock.set(false);
+				middleY = prevMinY + (prevMaxY - prevMinY) * 0.5f;
 			}
+
+			if (normalized) {
+				// for (int i = 0; i < pointCount; i++) {
+				// int curPoint = curPointIndex.get();
+				// vertexArray[curPoint * 3 + 1] = middle_y
+				// + (data[i] - middleY) * factorV;
+				// // 限定边界，最小不超过下限，最大不超过上限
+				// vertexArray[curPoint * 3 + 1] = Math.min(
+				// vertexArray[curPoint * 3 + 1], grid.VLINE_ENDY);
+				// vertexArray[curPoint * 3 + 1] = Math.max(
+				// vertexArray[curPoint * 3 + 1],
+				// grid.VLINE_STARTY);
+				// curPointIndex.getAndIncrement();
+				// curPointIndex.set(curPointIndex.get()
+				// % currTotalPointNumber);
+				// }
+				for (int i = currTotalPointNumber - 1, j = queueArray.length - 1; i >= 0
+						&& j >= 0; i--, j--) {
+					// 将原来的数据往前
+					vertexArray[i * 3 + 1] = middle_y
+							+ (queueArray[j] - middleY) * factorV;
+					// 限定边界，最小不超过下限，最大不超过上限
+					vertexArray[i * 3 + 1] = Math.min(vertexArray[i * 3 + 1],
+							grid.VLINE_ENDY);
+					vertexArray[i * 3 + 1] = Math.max(vertexArray[i * 3 + 1],
+							grid.VLINE_STARTY);
+				}
+				// LogUtil.d(TAG, "drawEcg data：" + "prevMaxY " + prevMaxY
+				// + " prevMinY" + prevMinY + "  当前中线：" + middleY
+				// + " currTotalPointNumber/currTotalPointNumber："
+				// + currTotalPointNumber + "/" + currTotalPointNumber);
+			}
+			if (pointNumber < currTotalPointNumber) {
+				pointNumber += pointCount;
+				pointNumber = Math.min(pointNumber, currTotalPointNumber);
+			}
+			requestRender();
+		} catch (Exception e) {
+			LogUtil.e(TAG, e);
+		} finally {
+			// atomicBooleanDrawLock.set(false);
 		}
+		// }
 	}
 
 	public int getCurrTotalPointNumber() {

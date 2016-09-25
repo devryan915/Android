@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Messenger;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.R;
+import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.settings.SettingsActivity;
 import com.example.bluetooth.le.DeviceScanActivity;
@@ -37,18 +39,24 @@ public class ModeActivity extends BaseActivity {
 	private static final int REQUEST_ENABLE_BT = 189;
 	private TextView textViewHeart;
 	private ScheduledExecutorService executor;
+	int hearRate = 0;
 	private Handler handlerTime = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			int hearRate = FilterUtil.Instance.getHeartRate();
-			String heartStr = "-";
-			if (hearRate >= ConstantConfig.Alert_HR_Down
-					&& hearRate <= ConstantConfig.Alert_HR_Up) {
-				heartStr = hearRate + "";
+			if (GuardService.Instance != null)
+				GuardService.Instance.getHeartRate(mMesg);
+			if (msg.what == BleDomainService.MSG_SET_HEART) {
+				String heartStr = "-";
+				hearRate = msg.getData().getInt("heart");
+				if (hearRate >= ConstantConfig.Alert_HR_Down
+						&& hearRate <= ConstantConfig.Alert_HR_Up) {
+					heartStr = hearRate + "";
+				}
+				textViewHeart.setText(heartStr + "次/分");
 			}
-			textViewHeart.setText(heartStr + "次/分");
 		}
 	};
+	private Messenger mMesg = new Messenger(handlerTime);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

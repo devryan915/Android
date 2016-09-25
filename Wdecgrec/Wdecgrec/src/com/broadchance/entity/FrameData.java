@@ -44,7 +44,7 @@ public class FrameData {
 	/**
 	 * 蓝牙收到的时间
 	 */
-	public Date date;
+	public Long date;
 
 	public float getTemperature() {
 		return temperature;
@@ -68,7 +68,7 @@ public class FrameData {
 	 * @throws Exception
 	 */
 	// private int flashPosition;
-	public FrameData(byte[] frameData, Date date) throws Exception {
+	public FrameData(byte[] frameData, Long date) throws Exception {
 		if (frameData == null)
 			throw new Exception("FrameData data不能为空");
 		if (frameData.length != 20)
@@ -189,7 +189,7 @@ public class FrameData {
 				seq = BleDataUtil.byteToInt(frameData[1]);
 				if (!frameTypeHex.endsWith("0")) {// 电极脱落/数据发生错误置不为0
 					// 取消置零
-					// resetData();
+					resetData();
 					UIUtil.sendBroadcast(new Intent(action));
 				}
 			}

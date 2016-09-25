@@ -61,6 +61,11 @@ public class AppApplication extends Application {
 		// });
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+	}
+
 	public static AppApplication Instance;
 
 	void initInstance() {

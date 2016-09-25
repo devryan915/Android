@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Messenger;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.broadchance.manager.FrameDataMachine;
+import com.broadchance.utils.ConstantConfig;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.alert.AlertMachine;
 import com.broadchance.wdecgrec.alert.AlertType;
 import com.broadchance.wdecgrec.services.BleDataParserService;
+import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GuardService;
 
@@ -30,6 +34,33 @@ public class CustomTitle extends RelativeLayout {
 	Context context;
 	private ImageView imageViewSignal;
 	private TextView textViewPower;
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			if (msg.what == BleDomainService.MSG_GET_POWER) {
+				Float power = msg.getData().getFloat("power");
+				if (power != null) {
+					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
+					if (power > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()) {
+						textViewPower.setText("高");
+					} else if (power > AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueRaise()
+							&& power <= AlertMachine.getInstance()
+									.getAlertConfig(AlertType.A00005)
+									.getFloatValueClear()) {
+						textViewPower.setText("中");
+					} else {
+						textViewPower.setText("低");
+					}
+				}
+			}
+		}
+	};
+	private Messenger mMesg = new Messenger(handler);
+
 	BroadcastReceiver receiver = new BroadcastReceiver() {
 
 		@Override
@@ -56,23 +87,8 @@ public class CustomTitle extends RelativeLayout {
 			} else if (action.equals(GuardService.ACTION_GATT_POWERCHANGED)) {
 				// float power = intent.getFloatExtra(
 				// BluetoothLeService.EXTRA_DATA, 0);
-				Float power = FrameDataMachine.getInstance().getPower();
-				if (power != null) {
-					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
-					if (power > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.A00005)
-							.getFloatValueRaise()) {
-						textViewPower.setText("高");
-					} else if (power > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.A00005)
-							.getFloatValueRaise()
-							&& power <= AlertMachine.getInstance()
-									.getAlertConfig(AlertType.A00005)
-									.getFloatValueClear()) {
-						textViewPower.setText("中");
-					} else {
-						textViewPower.setText("低");
-					}
+				if (GuardService.Instance != null) {
+					GuardService.Instance.getPower(mMesg);
 				}
 			} else if (action
 					.equals(BluetoothLeService.ACTION_GATT_DISCONNECTED)) {
@@ -120,23 +136,26 @@ public class CustomTitle extends RelativeLayout {
 						.setImageResource(R.drawable.common_blesingnal_1);
 			}
 		}
-		Float power = FrameDataMachine.getInstance().getPower();
-		if (power == null) {
-			textViewPower.setText("-");
-		} else {
-			if (power > AlertMachine.getInstance()
-					.getAlertConfig(AlertType.A00005).getFloatValueClear()) {
-				textViewPower.setText("高");
-			} else if (power > AlertMachine.getInstance()
-					.getAlertConfig(AlertType.A00005).getFloatValueRaise()
-					&& power <= AlertMachine.getInstance()
-							.getAlertConfig(AlertType.A00005)
-							.getFloatValueClear()) {
-				textViewPower.setText("中");
-			} else {
-				textViewPower.setText("低");
-			}
+		if (GuardService.Instance != null) {
+			GuardService.Instance.getPower(mMesg);
 		}
+		// Float power = FrameDataMachine.getInstance().getPower();
+		// if (power == null) {
+		textViewPower.setText("-");
+		// } else {
+		// if (power > AlertMachine.getInstance()
+		// .getAlertConfig(AlertType.A00005).getFloatValueClear()) {
+		// textViewPower.setText("高");
+		// } else if (power > AlertMachine.getInstance()
+		// .getAlertConfig(AlertType.A00005).getFloatValueRaise()
+		// && power <= AlertMachine.getInstance()
+		// .getAlertConfig(AlertType.A00005)
+		// .getFloatValueClear()) {
+		// textViewPower.setText("中");
+		// } else {
+		// textViewPower.setText("低");
+		// }
+		// }
 
 	}
 

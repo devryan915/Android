@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -116,6 +117,7 @@ public class BluetoothLeService extends Service {
 	}
 
 	private long lastReceiveDataTime = 0;
+	long count = 0;
 
 	private void broadcastUpdate(final String action,
 			final BluetoothGattCharacteristic characteristic) {
@@ -146,15 +148,26 @@ public class BluetoothLeService extends Service {
 						data.length);
 				for (byte byteChar : data)
 					stringBuilder.append(String.format("%02X ", byteChar));
+				if (count++ % 100 == 0) {
+					showToast(stringBuilder.toString());
+				}
 				intent.putExtra(EXTRA_DATA, stringBuilder.toString());
 			}
 			if (System.currentTimeMillis() - lastReceiveDataTime > 5000) {
 				Log.e(TAG, "蓝牙数据超时："
 						+ (System.currentTimeMillis() - lastReceiveDataTime));
+				showToast("蓝牙数据超时："
+						+ (System.currentTimeMillis() - lastReceiveDataTime));
+
 			}
 			lastReceiveDataTime = System.currentTimeMillis();
 		}
 		sendBroadcast(intent);
+	}
+
+	private void showToast(String text) {
+		Toast.makeText(BluetoothLeService.this, text, Toast.LENGTH_SHORT)
+				.show();
 	}
 
 	public class LocalBinder extends Binder {

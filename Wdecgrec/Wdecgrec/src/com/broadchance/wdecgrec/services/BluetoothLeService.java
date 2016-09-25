@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
+import android.app.Notification;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -58,9 +59,9 @@ public class BluetoothLeService extends Service {
 	private BluetoothGatt mBluetoothGatt;
 	private int mConnectionState = STATE_DISCONNECTED;
 
-	private static final int STATE_DISCONNECTED = 0;
-	private static final int STATE_CONNECTING = 1;
-	private static final int STATE_CONNECTED = 2;
+	public static final int STATE_DISCONNECTED = 0;
+	public static final int STATE_CONNECTING = 1;
+	public static final int STATE_CONNECTED = 2;
 
 	public final static String ACTION_GATT_CONNECTED = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_GATT_CONNECTED";
@@ -205,15 +206,16 @@ public class BluetoothLeService extends Service {
 		// } else {
 		// For all other profiles, writes the data formatted in HEX.
 		final byte[] data = characteristic.getValue();
-		// if (data != null && data.length > 0) {
-		// if (ConstantConfig.Debug && count++ % 50 == 0) {
-		// final StringBuilder stringBuilder = new StringBuilder(data.length);
-		// for (byte byteChar : data)
-		// stringBuilder.append(String.format("%02X ", byteChar));
-		// UIUtil.showToast(stringBuilder.toString());
-		// }
-		intent.putExtra(EXTRA_DATA, data);
-		// }
+		if (data != null && data.length > 0) {
+			// if (ConstantConfig.Debug && count++ % 100 == 0) {
+			// final StringBuilder stringBuilder = new StringBuilder(
+			// data.length);
+			// for (byte byteChar : data)
+			// stringBuilder.append(String.format("%02X ", byteChar));
+			// UIUtil.showToast(stringBuilder.toString());
+			// }
+			intent.putExtra(EXTRA_DATA, data);
+		}
 		// }
 		sendBroadcast(intent);
 	}
@@ -326,6 +328,9 @@ public class BluetoothLeService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
+		// Notification notification = new Notification();
+		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
+		// startForeground(3, notification);
 		return mBinder;
 	}
 
@@ -373,6 +378,19 @@ public class BluetoothLeService extends Service {
 	public void lostService() {
 		mBluetoothManager = null;
 		mBluetoothGatt = null;
+	}
+
+	@Override
+	public boolean stopService(Intent name) {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "stopService");
+		return super.stopService(name);
+	}
+
+	@Override
+	public void onLowMemory() {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "onLowMemory");
+		UIUtil.showLongToast("LowMemory");
+		super.onLowMemory();
 	}
 
 	/**

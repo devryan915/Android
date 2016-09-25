@@ -587,6 +587,11 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			break;
 		case R.id.llAppFactory:
 			ConstantConfig.Debug = !ConstantConfig.Debug;
+			if (GuardService.Instance != null) {
+				GuardService.Instance
+						.sendRemoteMsg(ConstantConfig.Debug ? BleDomainService.MSG_OPEN_DEBUG
+								: BleDomainService.MSG_CLOSE_DEBUG);
+			}
 			setFactoryText();
 			break;
 		default:

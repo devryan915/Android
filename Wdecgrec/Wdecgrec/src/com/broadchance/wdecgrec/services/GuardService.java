@@ -20,8 +20,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.broadchance.entity.UIUserInfoLogin;
@@ -29,13 +32,12 @@ import com.broadchance.manager.DataManager;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
-import com.broadchance.wdecgrec.main.ModeActivity;
-import com.broadchance.wdecgrec.receiver.PowerChangeReceiver;
 
 public class GuardService extends Service {
 	protected static final String TAG = GuardService.class.getSimpleName();
-	private PowerChangeReceiver batteryReceiver = new PowerChangeReceiver();
+
 	private BluetoothLeService mBluetoothLeService;
+	private Messenger doMainMessenger;
 	private final static String ServiceName = ConstantConfig.PKG_NAME
 			+ ".services.GuardService";
 	private ScheduledExecutorService mEService = Executors
@@ -59,9 +61,35 @@ public class GuardService extends Service {
 	private final static int CHECK_BLE_DELAY = 10 * 1000;
 	private static final long SCAN_PERIOD = 3000;
 	private boolean mScanning;
-	private Handler mHandler = new Handler();
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+		}
+
+	};
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothManager mBluetoothManager;
+	private Messenger mClientMsgr = new Messenger(new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (ConstantConfig.Debug) {
+				switch (msg.what) {
+				case BleDomainService.MSG_SEND_MSG:
+					UIUtil.showToast(msg.getData().getString("msg"));
+					break;
+				case BleDomainService.MSG_SEND_LONGMSG:
+					UIUtil.showLongToast(msg.getData().getString("msg"));
+					break;
+				default:
+					super.handleMessage(msg);
+					break;
+				}
+			}
+		}
+
+	});
 
 	class LostBleEL {
 		public long FirstLostTime;
@@ -97,6 +125,20 @@ public class GuardService extends Service {
 		public void onServiceDisconnected(ComponentName componentName) {
 			mBluetoothLeService = null;
 			LogUtil.d(TAG, "ble Service disconnected");
+		}
+	};
+	private final ServiceConnection mDomainServiceConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName,
+				IBinder service) {
+			doMainMessenger = new Messenger(service);
+			initRemoteMsg();
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			doMainMessenger = null;
 		}
 	};
 
@@ -295,8 +337,8 @@ public class GuardService extends Service {
 							mBluetoothLeService.disconnect();
 							mBluetoothLeService.close();
 							scanLeDevice();
-							 DataALiveTime = System.currentTimeMillis()
-							 + SCAN_PERIOD;
+							DataALiveTime = System.currentTimeMillis()
+									+ SCAN_PERIOD;
 							// if (ConstantConfig.Debug) {
 							// UIUtil.showToast("扫描蓝牙");
 							// }
@@ -324,11 +366,13 @@ public class GuardService extends Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (ModeActivity.Instance != null) {
-			Intent gattServiceIntent = new Intent(ModeActivity.Instance,
-					BluetoothLeService.class);
-			bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-		}
+		Intent gattServiceIntent = new Intent(GuardService.this,
+				BluetoothLeService.class);
+		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+		Intent doMainServiceIntent = new Intent(GuardService.this,
+				BleDomainService.class);
+		bindService(doMainServiceIntent, mDomainServiceConnection,
+				BIND_AUTO_CREATE);
 	}
 
 	public void unBindBLeService() {
@@ -336,10 +380,10 @@ public class GuardService extends Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (ModeActivity.Instance != null) {
-			unbindService(mServiceConnection);
-			mBluetoothLeService = null;
-		}
+		unbindService(mServiceConnection);
+		mBluetoothLeService = null;
+		unbindService(mDomainServiceConnection);
+		doMainMessenger = null;
 	}
 
 	private void start() {
@@ -355,7 +399,7 @@ public class GuardService extends Service {
 			Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
 			return;
 		}
-		registerReceiver(batteryReceiver, makeBatteryIntentFilter());
+
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 		registerReceiver(bluetoothStatusChangeReceiver,
 				makeBLEStatusIntentFilter());
@@ -363,25 +407,70 @@ public class GuardService extends Service {
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		startService(dataParserIntent);
-		Intent bleDomainIntent = new Intent(GuardService.this,
-				BleDomainService.class);
-		startService(bleDomainIntent);
+		// Intent bleDomainIntent = new Intent(GuardService.this,
+		// BleDomainService.class);
+		// startService(bleDomainIntent);
 		checkBleStatus();
 		Instance = this;
 		acquireWakeLock();
 	}
 
+	/**
+	 * 获取心率
+	 * 
+	 * @return
+	 */
+	public void getHeartRate(Messenger msgr) {
+		sendRemoteMsg(BleDomainService.MSG_GET_HEART, msgr);
+	}
+
+	public void getPower(Messenger msgr) {
+		sendRemoteMsg(BleDomainService.MSG_GET_POWER, msgr);
+	}
+
+	public void sendRemoteMsg(int what, Messenger msgr) {
+		if (doMainMessenger != null) {
+			Message msg = Message.obtain();
+			msg.what = what;
+			msg.replyTo = msgr;
+			try {
+				doMainMessenger.send(msg);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void sendRemoteMsg(int what) {
+		sendRemoteMsg(what, null);
+	}
+
+	/**
+	 * 将本地msgr传递给远程
+	 */
+	private void initRemoteMsg() {
+		if (doMainMessenger != null) {
+			Message msg = Message.obtain();
+			msg.what = BleDomainService.MSG_SEND_MSG;
+			msg.replyTo = mClientMsgr;
+			try {
+				doMainMessenger.send(msg);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void end() {
-		unregisterReceiver(batteryReceiver);
 		unregisterReceiver(mGattUpdateReceiver);
 		unregisterReceiver(bluetoothStatusChangeReceiver);
 		unBindBLeService();
 		Intent dataParserIntent = new Intent(GuardService.this,
 				BleDataParserService.class);
 		stopService(dataParserIntent);
-		Intent bleDomainIntent = new Intent(GuardService.this,
-				BleDomainService.class);
-		stopService(bleDomainIntent);
+		// Intent bleDomainIntent = new Intent(GuardService.this,
+		// BleDomainService.class);
+		// stopService(bleDomainIntent);
 		cancelCheckBleStatus();
 		Instance = null;
 		releaseWarkLock();
@@ -399,12 +488,6 @@ public class GuardService extends Service {
 		return intentFilter;
 	}
 
-	private static IntentFilter makeBatteryIntentFilter() {
-		final IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-		return intentFilter;
-	}
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -414,12 +497,10 @@ public class GuardService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		start();
 		flags = START_STICKY;
+		// Notification notification = new Notification();
+		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
+		// startForeground(3, notification);
 		return super.onStartCommand(intent, flags, startId);
-	}
-
-	@Override
-	public boolean stopService(Intent name) {
-		return super.stopService(name);
 	}
 
 	@Override
@@ -429,7 +510,15 @@ public class GuardService extends Service {
 	}
 
 	@Override
+	public boolean stopService(Intent name) {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "stopService");
+		return super.stopService(name);
+	}
+
+	@Override
 	public void onLowMemory() {
+		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "onLowMemory");
+		UIUtil.showLongToast("LowMemory");
 		super.onLowMemory();
 	}
 

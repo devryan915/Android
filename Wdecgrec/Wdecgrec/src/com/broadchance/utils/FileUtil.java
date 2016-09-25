@@ -486,8 +486,9 @@ public class FileUtil {
 				blockHead.put(i + 3, firstSeq[i]);
 			}
 		} else {
-			dataBeginTime = fileFrameDatas.get(0).date;
-			dataEndTime = fileFrameDatas.get(fileFrameDatas.size() - 1).date;
+			dataBeginTime = new Date(fileFrameDatas.get(0).date);
+			dataEndTime = new Date(
+					fileFrameDatas.get(fileFrameDatas.size() - 1).date);
 			byte[] firstSeq = BleDataUtil.longto5BytesLE(lastBlockPosition);
 			for (int i = 0; i < 5; i++) {
 				blockHead.put(i + 3, firstSeq[i]);

@@ -11,10 +11,10 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FrameData;
@@ -26,7 +26,6 @@ import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.services.BleDomainService;
-import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GuardService;
 
 /**
@@ -110,7 +109,8 @@ public class FrameDataMachine {
 	/**
 	 * 实时心率
 	 */
-	private LinkedBlockingQueue<HeartRate> heartRealTimeRateDatas = new LinkedBlockingQueue<HeartRate>();
+	// private LinkedBlockingQueue<HeartRate> heartRealTimeRateDatas = new
+	// LinkedBlockingQueue<HeartRate>();
 
 	/**
 	 * 供实时上传使用
@@ -412,9 +412,9 @@ public class FrameDataMachine {
 		// 由于三通道数据不是同时收到，对于三通道的数据点时间，
 		// 默认第一通道时间，此误差不超过一个帧间隔时间
 		// Date date = miiData.date;
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(miiData.date);
-
+		// Calendar cal = Calendar.getInstance();
+		// cal.setTimeInMillis(miiData.date);
+		long curFiletime = miiData.date;
 		// 将点按照顺序放入队列
 		for (int i = 0; i < length; i++) {
 			FileFrameData fileFrameData = new FileFrameData();
@@ -423,9 +423,10 @@ public class FrameDataMachine {
 			// fileFrameData.ch3 = mv5Points[i];
 			if (i > 0) {
 				// 每一个点间隔8ms
-				cal.add(Calendar.MILLISECOND, ONEFRAMEPOINT_TIME);
+				// cal.add(Calendar.MILLISECOND, ONEFRAMEPOINT_TIME);
+				curFiletime += ONEFRAMEPOINT_TIME;
 			}
-			fileFrameData.date = cal.getTime();
+			fileFrameData.date = curFiletime;
 			fileFrameDatas.offer(fileFrameData);
 			if (isRealTimeMode) {
 				synchronized (fileRealTimeFrameDatas) {
@@ -553,20 +554,19 @@ public class FrameDataMachine {
 					FileFrameData fileFrameData = fileFrameDatas.element();
 					if (fileFrameData != null) {
 						Calendar cal = Calendar.getInstance();
-						cal.setTime(fileFrameData.date);
+						cal.setTimeInMillis(fileFrameData.date);
 						cal.add(Calendar.MINUTE, 1);
 						cal.set(Calendar.SECOND, 0);
 						cal.set(Calendar.MILLISECOND, 0);
 						// 计算距离下一个整分会产生多少个点
-						int lost = (int) ((cal.getTime().getTime() - fileFrameData.date
-								.getTime()) / 8);
+						int lost = (int) ((cal.getTime().getTime() - fileFrameData.date) / 8);
 						if (MAX_BATCH_LIMIT != lost) {
 							MAX_BATCH_LIMIT = lost;
 							LogUtil.d(
 									TAG,
 									"第一帧数据不是整点，"
-											+ CommonUtil
-													.getTime_B(fileFrameData.date)
+											+ CommonUtil.getTime_B(new Date(
+													fileFrameData.date))
 											+ " 丢掉" + lost);
 						}
 					}
@@ -644,6 +644,19 @@ public class FrameDataMachine {
 	 */
 	public synchronized void processFrameData(FrameData frameData) {
 		try {
+			// Log.d(ConstantConfig.DebugTAG,
+			// TAG + "\nmiiQueue:" + miiQueue.size() + " mv1Queue:"
+			// + mv1Queue.size() + " mv5Queue:" + mv5Queue.size()
+			// + " miiFrameDatas:" + miiFrameDatas.size()
+			// + " mv1FrameDatas:" + mv1FrameDatas.size()
+			// + " mv5FrameDatas:" + mv5FrameDatas.size()
+			// + " fileFrameDatas:" + fileFrameDatas.size()
+			// + " fileBreathDatas:" + fileBreathDatas.size()
+			// + " fileRealTimeBreathDatas:"
+			// + fileRealTimeBreathDatas.size()
+			// + " heartRateDatas:" + heartRateDatas.size()
+			// + " fileRealTimeFrameDatas:"
+			// + fileRealTimeFrameDatas.size());
 			// 取消非空和长度检查以减少不必要运算
 			// if(frameData==null)
 			FrameData lastFrameData = null;
@@ -690,52 +703,51 @@ public class FrameDataMachine {
 				// 补帧
 				// lastFrameData = null;
 				if (lastFrameData != null) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(lastFrameData.date);
+					// Calendar cal = Calendar.getInstance();
+					// cal.setTimeInMillis(lastFrameData.date);
+					long curframeDate = lastFrameData.date;
 					// 由于设备序号间隔两所以为了保证序号，将序号除以2
 					// 判断补帧 FrameData内检查错位补零
 					int diff = (frameData.getSeq() - lastFrameData.getSeq()) / 2;
 					// 得到一个周期内相差的序号
 					int seqDifference = diff >= 0 ? diff
 							: (FRAME_SEQMAXLENGTH / 2 + diff);
-					int period = (int) ((frameData.date.getTime() - lastFrameData.date
-							.getTime()) / (FRAME_PERIOD * 1000));
+					int period = (int) ((frameData.date - lastFrameData.date) / (FRAME_PERIOD * 1000));
 					// 补帧 序号/2保证连续
 					int frameCount = FRAME_SEQMAXLENGTH / 2 * period
 							+ seqDifference - 1;
 					if (ConstantConfig.Debug && frameCount > 0) {
 						LogUtil.d(TAG, "补了" + frameCount + "帧");
-						// UIUtil.showToast("补了" + frameCount + "帧");
+						// UIUtil.showBleToast("补了" + frameCount + "帧");
 					}
 					for (int i = 0; i < frameCount; i++) {
 						byte[] byteData = buildFrameData(frameType,
 								(byte) (lastFrameData.getSeq() + 2 + i));
-						cal.add(Calendar.MILLISECOND, ONEFRAME_TIME);
-						FrameData data = new FrameData(byteData, cal.getTime());
+						curframeDate += ONEFRAME_TIME;
+						FrameData data = new FrameData(byteData, curframeDate);
 						data.parseData();
 						frameDatas.offer(data);
 						// testData(data);
 						addFramePoint(frameType, data.getFramePoints());
 						// BleDataUtil.logEcg(byteData);
 					}
-
 					// 由于心电设备发送的数据间隔时间不是严格的80ms一帧，所以在保证数据连续的情况下，将时间间隔调整为严格80ms时间
-					cal.add(Calendar.MILLISECOND, ONEFRAME_TIME);
-					frameData.date = cal.getTime();
+					curframeDate += ONEFRAME_TIME;
+					// cal.add(Calendar.MILLISECOND, ONEFRAME_TIME);
+					frameData.date = curframeDate;
 				} else {
 					// 调整第一帧数据时间将毫秒调整为8的整数倍。
-					long frameTime = frameData.date.getTime();
+					long frameTime = frameData.date;
 					long lTime = frameTime % 8;
 					frameTime += 8 - lTime;
-					frameData.date = new Date(frameTime);
+					frameData.date = frameTime;
 					Calendar cal = Calendar.getInstance();
-					cal.setTime(frameData.date);
+					cal.setTimeInMillis(frameData.date);
 					cal.add(Calendar.MINUTE, 1);
 					cal.set(Calendar.SECOND, 0);
 					cal.set(Calendar.MILLISECOND, 0);
 					// 计算距离下一个整分会产生多少个点
-					MAX_BATCH_LIMIT = (int) ((cal.getTime().getTime() - frameData.date
-							.getTime()) / 8);
+					MAX_BATCH_LIMIT = (int) ((cal.getTime().getTime() - frameData.date) / 8);
 				}
 				// 当前帧
 				frameDatas.offer(frameData);

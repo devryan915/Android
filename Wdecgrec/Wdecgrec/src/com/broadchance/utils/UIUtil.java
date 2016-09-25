@@ -21,11 +21,33 @@ import com.broadchance.manager.AppApplication;
 import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
+import com.broadchance.wdecgrec.services.BleDomainService;
 
 public class UIUtil {
 	static Activity context;
+	static Toast toast;
+
+	public static void showRemoteToast(String content) {
+		if (BleDomainService.Instance != null) {
+			BleDomainService.Instance.showToast(content);
+		}
+	}
+
+	public static void showRemoteLongToast(String content) {
+		if (BleDomainService.Instance != null) {
+			BleDomainService.Instance.showLongToast(content);
+		}
+	}
 
 	public static void showToast(final String content) {
+		_showToast(content, Toast.LENGTH_SHORT);
+	}
+
+	public static void showLongToast(String content) {
+		_showToast(content, Toast.LENGTH_LONG);
+	}
+
+	private static void _showToast(final String content, final int duration) {
 		try {
 			if ((context = ModeActivity.Instance) == null) {
 				context = EcgActivity.Instance;
@@ -34,7 +56,7 @@ public class UIUtil {
 				context.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						showToast(context, content);
+						Toast.makeText(context, content, duration).show();
 					}
 				});
 			}
@@ -44,7 +66,11 @@ public class UIUtil {
 	}
 
 	public static void showToast(Context context, String content) {
-		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+		if (toast != null) {
+			toast.cancel();
+		}
+		toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 
 	public static void showLongToast(Context context, String content) {

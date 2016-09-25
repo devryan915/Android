@@ -61,24 +61,24 @@ public class PowerChangeReceiver extends BroadcastReceiver {
 				context.sendBroadcast(new Intent(
 						BleDomainService.ACTION_UPLOAD_ENDREALMODE));
 			}
-			if (ConstantConfig.Debug) {
-				UIUtil.showToast("触发 " + (isCharging ? "开启" : "关闭") + "实时上传");
-			}
+			// if (ConstantConfig.Debug) {
+			// UIUtil.showBleToast("触发 " + (isCharging ? "开启" : "关闭") + "实时上传");
+			// }
 			int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED,
 					-1);
 			boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
 			boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
 			if (ConstantConfig.Debug) {
 				// 当电量小于15%时触发
-				UIUtil.showToast(
-						context,
-						(isCharging ? ("充电中,充电方式：" + (usbCharge ? "usb" : "ac"))
-								: "")
-								+ "\n"
-								+ "当前网关电量level/total:"
-								+ level
-								+ "/"
-								+ total + " power:" + power);
+				// UIUtil.showBleToast(
+				// context,
+				// (isCharging ? ("充电中,充电方式：" + (usbCharge ? "usb" : "ac"))
+				// : "")
+				// + "\n"
+				// + "当前网关电量level/total:"
+				// + level
+				// + "/"
+				// + total + " power:" + power);
 			}
 		}
 	}

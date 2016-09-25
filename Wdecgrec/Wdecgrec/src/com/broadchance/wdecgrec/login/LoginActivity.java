@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity {
 					KeyEvent event) {
 				switch (actionId) {
 				case EditorInfo.IME_ACTION_GO:
-					login();
+					logon();
 					break;
 				default:
 					break;
@@ -335,7 +335,9 @@ public class LoginActivity extends BaseActivity {
 						user.setNickName(pram.getString("holtermobile"));
 						user.setMacAddress(result.getDATA().getString("device"));
 						user.isOverTime = 0;
-						// user.setMacAddress("D4:F5:13:79:75:FA");
+						// user.setMacAddress("74:DA:EA:9F:93:36");
+						// user.setMacAddress("D4:F5:13:79:80:E7");
+						// user.setMacAddress("D4:F5:13:79:C3:AE");
 						DataManager.saveUser(user, "mima");
 						// 初始化用户皮肤
 						SkinManager.getInstance().initSkin();
@@ -368,208 +370,6 @@ public class LoginActivity extends BaseActivity {
 		});
 	}
 
-	private void login() {
-		if (current != null)
-			return;
-		current = this;
-		final String loginName = editTextUserName.getText().toString();
-		if (loginName.isEmpty()) {
-			showToast("请输入用户名");
-			// 重新获取焦点
-			editTextUserName.requestFocusFromTouch();
-			current = null;
-			return;
-		}
-		final String pwd = editTextPwd.getText().toString();
-		if (pwd.isEmpty()) {
-			showToast("请输入密码");
-			// 重新获取焦点
-			editTextUserName.requestFocusFromTouch();
-			current = null;
-			return;
-		}
-		// 保存用户名
-		// putPreferencesString(ConstantConfig.PREFERENCES_USERNAME, loginName);
-		ClientGameService.getInstance().loginServer(loginName, pwd,
-				new HttpReqCallBack<UIUserInfoLogin>() {
-
-					@Override
-					public Activity getReqActivity() {
-						return LoginActivity.this;
-					}
-
-					@Override
-					public void doSuccess(UIUserInfoLogin result) {
-						if (result.isOk()) {
-							// user = DataManager.getUserInfo();
-							// if (user != null
-							// && !user.getLoginName().equals(
-							// result.getLoginName())) {
-							//
-							// }
-							user = result;
-							// if (result.isOk()) {
-							ConstantConfig.AUTHOR_TOKEN = result
-									.getAccess_token();
-							serverService.GetUserDevice(
-									result.getUserID(),
-									new HttpReqCallBack<UIDeviceResponseList>() {
-
-										@Override
-										public Activity getReqActivity() {
-											return null;
-										}
-
-										@Override
-										public void doSuccess(
-												UIDeviceResponseList result) {
-											if (result.isOk()) {
-												try {
-													user.setMacAddress(null);
-													List<UIDevice> devices = result
-															.getData();
-													if (devices != null
-															&& devices.size() > 0) {
-														UIDevice device = devices
-																.get(0);
-														user.isOverTime = device
-																.getIsOverTime() ? 1
-																: 0;
-														user.isOverTime = 0;
-														if (user.isOverTime == 0) {
-															user.setMacAddress(device
-																	.getMAC());
-															// 74:DA:EA:A0:64:98
-															user.setMacAddress("D4:F5:13:79:75:FA");
-														}
-													}
-													// 初始化用户皮肤
-													SkinManager.getInstance()
-															.initSkin();
-													// 保存密码
-													String pwdString = pwd;
-													pwdString = AESEncryptor.encrypt(
-															user.getLoginName(),
-															pwd);
-													// TODO
-													// 由于服务端token没有做自动刷新，要求客户端如果掉线的情况下自动登录，所以此处必须记住密码
-													// DataManager
-													// .saveUser(
-													// user,
-													// checkBoxSavePwd
-													// .isChecked() ? pwdString
-													// : "");
-													DataManager.saveUser(user,
-															pwdString);
-													putPreferencesBoolean(
-															user.getUserID()
-																	+ ConstantConfig.PREFERENCES_USERPWDCHK,
-															checkBoxSavePwd
-																	.isChecked());
-													if (GuardService.Instance != null) {
-														GuardService.Instance
-																.resetBleCon();
-													}
-													finish();
-													Intent intent = new Intent(
-															LoginActivity.this,
-															ModeActivity.class);
-													startActivity(intent);
-												} catch (Exception e) {
-													LogUtil.e(TAG, e);
-													current = null;
-												}
-											} else {
-												showToast(result.getMessage());
-												current = null;
-											}
-										}
-
-										@Override
-										public void doError(String result) {
-											if (ConstantConfig.Debug) {
-												showToast(result);
-											} else {
-												showToast("操作失败");
-											}
-											current = null;
-										}
-									});
-						} else {
-							showToast(result.getMessage());
-							current = null;
-						}
-
-						// }
-					}
-
-					@Override
-					public void doError(String result) {
-						current = null;
-						if (!NetUtil.isConnectNet()) {
-							user = DataManager.getUserInfo();
-							if (user != null) {
-								if (!user.getLoginName().isEmpty()) {
-									String pwd = DataManager.getUserPwd();
-									if (pwd != null && !pwd.isEmpty()) {
-										try {
-											offDialog = UIUtil
-													.buildTipDialog(
-															LoginActivity.this,
-															getString(R.string.dialog_title_offlogin),
-															getString(R.string.dialog_offlogin_content),
-															new OnClickListener() {
-																@Override
-																public void onClick(
-																		View v) {
-																	if (offDialog != null) {
-																		offDialog
-																				.cancel();
-																		offDialog
-																				.dismiss();
-																	}
-																	Intent intent = new Intent(
-																			LoginActivity.this,
-																			ModeActivity.class);
-																	startActivity(intent);
-																	finish();
-																}
-															},
-															new OnClickListener() {
-
-																@Override
-																public void onClick(
-																		View v) {
-																	if (offDialog != null) {
-																		offDialog
-																				.cancel();
-																		offDialog
-																				.dismiss();
-																	}
-																}
-															},
-															getString(R.string.dialog_button_ok),
-															getString(R.string.dialog_button_cancel));
-											offDialog.show();
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-								}
-							}
-
-						} else {
-							if (ConstantConfig.Debug) {
-								showToast(result);
-							} else {
-								showToast("操作失败");
-							}
-						}
-					}
-				});
-
-	}
-
 	private void forgotPwd() {
 		Intent intent = new Intent(LoginActivity.this, ResetPwdActivity.class);
 		startActivity(intent);
@@ -593,7 +393,6 @@ public class LoginActivity extends BaseActivity {
 		super.onClick(v);
 		switch (v.getId()) {
 		case R.id.buttonLogin:
-			// login();
 			logon();
 			break;
 		case R.id.buttonResetPwd:

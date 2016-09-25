@@ -241,6 +241,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center" >
+
                         <RadioButton
                             android:id="@+id/ecgSpeedLevel3"
                             android:layout_width="30dp"
@@ -402,13 +403,20 @@
                         android:id="@+id/lbl2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#5c5c5e" />
+                        android:layout_centerHorizontal="true"
+                        android:text="当前已运行时长"
+                        android:textColor="#5c5c5e"
+                        android:visibility="invisible" />
 
                     <TextView
+                        android:id="@+id/tvRunTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lbl2"
-                        android:textColor="@color/light_green" />
+                        android:layout_centerHorizontal="true"
+                        android:text="0"
+                        android:textColor="@color/light_green"
+                        android:visibility="invisible" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

@@ -4,6 +4,7 @@ import com.broadchance.manager.SettingsManager;
 
 public class ConstantConfig {
 	public static boolean Debug = false;
+	public final static String DebugTAG = "DebugTAG";
 
 	public final static String PKG_NAME = "com.broadchance.wdecgrec";
 	public final static String ACTION_PREFIX = PKG_NAME + ".";

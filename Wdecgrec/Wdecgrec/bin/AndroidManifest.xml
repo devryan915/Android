@@ -3,7 +3,7 @@
     package="com.broadchance.wdecgrec"
     android:sharedUserId="com.broadchance.skin"
     android:versionCode="1"
-    android:versionName="1.2.09.13" >
+    android:versionName="1.2.09.17" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -50,6 +50,7 @@
         android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:persistent="true"
         android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
 
@@ -63,7 +64,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <activity
             android:name=".login.LoginActivity"
@@ -143,7 +144,7 @@
             <intent-filter>
                 <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
 
         <activity
@@ -165,22 +166,24 @@
         <service
             android:name=".services.BluetoothLeService"
             android:enabled="true"
-            android:priority="88888" >
+            android:priority="999" >
         </service>
         <service
             android:name=".services.GuardService"
             android:enabled="true"
             android:persistent="true"
-            android:priority="99999" >
+            android:priority="1000" >
         </service>
         <service
             android:name=".services.BleDomainService"
             android:enabled="true"
-            android:label="BleDomainService" />
+            android:label="BleDomainService"
+            android:process=":BleDomainService" />
         <service
             android:name=".services.BleDataParserService"
             android:enabled="true"
-            android:priority="88888" >
+            android:priority="999"
+            android:process=":BleDomainService" >
         </service>
         <service
             android:name=".services.GpsService"
