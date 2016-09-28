@@ -146,7 +146,7 @@
             <intent-filter>
                 <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
 
         <activity
@@ -172,13 +172,11 @@
         <service
             android:name=".services.BleDomainService"
             android:enabled="true"
-            android:label="BleDomainService"
-            android:process=":BleDomainService" />
+            android:label="BleDomainService" />
         <service
             android:name=".services.BleDataParserService"
             android:enabled="true"
-            android:priority="999"
-            android:process=":BleDomainService" >
+            android:priority="999" >
         </service>
         <service
             android:name=".services.GpsService"

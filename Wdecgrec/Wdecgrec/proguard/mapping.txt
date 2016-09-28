@@ -15300,32 +15300,34 @@ com.broadchance.wdecgrec.receiver.NetChangeReceiver -> com.broadchance.wdecgrec.
 com.broadchance.wdecgrec.receiver.PowerChangeReceiver -> com.broadchance.wdecgrec.receiver.PowerChangeReceiver:
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.broadchance.wdecgrec.services.BleDataParserService -> com.broadchance.wdecgrec.services.BleDataParserService:
-    java.lang.String TAG -> f
+    java.lang.String TAG -> g
     java.lang.String ACTION_ECGMII_DATA_AVAILABLE -> a
     java.lang.String ACTION_ECGMV1_DATA_AVAILABLE -> b
     java.lang.String ACTION_ECGMV5_DATA_AVAILABLE -> c
-    java.util.concurrent.ScheduledExecutorService mEService -> g
-    java.lang.Long conectTime -> h
-    int heartDelay -> i
+    java.util.concurrent.ScheduledExecutorService mEService -> h
+    java.lang.Long conectTime -> i
+    int heartDelay -> j
     int SIGNAL_MAX -> d
     int SIGNAL_MIN -> e
-    int deal_interval -> j
-    int DEAL_MAX -> k
-    java.util.concurrent.LinkedBlockingQueue receivedQueue -> l
-    java.nio.IntBuffer miiBuffer -> m
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> n
-    int lastHeart -> o
-    int mConnectionState -> p
-    com.broadchance.entity.HeartRate lastHeartRate -> q
-    android.os.IBinder mBinder -> r
-    java.lang.String lastSeq -> s
-    long index -> t
-    android.content.BroadcastReceiver mGattUpdateReceiver -> u
+    int deal_interval -> k
+    int DEAL_MAX -> l
+    java.util.concurrent.LinkedBlockingQueue receivedQueue -> m
+    java.util.Timer processFrameDataTimer -> n
+    java.util.TimerTask processFrameDataTask -> o
+    java.nio.IntBuffer miiBuffer -> p
+    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> q
+    int lastHeart -> r
+    int mConnectionState -> s
+    com.broadchance.entity.HeartRate lastHeartRate -> t
+    android.os.IBinder mBinder -> u
+    int lostTimes -> f
+    android.content.BroadcastReceiver mGattUpdateReceiver -> v
     void sendECGData(java.nio.IntBuffer,java.lang.String) -> a
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onCreate() -> onCreate
     void onDestroy() -> onDestroy
+    void executeData() -> c
     void startExeService() -> a
     void cancelExeService() -> b
     void processData() -> d
@@ -15338,10 +15340,7 @@ com.broadchance.wdecgrec.services.BleDataParserService -> com.broadchance.wdecgr
     void access$0(com.broadchance.wdecgrec.services.BleDataParserService,byte[]) -> a
     void access$1(com.broadchance.wdecgrec.services.BleDataParserService,int) -> a
     void access$2(com.broadchance.wdecgrec.services.BleDataParserService,java.lang.Long) -> a
-    java.util.concurrent.atomic.AtomicBoolean access$3(com.broadchance.wdecgrec.services.BleDataParserService) -> a
-    java.util.concurrent.LinkedBlockingQueue access$4(com.broadchance.wdecgrec.services.BleDataParserService) -> b
-    void access$5(com.broadchance.wdecgrec.services.BleDataParserService) -> c
-    java.lang.String access$6() -> c
+    void access$3(com.broadchance.wdecgrec.services.BleDataParserService) -> a
 com.broadchance.wdecgrec.services.BleDataParserService$1 -> com.broadchance.wdecgrec.services.a:
     com.broadchance.wdecgrec.services.BleDataParserService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive

@@ -122,6 +122,7 @@ public class DataManager {
 			db.endTransaction();
 			db.close();
 		}
+		USER=null;
 		USER = getUserInfo();
 		return false;
 	}

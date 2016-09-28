@@ -3,7 +3,7 @@ package com.broadchance.utils;
 import com.broadchance.manager.SettingsManager;
 
 public class ConstantConfig {
-	public static boolean Debug = false;
+	public static boolean Debug = true;
 	public final static String DebugTAG = "DebugTAG";
 
 	public final static String PKG_NAME = "com.broadchance.wdecgrec";
@@ -47,9 +47,9 @@ public class ConstantConfig {
 	// http://192.168.0.196:60015/index.php/Api/index/mobileinterface.html
 	// http://123.59.129.119:8080/index.php/Api/index/mobileinterface.html
 	// 正式 http://106.75.62.31:8080/index.php/Api/index/mobileinterface.html
-	// 测试 http://106.75.12.181/index.php/Home/Device/index.html
+	// 测试 http://106.75.12.181/index.php/Api/index/mobileinterface.html
 
-	public final static String SERVER_URL_DEF = " http://106.75.12.181/index.php/Home/Device/index.html";
+	public final static String SERVER_URL_DEF = "http://106.75.12.181/index.php/Api/index/mobileinterface.html";
 	public static String SERVER_URL = SettingsManager.getInstance()
 			.getServerURL();
 	// public static final String SERVER_URL = "http://192.168.1.134:56285";

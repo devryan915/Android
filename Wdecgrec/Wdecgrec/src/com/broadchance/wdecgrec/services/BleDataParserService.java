@@ -1,18 +1,17 @@
 package com.broadchance.wdecgrec.services;
 
 import java.nio.IntBuffer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -65,17 +64,17 @@ public class BleDataParserService extends Service {
 	/**
 	 * 每一次最大处理ble数据帧数
 	 */
-	private final static int DEAL_MAX = deal_interval * 2;
+	private final static int DEAL_MAX = 500;
 	/**
 	 * 每一次最大接受数据
 	 */
 	// public final static int REC_MAX = 1000;
 
-	private LinkedBlockingQueue<FrameData> receivedQueue = null;
+	private LinkedBlockingQueue<FrameData> receivedQueue = new LinkedBlockingQueue<FrameData>();;
 	// private LinkedBlockingQueue<FrameData> dealQueue = new
 	// LinkedBlockingQueue<FrameData>();
-	// private Timer processFrameDataTimer;
-	// private TimerTask processFrameDataTask;
+	private Timer processFrameDataTimer;
+	private TimerTask processFrameDataTask;
 	// private ScheduledExecutorService eServie = Executors
 	// .newScheduledThreadPool(3);
 
@@ -347,80 +346,68 @@ public class BleDataParserService extends Service {
 		super.onDestroy();
 	};
 
-	public void startExeService() {
-		mEService.scheduleAtFixedRate(new Runnable() {
+	int lostTimes = 0;
 
-			@Override
-			public void run() {
-				if (atomicBooleanPro.compareAndSet(false, true)) {
-					try {
-						// Log.d(ConstantConfig.DebugTAG, TAG + "正在处理数据:"
-						// + receivedQueue.size());
-						final long time = System.currentTimeMillis();
-						final int presize = receivedQueue.size();
-						processData();
-						final int csize = receivedQueue.size() - presize;
-						Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize
-								+ " 处理耗时:"
-								+ (System.currentTimeMillis() - time));
-					} catch (Exception e) {
-						e.printStackTrace();
-						// Log.d(ConstantConfig.DebugTAG, TAG
-						// + "\n处理数据异常:" + e.toString());
-					} finally {
-						atomicBooleanPro.set(false);
-					}
-				} else {
-					// Log.d(ConstantConfig.DebugTAG, TAG + "\n来不及处理数据:"
-					// + receivedQueue.size());
-				}
+	private void executeData() {
+		if (atomicBooleanPro.compareAndSet(false, true)) {
+			try {
+				// Log.d(ConstantConfig.DebugTAG, TAG + "正在处理数据:"
+				// + receivedQueue.size());
+				final long time = System.currentTimeMillis();
+				final int presize = receivedQueue.size();
+				processData();
+				final int csize = receivedQueue.size() - presize;
+				Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize + " 处理耗时:"
+						+ (System.currentTimeMillis() - time) + " 错过次数"
+						+ lostTimes);
+				lostTimes = 0;
+			} catch (Exception e) {
+				e.printStackTrace();
+				// Log.d(ConstantConfig.DebugTAG, TAG
+				// + "\n处理数据异常:" + e.toString());
+			} finally {
+				atomicBooleanPro.set(false);
 			}
-		}, 0, deal_interval, TimeUnit.MILLISECONDS);
-		// processFrameDataTask = new TimerTask() {
+		} else {
+			// Log.d(ConstantConfig.DebugTAG, TAG + "\n来不及处理数据:"
+			// + receivedQueue.size());
+			lostTimes++;
+		}
+	}
+
+	public void startExeService() {
+		// mEService.scheduleAtFixedRate(new Runnable() {
+		//
 		// @Override
 		// public void run() {
-		// // if (ConstantConfig.Debug) {
-		// // LogUtil.d(TAG, "处理数据");
-		// // }
-		// if (atomicBooleanPro.compareAndSet(false, true)) {
-		// try {
-		// FrameData data;
-		// int dCount = 0;
-		// while (dCount++ < REC_MAX) {
-		// if ((data = receivedQueue.poll()) != null) {
-		// dealQueue.offer(data);
-		// } else {
-		// break;
+		// executeData();
 		// }
-		// }
-		// processReceivedByte();
-		// } catch (Exception e) {
-		// LogUtil.e(TAG, e);
-		// } finally {
-		// atomicBooleanPro.set(false);
-		// }
-		// }
-		// }
-		// };
-		// processFrameDataTimer = new Timer();
-		// processFrameDataTimer.schedule(processFrameDataTask, 0, 160);
+		// }, 0, deal_interval, TimeUnit.MILLISECONDS);
+		processFrameDataTask = new TimerTask() {
+			@Override
+			public void run() {
+				executeData();
+			}
+		};
+		processFrameDataTimer = new Timer();
+		processFrameDataTimer.schedule(processFrameDataTask, 0, deal_interval);
 
 	}
 
 	public void cancelExeService() {
-		mEService.shutdown();
-		// if (processFrameDataTask != null) {
-		// processFrameDataTask.cancel();
-		// processFrameDataTask = null;
-		// }
-		// if (processFrameDataTimer != null) {
-		// processFrameDataTimer.cancel();
-		// processFrameDataTimer = null;
-		// }
+		// mEService.shutdown();
+		if (processFrameDataTask != null) {
+			processFrameDataTask.cancel();
+			processFrameDataTask = null;
+		}
+		if (processFrameDataTimer != null) {
+			processFrameDataTimer.cancel();
+			processFrameDataTimer = null;
+		}
 	}
 
-	private String lastSeq = null;
-	private long index = 0;
+	// private String lastSeq = null;
+	// private long index = 0;
 
 	private void processData() throws Exception {
 		FrameData frameData = null;
@@ -689,8 +676,8 @@ public class BleDataParserService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 		flags = START_STICKY;
-		mEService = Executors.newScheduledThreadPool(2);
-		receivedQueue = new LinkedBlockingQueue<FrameData>();
+		// mEService = Executors.newScheduledThreadPool(2);
+		receivedQueue.clear();
 		startExeService();
 		// Notification notification = new Notification();
 		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
