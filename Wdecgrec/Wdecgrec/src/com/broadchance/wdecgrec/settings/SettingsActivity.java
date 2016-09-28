@@ -37,9 +37,11 @@ import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.manager.PreferencesManager;
+import com.broadchance.manager.SettingsManager;
 import com.broadchance.manager.SkinManager;
 import com.broadchance.utils.AppDownLoadUtil;
 import com.broadchance.utils.ClientGameService;
+import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FileUtil;
 import com.broadchance.utils.LogUtil;
@@ -587,11 +589,12 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 			break;
 		case R.id.llAppFactory:
 			ConstantConfig.Debug = !ConstantConfig.Debug;
-			if (GuardService.Instance != null) {
-				GuardService.Instance
-						.sendRemoteMsg(ConstantConfig.Debug ? BleDomainService.MSG_OPEN_DEBUG
-								: BleDomainService.MSG_CLOSE_DEBUG);
-			}
+			SettingsManager.getInstance().setFactory(ConstantConfig.Debug);
+			// if (GuardService.Instance != null) {
+			// GuardService.Instance
+			// .sendRemoteMsg(BleDomainService.MSG_DEBUG_CHANGED);
+			// }
+			ConstantConfig.Debug = SettingsManager.getInstance().getFactory();
 			setFactoryText();
 			break;
 		default:

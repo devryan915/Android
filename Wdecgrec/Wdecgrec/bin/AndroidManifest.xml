@@ -3,7 +3,7 @@
     package="com.broadchance.wdecgrec"
     android:sharedUserId="com.broadchance.skin"
     android:versionCode="1"
-    android:versionName="1.2.09.17" >
+    android:versionName="1.2.09.19" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -33,7 +33,9 @@
     <!-- 蓝牙权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 防止休眠 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+   <!--  <uses-permission android:name="android.permission.DEVICE_POWER"/> -->
     <!-- GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -155,13 +157,6 @@
             android:name=".settings.UploadActivity"
             android:label="@string/title_activity_upload" >
         </activity>
-        <activity
-            android:name="com.example.bluetooth.le.DeviceScanActivity"
-            android:label="@string/title_devices" >
-        </activity>
-        <activity
-            android:name="com.example.bluetooth.le.DeviceControlActivity"
-            android:label="@string/title_devices" />
 
         <service
             android:name=".services.BluetoothLeService"
@@ -189,9 +184,6 @@
             android:name=".services.GpsService"
             android:enabled="false"
             android:label="GPS服务" />
-        <service
-            android:name="com.example.bluetooth.le.BluetoothLeService"
-            android:enabled="false" />
     </application>
 
 </manifest>

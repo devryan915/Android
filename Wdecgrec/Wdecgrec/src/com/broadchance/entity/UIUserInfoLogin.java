@@ -114,4 +114,15 @@ public class UIUserInfoLogin extends BaseResponse<String> {
 	private int expires_in;
 
 	private String refresh_token;
+	
+	private String certkey;
+
+	public String getCertkey() {
+		return certkey;
+	}
+
+	public void setCertkey(String certkey) {
+		this.certkey = certkey;
+	}
+	
 }

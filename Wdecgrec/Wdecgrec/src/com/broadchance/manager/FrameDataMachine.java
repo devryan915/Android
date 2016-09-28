@@ -596,6 +596,7 @@ public class FrameDataMachine {
 							MAX_BATCH_LIMIT = MAX_BATCH_LIMIT60;
 						}
 					}
+					System.gc();
 				} catch (Exception e) {
 					LogUtil.e(TAG, e);
 				}
@@ -751,9 +752,9 @@ public class FrameDataMachine {
 				}
 				// 当前帧
 				frameDatas.offer(frameData);
-				if (frameData.date == null) {
-					LogUtil.e(TAG, new Exception("日期为空"));
-				}
+				// if (frameData.date <null) {
+				// LogUtil.e(TAG, new Exception("日期为空"));
+				// }
 				// testData(frameData);
 				addFramePoint(frameType, frameData.getFramePoints());
 				// BleDataUtil.logEcg(frameData.getFrameData());

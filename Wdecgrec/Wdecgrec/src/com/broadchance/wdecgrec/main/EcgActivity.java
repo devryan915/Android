@@ -306,8 +306,32 @@ public class EcgActivity extends BaseActivity {
 			@Override
 			public void run() {
 				// 小于20大于200的异常心率值，过滤一下，让不要显示
-				if (GuardService.Instance != null)
-					GuardService.Instance.getHeartRate(mMesg);
+				// if (GuardService.Instance != null)
+				// GuardService.Instance.getHeartRate(mMesg);
+
+				hearRate = FilterUtil.Instance.getHeartRate();
+				if (ConstantConfig.Debug) {
+					ecg_curhearrate.setText(hearRate + "");
+					if (runTime != null) {
+						long time = new Date().getTime() - runTime.getTime();
+						int hours = (int) (time / (1000 * 60 * 60));
+						int min = (int) (time % (1000 * 60 * 60) / (1000 * 60));
+						int sec = (int) (time % (1000 * 60 * 60) % (1000 * 60) / 1000);
+						tvRunTime.setText(hours + ":" + min + ":" + sec);
+					}
+				} else {
+					if (hearRate >= ConstantConfig.Alert_HR_Down
+							&& hearRate <= ConstantConfig.Alert_HR_Up) {
+						ecg_curhearrate.setText(hearRate + "");
+					} else {
+						// ecg_curhearrate.setText("0  ");
+						if (ConstantConfig.Debug) {
+							LogUtil.w(TAG, "当前心率" + hearRate);
+						}
+						ecg_curhearrate.setText("-");
+					}
+				}
+				
 				setHeartRate();
 			}
 		}, 2000);

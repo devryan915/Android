@@ -6,6 +6,7 @@ package com.broadchance.utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,52 @@ public class ClientGameService {
 		return _Instance;
 	}
 
+	private AtomicBoolean isRrefreshCK = new AtomicBoolean(false);
+
+	public void refreshCertKey() {
+		if (isRrefreshCK.compareAndSet(false, true)) {
+			final UIUserInfoLogin user = DataManager.getUserInfo();
+			if (user != null) {
+				try {
+					JSONObject param;
+					param = new JSONObject();
+					param.put("mobile", user.getLoginName());
+					getKey(param, new HttpReqCallBack<ServerResponse>() {
+
+						@Override
+						public Activity getReqActivity() {
+							return null;
+						}
+
+						@Override
+						public void doSuccess(ServerResponse result) {
+							if (result.isOK()) {
+								try {
+									String certKey = result.getDATA()
+											.getString("certkey");
+									user.setCertkey(certKey);
+									DataManager.saveUser(user, "mima");
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+							isRrefreshCK.set(false);
+						}
+
+						@Override
+						public void doError(String result) {
+							isRrefreshCK.set(false);
+						}
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+					isRrefreshCK.set(false);
+				}
+
+			}
+		}
+	}
+
 	/**********************/
 	/**
 	 * 获取动态验证码
@@ -54,7 +101,7 @@ public class ClientGameService {
 	 * @param backCall
 	 */
 	public void getKey(JSONObject param,
-			HttpReqCallBack<ServerResponse> backCall) {
+			final HttpReqCallBack<ServerResponse> backCall) {
 		String indata = param.toString();
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "get_key");
@@ -69,12 +116,13 @@ public class ClientGameService {
 	 * @param param
 	 * @param backCall
 	 */
-	public void login(JSONObject param, HttpReqCallBack<ServerResponse> backCall) {
+	public void login(JSONObject param, String certKey,
+			HttpReqCallBack<ServerResponse> backCall) {
 		String indata = param.toString();
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "login");
 		reparams.put("indata", indata);
-		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		reparams.put("verify", MD5Util.MD5(indata + certKey));
 		HttpAsyncTaskUtil.fetchData(reparams, backCall);
 	}
 
@@ -90,7 +138,7 @@ public class ClientGameService {
 			Map<String, Object> reparams = new HashMap<String, Object>();
 			reparams.put("action", "get_alertcfg");
 			reparams.put("indata", indata);
-			reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+			reparams.put("verify", MD5Util.MD5(indata + user.getCertkey()));
 			HttpAsyncTaskUtil.fetchData(reparams,
 					new HttpReqCallBack<ServerResponse>() {
 
@@ -216,7 +264,7 @@ public class ClientGameService {
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "send_alert");
 		reparams.put("indata", indata);
-		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		reparams.put("verify", MD5Util.MD5(indata + user.getCertkey()));
 		HttpAsyncTaskUtil.fetchData(reparams, backCall);
 	}
 
@@ -245,7 +293,7 @@ public class ClientGameService {
 			Map<String, Object> reparams = new HashMap<String, Object>();
 			reparams.put("action", "send_data");
 			reparams.put("indata", indata);
-			reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+			reparams.put("verify", MD5Util.MD5(indata + user.getCertkey()));
 			new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
 				// HttpReqCallBack<UploadFileResponse> backCall;
 
@@ -324,7 +372,7 @@ public class ClientGameService {
 		reparams.put("action", "send_data");
 		reparams.put("indata", indata);
 		reparams.put("zipFile", zipFile);
-		reparams.put("verify", MD5Util.MD5(indata + ConstantConfig.CERTKEY));
+		reparams.put("verify", MD5Util.MD5(indata + user.getCertkey()));
 		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
 			// HttpReqCallBack<UploadFileResponse> backCall;
 
@@ -339,108 +387,6 @@ public class ClientGameService {
 				// url = "http://192.168.1.109:56285/api/Data/AddRemote_Data";
 				return HttpUtil.uploadBleFile(ConstantConfig.SERVER_URL,
 						paramsIn);
-			}
-
-			@Override
-			protected void onPostExecute(UploadFileResponse result) {
-				if (result.isOk()) {
-					backCall.doSuccess(result);
-				} else {
-					backCall.doError(result.getData());
-				}
-			}
-
-			@Override
-			protected void onProgressUpdate(Integer... values) {
-
-			}
-
-		}.execute(reparams);
-	}
-
-	/***********************/
-
-	public void loginServer(String loginName, String password,
-			HttpReqCallBack<UIUserInfoLogin> backCall) {
-		Map<String, Object> reparams = new HashMap<String, Object>();
-		reparams.put("UserName", loginName);
-		reparams.put("Password", password);
-		reparams.put("grant_type", "password");
-		String url;
-		// url = "http://192.168.1.109:56285/api/User/Login";
-		url = ConstantConfig.SERVER_URL + "/api/User/Login";
-		HttpAsyncTask.fetchData(url, reparams, backCall);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void uploadRealTimeFile(File uploadFile,
-			HttpReqCallBack<UploadFileResponse> backCall) {
-		Map<String, Object> reparams = new HashMap<String, Object>();
-		reparams.put("uploadFile", uploadFile);
-		reparams.put("backCall", backCall);
-		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
-			HttpReqCallBack<UploadFileResponse> backCall;
-
-			@Override
-			protected UploadFileResponse doInBackground(
-					Map<String, Object>... params) {
-				Map<String, Object> paramsIn = params[0];
-				backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
-						.get("backCall");
-				String url = ConstantConfig.SERVER_REALTIME_URL;
-				int port = ConstantConfig.SERVER_REALTIME_PORT;
-				// url = ConstantConfig.NEWAPP_DOWNLOADURL;
-				return HttpUtil.uploadRealTimeFile(url, port, paramsIn);
-			}
-
-			@Override
-			protected void onPostExecute(UploadFileResponse result) {
-				if (result.isOk()) {
-					backCall.doSuccess(result);
-				} else {
-					backCall.doError(result.getData());
-				}
-			}
-
-			@Override
-			protected void onProgressUpdate(Integer... values) {
-
-			}
-
-		}.execute(reparams);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void uploadFile(File uploadFile, String desDataJson,
-			UploadWay uploadWay, HttpReqCallBack<UploadFileResponse> backCall) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		// if (user == null) {
-		// // LogUtil.d(TAG, "用户数据不存在");
-		// if (backCall != null) {
-		// backCall.doError("用户数据不存在");
-		// }
-		// return;
-		// }
-		Map<String, Object> reparams = new HashMap<String, Object>();
-		reparams.put("uploadFile", uploadFile);
-		reparams.put("backCall", backCall);
-		reparams.put("desDataJson", desDataJson);
-		reparams.put("userID", user.getUserID());
-		reparams.put("upLoadWay", uploadWay.getValue());
-
-		new AsyncTask<Map<String, Object>, Integer, UploadFileResponse>() {
-			HttpReqCallBack<UploadFileResponse> backCall;
-
-			@Override
-			protected UploadFileResponse doInBackground(
-					Map<String, Object>... params) {
-				Map<String, Object> paramsIn = params[0];
-				backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
-						.get("backCall");
-				String url = "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";
-				url = ConstantConfig.SERVER_URL + "/api/Data/AddRemote_Data";
-				// url = "http://192.168.1.109:56285/api/Data/AddRemote_Data";
-				return HttpUtil.uploadFile(url, paramsIn);
 			}
 
 			@Override

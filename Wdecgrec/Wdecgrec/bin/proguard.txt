@@ -1,64 +1,64 @@
 # view res/layout/activity_ecg.xml #generated:48
 -keep class com.broadchance.ecgview.ECGGLSurfaceView { <init>(...); }
 
-# view AndroidManifest.xml #generated:47
+# view AndroidManifest.xml #generated:49
 -keep class com.broadchance.manager.AppApplication { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:74
 -keep class com.broadchance.utils.comparator.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:73
+# view AndroidManifest.xml #generated:75
 -keep class com.broadchance.wdecgrec.login.LoginActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:83
+# view AndroidManifest.xml #generated:85
 -keep class com.broadchance.wdecgrec.login.RegisterActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:87
+# view AndroidManifest.xml #generated:89
 -keep class com.broadchance.wdecgrec.login.ResetPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:99
+# view AndroidManifest.xml #generated:101
 -keep class com.broadchance.wdecgrec.main.EcgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:91
+# view AndroidManifest.xml #generated:93
 -keep class com.broadchance.wdecgrec.main.ModeActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:128
+# view AndroidManifest.xml #generated:130
 -keep class com.broadchance.wdecgrec.receiver.NetChangeReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:209
+# view AndroidManifest.xml #generated:204
 -keep class com.broadchance.wdecgrec.services.BleDataParserService { <init>(...); }
 
-# view AndroidManifest.xml #generated:204
+# view AndroidManifest.xml #generated:199
 -keep class com.broadchance.wdecgrec.services.BleDomainService { <init>(...); }
 
-# view AndroidManifest.xml #generated:193
+# view AndroidManifest.xml #generated:188
 -keep class com.broadchance.wdecgrec.services.BluetoothLeService { <init>(...); }
 
-# view AndroidManifest.xml #generated:215
+# view AndroidManifest.xml #generated:210
 -keep class com.broadchance.wdecgrec.services.GpsService { <init>(...); }
 
-# view AndroidManifest.xml #generated:198
+# view AndroidManifest.xml #generated:193
 -keep class com.broadchance.wdecgrec.services.GuardService { <init>(...); }
 
-# view AndroidManifest.xml #generated:123
+# view AndroidManifest.xml #generated:125
 -keep class com.broadchance.wdecgrec.settings.AddContactActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:119
+# view AndroidManifest.xml #generated:121
 -keep class com.broadchance.wdecgrec.settings.AddFamilyActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:177
+# view AndroidManifest.xml #generated:179
 -keep class com.broadchance.wdecgrec.settings.ModifyPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:109
+# view AndroidManifest.xml #generated:111
 -keep class com.broadchance.wdecgrec.settings.MyInfoActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:114
+# view AndroidManifest.xml #generated:116
 -keep class com.broadchance.wdecgrec.settings.OptionSettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:104
+# view AndroidManifest.xml #generated:106
 -keep class com.broadchance.wdecgrec.settings.SettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:181
+# view AndroidManifest.xml #generated:183
 -keep class com.broadchance.wdecgrec.settings.UploadActivity { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:9
@@ -85,15 +85,6 @@
 # view res/layout/activity_register.xml #generated:84
 # view res/layout/activity_register.xml #generated:98
 -keep class com.broadchance.wdecgrec.widget.LabelEditText { <init>(...); }
-
-# view AndroidManifest.xml #generated:219
--keep class com.example.bluetooth.le.BluetoothLeService { <init>(...); }
-
-# view AndroidManifest.xml #generated:189
--keep class com.example.bluetooth.le.DeviceControlActivity { <init>(...); }
-
-# view AndroidManifest.xml #generated:185
--keep class com.example.bluetooth.le.DeviceScanActivity { <init>(...); }
 
 # onClick res/layout/listview_choosecontact_item.xml #generated:20
 -keepclassmembers class * { *** addFamily(...); }

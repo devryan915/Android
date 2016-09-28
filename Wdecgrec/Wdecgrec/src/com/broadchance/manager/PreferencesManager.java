@@ -120,6 +120,7 @@ public class PreferencesManager {
 	}
 
 	public SharedPreferences getSharedPreferences() {
-		return this.ctx.getSharedPreferences(DATA_NAME, Context.MODE_PRIVATE);
+		return this.ctx.getSharedPreferences(DATA_NAME,
+				Context.MODE_MULTI_PROCESS);
 	}
 }

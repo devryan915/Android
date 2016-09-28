@@ -79,7 +79,6 @@ public class DataManager {
 		DBHelper dbHelper = DBHelper.getInstance();
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		try {
-			USER = userInfo;
 			db.beginTransaction();
 			db.execSQL("update " + DBHelper.TBL_USER + "  set status="
 					+ UserStatus.None.getValue());
@@ -98,22 +97,22 @@ public class DataManager {
 				db.execSQL(
 						"update "
 								+ DBHelper.TBL_USER
-								+ "  set status=?,pwd=?,nick_name=?,token=?,macaddress=? where user_name=?",
+								+ "  set status=?,pwd=?,nick_name=?,token=?,macaddress=?,certkey=? where user_name=?",
 						new Object[] { UserStatus.Login.getValue(), pwd,
 								userInfo.getNickName(),
 								userInfo.getAccess_token(),
 								userInfo.getMacAddress(),
-								userInfo.getLoginName() });
+								userInfo.getCertkey(), userInfo.getLoginName() });
 			} else {
 				db.execSQL(
 						"insert into "
 								+ DBHelper.TBL_USER
-								+ " (user_name , pwd,nick_name , userid ,token,status,macaddress) values (?,?,?,?,?,?,?) ",
+								+ " (user_name , pwd,nick_name , userid ,token,status,macaddress,certkey) values (?,?,?,?,?,?,?,?) ",
 						new Object[] { userInfo.getLoginName(), pwd,
 								userInfo.getNickName(), userInfo.getUserID(),
 								userInfo.getAccess_token(),
 								UserStatus.Login.getValue(),
-								userInfo.getMacAddress() });
+								userInfo.getMacAddress(), userInfo.getCertkey() });
 			}
 			db.setTransactionSuccessful();
 			return true;
@@ -123,6 +122,7 @@ public class DataManager {
 			db.endTransaction();
 			db.close();
 		}
+		USER = getUserInfo();
 		return false;
 	}
 
@@ -172,7 +172,7 @@ public class DataManager {
 		}
 		DBHelper dbHelper = DBHelper.getInstance();
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		String sql = "select user_name , pwd , userid ,nick_name,token,macaddress from "
+		String sql = "select user_name , pwd , userid ,nick_name,token,macaddress,certkey from "
 				+ DBHelper.TBL_USER + " where status=?";
 		String[] selectionArgs = new String[] { UserStatus.Login.getValue()
 				+ "" };
@@ -186,6 +186,7 @@ public class DataManager {
 					.getColumnIndex("nick_name")));
 			user.setMacAddress(cursor.getString(cursor
 					.getColumnIndex("macaddress")));
+			user.setCertkey(cursor.getString(cursor.getColumnIndex("certkey")));
 			user.setAccess_token(cursor.getString(cursor
 					.getColumnIndex("token")));
 		}

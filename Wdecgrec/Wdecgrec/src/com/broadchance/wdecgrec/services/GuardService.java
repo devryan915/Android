@@ -30,6 +30,7 @@ import android.util.Log;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.DataManager;
 import com.broadchance.utils.ConstantConfig;
+import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 
@@ -132,13 +133,21 @@ public class GuardService extends Service {
 		@Override
 		public void onServiceConnected(ComponentName componentName,
 				IBinder service) {
-			doMainMessenger = new Messenger(service);
-			initRemoteMsg();
+			// doMainMessenger = new Messenger(service);
+			// initRemoteMsg();
+			// if (ConstantConfig.Debug) {
+			// LogUtil.d(ConstantConfig.DebugTAG, TAG
+			// + "\ndoMainService Connected");
+			// }
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 			doMainMessenger = null;
+			if (ConstantConfig.Debug) {
+				LogUtil.d(ConstantConfig.DebugTAG, TAG
+						+ "\ndoMainService DisConnected");
+			}
 		}
 	};
 
@@ -420,30 +429,31 @@ public class GuardService extends Service {
 	 * 
 	 * @return
 	 */
-	public void getHeartRate(Messenger msgr) {
-		sendRemoteMsg(BleDomainService.MSG_GET_HEART, msgr);
-	}
+	// public void getHeartRate(Messenger msgr) {
+	// sendRemoteMsg(BleDomainService.MSG_GET_HEART, msgr);
 
-	public void getPower(Messenger msgr) {
-		sendRemoteMsg(BleDomainService.MSG_GET_POWER, msgr);
-	}
+	// }
 
-	public void sendRemoteMsg(int what, Messenger msgr) {
-		if (doMainMessenger != null) {
-			Message msg = Message.obtain();
-			msg.what = what;
-			msg.replyTo = msgr;
-			try {
-				doMainMessenger.send(msg);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	// public void getPower(Messenger msgr) {
+	// sendRemoteMsg(BleDomainService.MSG_GET_POWER, msgr);
+	// }
 
-	public void sendRemoteMsg(int what) {
-		sendRemoteMsg(what, null);
-	}
+	// public void sendRemoteMsg(int what, Messenger msgr) {
+	// if (doMainMessenger != null) {
+	// Message msg = Message.obtain();
+	// msg.what = what;
+	// msg.replyTo = msgr;
+	// try {
+	// doMainMessenger.send(msg);
+	// } catch (RemoteException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	//
+	// public void sendRemoteMsg(int what) {
+	// sendRemoteMsg(what, null);
+	// }
 
 	/**
 	 * 将本地msgr传递给远程

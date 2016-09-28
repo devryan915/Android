@@ -90,6 +90,16 @@ public class SettingsManager {
 				ConstantConfig.PREFERENCES_GPSLAT);
 	}
 
+	public void setFactory(boolean isOpen) {
+		PreferencesManager.getInstance().putBoolean(
+				ConstantConfig.PREFERENCES_FACTORY, isOpen);
+	}
+
+	public boolean getFactory() {
+		return PreferencesManager.getInstance().getBoolean(
+				ConstantConfig.PREFERENCES_FACTORY, false);
+	}
+
 	/**
 	 * 设置-选项设置-离线数据，设定存储的大小(MB)
 	 * 

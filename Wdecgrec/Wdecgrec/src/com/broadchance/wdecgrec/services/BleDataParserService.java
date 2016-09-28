@@ -46,12 +46,11 @@ public class BleDataParserService extends Service {
 			+ "ACTION_ECGMV1_DATA_AVAILABLE";
 	public final static String ACTION_ECGMV5_DATA_AVAILABLE = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_ECGMV5_DATA_AVAILABLE";
-	private ScheduledExecutorService mEService = Executors
-			.newScheduledThreadPool(2);
+	private ScheduledExecutorService mEService = null;
 	/**
 	 * 延迟判断心率是否可用
 	 */
-	private ScheduledFuture<?> mSendSdl;
+	// private ScheduledFuture<?> mSendSdl;
 	/**
 	 * 心率是否有效
 	 */
@@ -62,16 +61,17 @@ public class BleDataParserService extends Service {
 	// public final static float POWER_MAX = 2.9f;
 	// public final static float POWER_MIN = 2.8f;
 	// public static int rssiValue = 0;
+	private static final int deal_interval = 80;
 	/**
 	 * 每一次最大处理ble数据帧数
 	 */
-	public final static int DEAL_MAX = 10;
+	private final static int DEAL_MAX = deal_interval * 2;
 	/**
 	 * 每一次最大接受数据
 	 */
 	// public final static int REC_MAX = 1000;
 
-	private LinkedBlockingQueue<FrameData> receivedQueue = new LinkedBlockingQueue<FrameData>();
+	private LinkedBlockingQueue<FrameData> receivedQueue = null;
 	// private LinkedBlockingQueue<FrameData> dealQueue = new
 	// LinkedBlockingQueue<FrameData>();
 	// private Timer processFrameDataTimer;
@@ -120,9 +120,9 @@ public class BleDataParserService extends Service {
 			}
 			// 将滤波算法提前计算
 			// 如果是第一通道数据可以计算心率
-			int[] filterData = null;
+			int[] filterData = dst;
 			// if (ACTION_ECGMII_DATA_AVAILABLE.equals(action)) {
-			filterData = FilterUtil.Instance.getECGDataII(dst);
+			// filterData = FilterUtil.Instance.getECGDataII(dst);
 			int heart = FilterUtil.Instance.getHeartRate();
 			FrameDataMachine machine = FrameDataMachine.getInstance();
 			if (lastHeartRate == null
@@ -324,7 +324,7 @@ public class BleDataParserService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		receivedQueue.clear();
+		// receivedQueue.clear();
 		// dealQueue.clear();
 		// startExeService();
 		// acquireWakeLock();
@@ -340,57 +340,84 @@ public class BleDataParserService extends Service {
 	@Override
 	public void onDestroy() {
 		this.unregisterReceiver(mGattUpdateReceiver);
-		// cancelExeService();
-		receivedQueue.clear();
+		cancelExeService();
+		receivedQueue = null;
 		// dealQueue.clear();
 		// releaseWarkLock();
 		super.onDestroy();
 	};
 
-	// public void startExeService() {
-	// cancelExeService();
-	// processFrameDataTask = new TimerTask() {
-	// @Override
-	// public void run() {
-	// // if (ConstantConfig.Debug) {
-	// // LogUtil.d(TAG, "处理数据");
-	// // }
-	// if (atomicBooleanPro.compareAndSet(false, true)) {
-	// try {
-	// FrameData data;
-	// int dCount = 0;
-	// while (dCount++ < REC_MAX) {
-	// if ((data = receivedQueue.poll()) != null) {
-	// dealQueue.offer(data);
-	// } else {
-	// break;
-	// }
-	// }
-	// processReceivedByte();
-	// } catch (Exception e) {
-	// LogUtil.e(TAG, e);
-	// } finally {
-	// atomicBooleanPro.set(false);
-	// }
-	// }
-	// }
-	// };
-	// processFrameDataTimer = new Timer();
-	// processFrameDataTimer.schedule(processFrameDataTask, 0, 160);
-	//
-	// }
+	public void startExeService() {
+		mEService.scheduleAtFixedRate(new Runnable() {
 
-	// public void cancelExeService() {
-	// // eServie.shutdown();
-	// if (processFrameDataTask != null) {
-	// processFrameDataTask.cancel();
-	// processFrameDataTask = null;
-	// }
-	// if (processFrameDataTimer != null) {
-	// processFrameDataTimer.cancel();
-	// processFrameDataTimer = null;
-	// }
-	// }
+			@Override
+			public void run() {
+				if (atomicBooleanPro.compareAndSet(false, true)) {
+					try {
+						// Log.d(ConstantConfig.DebugTAG, TAG + "正在处理数据:"
+						// + receivedQueue.size());
+						final long time = System.currentTimeMillis();
+						final int presize = receivedQueue.size();
+						processData();
+						final int csize = receivedQueue.size() - presize;
+						Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize
+								+ " 处理耗时:"
+								+ (System.currentTimeMillis() - time));
+					} catch (Exception e) {
+						e.printStackTrace();
+						// Log.d(ConstantConfig.DebugTAG, TAG
+						// + "\n处理数据异常:" + e.toString());
+					} finally {
+						atomicBooleanPro.set(false);
+					}
+				} else {
+					// Log.d(ConstantConfig.DebugTAG, TAG + "\n来不及处理数据:"
+					// + receivedQueue.size());
+				}
+			}
+		}, 0, deal_interval, TimeUnit.MILLISECONDS);
+		// processFrameDataTask = new TimerTask() {
+		// @Override
+		// public void run() {
+		// // if (ConstantConfig.Debug) {
+		// // LogUtil.d(TAG, "处理数据");
+		// // }
+		// if (atomicBooleanPro.compareAndSet(false, true)) {
+		// try {
+		// FrameData data;
+		// int dCount = 0;
+		// while (dCount++ < REC_MAX) {
+		// if ((data = receivedQueue.poll()) != null) {
+		// dealQueue.offer(data);
+		// } else {
+		// break;
+		// }
+		// }
+		// processReceivedByte();
+		// } catch (Exception e) {
+		// LogUtil.e(TAG, e);
+		// } finally {
+		// atomicBooleanPro.set(false);
+		// }
+		// }
+		// }
+		// };
+		// processFrameDataTimer = new Timer();
+		// processFrameDataTimer.schedule(processFrameDataTask, 0, 160);
+
+	}
+
+	public void cancelExeService() {
+		mEService.shutdown();
+		// if (processFrameDataTask != null) {
+		// processFrameDataTask.cancel();
+		// processFrameDataTask = null;
+		// }
+		// if (processFrameDataTimer != null) {
+		// processFrameDataTimer.cancel();
+		// processFrameDataTimer = null;
+		// }
+	}
 
 	private String lastSeq = null;
 	private long index = 0;
@@ -443,28 +470,7 @@ public class BleDataParserService extends Service {
 			FrameData frameData = new FrameData(data, CommonUtil.getDate()
 					.getTime());
 			receivedQueue.offer(frameData);
-			if (receivedQueue.size() > DEAL_MAX) {
-				mEService.submit(new Runnable() {
 
-					@Override
-					public void run() {
-						if (atomicBooleanPro.compareAndSet(false, true)) {
-							try {
-								processData();
-							} catch (Exception e) {
-								e.printStackTrace();
-								// Log.d(ConstantConfig.DebugTAG, TAG
-								// + "\n处理数据异常:" + e.toString());
-							} finally {
-								atomicBooleanPro.set(false);
-							}
-						} else {
-							// Log.d(ConstantConfig.DebugTAG, TAG + "\n来不及处理数据:"
-							// + receivedQueue.size());
-						}
-					}
-				});
-			}
 		} catch (Exception e) {
 			LogUtil.e(TAG, e);
 		}
@@ -668,6 +674,11 @@ public class BleDataParserService extends Service {
 	}
 
 	@Override
+	public void onTrimMemory(int level) {
+		super.onTrimMemory(level);
+	}
+
+	@Override
 	public void onLowMemory() {
 		LogUtil.w(ConstantConfig.DebugTAG, TAG + "\n" + "onLowMemory");
 		UIUtil.showLongToast("LowMemory");
@@ -678,6 +689,9 @@ public class BleDataParserService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 		flags = START_STICKY;
+		mEService = Executors.newScheduledThreadPool(2);
+		receivedQueue = new LinkedBlockingQueue<FrameData>();
+		startExeService();
 		// Notification notification = new Notification();
 		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		// startForeground(3, notification);

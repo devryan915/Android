@@ -181,6 +181,10 @@ public class HttpAsyncTaskUtil extends
 					if (hasData) {
 						entityData = JSON.parseObject(result,
 								ServerResponse.class);
+						if ("1".equals(entityData.getErrid())) {
+							// 验证码无效重新更新验证码
+							ClientGameService.getInstance().refreshCertKey();
+						}
 						mCallBack.doSuccess(entityData);
 					} else {
 						mIsError = true;

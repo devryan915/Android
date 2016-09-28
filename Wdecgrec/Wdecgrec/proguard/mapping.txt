@@ -12819,17 +12819,17 @@ com.broadchance.ecgview.ECGGLSurfaceView -> com.broadchance.ecgview.ECGGLSurface
     float mmPerInch -> z
     java.util.concurrent.LinkedBlockingQueue vertextQueue -> A
     java.lang.Integer[] queueArray -> B
-    java.lang.Object objectDrawLock -> C
     void init(android.content.Context,android.util.AttributeSet) -> a
     void initView(android.app.Activity,int) -> a
     void initParams(int) -> a
     void normalizePoints(java.lang.Integer[]) -> b
+    void clearDraw() -> a
     void drawECG(java.lang.Integer[]) -> a
-    int getCurrTotalPointNumber() -> a
+    int getCurrTotalPointNumber() -> b
     void setCurrTotalPointNumber(int) -> b
     void DrawScene(javax.microedition.khronos.opengles.GL10) -> a
     android.graphics.Bitmap savePixels(int,int,int,int,javax.microedition.khronos.opengles.GL10) -> a
-    void initVertexArray() -> b
+    void initVertexArray() -> c
     void setEcgMode(com.broadchance.ecgview.ECGGLSurfaceView$EcgType,com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel) -> a
 com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel -> com.broadchance.ecgview.a:
     com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel Level1 -> a
@@ -12991,7 +12991,7 @@ com.broadchance.entity.FileFrameData -> com.broadchance.entity.f:
     short ch1 -> a
     short ch2 -> b
     short ch3 -> c
-    java.util.Date date -> d
+    long date -> d
     int pointsLength -> e
     int pointBytesLength -> f
 com.broadchance.entity.FileType -> com.broadchance.entity.g:
@@ -13011,7 +13011,7 @@ com.broadchance.entity.FrameData -> com.broadchance.entity.h:
     boolean isParsedData -> f
     float power -> g
     float temperature -> h
-    java.util.Date date -> a
+    long date -> a
     float getTemperature() -> a
     float getPower() -> b
     byte[] getFrameData() -> c
@@ -13094,6 +13094,7 @@ com.broadchance.entity.UIUserInfoLogin -> com.broadchance.entity.UIUserInfoLogin
     java.lang.String access_token -> access_token
     int expires_in -> expires_in
     java.lang.String refresh_token -> refresh_token
+    java.lang.String certkey -> certkey
     java.lang.String getMacAddress() -> getMacAddress
     void setMacAddress(java.lang.String) -> setMacAddress
     java.lang.String getUserID() -> getUserID
@@ -13113,6 +13114,8 @@ com.broadchance.entity.UIUserInfoLogin -> com.broadchance.entity.UIUserInfoLogin
     void setExpires_in(int) -> setExpires_in
     java.lang.String getRefresh_token() -> getRefresh_token
     void setRefresh_token(java.lang.String) -> setRefresh_token
+    java.lang.String getCertkey() -> getCertkey
+    void setCertkey(java.lang.String) -> setCertkey
 com.broadchance.entity.UploadFile -> com.broadchance.entity.o:
     java.lang.String fileName -> a
     java.lang.String path -> b
@@ -13412,6 +13415,7 @@ com.broadchance.manager.AppApplication -> com.broadchance.manager.AppApplication
     java.lang.String curVer -> a
     com.broadchance.manager.AppApplication Instance -> b
     void onCreate() -> onCreate
+    void onLowMemory() -> onLowMemory
     void initInstance() -> a
 com.broadchance.manager.CrashHandler -> com.broadchance.manager.a:
     java.lang.String TAG -> a
@@ -13474,23 +13478,22 @@ com.broadchance.manager.FrameDataMachine -> com.broadchance.manager.e:
     java.util.concurrent.LinkedBlockingQueue fileBreathDatas -> r
     java.util.concurrent.LinkedBlockingQueue fileRealTimeBreathDatas -> s
     java.util.concurrent.LinkedBlockingQueue heartRateDatas -> t
-    java.util.concurrent.LinkedBlockingQueue heartRealTimeRateDatas -> u
-    java.util.concurrent.LinkedBlockingQueue fileRealTimeFrameDatas -> v
-    boolean isRealTimeMode -> w
-    boolean isNeedCheckFrame -> x
-    float FRAME_FREQUENCY -> y
-    int FRAME_PERFRAME_ECGDOTS -> z
+    java.util.concurrent.LinkedBlockingQueue fileRealTimeFrameDatas -> u
+    boolean isRealTimeMode -> v
+    boolean isNeedCheckFrame -> w
+    float FRAME_FREQUENCY -> x
+    int FRAME_PERFRAME_ECGDOTS -> y
     float FRAME_DOTS_FREQUENCY -> h
-    int ONEFRAME_TIME -> A
-    int ONEFRAMEPOINT_TIME -> B
-    int FRAME_SEQMAXLENGTH -> C
-    float FRAME_PERIOD -> D
-    int MAX_BATCH_LIMIT -> E
-    int MAX_BATCH_LIMIT60 -> F
-    int MAX_REAL_LIMIT -> G
-    java.lang.Float power -> H
-    float temperature -> I
-    com.broadchance.entity.FrameType frameType -> J
+    int ONEFRAME_TIME -> z
+    int ONEFRAMEPOINT_TIME -> A
+    int FRAME_SEQMAXLENGTH -> B
+    float FRAME_PERIOD -> C
+    int MAX_BATCH_LIMIT -> D
+    int MAX_BATCH_LIMIT60 -> E
+    int MAX_REAL_LIMIT -> F
+    java.lang.Float power -> G
+    float temperature -> H
+    com.broadchance.entity.FrameType frameType -> I
     com.broadchance.manager.FrameDataMachine getInstance() -> a
     void addHeartRate(com.broadchance.entity.HeartRate) -> a
     java.lang.Integer getHeartRate() -> b
@@ -13584,20 +13587,22 @@ com.broadchance.manager.SettingsManager -> com.broadchance.manager.k:
     java.lang.String getGPSLon() -> e
     void setGPSLat(java.lang.String) -> c
     java.lang.String getGPSLat() -> f
+    void setFactory(boolean) -> a
+    boolean getFactory() -> g
     void setSettignsOffData(int) -> a
-    int getSettingsOffData() -> g
-    void setSettingsGPS(boolean) -> a
-    boolean getSettingsGPS() -> h
-    void setSettingsDevFallOff(boolean) -> b
-    boolean getSettingsDevFallOff() -> i
-    void setSettingsDevOff(boolean) -> c
-    boolean getSettingsDevOff() -> j
-    void setSettingsLowPower(boolean) -> d
-    boolean getSettingsLowPower() -> k
-    void setSetttingsLowSignal(boolean) -> e
-    boolean getSettingsLowSignal() -> l
-    void setSettingsNetType(boolean) -> f
-    boolean getSettingsNetType() -> m
+    int getSettingsOffData() -> h
+    void setSettingsGPS(boolean) -> b
+    boolean getSettingsGPS() -> i
+    void setSettingsDevFallOff(boolean) -> c
+    boolean getSettingsDevFallOff() -> j
+    void setSettingsDevOff(boolean) -> d
+    boolean getSettingsDevOff() -> k
+    void setSettingsLowPower(boolean) -> e
+    boolean getSettingsLowPower() -> l
+    void setSetttingsLowSignal(boolean) -> f
+    boolean getSettingsLowSignal() -> m
+    void setSettingsNetType(boolean) -> g
+    boolean getSettingsNetType() -> n
 com.broadchance.manager.SkinManager -> com.broadchance.manager.l:
     java.lang.String TAG -> b
     com.broadchance.manager.SkinManager Instance -> c
@@ -13806,34 +13811,31 @@ com.broadchance.utils.CRC8 -> com.broadchance.utils.m:
 com.broadchance.utils.ClientGameService -> com.broadchance.utils.n:
     java.lang.String TAG -> a
     com.broadchance.utils.ClientGameService _Instance -> b
+    java.util.concurrent.atomic.AtomicBoolean isRrefreshCK -> c
     com.broadchance.utils.ClientGameService getInstance() -> a
+    void refreshCertKey() -> b
     void getKey(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> a
-    void login(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> b
-    void getAlertCFG(com.broadchance.wdecgrec.HttpReqCallBack) -> a
-    void sendAlert(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> c
-    void uploadRealBleFile(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> d
-    void uploadBleFile(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> e
-    void loginServer(java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> a
-    void uploadRealTimeFile(java.io.File,com.broadchance.wdecgrec.HttpReqCallBack) -> a
-    void uploadFile(java.io.File,java.lang.String,com.broadchance.entity.UploadWay,com.broadchance.wdecgrec.HttpReqCallBack) -> a
+    void login(org.json.JSONObject,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> a
+    void getAlertCFG() -> c
+    void sendAlert(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> b
+    void uploadRealBleFile(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> c
+    void uploadBleFile(org.json.JSONObject,com.broadchance.wdecgrec.HttpReqCallBack) -> d
     void downLoadApp(java.lang.String,java.io.File,android.os.Handler,com.broadchance.wdecgrec.HttpReqCallBack) -> a
+    java.util.concurrent.atomic.AtomicBoolean access$0(com.broadchance.utils.ClientGameService) -> a
 com.broadchance.utils.ClientGameService$1 -> com.broadchance.utils.o:
     com.broadchance.utils.ClientGameService this$0 -> a
-    com.broadchance.wdecgrec.HttpReqCallBack val$backCall -> c
+    com.broadchance.entity.UIUserInfoLogin val$user -> c
     android.app.Activity getReqActivity() -> a
-    void setCFG(org.json.JSONObject,com.broadchance.wdecgrec.alert.AlertType) -> a
     void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
 com.broadchance.utils.ClientGameService$2 -> com.broadchance.utils.p:
     com.broadchance.utils.ClientGameService this$0 -> a
-    com.broadchance.wdecgrec.HttpReqCallBack val$backCall -> b
-    com.broadchance.entity.UploadFileResponse doInBackground(java.util.Map[]) -> a
-    void onPostExecute(com.broadchance.entity.UploadFileResponse) -> a
-    void onProgressUpdate(java.lang.Integer[]) -> a
-    void onPostExecute(java.lang.Object) -> onPostExecute
-    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-    void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
+    android.app.Activity getReqActivity() -> a
+    void setCFG(org.json.JSONObject,com.broadchance.wdecgrec.alert.AlertType) -> a
+    void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
+    void doError(java.lang.String) -> a
+    void doSuccess(java.lang.Object) -> a
 com.broadchance.utils.ClientGameService$3 -> com.broadchance.utils.q:
     com.broadchance.utils.ClientGameService this$0 -> a
     com.broadchance.wdecgrec.HttpReqCallBack val$backCall -> b
@@ -13844,8 +13846,8 @@ com.broadchance.utils.ClientGameService$3 -> com.broadchance.utils.q:
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
     void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
 com.broadchance.utils.ClientGameService$4 -> com.broadchance.utils.r:
-    com.broadchance.wdecgrec.HttpReqCallBack backCall -> a
-    com.broadchance.utils.ClientGameService this$0 -> b
+    com.broadchance.utils.ClientGameService this$0 -> a
+    com.broadchance.wdecgrec.HttpReqCallBack val$backCall -> b
     com.broadchance.entity.UploadFileResponse doInBackground(java.util.Map[]) -> a
     void onPostExecute(com.broadchance.entity.UploadFileResponse) -> a
     void onProgressUpdate(java.lang.Integer[]) -> a
@@ -13855,22 +13857,13 @@ com.broadchance.utils.ClientGameService$4 -> com.broadchance.utils.r:
 com.broadchance.utils.ClientGameService$5 -> com.broadchance.utils.s:
     com.broadchance.wdecgrec.HttpReqCallBack backCall -> a
     com.broadchance.utils.ClientGameService this$0 -> b
-    com.broadchance.entity.UploadFileResponse doInBackground(java.util.Map[]) -> a
-    void onPostExecute(com.broadchance.entity.UploadFileResponse) -> a
-    void onProgressUpdate(java.lang.Integer[]) -> a
-    void onPostExecute(java.lang.Object) -> onPostExecute
-    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-    void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
-com.broadchance.utils.ClientGameService$6 -> com.broadchance.utils.t:
-    com.broadchance.wdecgrec.HttpReqCallBack backCall -> a
-    com.broadchance.utils.ClientGameService this$0 -> b
     com.broadchance.entity.DownLoadAPPResponse doInBackground(java.util.Map[]) -> a
     void onPostExecute(com.broadchance.entity.DownLoadAPPResponse) -> a
     void onProgressUpdate(java.lang.Integer[]) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
     void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
-com.broadchance.utils.CommonUtil -> com.broadchance.utils.u:
+com.broadchance.utils.CommonUtil -> com.broadchance.utils.t:
     java.lang.String TAG -> a
     java.lang.String formatA -> b
     java.lang.String formatB -> c
@@ -13891,46 +13884,47 @@ com.broadchance.utils.CommonUtil -> com.broadchance.utils.u:
     byte[] int2ByteArray(int) -> b
     int bytes2Int(byte[]) -> a
     java.nio.FloatBuffer floatBufferUtil(float[]) -> a
-com.broadchance.utils.ConstantConfig -> com.broadchance.utils.v:
+com.broadchance.utils.ConstantConfig -> com.broadchance.utils.u:
     boolean Debug -> a
-    java.lang.String PKG_NAME -> b
-    java.lang.String ACTION_PREFIX -> c
-    java.lang.String BLE_UUID_SERVICE -> d
-    java.lang.String BLE_UUID_READ -> e
-    java.lang.String BLE_UUID_WRITE -> f
-    java.lang.String PREFERENCES_SKINID -> g
-    java.lang.String PREFERENCES_USERPWDCHK -> h
-    java.lang.String PREFERENCES_ISHIDEWELCOME -> i
-    java.lang.String PREFERENCES_DEVIVCENUMBER -> j
-    java.lang.String PREFERENCES_UPLOADNETTYPE -> k
-    java.lang.String PREFERENCES_LOWSINGNAL -> l
-    java.lang.String PREFERENCES_LOWPOWER -> m
-    java.lang.String PREFERENCES_DEVOFF -> n
-    java.lang.String PREFERENCES_DEVFALLOFF -> o
-    java.lang.String PREFERENCES_GPS -> p
-    java.lang.String PREFERENCES_GPSLON -> q
-    java.lang.String PREFERENCES_XDPI -> r
-    java.lang.String PREFERENCES_YDPI -> s
-    java.lang.String PREFERENCES_GPSLAT -> t
-    java.lang.String PREFERENCES_OFFDATA -> u
-    java.lang.String PREFERENCES_NEWAPPVER -> v
-    java.lang.String PREFERENCES_NEWAPPURL -> w
-    java.lang.String PREFERENCES_SERVERURL -> x
-    java.lang.String APP_DIR -> y
-    java.lang.String ECGDATA_SUFFIX -> z
-    java.lang.String SERVER_URL_DEF -> A
-    java.lang.String SERVER_URL -> B
-    java.lang.String SERVER_REALTIME_URL -> C
-    int SERVER_REALTIME_PORT -> D
-    java.lang.String AUTHOR_TOKEN -> E
-    int TIME_DELAY -> F
-    int Batch_Interval -> G
-    int Real_Interval -> H
-    java.lang.String CERTKEY -> I
-    int HeartRateFrequency -> J
-    int Alert_HR_Up -> K
-    int Alert_HR_Down -> L
-com.broadchance.utils.DBHelper -> com.broadchance.utils.w:
+    java.lang.String DebugTAG -> b
+    java.lang.String PKG_NAME -> c
+    java.lang.String ACTION_PREFIX -> d
+    java.lang.String BLE_UUID_SERVICE -> e
+    java.lang.String BLE_UUID_READ -> f
+    java.lang.String BLE_UUID_WRITE -> g
+    java.lang.String PREFERENCES_SKINID -> h
+    java.lang.String PREFERENCES_USERPWDCHK -> i
+    java.lang.String PREFERENCES_ISHIDEWELCOME -> j
+    java.lang.String PREFERENCES_DEVIVCENUMBER -> k
+    java.lang.String PREFERENCES_UPLOADNETTYPE -> l
+    java.lang.String PREFERENCES_LOWSINGNAL -> m
+    java.lang.String PREFERENCES_LOWPOWER -> n
+    java.lang.String PREFERENCES_DEVOFF -> o
+    java.lang.String PREFERENCES_DEVFALLOFF -> p
+    java.lang.String PREFERENCES_GPS -> q
+    java.lang.String PREFERENCES_GPSLON -> r
+    java.lang.String PREFERENCES_XDPI -> s
+    java.lang.String PREFERENCES_YDPI -> t
+    java.lang.String PREFERENCES_GPSLAT -> u
+    java.lang.String PREFERENCES_OFFDATA -> v
+    java.lang.String PREFERENCES_NEWAPPVER -> w
+    java.lang.String PREFERENCES_NEWAPPURL -> x
+    java.lang.String PREFERENCES_SERVERURL -> y
+    java.lang.String PREFERENCES_FACTORY -> z
+    java.lang.String APP_DIR -> A
+    java.lang.String ECGDATA_SUFFIX -> B
+    java.lang.String SERVER_URL_DEF -> C
+    java.lang.String SERVER_URL -> D
+    java.lang.String SERVER_REALTIME_URL -> E
+    int SERVER_REALTIME_PORT -> F
+    java.lang.String AUTHOR_TOKEN -> G
+    int TIME_DELAY -> H
+    int Batch_Interval -> I
+    int Real_Interval -> J
+    int HeartRateFrequency -> K
+    int Alert_HR_Up -> L
+    int Alert_HR_Down -> M
+com.broadchance.utils.DBHelper -> com.broadchance.utils.v:
     int DB_VERSION -> d
     java.lang.String DB_ROOT_DIR -> e
     java.lang.String DB_NAME -> f
@@ -13942,7 +13936,7 @@ com.broadchance.utils.DBHelper -> com.broadchance.utils.w:
     java.lang.String getDBName() -> b
     void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
     void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
-com.broadchance.utils.FileUtil -> com.broadchance.utils.x:
+com.broadchance.utils.FileUtil -> com.broadchance.utils.w:
     java.lang.String TAG -> f
     java.lang.String ECG_DIR -> a
     java.lang.String ECG_BATCH_UPLOADDIR -> b
@@ -13984,7 +13978,7 @@ com.broadchance.utils.FileUtil -> com.broadchance.utils.x:
     java.io.File getECGFile() -> g
     java.io.File getBreathFile() -> h
     void test(android.content.Context) -> a
-com.broadchance.utils.FileUtil$ECGFileStatus -> com.broadchance.utils.y:
+com.broadchance.utils.FileUtil$ECGFileStatus -> com.broadchance.utils.x:
     com.broadchance.utils.FileUtil$ECGFileStatus NONE -> a
     com.broadchance.utils.FileUtil$ECGFileStatus BEGIN -> b
     com.broadchance.utils.FileUtil$ECGFileStatus WRITEBLOCK -> c
@@ -14007,7 +14001,7 @@ com.broadchance.utils.FilterUtil -> com.broadchance.utils.FilterUtil:
     int getHeartRate() -> getHeartRate
     int getHeartRateR() -> getHeartRateR
     void logJNI(java.lang.String) -> a
-com.broadchance.utils.GPSUtil -> com.broadchance.utils.z:
+com.broadchance.utils.GPSUtil -> com.broadchance.utils.y:
     java.lang.String TAG -> a
     boolean isLocationEnabled(android.location.LocationManager) -> a
     boolean isOpenGPS(android.location.LocationManager) -> b
@@ -14023,7 +14017,7 @@ com.broadchance.utils.GPSUtil -> com.broadchance.utils.z:
     java.io.InputStream sendPostRequest(java.lang.String,java.lang.String,java.lang.String) -> a
     java.lang.String sendGetRequest(java.lang.String) -> a
     byte[] readInputStream(java.io.InputStream) -> a
-com.broadchance.utils.HttpAsyncTask -> com.broadchance.utils.aa:
+com.broadchance.utils.HttpAsyncTask -> com.broadchance.utils.z:
     java.lang.String TAG -> k
     android.os.Handler mHandler -> a
     boolean mIsLoaded -> b
@@ -14046,10 +14040,10 @@ com.broadchance.utils.HttpAsyncTask -> com.broadchance.utils.aa:
     void access$3(com.broadchance.utils.HttpAsyncTask,int) -> a
     java.lang.String access$4() -> a
     void access$5(com.broadchance.utils.HttpAsyncTask) -> b
-com.broadchance.utils.HttpAsyncTask$1 -> com.broadchance.utils.ab:
+com.broadchance.utils.HttpAsyncTask$1 -> com.broadchance.utils.aa:
     com.broadchance.utils.HttpAsyncTask this$0 -> a
     void run() -> run
-com.broadchance.utils.HttpAsyncTaskUtil -> com.broadchance.utils.ac:
+com.broadchance.utils.HttpAsyncTaskUtil -> com.broadchance.utils.ab:
     java.lang.String TAG -> k
     android.os.Handler mHandler -> a
     boolean mIsLoaded -> b
@@ -14072,20 +14066,16 @@ com.broadchance.utils.HttpAsyncTaskUtil -> com.broadchance.utils.ac:
     void access$3(com.broadchance.utils.HttpAsyncTaskUtil,int) -> a
     java.lang.String access$4() -> a
     void access$5(com.broadchance.utils.HttpAsyncTaskUtil) -> b
-com.broadchance.utils.HttpAsyncTaskUtil$1 -> com.broadchance.utils.ad:
+com.broadchance.utils.HttpAsyncTaskUtil$1 -> com.broadchance.utils.ac:
     com.broadchance.utils.HttpAsyncTaskUtil this$0 -> a
     void run() -> run
-com.broadchance.utils.HttpUtil -> com.broadchance.utils.ae:
+com.broadchance.utils.HttpUtil -> com.broadchance.utils.ad:
     java.lang.String TAG -> a
     com.broadchance.entity.DownLoadAPPResponse downloadFile(java.lang.String,java.util.Map) -> a
     com.broadchance.entity.serverentity.StringResponse postData(java.lang.String,java.util.Map) -> b
-    java.lang.String getData(java.lang.String) -> a
-    java.lang.String deleteData(java.lang.String) -> b
     com.broadchance.entity.UploadFileResponse uploadRealBleFile(java.lang.String,java.util.Map) -> c
     com.broadchance.entity.UploadFileResponse uploadBleFile(java.lang.String,java.util.Map) -> d
-    com.broadchance.entity.UploadFileResponse uploadRealTimeFile(java.lang.String,int,java.util.Map) -> a
-    com.broadchance.entity.UploadFileResponse uploadFile(java.lang.String,java.util.Map) -> e
-com.broadchance.utils.LogUtil -> com.broadchance.utils.af:
+com.broadchance.utils.LogUtil -> com.broadchance.utils.ae:
     int I -> a
     int D -> b
     int W -> c
@@ -14097,20 +14087,20 @@ com.broadchance.utils.LogUtil -> com.broadchance.utils.af:
     void e(java.lang.String,java.lang.Exception) -> a
     void e(java.lang.String,java.lang.String) -> a
     void e(java.lang.String,java.lang.Object,java.lang.Exception) -> a
-com.broadchance.utils.MD5Util -> com.broadchance.utils.ag:
+com.broadchance.utils.MD5Util -> com.broadchance.utils.af:
     java.lang.String MD5(java.lang.String) -> a
-com.broadchance.utils.NetUtil -> com.broadchance.utils.ah:
+com.broadchance.utils.NetUtil -> com.broadchance.utils.ag:
     boolean isConnectNet() -> a
     boolean isNetAvailable() -> b
     boolean isWifi() -> c
     boolean isMobileNet() -> d
-com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ai:
+com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ah:
     long getAvailableSpace() -> a
     long getUsedSpace(java.lang.String) -> a
     long getFileSize(long,java.io.File) -> a
     boolean isSDCardAvailable() -> b
     boolean isAvailableSpace(long) -> a
-com.broadchance.utils.SSXLXService -> com.broadchance.utils.aj:
+com.broadchance.utils.SSXLXService -> com.broadchance.utils.ai:
     com.broadchance.utils.SSXLXService _Instance -> a
     com.broadchance.utils.SSXLXService getInstance() -> a
     void GetFreeDeviceVerify(java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> a
@@ -14136,15 +14126,20 @@ com.broadchance.utils.SSXLXService -> com.broadchance.utils.aj:
     void GetForgetVerifyCode(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> f
     void InserGPS(java.lang.String,java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> e
     void GetUserBase(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> g
-com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.ak:
+com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.aj:
     java.util.HashMap attributes -> c
     java.lang.String HEART_RATE_MEASUREMENT -> a
     java.lang.String CLIENT_CHARACTERISTIC_CONFIG -> b
     java.lang.String lookup(java.lang.String) -> a
     java.lang.String lookup(java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
+com.broadchance.utils.UIUtil -> com.broadchance.utils.ak:
     android.app.Activity context -> a
-    void showToast(java.lang.String) -> a
+    android.widget.Toast toast -> b
+    void showRemoteToast(java.lang.String) -> a
+    void showRemoteLongToast(java.lang.String) -> b
+    void showToast(java.lang.String) -> c
+    void showLongToast(java.lang.String) -> d
+    void _showToast(java.lang.String,int) -> a
     void showToast(android.content.Context,java.lang.String) -> a
     void showLongToast(android.content.Context,java.lang.String) -> b
     void setMessage(android.os.Handler,int) -> a
@@ -14153,10 +14148,11 @@ com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
     android.app.Dialog showLoadingDialog(android.content.Context,java.lang.String) -> c
     android.app.Dialog buildDialog(android.content.Context,android.view.View) -> a
     android.app.Dialog buildTipDialog(android.content.Context,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.am:
+com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.al:
     java.lang.String val$content -> a
+    int val$duration -> b
     void run() -> run
-com.broadchance.utils.ZipUtil -> com.broadchance.utils.an:
+com.broadchance.utils.ZipUtil -> com.broadchance.utils.am:
     int BUFF_SIZE -> a
     android.graphics.Bitmap compressBitmapByResid(android.content.res.Resources,int) -> a
     android.graphics.Bitmap compressImage(android.graphics.Bitmap) -> a
@@ -14400,160 +14396,168 @@ com.broadchance.wdecgrec.R$id -> com.broadchance.wdecgrec.j:
     int contactPhoneNo -> G
     int content -> H
     int customTitle -> I
-    int dialog -> J
-    int dialog_title -> K
-    int ecgGLSurfaceViewChannelMII -> L
-    int ecgRangeLevel1 -> M
-    int ecgRangeLevel2 -> N
-    int ecgRangeLevel3 -> O
-    int ecgRangeLevel4 -> P
-    int ecgSpeedLevel1 -> Q
-    int ecgSpeedLevel2 -> R
-    int ecg_curhearrate -> S
-    int ecg_curspeedvalue -> T
-    int editTextConfirmPwd -> U
-    int editTextDevPwd -> V
-    int editTextECGValue -> W
-    int editTextGridDValue -> X
-    int editTextGridXValue -> Y
-    int editTextID -> Z
-    int editTextPwd -> aa
-    int editTextToken -> ab
-    int editTextURL -> ac
-    int editTextUserName -> ad
-    int editTextValue -> ae
-    int editTextXDPI -> af
-    int editTextYDPI -> ag
-    int gridViewFamily -> ah
-    int imageButtonGetToken -> ai
-    int imageViewSignal -> aj
-    int lbl2 -> ak
-    int lblCurDate -> al
-    int lblCurTime -> am
-    int lblMacAddress -> an
-    int listView -> ao
-    int listViewBle -> ap
-    int listViewChangeSkin -> aq
-    int listViewContacts -> ar
-    int llAppLogout -> as
-    int llAppUpdate -> at
-    int llChangeSkin -> au
-    int llECG -> av
-    int llMyinfo -> aw
-    int llSetpwd -> ax
-    int llSettingsDevInfo -> ay
-    int llTitle -> az
-    int llUpload -> aA
-    int login_com_top -> aB
-    int modeHeart -> aC
-    int modifyPwdConfirmpwd -> aD
-    int modifyPwdOldPwd -> aE
-    int modifyPwd_NewPwd -> aF
-    int myinfoAddress -> aG
-    int myinfoDevNo -> aH
-    int myinfoHeight -> aI
-    int myinfoHeightCm -> aJ
-    int myinfoID -> aK
-    int myinfoMemo -> aL
-    int myinfoMobilePhone -> aM
-    int myinfoName -> aN
-    int myinfoNameSexAge -> aO
-    int myinfoWeight -> aP
-    int myinfoWeightKg -> aQ
-    int myinfoZipCode -> aR
-    int myinfo_address -> aS
-    int myinfo_devinfono -> aT
-    int myinfo_height -> aU
-    int myinfo_id -> aV
-    int myinfo_memo -> aW
-    int myinfo_mobilephone -> aX
-    int myinfo_name -> aY
-    int myinfo_weight -> aZ
-    int myinfo_zipcode -> ba
-    int opetionSettingsDevinfoN -> bb
-    int opetionSettingsOffDataN -> bc
-    int optionsettingsRedStar -> bd
-    int optionsettings_dataupload_tip -> be
-    int optionsettings_devinfo -> bf
-    int optionsettings_falloff_tip -> bg
-    int optionsettings_gpslocation -> bh
-    int optionsettings_lowpower_tip -> bi
-    int optionsettings_lowsignal_tip -> bj
-    int optionsettings_off_tip -> bk
-    int optionsettings_offdata -> bl
-    int registerDelaySendMsg -> bm
-    int register_com_top -> bn
-    int rgEcgRange -> bo
-    int rgEcgSpeed -> bp
-    int rlTitle -> bq
-    int sidrbar -> br
-    int testTitleId -> bs
-    int textViewBleInfoName -> bt
-    int textViewBleInfoValue -> bu
-    int textViewBleName -> bv
-    int textViewContent -> bw
-    int textViewCurUpload -> bx
-    int textViewCurVer -> by
-    int textViewDialogTitle -> bz
-    int textViewHeart -> bA
-    int textViewLeftTime -> bB
-    int textViewNewVer -> bC
-    int textViewPower -> bD
-    int textViewSkinName -> bE
-    int textViewUpdate -> bF
-    int textViewUploadNetType -> bG
-    int textViewUseName -> bH
-    int textViewVerionValue -> bI
-    int textViewVertion -> bJ
-    int textViewWaitUpload -> bK
-    int titleHead -> bL
-    int tvCurDate -> bM
-    int tvCurTime -> bN
-    int tvMacAddress -> bO
-    int tvUpload -> bP
-    int tvVersion -> bQ
-    int viewAddContact -> bR
-    int viewChangeSkinIcon -> bS
-    int viewChannel1 -> bT
-    int viewContact -> bU
-    int viewEcgChannel -> bV
-    int viewHead -> bW
-    int viewSelSkin -> bX
-    int viewShowDevinfo -> bY
-    int viewShowOffData -> bZ
-    int viewSkin -> ca
+    int device_address -> J
+    int device_name -> K
+    int dialog -> L
+    int dialog_title -> M
+    int ecgGLSurfaceViewChannelMII -> N
+    int ecgRangeLevel1 -> O
+    int ecgRangeLevel2 -> P
+    int ecgRangeLevel3 -> Q
+    int ecgRangeLevel4 -> R
+    int ecgSpeedLevel1 -> S
+    int ecgSpeedLevel2 -> T
+    int ecgSpeedLevel3 -> U
+    int ecg_curhearrate -> V
+    int ecg_curspeedvalue -> W
+    int editTextConfirmPwd -> X
+    int editTextDevPwd -> Y
+    int editTextECGValue -> Z
+    int editTextGridDValue -> aa
+    int editTextGridXValue -> ab
+    int editTextID -> ac
+    int editTextPwd -> ad
+    int editTextToken -> ae
+    int editTextURL -> af
+    int editTextUserName -> ag
+    int editTextValue -> ah
+    int editTextXDPI -> ai
+    int editTextYDPI -> aj
+    int gridViewFamily -> ak
+    int imageButtonGetToken -> al
+    int imageViewSignal -> am
+    int lbl2 -> an
+    int lblCurDate -> ao
+    int lblCurTime -> ap
+    int lblMacAddress -> aq
+    int listView -> ar
+    int listViewBle -> as
+    int listViewChangeSkin -> at
+    int listViewContacts -> au
+    int llAppFactory -> av
+    int llAppLogout -> aw
+    int llAppUpdate -> ax
+    int llChangeSkin -> ay
+    int llECG -> az
+    int llMyinfo -> aA
+    int llSetpwd -> aB
+    int llSettingsDevInfo -> aC
+    int llTitle -> aD
+    int llUpload -> aE
+    int login_com_top -> aF
+    int modeHeart -> aG
+    int modifyPwdConfirmpwd -> aH
+    int modifyPwdOldPwd -> aI
+    int modifyPwd_NewPwd -> aJ
+    int myinfoAddress -> aK
+    int myinfoDevNo -> aL
+    int myinfoHeight -> aM
+    int myinfoHeightCm -> aN
+    int myinfoID -> aO
+    int myinfoMemo -> aP
+    int myinfoMobilePhone -> aQ
+    int myinfoName -> aR
+    int myinfoNameSexAge -> aS
+    int myinfoWeight -> aT
+    int myinfoWeightKg -> aU
+    int myinfoZipCode -> aV
+    int myinfo_address -> aW
+    int myinfo_devinfono -> aX
+    int myinfo_height -> aY
+    int myinfo_id -> aZ
+    int myinfo_memo -> ba
+    int myinfo_mobilephone -> bb
+    int myinfo_name -> bc
+    int myinfo_weight -> bd
+    int myinfo_zipcode -> be
+    int opetionSettingsDevinfoN -> bf
+    int opetionSettingsOffDataN -> bg
+    int optionsettingsRedStar -> bh
+    int optionsettings_dataupload_tip -> bi
+    int optionsettings_devinfo -> bj
+    int optionsettings_falloff_tip -> bk
+    int optionsettings_gpslocation -> bl
+    int optionsettings_lowpower_tip -> bm
+    int optionsettings_lowsignal_tip -> bn
+    int optionsettings_off_tip -> bo
+    int optionsettings_offdata -> bp
+    int registerDelaySendMsg -> bq
+    int register_com_top -> br
+    int rgEcgRange -> bs
+    int rgEcgSpeed -> bt
+    int rlTitle -> bu
+    int sidrbar -> bv
+    int testTitleId -> bw
+    int textViewBleInfoName -> bx
+    int textViewBleInfoValue -> by
+    int textViewBleName -> bz
+    int textViewContent -> bA
+    int textViewCurUpload -> bB
+    int textViewCurVer -> bC
+    int textViewDialogTitle -> bD
+    int textViewFactory -> bE
+    int textViewHeart -> bF
+    int textViewLeftTime -> bG
+    int textViewNewVer -> bH
+    int textViewPower -> bI
+    int textViewSkinName -> bJ
+    int textViewUpdate -> bK
+    int textViewUploadNetType -> bL
+    int textViewUseName -> bM
+    int textViewVerionValue -> bN
+    int textViewVertion -> bO
+    int textViewWaitUpload -> bP
+    int titleHead -> bQ
+    int tvCurDate -> bR
+    int tvCurTime -> bS
+    int tvMacAddress -> bT
+    int tvRunTime -> bU
+    int tvUpload -> bV
+    int tvVersion -> bW
+    int viewAddContact -> bX
+    int viewChangeSkinIcon -> bY
+    int viewChannel1 -> bZ
+    int viewContact -> ca
+    int viewEcgChannel -> cb
+    int viewHead -> cc
+    int viewSelSkin -> cd
+    int viewShowDevinfo -> ce
+    int viewShowOffData -> cf
+    int viewSkin -> cg
 com.broadchance.wdecgrec.R$layout -> com.broadchance.wdecgrec.k:
-    int activity_add_contact -> a
-    int activity_add_family -> b
-    int activity_ecg -> c
-    int activity_login -> d
-    int activity_login_resetpwd -> e
-    int activity_mode -> f
-    int activity_modify_pwd -> g
-    int activity_my_info -> h
-    int activity_option_settings -> i
-    int activity_register -> j
-    int activity_settings -> k
-    int activity_upload -> l
-    int common_title_status -> m
-    int dialog_appupdate -> n
-    int dialog_changeskin -> o
-    int dialog_choosebledev -> p
-    int dialog_choosephoneno -> q
-    int dialog_devicecheck -> r
-    int dialog_deviceunbind -> s
-    int dialog_input_test -> t
-    int dialog_onekey_upload -> u
-    int dialog_settings_offdata -> v
-    int dialog_settingsdevinfo -> w
-    int dialog_show_loading -> x
-    int dialog_tips -> y
-    int listview_addfamily_item -> z
-    int listview_bledevinfo_item -> A
-    int listview_changeskin_item -> B
-    int listview_chooseble_item -> C
-    int listview_choosecontact_item -> D
-    int listview_offdata_item -> E
+    int actionbar_indeterminate_progress -> a
+    int activity_add_contact -> b
+    int activity_add_family -> c
+    int activity_ecg -> d
+    int activity_login -> e
+    int activity_login_resetpwd -> f
+    int activity_mode -> g
+    int activity_modify_pwd -> h
+    int activity_my_info -> i
+    int activity_option_settings -> j
+    int activity_register -> k
+    int activity_settings -> l
+    int activity_upload -> m
+    int common_title_status -> n
+    int dialog_appupdate -> o
+    int dialog_changeskin -> p
+    int dialog_choosebledev -> q
+    int dialog_choosephoneno -> r
+    int dialog_devicecheck -> s
+    int dialog_deviceunbind -> t
+    int dialog_input_test -> u
+    int dialog_onekey_upload -> v
+    int dialog_settings_offdata -> w
+    int dialog_settingsdevinfo -> x
+    int dialog_show_loading -> y
+    int dialog_tips -> z
+    int listitem_device -> A
+    int listview_addfamily_item -> B
+    int listview_bledevinfo_item -> C
+    int listview_changeskin_item -> D
+    int listview_chooseble_item -> E
+    int listview_choosecontact_item -> F
+    int listview_offdata_item -> G
 com.broadchance.wdecgrec.R$menu -> com.broadchance.wdecgrec.l:
     int upload -> a
 com.broadchance.wdecgrec.R$raw -> com.broadchance.wdecgrec.m:
@@ -14899,9 +14903,10 @@ com.broadchance.wdecgrec.alert.AlertMachine -> com.broadchance.wdecgrec.b.a:
     void init() -> a
     com.broadchance.wdecgrec.alert.AlertMachine getInstance() -> b
     com.broadchance.entity.AlertCFG getAlertConfig(com.broadchance.wdecgrec.alert.AlertType) -> a
-    org.json.JSONObject getAlertParam() -> e
-    void updateCFG() -> f
-    void sendAlert() -> c
+    org.json.JSONObject getAlertParam() -> f
+    void refreshCFG() -> c
+    void updateCFG() -> g
+    void sendAlert() -> d
     java.util.concurrent.ScheduledFuture schedule(java.lang.Runnable,long,java.util.concurrent.TimeUnit) -> a
     boolean canSendAlert(com.broadchance.wdecgrec.alert.AlertType,int) -> a
     com.broadchance.entity.AlertCFG getAlertCFG(com.broadchance.wdecgrec.alert.AlertType) -> e
@@ -14910,32 +14915,23 @@ com.broadchance.wdecgrec.alert.AlertMachine -> com.broadchance.wdecgrec.b.a:
     java.lang.String getKeyType(com.broadchance.wdecgrec.alert.AlertType,java.lang.String) -> a
     void sendAlert(com.broadchance.wdecgrec.alert.AlertType,org.json.JSONObject) -> a
     void cancelAlert(com.broadchance.wdecgrec.alert.AlertType) -> d
-    com.broadchance.entity.AlertCFG access$0(com.broadchance.wdecgrec.alert.AlertMachine,com.broadchance.wdecgrec.alert.AlertType) -> a
-    java.util.Map access$1(com.broadchance.wdecgrec.alert.AlertMachine) -> a
-    java.util.Map access$2(com.broadchance.wdecgrec.alert.AlertMachine) -> b
-    void access$3(com.broadchance.wdecgrec.alert.AlertMachine) -> c
-    java.util.concurrent.atomic.AtomicBoolean access$4(com.broadchance.wdecgrec.alert.AlertMachine) -> d
-    int[] $SWITCH_TABLE$com$broadchance$wdecgrec$alert$AlertType() -> d
+    void access$0(com.broadchance.wdecgrec.alert.AlertMachine) -> a
+    java.util.concurrent.atomic.AtomicBoolean access$1(com.broadchance.wdecgrec.alert.AlertMachine) -> b
+    int[] $SWITCH_TABLE$com$broadchance$wdecgrec$alert$AlertType() -> e
 com.broadchance.wdecgrec.alert.AlertMachine$1 -> com.broadchance.wdecgrec.b.b:
     com.broadchance.wdecgrec.alert.AlertMachine this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.alert.AlertMachine$2 -> com.broadchance.wdecgrec.b.c:
-    com.broadchance.wdecgrec.alert.AlertMachine this$0 -> a
-    android.app.Activity getReqActivity() -> a
-    void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
-    void doError(java.lang.String) -> a
-    void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.alert.AlertStatus -> com.broadchance.wdecgrec.b.d:
+com.broadchance.wdecgrec.alert.AlertStatus -> com.broadchance.wdecgrec.b.c:
     com.broadchance.wdecgrec.alert.AlertStatus NONE -> a
     com.broadchance.wdecgrec.alert.AlertStatus AlertSending -> b
     com.broadchance.wdecgrec.alert.AlertStatus AlertCancelSending -> c
     com.broadchance.wdecgrec.alert.AlertStatus[] ENUM$VALUES -> d
     com.broadchance.wdecgrec.alert.AlertStatus[] values() -> values
     com.broadchance.wdecgrec.alert.AlertStatus valueOf(java.lang.String) -> valueOf
-com.broadchance.wdecgrec.alert.AlertType -> com.broadchance.wdecgrec.b.e:
+com.broadchance.wdecgrec.alert.AlertType -> com.broadchance.wdecgrec.b.d:
     com.broadchance.wdecgrec.alert.AlertType A00001 -> a
     com.broadchance.wdecgrec.alert.AlertType A00002 -> b
     com.broadchance.wdecgrec.alert.AlertType A00003 -> c
@@ -14949,7 +14945,7 @@ com.broadchance.wdecgrec.alert.AlertType -> com.broadchance.wdecgrec.b.e:
     java.lang.String getValue() -> a
     com.broadchance.wdecgrec.alert.AlertType[] values() -> values
     com.broadchance.wdecgrec.alert.AlertType valueOf(java.lang.String) -> valueOf
-com.broadchance.wdecgrec.alert.AlertWorker -> com.broadchance.wdecgrec.b.f:
+com.broadchance.wdecgrec.alert.AlertWorker -> com.broadchance.wdecgrec.b.e:
     java.lang.String TAG -> a
     java.util.concurrent.ScheduledFuture mSendSdl -> b
     java.util.concurrent.ScheduledFuture mCancelSendSdl -> c
@@ -14976,10 +14972,10 @@ com.broadchance.wdecgrec.alert.AlertWorker -> com.broadchance.wdecgrec.b.f:
     void access$4(com.broadchance.wdecgrec.alert.AlertWorker,boolean) -> a
     void access$5(com.broadchance.wdecgrec.alert.AlertWorker,java.util.concurrent.ScheduledFuture) -> a
     void access$6(com.broadchance.wdecgrec.alert.AlertWorker,java.util.concurrent.ScheduledFuture) -> b
-com.broadchance.wdecgrec.alert.AlertWorker$1 -> com.broadchance.wdecgrec.b.g:
+com.broadchance.wdecgrec.alert.AlertWorker$1 -> com.broadchance.wdecgrec.b.f:
     com.broadchance.wdecgrec.alert.AlertWorker this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.alert.AlertWorker$2 -> com.broadchance.wdecgrec.b.h:
+com.broadchance.wdecgrec.alert.AlertWorker$2 -> com.broadchance.wdecgrec.b.g:
     com.broadchance.wdecgrec.alert.AlertWorker this$0 -> a
     void run() -> run
 com.broadchance.wdecgrec.login.LoginActivity -> com.broadchance.wdecgrec.login.LoginActivity:
@@ -14995,28 +14991,26 @@ com.broadchance.wdecgrec.login.LoginActivity -> com.broadchance.wdecgrec.login.L
     com.broadchance.wdecgrec.login.LoginActivity current -> d
     com.broadchance.entity.UIUserInfoLogin user -> o
     android.app.Dialog offDialog -> e
+    java.lang.String certKey -> p
     void onCreate(android.os.Bundle) -> onCreate
-    void initLocation() -> c
-    void getNewVer() -> d
-    void register() -> e
-    void logon() -> f
+    void initLocation() -> b
+    void getNewVer() -> c
+    void register() -> d
+    void logon() -> e
     void _logon(org.json.JSONObject) -> a
-    void login() -> g
-    void forgotPwd() -> h
+    void forgotPwd() -> f
     boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
     void onClick(android.view.View) -> onClick
     void access$0(com.broadchance.wdecgrec.login.LoginActivity) -> a
     com.broadchance.wdecgrec.widget.LabelEditText access$1(com.broadchance.wdecgrec.login.LoginActivity) -> b
     void access$2(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String,java.lang.String) -> a
     void access$3(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String) -> a
-    void access$4(com.broadchance.wdecgrec.login.LoginActivity,org.json.JSONObject) -> a
-    void access$5(com.broadchance.wdecgrec.login.LoginActivity,com.broadchance.entity.UIUserInfoLogin) -> a
-    com.broadchance.entity.UIUserInfoLogin access$6(com.broadchance.wdecgrec.login.LoginActivity) -> c
-    com.broadchance.utils.ClientGameService access$7(com.broadchance.wdecgrec.login.LoginActivity) -> d
-    com.broadchance.utils.SSXLXService access$8(com.broadchance.wdecgrec.login.LoginActivity) -> e
-    android.widget.CheckBox access$9(com.broadchance.wdecgrec.login.LoginActivity) -> f
-    void access$10(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String,boolean) -> a
-    java.lang.String access$11() -> b
+    void access$4(com.broadchance.wdecgrec.login.LoginActivity,java.lang.String) -> b
+    void access$5(com.broadchance.wdecgrec.login.LoginActivity,org.json.JSONObject) -> a
+    void access$6(com.broadchance.wdecgrec.login.LoginActivity,com.broadchance.entity.UIUserInfoLogin) -> a
+    com.broadchance.entity.UIUserInfoLogin access$7(com.broadchance.wdecgrec.login.LoginActivity) -> c
+    java.lang.String access$8(com.broadchance.wdecgrec.login.LoginActivity) -> d
+    com.broadchance.utils.ClientGameService access$9(com.broadchance.wdecgrec.login.LoginActivity) -> e
 com.broadchance.wdecgrec.login.LoginActivity$1 -> com.broadchance.wdecgrec.login.a:
     com.broadchance.wdecgrec.login.LoginActivity this$0 -> a
     boolean onEditorAction(android.widget.TextView,int,android.view.KeyEvent) -> onEditorAction
@@ -15051,27 +15045,6 @@ com.broadchance.wdecgrec.login.LoginActivity$5 -> com.broadchance.wdecgrec.login
     void doSuccess(com.broadchance.entity.serverentity.ServerResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6 -> com.broadchance.wdecgrec.login.h:
-    com.broadchance.wdecgrec.login.LoginActivity this$0 -> a
-    java.lang.String val$pwd -> c
-    android.app.Activity getReqActivity() -> a
-    void doSuccess(com.broadchance.entity.UIUserInfoLogin) -> a
-    void doError(java.lang.String) -> a
-    void doSuccess(java.lang.Object) -> a
-    com.broadchance.wdecgrec.login.LoginActivity access$1(com.broadchance.wdecgrec.login.LoginActivity$6) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6$1 -> com.broadchance.wdecgrec.login.i:
-    com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
-    java.lang.String val$pwd -> c
-    android.app.Activity getReqActivity() -> a
-    void doSuccess(com.broadchance.entity.serverentity.UIDeviceResponseList) -> a
-    void doError(java.lang.String) -> a
-    void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.LoginActivity$6$2 -> com.broadchance.wdecgrec.login.j:
-    com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
-    void onClick(android.view.View) -> onClick
-com.broadchance.wdecgrec.login.LoginActivity$6$3 -> com.broadchance.wdecgrec.login.k:
-    com.broadchance.wdecgrec.login.LoginActivity$6 this$1 -> a
-    void onClick(android.view.View) -> onClick
 com.broadchance.wdecgrec.login.RegisterActivity -> com.broadchance.wdecgrec.login.RegisterActivity:
     android.widget.Button buttonRegister -> f
     com.broadchance.wdecgrec.widget.LabelEditText editTextUserName -> g
@@ -15105,16 +15078,16 @@ com.broadchance.wdecgrec.login.RegisterActivity -> com.broadchance.wdecgrec.logi
     android.view.View access$5(com.broadchance.wdecgrec.login.RegisterActivity) -> d
     void access$6(com.broadchance.wdecgrec.login.RegisterActivity) -> e
     com.broadchance.wdecgrec.widget.LabelEditText access$7(com.broadchance.wdecgrec.login.RegisterActivity) -> f
-com.broadchance.wdecgrec.login.RegisterActivity$1 -> com.broadchance.wdecgrec.login.l:
+com.broadchance.wdecgrec.login.RegisterActivity$1 -> com.broadchance.wdecgrec.login.h:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.UIUserInfoRegistResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.RegisterActivity$2 -> com.broadchance.wdecgrec.login.m:
+com.broadchance.wdecgrec.login.RegisterActivity$2 -> com.broadchance.wdecgrec.login.i:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.login.RegisterActivity$3 -> com.broadchance.wdecgrec.login.n:
+com.broadchance.wdecgrec.login.RegisterActivity$3 -> com.broadchance.wdecgrec.login.j:
     com.broadchance.wdecgrec.login.RegisterActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
@@ -15147,16 +15120,16 @@ com.broadchance.wdecgrec.login.ResetPwdActivity -> com.broadchance.wdecgrec.logi
     android.view.View access$5(com.broadchance.wdecgrec.login.ResetPwdActivity) -> d
     void access$6(com.broadchance.wdecgrec.login.ResetPwdActivity) -> e
     com.broadchance.wdecgrec.widget.LabelEditText access$7(com.broadchance.wdecgrec.login.ResetPwdActivity) -> f
-com.broadchance.wdecgrec.login.ResetPwdActivity$1 -> com.broadchance.wdecgrec.login.o:
+com.broadchance.wdecgrec.login.ResetPwdActivity$1 -> com.broadchance.wdecgrec.login.k:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.login.ResetPwdActivity$2 -> com.broadchance.wdecgrec.login.p:
+com.broadchance.wdecgrec.login.ResetPwdActivity$2 -> com.broadchance.wdecgrec.login.l:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.login.ResetPwdActivity$3 -> com.broadchance.wdecgrec.login.q:
+com.broadchance.wdecgrec.login.ResetPwdActivity$3 -> com.broadchance.wdecgrec.login.m:
     com.broadchance.wdecgrec.login.ResetPwdActivity this$0 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.serverentity.StringResponse) -> a
@@ -15170,118 +15143,100 @@ com.broadchance.wdecgrec.main.EcgActivity -> com.broadchance.wdecgrec.main.EcgAc
     android.widget.TextView ecg_curspeedvalue -> t
     android.widget.TextView tvCurDate -> u
     android.widget.TextView tvCurTime -> v
-    android.view.View buttonTitleBack -> w
-    int GRID_VNUM_20 -> x
-    int GRID_VNUM_30 -> y
-    int GRID_VNUM_60 -> z
+    android.widget.TextView tvRunTime -> w
+    android.view.View buttonTitleBack -> x
+    int GRID_VNUM_20 -> y
+    int GRID_VNUM_30 -> z
+    int GRID_VNUM_60 -> A
     int UPDATE_MIICANVAS -> d
-    java.util.concurrent.LinkedBlockingQueue miiQueue -> A
+    java.util.concurrent.LinkedBlockingQueue miiQueue -> B
     long totalReceivePoints -> e
-    java.util.concurrent.ScheduledExecutorService executor -> B
-    java.util.concurrent.ExecutorService executorReceive -> C
+    java.util.concurrent.ScheduledExecutorService executor -> C
+    java.util.concurrent.ExecutorService executorReceive -> D
     java.lang.String TAG -> f
     com.broadchance.wdecgrec.main.EcgActivity Instance -> g
-    int hearRate -> D
+    int hearRate -> E
     long lastTime -> h
     long lastMIITime -> i
     long lastMIIOffTime -> j
-    com.broadchance.utils.FilterUtil filter -> E
     boolean isStopMII -> F
     android.os.Handler handler -> G
     java.text.SimpleDateFormat sdf -> H
     android.os.Handler handlerTime -> I
+    android.os.Messenger mMesg -> J
     long count -> k
-    android.content.BroadcastReceiver mGattUpdateReceiver -> J
-    long SCAN_PERIOD -> K
-    boolean mScanning -> L
-    android.os.Handler mHandler -> M
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> N
-    android.bluetooth.BluetoothManager mBluetoothManager -> O
-    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> P
-    android.content.BroadcastReceiver testReceiver -> Q
+    android.content.BroadcastReceiver mGattUpdateReceiver -> K
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> L
+    android.bluetooth.BluetoothManager mBluetoothManager -> M
+    java.util.Date runTime -> N
+    android.content.BroadcastReceiver testReceiver -> O
     android.os.Handler testHandler -> l
     int hexIndex -> m
     int chkCount -> n
     java.lang.String[] ecgDataAs -> o
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanDraw -> R
+    java.util.concurrent.atomic.AtomicBoolean atomicBooleanDraw -> P
     void receiveEcgData(int,int[]) -> a
     void drawEcgData(int) -> e
-    void setHeartRate() -> d
-    void scanLeDevice() -> b
+    void setHeartRate() -> c
     void onCreate(android.os.Bundle) -> onCreate
-    void setDefault() -> e
-    void test() -> c
+    void setDefault() -> d
+    void test() -> b
     void setEcgMode(com.broadchance.ecgview.ECGGLSurfaceView$EcgType,com.broadchance.ecgview.ECGGLSurfaceView$EcgLevel) -> a
-    void startExecutor() -> f
-    void setTime() -> g
-    void endExecutor() -> h
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> i
+    void startExecutor() -> e
+    void setTime() -> f
+    void endExecutor() -> g
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> h
     void onResume() -> onResume
     void onDestroy() -> onDestroy
     void onPause() -> onPause
     boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
-    void returnModeAcitivity() -> j
+    void returnModeAcitivity() -> i
     void setSpeed(android.view.View) -> a
     void setRange(android.view.View) -> b
     void onClick(android.view.View) -> onClick
     com.broadchance.ecgview.ECGGLSurfaceView access$0(com.broadchance.wdecgrec.main.EcgActivity) -> a
-    java.util.concurrent.LinkedBlockingQueue access$1(com.broadchance.wdecgrec.main.EcgActivity) -> b
-    void access$2(com.broadchance.wdecgrec.main.EcgActivity,int,int[]) -> a
-    void access$3(com.broadchance.wdecgrec.main.EcgActivity,java.lang.String) -> a
-    com.broadchance.utils.FilterUtil access$4(com.broadchance.wdecgrec.main.EcgActivity) -> c
-    void access$5(com.broadchance.wdecgrec.main.EcgActivity,int) -> a
-    int access$6(com.broadchance.wdecgrec.main.EcgActivity) -> d
-    android.widget.TextView access$7(com.broadchance.wdecgrec.main.EcgActivity) -> e
-    void access$8(com.broadchance.wdecgrec.main.EcgActivity) -> f
-    void access$9(com.broadchance.wdecgrec.main.EcgActivity,boolean) -> a
-    android.bluetooth.BluetoothAdapter access$10(com.broadchance.wdecgrec.main.EcgActivity) -> g
-    android.bluetooth.BluetoothAdapter$LeScanCallback access$11(com.broadchance.wdecgrec.main.EcgActivity) -> h
-    java.util.concurrent.atomic.AtomicBoolean access$12(com.broadchance.wdecgrec.main.EcgActivity) -> i
-    void access$13(com.broadchance.wdecgrec.main.EcgActivity,int) -> b
-    java.text.SimpleDateFormat access$14(com.broadchance.wdecgrec.main.EcgActivity) -> j
-    android.widget.TextView access$15(com.broadchance.wdecgrec.main.EcgActivity) -> k
-    android.widget.TextView access$16(com.broadchance.wdecgrec.main.EcgActivity) -> l
-    void access$17(com.broadchance.wdecgrec.main.EcgActivity) -> m
+    void access$1(com.broadchance.wdecgrec.main.EcgActivity,int) -> a
+    android.widget.TextView access$2(com.broadchance.wdecgrec.main.EcgActivity) -> b
+    int access$3(com.broadchance.wdecgrec.main.EcgActivity) -> c
+    java.util.Date access$4(com.broadchance.wdecgrec.main.EcgActivity) -> d
+    android.widget.TextView access$5(com.broadchance.wdecgrec.main.EcgActivity) -> e
+    java.util.concurrent.LinkedBlockingQueue access$6(com.broadchance.wdecgrec.main.EcgActivity) -> f
+    void access$7(com.broadchance.wdecgrec.main.EcgActivity,int,int[]) -> a
+    void access$8(com.broadchance.wdecgrec.main.EcgActivity,java.lang.String) -> a
+    void access$9(com.broadchance.wdecgrec.main.EcgActivity) -> g
+    java.util.concurrent.atomic.AtomicBoolean access$10(com.broadchance.wdecgrec.main.EcgActivity) -> h
+    void access$11(com.broadchance.wdecgrec.main.EcgActivity,int) -> b
+    java.text.SimpleDateFormat access$12(com.broadchance.wdecgrec.main.EcgActivity) -> i
+    android.widget.TextView access$13(com.broadchance.wdecgrec.main.EcgActivity) -> j
+    android.widget.TextView access$14(com.broadchance.wdecgrec.main.EcgActivity) -> k
+    void access$15(com.broadchance.wdecgrec.main.EcgActivity) -> l
 com.broadchance.wdecgrec.main.EcgActivity$1 -> com.broadchance.wdecgrec.main.a:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void handleMessage(android.os.Message) -> handleMessage
 com.broadchance.wdecgrec.main.EcgActivity$10 -> com.broadchance.wdecgrec.main.b:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
-    java.lang.String[] val$hexStrs -> b
     void run() -> run
-com.broadchance.wdecgrec.main.EcgActivity$11 -> com.broadchance.wdecgrec.main.c:
-    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
-    void run() -> run
-com.broadchance.wdecgrec.main.EcgActivity$12 -> com.broadchance.wdecgrec.main.d:
-    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
-    void run() -> run
-com.broadchance.wdecgrec.main.EcgActivity$2 -> com.broadchance.wdecgrec.main.e:
+com.broadchance.wdecgrec.main.EcgActivity$2 -> com.broadchance.wdecgrec.main.c:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void handleMessage(android.os.Message) -> handleMessage
-com.broadchance.wdecgrec.main.EcgActivity$3 -> com.broadchance.wdecgrec.main.f:
+com.broadchance.wdecgrec.main.EcgActivity$3 -> com.broadchance.wdecgrec.main.d:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.broadchance.wdecgrec.main.EcgActivity$4 -> com.broadchance.wdecgrec.main.g:
-    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
-    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
-com.broadchance.wdecgrec.main.EcgActivity$5 -> com.broadchance.wdecgrec.main.h:
+com.broadchance.wdecgrec.main.EcgActivity$4 -> com.broadchance.wdecgrec.main.e:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.broadchance.wdecgrec.main.EcgActivity$6 -> com.broadchance.wdecgrec.main.i:
+com.broadchance.wdecgrec.main.EcgActivity$5 -> com.broadchance.wdecgrec.main.f:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void handleMessage(android.os.Message) -> handleMessage
-com.broadchance.wdecgrec.main.EcgActivity$7 -> com.broadchance.wdecgrec.main.j:
+com.broadchance.wdecgrec.main.EcgActivity$6 -> com.broadchance.wdecgrec.main.g:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.main.EcgActivity$8 -> com.broadchance.wdecgrec.main.k:
-    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
-    void run() -> run
-com.broadchance.wdecgrec.main.EcgActivity$9 -> com.broadchance.wdecgrec.main.l:
+com.broadchance.wdecgrec.main.EcgActivity$7 -> com.broadchance.wdecgrec.main.h:
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-    com.broadchance.wdecgrec.main.EcgActivity access$0(com.broadchance.wdecgrec.main.EcgActivity$9) -> a
-com.broadchance.wdecgrec.main.EcgActivity$9$1 -> com.broadchance.wdecgrec.main.m:
-    com.broadchance.wdecgrec.main.EcgActivity$9 this$1 -> a
+    com.broadchance.wdecgrec.main.EcgActivity access$0(com.broadchance.wdecgrec.main.EcgActivity$7) -> a
+com.broadchance.wdecgrec.main.EcgActivity$7$1 -> com.broadchance.wdecgrec.main.i:
+    com.broadchance.wdecgrec.main.EcgActivity$7 this$1 -> a
     android.widget.EditText val$editTextValue -> b
     android.widget.EditText val$editTextGridXValue -> c
     android.widget.EditText val$editTextGridDValue -> d
@@ -15291,53 +15246,48 @@ com.broadchance.wdecgrec.main.EcgActivity$9$1 -> com.broadchance.wdecgrec.main.m
     android.widget.EditText val$editTextURL -> h
     android.app.Dialog val$dialog -> i
     void onClick(android.view.View) -> onClick
-com.broadchance.wdecgrec.main.EcgActivity$EcgData -> com.broadchance.wdecgrec.main.n:
+com.broadchance.wdecgrec.main.EcgActivity$8 -> com.broadchance.wdecgrec.main.j:
+    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
+    java.lang.String[] val$hexStrs -> b
+    void run() -> run
+com.broadchance.wdecgrec.main.EcgActivity$9 -> com.broadchance.wdecgrec.main.k:
+    com.broadchance.wdecgrec.main.EcgActivity this$0 -> a
+    void run() -> run
+com.broadchance.wdecgrec.main.EcgActivity$EcgData -> com.broadchance.wdecgrec.main.l:
     java.lang.Integer[] queueArray -> a
     int pointNumber -> b
     com.broadchance.wdecgrec.main.EcgActivity this$0 -> c
 com.broadchance.wdecgrec.main.ModeActivity -> com.broadchance.wdecgrec.main.ModeActivity:
-    java.lang.String TAG -> e
+    java.lang.String TAG -> f
     com.broadchance.wdecgrec.main.ModeActivity Instance -> d
-    int REQUEST_ENABLE_BT -> f
-    android.widget.TextView textViewHeart -> g
-    java.util.concurrent.ScheduledExecutorService executor -> h
-    android.os.Handler handlerTime -> i
-    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> j
-    long SCAN_PERIOD -> k
-    boolean mScanning -> l
-    android.os.Handler mHandler -> m
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> n
-    android.bluetooth.BluetoothManager mBluetoothManager -> o
+    int REQUEST_ENABLE_BT -> g
+    android.widget.TextView textViewHeart -> h
+    java.util.concurrent.ScheduledExecutorService executor -> i
+    int hearRate -> e
+    android.os.Handler handlerTime -> j
+    android.os.Messenger mMesg -> k
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> l
+    android.bluetooth.BluetoothManager mBluetoothManager -> m
     void onCreate(android.os.Bundle) -> onCreate
+    void onStart() -> onStart
     void onResume() -> onResume
     void onPause() -> onPause
-    void startBleService() -> d
-    void stopBleService() -> e
-    void scanLeDevice() -> b
-    void startExecutor() -> f
-    void endExecutor() -> g
+    void startBleService() -> b
+    void stopBleService() -> c
+    void startExecutor() -> d
+    void endExecutor() -> e
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
     void onDestroy() -> onDestroy
     void wearMode(android.view.View) -> wearMode
     void settings(android.view.View) -> settings
-    void goEcgActivity() -> h
+    void goEcgActivity() -> f
     boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
     android.widget.TextView access$0(com.broadchance.wdecgrec.main.ModeActivity) -> a
-    java.lang.String access$1() -> c
-    void access$2(com.broadchance.wdecgrec.main.ModeActivity,boolean) -> a
-    android.bluetooth.BluetoothAdapter access$3(com.broadchance.wdecgrec.main.ModeActivity) -> b
-    android.bluetooth.BluetoothAdapter$LeScanCallback access$4(com.broadchance.wdecgrec.main.ModeActivity) -> c
-    android.os.Handler access$5(com.broadchance.wdecgrec.main.ModeActivity) -> d
-com.broadchance.wdecgrec.main.ModeActivity$1 -> com.broadchance.wdecgrec.main.o:
+    android.os.Handler access$1(com.broadchance.wdecgrec.main.ModeActivity) -> b
+com.broadchance.wdecgrec.main.ModeActivity$1 -> com.broadchance.wdecgrec.main.m:
     com.broadchance.wdecgrec.main.ModeActivity this$0 -> a
     void handleMessage(android.os.Message) -> handleMessage
-com.broadchance.wdecgrec.main.ModeActivity$2 -> com.broadchance.wdecgrec.main.p:
-    com.broadchance.wdecgrec.main.ModeActivity this$0 -> a
-    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
-com.broadchance.wdecgrec.main.ModeActivity$3 -> com.broadchance.wdecgrec.main.q:
-    com.broadchance.wdecgrec.main.ModeActivity this$0 -> a
-    void run() -> run
-com.broadchance.wdecgrec.main.ModeActivity$4 -> com.broadchance.wdecgrec.main.r:
+com.broadchance.wdecgrec.main.ModeActivity$2 -> com.broadchance.wdecgrec.main.n:
     com.broadchance.wdecgrec.main.ModeActivity this$0 -> a
     void run() -> run
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver -> com.broadchance.wdecgrec.receiver.BootCompleteReceiver:
@@ -15350,51 +15300,48 @@ com.broadchance.wdecgrec.receiver.NetChangeReceiver -> com.broadchance.wdecgrec.
 com.broadchance.wdecgrec.receiver.PowerChangeReceiver -> com.broadchance.wdecgrec.receiver.PowerChangeReceiver:
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.broadchance.wdecgrec.services.BleDataParserService -> com.broadchance.wdecgrec.services.BleDataParserService:
-    java.lang.String TAG -> j
+    java.lang.String TAG -> f
     java.lang.String ACTION_ECGMII_DATA_AVAILABLE -> a
     java.lang.String ACTION_ECGMV1_DATA_AVAILABLE -> b
     java.lang.String ACTION_ECGMV5_DATA_AVAILABLE -> c
+    java.util.concurrent.ScheduledExecutorService mEService -> g
+    java.lang.Long conectTime -> h
+    int heartDelay -> i
     int SIGNAL_MAX -> d
     int SIGNAL_MIN -> e
-    float POWER_MAX -> f
-    float POWER_MIN -> g
-    int DEAL_MAX -> h
-    int REC_MAX -> i
-    java.util.concurrent.LinkedBlockingQueue receivedQueue -> k
-    java.util.concurrent.LinkedBlockingQueue dealQueue -> l
-    java.util.Timer processFrameDataTimer -> m
-    java.util.TimerTask processFrameDataTask -> n
-    java.nio.IntBuffer miiBuffer -> o
-    java.nio.IntBuffer mv1Buffer -> p
-    java.nio.IntBuffer mv5Buffer -> q
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> r
-    com.broadchance.wdecgrec.services.BleDataParserService _Instance -> s
-    int lastHeart -> t
-    com.broadchance.entity.HeartRate lastHeartRate -> u
-    android.os.IBinder mBinder -> v
-    java.lang.String lastSeq -> w
-    long index -> x
-    android.content.BroadcastReceiver mGattUpdateReceiver -> y
-    com.broadchance.wdecgrec.services.BleDataParserService getInstance() -> a
+    int deal_interval -> j
+    int DEAL_MAX -> k
+    java.util.concurrent.LinkedBlockingQueue receivedQueue -> l
+    java.nio.IntBuffer miiBuffer -> m
+    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> n
+    int lastHeart -> o
+    int mConnectionState -> p
+    com.broadchance.entity.HeartRate lastHeartRate -> q
+    android.os.IBinder mBinder -> r
+    java.lang.String lastSeq -> s
+    long index -> t
+    android.content.BroadcastReceiver mGattUpdateReceiver -> u
     void sendECGData(java.nio.IntBuffer,java.lang.String) -> a
-    void processReceivedByte() -> f
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onCreate() -> onCreate
-    void clearData() -> b
     void onDestroy() -> onDestroy
-    void startExeService() -> c
-    void cancelExeService() -> d
+    void startExeService() -> a
+    void cancelExeService() -> b
+    void processData() -> d
     void receiveData(byte[]) -> a
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> g
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> e
     boolean stopService(android.content.Intent) -> stopService
+    void onTrimMemory(int) -> onTrimMemory
+    void onLowMemory() -> onLowMemory
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     void access$0(com.broadchance.wdecgrec.services.BleDataParserService,byte[]) -> a
-    java.util.concurrent.atomic.AtomicBoolean access$1(com.broadchance.wdecgrec.services.BleDataParserService) -> a
-    java.util.concurrent.LinkedBlockingQueue access$2(com.broadchance.wdecgrec.services.BleDataParserService) -> b
-    java.util.concurrent.LinkedBlockingQueue access$3(com.broadchance.wdecgrec.services.BleDataParserService) -> c
-    void access$4(com.broadchance.wdecgrec.services.BleDataParserService) -> d
-    java.lang.String access$5() -> e
+    void access$1(com.broadchance.wdecgrec.services.BleDataParserService,int) -> a
+    void access$2(com.broadchance.wdecgrec.services.BleDataParserService,java.lang.Long) -> a
+    java.util.concurrent.atomic.AtomicBoolean access$3(com.broadchance.wdecgrec.services.BleDataParserService) -> a
+    java.util.concurrent.LinkedBlockingQueue access$4(com.broadchance.wdecgrec.services.BleDataParserService) -> b
+    void access$5(com.broadchance.wdecgrec.services.BleDataParserService) -> c
+    java.lang.String access$6() -> c
 com.broadchance.wdecgrec.services.BleDataParserService$1 -> com.broadchance.wdecgrec.services.a:
     com.broadchance.wdecgrec.services.BleDataParserService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
@@ -15405,56 +15352,75 @@ com.broadchance.wdecgrec.services.BleDataParserService$LocalBinder -> com.broadc
     com.broadchance.wdecgrec.services.BleDataParserService this$0 -> a
     com.broadchance.wdecgrec.services.BleDataParserService getService() -> a
 com.broadchance.wdecgrec.services.BleDomainService -> com.broadchance.wdecgrec.services.BleDomainService:
-    java.lang.String TAG -> k
+    java.lang.String TAG -> r
+    com.broadchance.wdecgrec.receiver.PowerChangeReceiver batteryReceiver -> s
     java.lang.String ACTION_UPLOAD_STARTREALMODE -> a
     java.lang.String ACTION_UPLOAD_ENDREALMODE -> b
     java.lang.String ACTION_UPLOAD_STARTONEKEYMODE -> c
     java.lang.String ACTION_UPLOAD_ENDONEKEYMODE -> d
     java.lang.String ACTION_UPLOAD_UPLOADCHANGED -> e
-    java.util.concurrent.ScheduledExecutorService executor -> l
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanExecutor -> f
-    boolean isUploading -> m
-    java.lang.Object objLock -> n
-    java.lang.Object objLockUpload -> o
-    java.lang.String msg -> p
-    int uploadedFileRetryTimes -> q
+    com.broadchance.wdecgrec.services.BleDomainService Instance -> f
+    java.util.concurrent.atomic.AtomicBoolean isUploading -> t
+    java.lang.Object objLock -> u
+    java.lang.String msg -> v
+    int uploadedFileRetryTimes -> w
     java.util.List waitUploadFiles -> g
     com.broadchance.entity.UploadWay curUploadWay -> h
     com.broadchance.entity.UploadWay nUploadWay -> i
-    int LIMIT_UPLOADBATCH_COUNT -> r
-    int UPLOAD_RETRYTIMES -> s
-    android.content.BroadcastReceiver mGattUpdateReceiver -> t
+    int LIMIT_UPLOADBATCH_COUNT -> x
+    int UPLOAD_RETRYTIMES -> y
+    android.content.BroadcastReceiver mGattUpdateReceiver -> z
     com.broadchance.entity.UIUserInfoLogin user -> j
-    void initOneKeyUpload() -> b
+    android.os.IBinder mBinder -> A
+    int MSG_GET_HEART -> k
+    int MSG_SET_HEART -> l
+    int MSG_SEND_MSG -> m
+    int MSG_SEND_LONGMSG -> n
+    int MSG_DEBUG_CHANGED -> o
+    int MSG_GET_POWER -> p
+    android.os.Messenger mMessenger -> q
+    android.os.Messenger mRemoteMessenger -> B
+    void initOneKeyUpload() -> c
     java.util.List getUploadFile(java.util.Date,int) -> a
     int getCountByStatus(com.broadchance.entity.UploadFileStatus) -> a
     void setUploadByStatus(com.broadchance.entity.UploadFileStatus) -> b
+    void setUploadByStatus(java.util.List,com.broadchance.entity.UploadFileStatus) -> a
     void sendUploadBroadCast(int,int) -> a
-    void uploadECGFile() -> c
-    void reLogin() -> d
+    void uploadECGFile() -> d
+    void endBatchUpload(java.util.List) -> a
     void endUpload() -> e
     void resetUpload() -> f
     void startUpload() -> g
     void startRealTimeMode(java.util.List,java.util.List,org.json.JSONArray) -> a
+    void showToast(java.lang.String) -> a
+    void showLongToast(java.lang.String) -> b
     android.os.IBinder onBind(android.content.Intent) -> onBind
+    boolean onUnbind(android.content.Intent) -> onUnbind
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    void startBatchUpload() -> h
+    java.lang.Integer getHeartRate() -> a
     com.broadchance.utils.FileUtil writeECGData2File(java.util.List,java.util.List) -> a
-    void start() -> h
-    void end() -> i
-    android.content.IntentFilter makeUploadIntentFilter() -> j
+    void start() -> i
+    android.content.IntentFilter makeBatteryIntentFilter() -> j
+    void end() -> k
+    android.content.IntentFilter makeUploadIntentFilter() -> l
+    void onLowMemory() -> onLowMemory
+    boolean stopService(android.content.Intent) -> stopService
     void onDestroy() -> onDestroy
-    java.lang.String access$0() -> a
+    java.lang.String access$0() -> b
     void access$1(com.broadchance.wdecgrec.services.BleDomainService) -> a
     void access$2(com.broadchance.wdecgrec.services.BleDomainService) -> b
-    int access$3(com.broadchance.wdecgrec.services.BleDomainService,com.broadchance.entity.UploadFileStatus) -> a
-    void access$4(com.broadchance.wdecgrec.services.BleDomainService,int,int) -> a
-    void access$5(com.broadchance.wdecgrec.services.BleDomainService,com.broadchance.entity.UploadFileStatus) -> b
-    java.lang.String access$6(com.broadchance.wdecgrec.services.BleDomainService) -> c
-    void access$7(com.broadchance.wdecgrec.services.BleDomainService) -> d
-    void access$8(com.broadchance.wdecgrec.services.BleDomainService) -> e
-    void access$9(com.broadchance.wdecgrec.services.BleDomainService) -> f
-    int access$10(com.broadchance.wdecgrec.services.BleDomainService) -> g
-    void access$11(com.broadchance.wdecgrec.services.BleDomainService,int) -> a
+    void access$3(com.broadchance.wdecgrec.services.BleDomainService,android.os.Messenger) -> a
+    int access$4(com.broadchance.wdecgrec.services.BleDomainService,com.broadchance.entity.UploadFileStatus) -> a
+    void access$5(com.broadchance.wdecgrec.services.BleDomainService,int,int) -> a
+    void access$6(com.broadchance.wdecgrec.services.BleDomainService,com.broadchance.entity.UploadFileStatus) -> b
+    int access$7(com.broadchance.wdecgrec.services.BleDomainService) -> c
+    java.lang.String access$8(com.broadchance.wdecgrec.services.BleDomainService) -> d
+    void access$9(com.broadchance.wdecgrec.services.BleDomainService,int) -> a
+    void access$10(com.broadchance.wdecgrec.services.BleDomainService) -> e
+    void access$11(com.broadchance.wdecgrec.services.BleDomainService) -> f
+    void access$12(com.broadchance.wdecgrec.services.BleDomainService,java.util.List,com.broadchance.entity.UploadFileStatus) -> a
+    void access$13(com.broadchance.wdecgrec.services.BleDomainService,java.util.List) -> a
 com.broadchance.wdecgrec.services.BleDomainService$1 -> com.broadchance.wdecgrec.services.d:
     com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
@@ -15472,19 +15438,6 @@ com.broadchance.wdecgrec.services.BleDomainService$2 -> com.broadchance.wdecgrec
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
 com.broadchance.wdecgrec.services.BleDomainService$3 -> com.broadchance.wdecgrec.services.g:
-    com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
-    android.app.Activity getReqActivity() -> a
-    void doSuccess(com.broadchance.entity.UIUserInfoLogin) -> a
-    void doError(java.lang.String) -> a
-    void doSuccess(java.lang.Object) -> a
-    com.broadchance.wdecgrec.services.BleDomainService access$1(com.broadchance.wdecgrec.services.BleDomainService$3) -> a
-com.broadchance.wdecgrec.services.BleDomainService$3$1 -> com.broadchance.wdecgrec.services.h:
-    com.broadchance.wdecgrec.services.BleDomainService$3 this$1 -> a
-    android.app.Activity getReqActivity() -> a
-    void doSuccess(com.broadchance.entity.serverentity.UIDeviceResponseList) -> a
-    void doError(java.lang.String) -> a
-    void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.services.BleDomainService$4 -> com.broadchance.wdecgrec.services.i:
     java.util.List val$fileFrameDatas -> a
     java.util.List val$fileBreathDatas -> b
     org.json.JSONArray val$jHeartRateArray -> c
@@ -15492,55 +15445,72 @@ com.broadchance.wdecgrec.services.BleDomainService$4 -> com.broadchance.wdecgrec
     void onPostExecute(java.lang.String) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.broadchance.wdecgrec.services.BleDomainService$4$1 -> com.broadchance.wdecgrec.services.j:
-    com.broadchance.wdecgrec.services.BleDomainService$4 this$1 -> a
+com.broadchance.wdecgrec.services.BleDomainService$3$1 -> com.broadchance.wdecgrec.services.h:
+    com.broadchance.wdecgrec.services.BleDomainService$3 this$1 -> a
     android.app.Activity getReqActivity() -> a
     void doSuccess(com.broadchance.entity.UploadFileResponse) -> a
     void doError(java.lang.String) -> a
     void doSuccess(java.lang.Object) -> a
-com.broadchance.wdecgrec.services.BleDomainService$5 -> com.broadchance.wdecgrec.services.k:
+com.broadchance.wdecgrec.services.BleDomainService$4 -> com.broadchance.wdecgrec.services.i:
     com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
-    void run() -> run
+    java.util.List val$batchUploadFiles -> c
+    android.app.Activity getReqActivity() -> a
+    void doSuccess(com.broadchance.entity.UploadFileResponse) -> a
+    void doError(java.lang.String) -> a
+    void doSuccess(java.lang.Object) -> a
+com.broadchance.wdecgrec.services.BleDomainService$IncomingHandler -> com.broadchance.wdecgrec.services.j:
+    com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.broadchance.wdecgrec.services.BleDomainService$LocalBinder -> com.broadchance.wdecgrec.services.k:
+    com.broadchance.wdecgrec.services.BleDomainService this$0 -> a
+    com.broadchance.wdecgrec.services.BleDomainService getService() -> a
 com.broadchance.wdecgrec.services.BluetoothLeService -> com.broadchance.wdecgrec.services.BluetoothLeService:
-    java.lang.String TAG -> h
-    android.bluetooth.BluetoothManager mBluetoothManager -> i
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> j
-    java.lang.String mBluetoothDeviceAddress -> k
-    android.bluetooth.BluetoothGatt mBluetoothGatt -> l
-    int mConnectionState -> m
-    int STATE_DISCONNECTED -> n
-    int STATE_CONNECTING -> o
-    int STATE_CONNECTED -> p
-    java.lang.String ACTION_GATT_CONNECTED -> a
-    java.lang.String ACTION_GATT_DISCONNECTED -> b
-    java.lang.String ACTION_GATT_SERVICES_DISCOVERED -> c
-    java.lang.String ACTION_DATA_AVAILABLE -> d
-    java.lang.String EXTRA_DATA -> e
-    java.util.UUID UUID_HEART_RATE_MEASUREMENT -> f
-    java.lang.Integer rssiValue -> g
-    android.bluetooth.BluetoothGattCharacteristic characteristicToWrite -> q
-    byte[] setTimeFrame -> r
-    int SEND_FRAME_TYPE_SETTIME -> s
-    android.bluetooth.BluetoothGattCallback mGattCallback -> t
-    android.os.IBinder mBinder -> u
+    java.lang.String TAG -> l
+    android.bluetooth.BluetoothManager mBluetoothManager -> m
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> n
+    java.lang.String mBluetoothDeviceAddress -> o
+    android.bluetooth.BluetoothGatt mBluetoothGatt -> p
+    int mConnectionState -> q
+    int STATE_DISCONNECTED -> a
+    int STATE_CONNECTING -> b
+    int STATE_CONNECTED -> c
+    java.lang.String ACTION_GATT_CONNECTED -> d
+    java.lang.String ACTION_GATT_DISCONNECTED -> e
+    java.lang.String ACTION_GATT_SERVICES_DISCOVERED -> f
+    java.lang.String ACTION_DATA_AVAILABLE -> g
+    java.lang.String EXTRA_DATA -> h
+    java.util.UUID UUID_HEART_RATE_MEASUREMENT -> i
+    java.lang.Integer rssiValue -> j
+    android.bluetooth.BluetoothGattCharacteristic characteristicToWrite -> r
+    byte[] setTimeFrame -> s
+    int SEND_FRAME_TYPE_SETTIME -> t
+    android.bluetooth.BluetoothGattCallback mGattCallback -> u
+    long count -> k
+    android.os.IBinder mBinder -> v
+    void sendRemoteRssi(int) -> a
+    void readRemoteRssi() -> a
     void broadcastUpdate(java.lang.String) -> b
     void broadcastUpdate(java.lang.String,android.bluetooth.BluetoothGattCharacteristic) -> a
-    void createAliveFrame() -> a
-    void sendCtrlFrame(int) -> a
+    void createAliveFrame() -> b
+    void sendCtrlFrame(int) -> b
     android.bluetooth.BluetoothGattCharacteristic getCommunicateCharacteristic(java.lang.String) -> a
     void writeFrame(android.bluetooth.BluetoothGattCharacteristic,byte[]) -> a
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
-    boolean initialize() -> b
-    boolean connect() -> c
-    void disconnect() -> d
-    void close() -> e
+    boolean initialize() -> c
+    void enableBleService() -> d
+    void lostService() -> e
+    boolean stopService(android.content.Intent) -> stopService
+    void onLowMemory() -> onLowMemory
+    boolean connect() -> f
+    void disconnect() -> g
+    void close() -> h
     void readCharacteristic(android.bluetooth.BluetoothGattCharacteristic) -> a
     void setCharacteristicNotification(android.bluetooth.BluetoothGattCharacteristic,boolean) -> a
-    java.util.List getSupportedGattServices() -> f
+    java.util.List getSupportedGattServices() -> i
     void access$0(com.broadchance.wdecgrec.services.BluetoothLeService,int) -> a
     void access$1(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String) -> a
-    java.lang.String access$2() -> g
+    java.lang.String access$2() -> j
     android.bluetooth.BluetoothGatt access$3(com.broadchance.wdecgrec.services.BluetoothLeService) -> a
     void access$4(com.broadchance.wdecgrec.services.BluetoothLeService,java.lang.String,android.bluetooth.BluetoothGattCharacteristic) -> a
 com.broadchance.wdecgrec.services.BluetoothLeService$1 -> com.broadchance.wdecgrec.services.l:
@@ -15587,68 +15557,110 @@ com.broadchance.wdecgrec.services.GpsService$Gps$1 -> com.broadchance.wdecgrec.s
     void onStatusChanged(java.lang.String,int,android.os.Bundle) -> onStatusChanged
 com.broadchance.wdecgrec.services.GuardService -> com.broadchance.wdecgrec.services.GuardService:
     java.lang.String TAG -> a
-    com.broadchance.wdecgrec.receiver.PowerChangeReceiver batteryReceiver -> f
-    com.broadchance.wdecgrec.services.BluetoothLeService mBluetoothLeService -> g
+    com.broadchance.wdecgrec.services.BluetoothLeService mBluetoothLeService -> f
+    android.os.Messenger doMainMessenger -> g
     java.lang.String ServiceName -> h
     java.util.concurrent.ScheduledExecutorService mEService -> i
     java.util.concurrent.ScheduledFuture mFuture -> j
+    java.util.concurrent.ScheduledFuture mDelayFuture -> k
     com.broadchance.wdecgrec.services.GuardService Instance -> b
     java.lang.String ACTION_GATT_RSSICHANGED -> c
     java.lang.String ACTION_GATT_POWERCHANGED -> d
-    long DataALiveTime -> e
-    int CHECK_BLE_TIMEOUT -> k
-    int CHECK_BLE_DELAY -> l
-    long SCAN_PERIOD -> m
-    boolean mScanning -> n
-    android.os.Handler mHandler -> o
-    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> p
-    android.content.ServiceConnection mServiceConnection -> q
-    android.content.BroadcastReceiver bluetoothStatusChangeReceiver -> r
-    android.content.BroadcastReceiver mGattUpdateReceiver -> s
-    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> t
+    long DataALiveTime -> l
+    int BLE_INIT_DELAY -> m
+    int CHECK_BLE_TIMEOUT -> n
+    int CHECK_BLE_DELAY -> o
+    long SCAN_PERIOD -> p
+    boolean mScanning -> q
+    android.os.Handler mHandler -> r
+    android.bluetooth.BluetoothAdapter mBluetoothAdapter -> s
+    android.bluetooth.BluetoothManager mBluetoothManager -> t
+    android.os.Messenger mClientMsgr -> u
+    com.broadchance.wdecgrec.services.GuardService$LostBleEL lostble -> e
+    int BLE_LOST -> v
+    int BLE_LOST_TIMES -> w
+    android.content.ServiceConnection mServiceConnection -> x
+    android.content.ServiceConnection mDomainServiceConnection -> y
+    android.content.BroadcastReceiver bluetoothStatusChangeReceiver -> z
+    android.content.BroadcastReceiver mGattUpdateReceiver -> A
+    boolean isScanedUserMac -> B
+    android.bluetooth.BluetoothAdapter$LeScanCallback mLeScanCallback -> C
+    android.os.PowerManager$WakeLock wakeLock -> D
     void resetBleCon() -> a
-    void scanLeDevice() -> b
-    void _connect() -> c
-    void checkBleStatus() -> d
-    void cancelCheckBleStatus() -> e
-    void bindBleService() -> f
-    void unBindBLeService() -> g
-    void start() -> h
-    void end() -> i
-    android.content.IntentFilter makeBLEStatusIntentFilter() -> j
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> k
-    android.content.IntentFilter makeBatteryIntentFilter() -> l
+    void scanLeDevice() -> e
+    void setDataAliveTime(long) -> a
+    void setDelayDataAliveTime() -> b
+    void _connect() -> f
+    void checkLost(boolean) -> a
+    void checkBleStatus() -> g
+    void cancelCheckBleStatus() -> h
+    void bindBleService() -> c
+    void unBindBLeService() -> d
+    void start() -> i
+    void initRemoteMsg() -> j
+    void end() -> k
+    android.content.IntentFilter makeBLEStatusIntentFilter() -> l
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> m
     android.os.IBinder onBind(android.content.Intent) -> onBind
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    boolean stopService(android.content.Intent) -> stopService
     void onDestroy() -> onDestroy
+    boolean stopService(android.content.Intent) -> stopService
     void onLowMemory() -> onLowMemory
+    void acquireWakeLock() -> n
+    void releaseWarkLock() -> o
     void access$0(com.broadchance.wdecgrec.services.GuardService,com.broadchance.wdecgrec.services.BluetoothLeService) -> a
     com.broadchance.wdecgrec.services.BluetoothLeService access$1(com.broadchance.wdecgrec.services.GuardService) -> a
     void access$2(com.broadchance.wdecgrec.services.GuardService) -> b
-    void access$3(com.broadchance.wdecgrec.services.GuardService,boolean) -> a
-    android.bluetooth.BluetoothAdapter access$4(com.broadchance.wdecgrec.services.GuardService) -> c
-    android.bluetooth.BluetoothAdapter$LeScanCallback access$5(com.broadchance.wdecgrec.services.GuardService) -> d
-    void access$6(com.broadchance.wdecgrec.services.GuardService) -> e
+    void access$3(com.broadchance.wdecgrec.services.GuardService,android.os.Messenger) -> a
+    void access$4(com.broadchance.wdecgrec.services.GuardService,long) -> a
+    java.util.concurrent.ScheduledFuture access$5(com.broadchance.wdecgrec.services.GuardService) -> c
+    java.util.concurrent.ScheduledExecutorService access$6(com.broadchance.wdecgrec.services.GuardService) -> d
+    void access$7(com.broadchance.wdecgrec.services.GuardService,java.util.concurrent.ScheduledFuture) -> a
+    void access$8(com.broadchance.wdecgrec.services.GuardService) -> e
+    void access$9(com.broadchance.wdecgrec.services.GuardService,boolean) -> a
+    void access$10(com.broadchance.wdecgrec.services.GuardService,boolean) -> b
+    android.bluetooth.BluetoothAdapter access$11(com.broadchance.wdecgrec.services.GuardService) -> f
+    android.bluetooth.BluetoothAdapter$LeScanCallback access$12(com.broadchance.wdecgrec.services.GuardService) -> g
+    boolean access$13(com.broadchance.wdecgrec.services.GuardService) -> h
+    long access$14(com.broadchance.wdecgrec.services.GuardService) -> i
 com.broadchance.wdecgrec.services.GuardService$1 -> com.broadchance.wdecgrec.services.q:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.broadchance.wdecgrec.services.GuardService$2 -> com.broadchance.wdecgrec.services.r:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.broadchance.wdecgrec.services.GuardService$3 -> com.broadchance.wdecgrec.services.s:
     com.broadchance.wdecgrec.services.GuardService this$0 -> a
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
-com.broadchance.wdecgrec.services.GuardService$2 -> com.broadchance.wdecgrec.services.r:
-    com.broadchance.wdecgrec.services.GuardService this$0 -> a
-    void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.broadchance.wdecgrec.services.GuardService$3 -> com.broadchance.wdecgrec.services.s:
-    com.broadchance.wdecgrec.services.GuardService this$0 -> a
-    void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.broadchance.wdecgrec.services.GuardService$4 -> com.broadchance.wdecgrec.services.t:
     com.broadchance.wdecgrec.services.GuardService this$0 -> a
-    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
+    void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
+    void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
 com.broadchance.wdecgrec.services.GuardService$5 -> com.broadchance.wdecgrec.services.u:
     com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    com.broadchance.wdecgrec.services.GuardService access$0(com.broadchance.wdecgrec.services.GuardService$5) -> a
+com.broadchance.wdecgrec.services.GuardService$5$1 -> com.broadchance.wdecgrec.services.v:
+    com.broadchance.wdecgrec.services.GuardService$5 this$1 -> a
     void run() -> run
-com.broadchance.wdecgrec.services.GuardService$6 -> com.broadchance.wdecgrec.services.v:
+com.broadchance.wdecgrec.services.GuardService$6 -> com.broadchance.wdecgrec.services.w:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.broadchance.wdecgrec.services.GuardService$7 -> com.broadchance.wdecgrec.services.x:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void onLeScan(android.bluetooth.BluetoothDevice,int,byte[]) -> onLeScan
+com.broadchance.wdecgrec.services.GuardService$8 -> com.broadchance.wdecgrec.services.y:
     com.broadchance.wdecgrec.services.GuardService this$0 -> a
     void run() -> run
+com.broadchance.wdecgrec.services.GuardService$9 -> com.broadchance.wdecgrec.services.z:
+    com.broadchance.wdecgrec.services.GuardService this$0 -> a
+    void run() -> run
+com.broadchance.wdecgrec.services.GuardService$LostBleEL -> com.broadchance.wdecgrec.services.aa:
+    long FirstLostTime -> a
+    long lastLostTime -> b
+    int lostTimes -> c
+    com.broadchance.wdecgrec.services.GuardService this$0 -> d
 com.broadchance.wdecgrec.settings.AddContactActivity -> com.broadchance.wdecgrec.settings.AddContactActivity:
     java.lang.String[] PHONES_PROJECTION -> f
     int PHONES_DISPLAY_NAME_INDEX -> g
@@ -15847,13 +15859,15 @@ com.broadchance.wdecgrec.settings.SettingsActivity -> com.broadchance.wdecgrec.s
     android.view.View llAppUpdate -> s
     android.view.View viewNewVer -> t
     android.view.View llAppLogout -> u
-    java.lang.String selSkinID -> v
-    android.view.View buttonTitleBack -> w
-    android.widget.TextView textViewWaitUpload -> x
-    android.widget.TextView textViewCurUpload -> y
-    android.app.Dialog oneKeyUploadDialog -> z
-    android.app.Dialog dialogChangeSkin -> A
-    android.app.Dialog lodingDialog -> B
+    android.view.View llAppFactory -> v
+    android.widget.TextView textViewFactory -> w
+    java.lang.String selSkinID -> x
+    android.view.View buttonTitleBack -> y
+    android.widget.TextView textViewWaitUpload -> z
+    android.widget.TextView textViewCurUpload -> A
+    android.app.Dialog oneKeyUploadDialog -> B
+    android.app.Dialog dialogChangeSkin -> C
+    android.app.Dialog lodingDialog -> D
     android.app.Dialog dialogUnbind -> e
     android.app.Dialog dialogUnbindConfirm -> f
     android.widget.TextView editTextDevPwd -> g
@@ -15861,22 +15875,24 @@ com.broadchance.wdecgrec.settings.SettingsActivity -> com.broadchance.wdecgrec.s
     boolean isOneUpload -> i
     java.util.concurrent.atomic.AtomicBoolean isReqUnBind -> j
     java.util.concurrent.atomic.AtomicBoolean isRegistUpload -> k
-    android.content.BroadcastReceiver uploadBroadcastReceiver -> C
+    android.content.BroadcastReceiver uploadBroadcastReceiver -> E
     void onCreate(android.os.Bundle) -> onCreate
+    void setFactoryText() -> b
     void onResume() -> onResume
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> b
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> c
     void onDestroy() -> onDestroy
-    void showChangeSkin() -> c
-    void showOptionSettings() -> d
-    void showMyInfo() -> e
+    void showChangeSkin() -> d
+    void showOptionSettings() -> e
+    void showMyInfo() -> f
     void addFamily() -> addFamily
-    void modifyPwd() -> f
-    void returnModeAcitivity() -> g
-    void oneKeyUpload() -> h
+    void modifyPwd() -> g
+    void returnModeAcitivity() -> h
+    void oneKeyUpload() -> i
     boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
-    void showUnbindConfirm() -> i
-    void showUnbind() -> j
+    void showUnbindConfirm() -> j
+    void showUnbind() -> k
     void onClick(android.view.View) -> onClick
+    void stopBleService() -> l
     void loadSkin() -> a_
     android.app.Dialog access$0(com.broadchance.wdecgrec.settings.SettingsActivity) -> a
     android.app.Dialog access$1(com.broadchance.wdecgrec.settings.SettingsActivity) -> b
@@ -15978,14 +15994,21 @@ com.broadchance.wdecgrec.widget.CustomTitle -> com.broadchance.wdecgrec.widget.C
     android.content.Context context -> a
     android.widget.ImageView imageViewSignal -> c
     android.widget.TextView textViewPower -> d
+    android.os.Handler handler -> e
+    android.os.Messenger mMesg -> f
     android.content.BroadcastReceiver receiver -> b
+    void setPower() -> a
     void init(android.content.Context,android.util.AttributeSet) -> a
-    android.content.IntentFilter makeIntentFilter() -> a
+    android.content.IntentFilter makeIntentFilter() -> b
     void onAttachedToWindow() -> onAttachedToWindow
     void onDetachedFromWindow() -> onDetachedFromWindow
-    android.widget.ImageView access$0(com.broadchance.wdecgrec.widget.CustomTitle) -> a
-    android.widget.TextView access$1(com.broadchance.wdecgrec.widget.CustomTitle) -> b
+    void access$0(com.broadchance.wdecgrec.widget.CustomTitle) -> a
+    android.widget.ImageView access$1(com.broadchance.wdecgrec.widget.CustomTitle) -> b
+    android.widget.TextView access$2(com.broadchance.wdecgrec.widget.CustomTitle) -> c
 com.broadchance.wdecgrec.widget.CustomTitle$1 -> com.broadchance.wdecgrec.widget.a:
+    com.broadchance.wdecgrec.widget.CustomTitle this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.broadchance.wdecgrec.widget.CustomTitle$2 -> com.broadchance.wdecgrec.widget.b:
     com.broadchance.wdecgrec.widget.CustomTitle this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.broadchance.wdecgrec.widget.DigitalClock -> com.broadchance.wdecgrec.widget.DigitalClock:
@@ -16000,10 +16023,10 @@ com.broadchance.wdecgrec.widget.DigitalClock -> com.broadchance.wdecgrec.widget.
     boolean access$0(com.broadchance.wdecgrec.widget.DigitalClock) -> a
     android.os.Handler access$1(com.broadchance.wdecgrec.widget.DigitalClock) -> b
     java.lang.Runnable access$2(com.broadchance.wdecgrec.widget.DigitalClock) -> c
-com.broadchance.wdecgrec.widget.DigitalClock$1 -> com.broadchance.wdecgrec.widget.b:
+com.broadchance.wdecgrec.widget.DigitalClock$1 -> com.broadchance.wdecgrec.widget.c:
     com.broadchance.wdecgrec.widget.DigitalClock this$0 -> a
     void run() -> run
-com.broadchance.wdecgrec.widget.DigitalClock$FormatChangeObserver -> com.broadchance.wdecgrec.widget.c:
+com.broadchance.wdecgrec.widget.DigitalClock$FormatChangeObserver -> com.broadchance.wdecgrec.widget.d:
     com.broadchance.wdecgrec.widget.DigitalClock this$0 -> a
     void onChange(boolean) -> onChange
 com.broadchance.wdecgrec.widget.GridItemLayout -> com.broadchance.wdecgrec.widget.GridItemLayout:
@@ -16015,7 +16038,7 @@ com.broadchance.wdecgrec.widget.LabelEditText -> com.broadchance.wdecgrec.widget
     float textsize -> d
     void init(android.content.Context,android.util.AttributeSet) -> a
     void onDraw(android.graphics.Canvas) -> onDraw
-com.broadchance.wdecgrec.widget.WebDialog -> com.broadchance.wdecgrec.widget.d:
+com.broadchance.wdecgrec.widget.WebDialog -> com.broadchance.wdecgrec.widget.e:
     int BLUE -> a
     float[] DIMENSIONS_DIFF_LANDSCAPE -> b
     float[] DIMENSIONS_DIFF_PORTRAIT -> c
@@ -16034,7 +16057,7 @@ com.broadchance.wdecgrec.widget.WebDialog -> com.broadchance.wdecgrec.widget.d:
     android.app.ProgressDialog access$0(com.broadchance.wdecgrec.widget.WebDialog) -> a
     android.webkit.WebView access$1(com.broadchance.wdecgrec.widget.WebDialog) -> b
     android.widget.TextView access$2(com.broadchance.wdecgrec.widget.WebDialog) -> c
-com.broadchance.wdecgrec.widget.WebDialog$DialogWebViewClient -> com.broadchance.wdecgrec.widget.e:
+com.broadchance.wdecgrec.widget.WebDialog$DialogWebViewClient -> com.broadchance.wdecgrec.widget.f:
     com.broadchance.wdecgrec.widget.WebDialog this$0 -> a
     boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String) -> shouldOverrideUrlLoading
     void onReceivedError(android.webkit.WebView,int,java.lang.String,java.lang.String) -> onReceivedError

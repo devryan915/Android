@@ -197,14 +197,14 @@ in (inches), mm (millimeters).
         public static final int sidebar_background=0x7f02005e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0c00aa;
+        public static final int action_settings=0x7f0c00a2;
         public static final int agreementLabel=0x7f0c0064;
         public static final int btnECG=0x7f0c0032;
         public static final int btnSettings=0x7f0c0031;
         public static final int buttonAllowed=0x7f0c0076;
         public static final int buttonCancel=0x7f0c007f;
-        public static final int buttonContactAdd=0x7f0c009a;
-        public static final int buttonContactDelete=0x7f0c009b;
+        public static final int buttonContactAdd=0x7f0c0097;
+        public static final int buttonContactDelete=0x7f0c0098;
         public static final int buttonForgotPwd=0x7f0c0028;
         public static final int buttonLogin=0x7f0c0025;
         public static final int buttonOK=0x7f0c007c;
@@ -216,7 +216,7 @@ in (inches), mm (millimeters).
         public static final int buttonResetPwd=0x7f0c0026;
         public static final int buttonSave=0x7f0c000a;
         public static final int buttonTitleBack=0x7f0c0002;
-        public static final int catalog=0x7f0c00a2;
+        public static final int catalog=0x7f0c009f;
         public static final int checkBoxAgreedAgreement=0x7f0c0063;
         public static final int checkBoxDevFallOff=0x7f0c0058;
         public static final int checkBoxDevOff=0x7f0c0056;
@@ -226,16 +226,14 @@ in (inches), mm (millimeters).
         public static final int checkBoxSavePwd=0x7f0c0027;
         public static final int checkBoxUpload=0x7f0c0050;
         public static final int common_title_contactshead=0x7f0c0003;
-        public static final int connection_state=0x7f0c0091;
-        public static final int contactDelete=0x7f0c0097;
-        public static final int contactHead=0x7f0c00a4;
-        public static final int contactName=0x7f0c0098;
-        public static final int contactPhoneNo=0x7f0c0099;
+        public static final int contactDelete=0x7f0c0094;
+        public static final int contactHead=0x7f0c00a1;
+        public static final int contactName=0x7f0c0095;
+        public static final int contactPhoneNo=0x7f0c0096;
         public static final int content=0x7f0c008c;
         public static final int customTitle=0x7f0c0000;
-        public static final int data_value=0x7f0c0092;
-        public static final int device_address=0x7f0c0090;
-        public static final int device_name=0x7f0c0094;
+        public static final int device_address=0x7f0c0091;
+        public static final int device_name=0x7f0c0090;
         public static final int dialog=0x7f0c0006;
         public static final int dialog_title=0x7f0c008a;
         public static final int ecgGLSurfaceViewChannelMII=0x7f0c000c;
@@ -261,7 +259,6 @@ in (inches), mm (millimeters).
         public static final int editTextValue=0x7f0c0081;
         public static final int editTextXDPI=0x7f0c0085;
         public static final int editTextYDPI=0x7f0c0086;
-        public static final int gatt_services_list=0x7f0c0093;
         public static final int gridViewFamily=0x7f0c0009;
         public static final int imageButtonGetToken=0x7f0c002c;
         public static final int imageViewSignal=0x7f0c0072;
@@ -284,11 +281,6 @@ in (inches), mm (millimeters).
         public static final int llTitle=0x7f0c0008;
         public static final int llUpload=0x7f0c0066;
         public static final int login_com_top=0x7f0c0022;
-        public static final int menu_connect=0x7f0c00a6;
-        public static final int menu_disconnect=0x7f0c00a7;
-        public static final int menu_refresh=0x7f0c00a5;
-        public static final int menu_scan=0x7f0c00a8;
-        public static final int menu_stop=0x7f0c00a9;
         public static final int modeHeart=0x7f0c0033;
         public static final int modifyPwdConfirmpwd=0x7f0c003b;
         public static final int modifyPwdOldPwd=0x7f0c0037;
@@ -332,9 +324,9 @@ in (inches), mm (millimeters).
         public static final int rlTitle=0x7f0c0065;
         public static final int sidrbar=0x7f0c0007;
         public static final int testTitleId=0x7f0c0080;
-        public static final int textViewBleInfoName=0x7f0c009c;
-        public static final int textViewBleInfoValue=0x7f0c009d;
-        public static final int textViewBleName=0x7f0c00a1;
+        public static final int textViewBleInfoName=0x7f0c0099;
+        public static final int textViewBleInfoValue=0x7f0c009a;
+        public static final int textViewBleName=0x7f0c009e;
         public static final int textViewContent=0x7f0c007d;
         public static final int textViewCurUpload=0x7f0c0089;
         public static final int textViewCurVer=0x7f0c0074;
@@ -344,7 +336,7 @@ in (inches), mm (millimeters).
         public static final int textViewLeftTime=0x7f0c002d;
         public static final int textViewNewVer=0x7f0c0075;
         public static final int textViewPower=0x7f0c0073;
-        public static final int textViewSkinName=0x7f0c009f;
+        public static final int textViewSkinName=0x7f0c009c;
         public static final int textViewUpdate=0x7f0c006d;
         public static final int textViewUploadNetType=0x7f0c004f;
         public static final int textViewUseName=0x7f0c0004;
@@ -358,16 +350,16 @@ in (inches), mm (millimeters).
         public static final int tvRunTime=0x7f0c0021;
         public static final int tvUpload=0x7f0c0071;
         public static final int tvVersion=0x7f0c0035;
-        public static final int viewAddContact=0x7f0c00a3;
+        public static final int viewAddContact=0x7f0c00a0;
         public static final int viewChangeSkinIcon=0x7f0c006b;
         public static final int viewChannel1=0x7f0c000b;
-        public static final int viewContact=0x7f0c0095;
+        public static final int viewContact=0x7f0c0092;
         public static final int viewEcgChannel=0x7f0c0014;
-        public static final int viewHead=0x7f0c0096;
-        public static final int viewSelSkin=0x7f0c00a0;
+        public static final int viewHead=0x7f0c0093;
+        public static final int viewSelSkin=0x7f0c009d;
         public static final int viewShowDevinfo=0x7f0c005f;
         public static final int viewShowOffData=0x7f0c005c;
-        public static final int viewSkin=0x7f0c009e;
+        public static final int viewSkin=0x7f0c009b;
     }
     public static final class layout {
         public static final int actionbar_indeterminate_progress=0x7f030000;
@@ -396,19 +388,16 @@ in (inches), mm (millimeters).
         public static final int dialog_settingsdevinfo=0x7f030017;
         public static final int dialog_show_loading=0x7f030018;
         public static final int dialog_tips=0x7f030019;
-        public static final int gatt_services_characteristics=0x7f03001a;
-        public static final int listitem_device=0x7f03001b;
-        public static final int listview_addfamily_item=0x7f03001c;
-        public static final int listview_bledevinfo_item=0x7f03001d;
-        public static final int listview_changeskin_item=0x7f03001e;
-        public static final int listview_chooseble_item=0x7f03001f;
-        public static final int listview_choosecontact_item=0x7f030020;
-        public static final int listview_offdata_item=0x7f030021;
+        public static final int listitem_device=0x7f03001a;
+        public static final int listview_addfamily_item=0x7f03001b;
+        public static final int listview_bledevinfo_item=0x7f03001c;
+        public static final int listview_changeskin_item=0x7f03001d;
+        public static final int listview_chooseble_item=0x7f03001e;
+        public static final int listview_choosecontact_item=0x7f03001f;
+        public static final int listview_offdata_item=0x7f030020;
     }
     public static final class menu {
-        public static final int gatt_services=0x7f0b0000;
-        public static final int main=0x7f0b0001;
-        public static final int upload=0x7f0b0002;
+        public static final int upload=0x7f0b0000;
     }
     public static final class raw {
         public static final int devfalloff=0x7f060000;
@@ -431,7 +420,6 @@ in (inches), mm (millimeters).
         /**  ble 
          */
         public static final int ble_not_supported=0x7f090095;
-        public static final int connected=0x7f0900a3;
         public static final int dialog_button_add=0x7f09006b;
         public static final int dialog_button_cancel=0x7f090061;
         public static final int dialog_button_confirm=0x7f09004f;
@@ -477,7 +465,6 @@ in (inches), mm (millimeters).
         public static final int dialog_unbinddev_hint=0x7f09005a;
         public static final int dialog_unbinddev_tip=0x7f09005c;
         public static final int dialog_unbinddev_token=0x7f090059;
-        public static final int disconnected=0x7f0900a4;
         public static final int ecg_batch_mode=0x7f090035;
         public static final int ecg_channel1=0x7f090030;
         public static final int ecg_channel2=0x7f090031;
@@ -490,11 +477,7 @@ in (inches), mm (millimeters).
         public static final int ecg_onechannel=0x7f090038;
         public static final int ecg_realtime_mode=0x7f090036;
         public static final int ecg_threechannels=0x7f090037;
-        public static final int error_bluetooth_not_supported=0x7f0900a6;
         public static final int hello_world=0x7f090000;
-        public static final int label_data=0x7f09009f;
-        public static final int label_device_address=0x7f0900a0;
-        public static final int label_state=0x7f0900a1;
         public static final int login_forgotpwd=0x7f090015;
         public static final int login_login=0x7f090016;
         public static final int login_pwd_label=0x7f090012;
@@ -506,12 +489,6 @@ in (inches), mm (millimeters).
         public static final int login_user_label=0x7f090010;
         public static final int login_user_labelhint=0x7f090011;
         public static final int login_version=0x7f090018;
-        /**  Menu items 
-         */
-        public static final int menu_connect=0x7f0900aa;
-        public static final int menu_disconnect=0x7f0900ab;
-        public static final int menu_scan=0x7f0900ac;
-        public static final int menu_stop=0x7f0900ad;
         public static final int mode_familymode=0x7f090029;
         public static final int mode_logout=0x7f09002c;
         public static final int mode_monitormode=0x7f09002b;
@@ -554,7 +531,6 @@ in (inches), mm (millimeters).
         public static final int myinfo_yourweighthint=0x7f09007e;
         public static final int myinfo_zipcode=0x7f09007a;
         public static final int myinfo_zipcodehint=0x7f090081;
-        public static final int no_data=0x7f0900a2;
         public static final int optionsettings_adviceopen=0x7f09008c;
         public static final int optionsettings_dataupload=0x7f090086;
         public static final int optionsettings_devinfo=0x7f09008f;
@@ -620,11 +596,7 @@ in (inches), mm (millimeters).
         /**  title 
          */
         public static final int title_blestatus=0x7f09000e;
-        public static final int title_devices=0x7f0900a5;
         public static final int title_leftpower=0x7f09000f;
-        public static final int unknown_characteristic=0x7f0900a8;
-        public static final int unknown_device=0x7f0900a7;
-        public static final int unknown_service=0x7f0900a9;
     }
     public static final class style {
         /** 

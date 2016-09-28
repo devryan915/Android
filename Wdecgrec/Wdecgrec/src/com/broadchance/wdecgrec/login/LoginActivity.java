@@ -198,6 +198,8 @@ public class LoginActivity extends BaseActivity {
 		startActivity(intent);
 	}
 
+	private String certKey = null;
+
 	private void logon() {
 		if (current != null)
 			return;
@@ -227,8 +229,7 @@ public class LoginActivity extends BaseActivity {
 					current = null;
 					if (result.isOK()) {
 						try {
-							ConstantConfig.CERTKEY = result.getDATA()
-									.getString("certkey");
+							certKey = result.getDATA().getString("certkey");
 							param.put("holtermobile", loginName);
 							_logon(param);
 						} catch (JSONException e) {
@@ -313,61 +314,66 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void _logon(final JSONObject pram) {
-		clientService.login(pram, new HttpReqCallBack<ServerResponse>() {
+		clientService.login(pram, certKey,
+				new HttpReqCallBack<ServerResponse>() {
 
-			@Override
-			public Activity getReqActivity() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void doSuccess(ServerResponse result) {
-				current = null;
-				if (result.isOK()) {
-					try {
-						String orderno = result.getDATA().getString("orderno");
-						UIUserInfoLogin user = new UIUserInfoLogin();
-						String logName = pram.getString("holtermobile");
-						user.setUserID(logName);
-						user.setAccess_token(orderno);
-						user.setLoginName(logName);
-						user.setNickName(pram.getString("holtermobile"));
-						user.setMacAddress(result.getDATA().getString("device"));
-						user.isOverTime = 0;
-						// user.setMacAddress("74:DA:EA:9F:93:36");
-						// user.setMacAddress("D4:F5:13:79:80:E7");
-						// user.setMacAddress("D4:F5:13:79:C3:AE");
-						DataManager.saveUser(user, "mima");
-						// 初始化用户皮肤
-						SkinManager.getInstance().initSkin();
-						if (GuardService.Instance != null) {
-							GuardService.Instance.resetBleCon();
-						}
-						/**
-						 * 更新配置
-						 */
-						clientService.getAlertCFG();
-						finish();
-						// Intent intent = new Intent(LoginActivity.this,
-						// EcgActivity.class);
-						Intent intent = new Intent(LoginActivity.this,
-								ModeActivity.class);
-						startActivity(intent);
-					} catch (JSONException e) {
-						e.printStackTrace();
+					@Override
+					public Activity getReqActivity() {
+						// TODO Auto-generated method stub
+						return null;
 					}
-				} else {
-					showToast(result.getErrmsg());
-				}
-			}
 
-			@Override
-			public void doError(String result) {
-				current = null;
-				showToast(result);
-			}
-		});
+					@Override
+					public void doSuccess(ServerResponse result) {
+						current = null;
+						if (result.isOK()) {
+							try {
+								String orderno = result.getDATA().getString(
+										"orderno");
+								UIUserInfoLogin user = new UIUserInfoLogin();
+								String logName = pram.getString("holtermobile");
+								user.setUserID(logName);
+								user.setAccess_token(orderno);
+								user.setLoginName(logName);
+								user.setNickName(pram.getString("holtermobile"));
+								user.setMacAddress(result.getDATA().getString(
+										"device"));
+								user.isOverTime = 0;
+								user.setCertkey(certKey);
+								// user.setMacAddress("74:DA:EA:9F:93:36");
+								// user.setMacAddress("D4:F5:13:79:80:E7");
+								// user.setMacAddress("D4:F5:13:79:C3:AE");
+								DataManager.saveUser(user, "mima");
+								// 初始化用户皮肤
+								SkinManager.getInstance().initSkin();
+								if (GuardService.Instance != null) {
+									GuardService.Instance.resetBleCon();
+								}
+								/**
+								 * 更新配置
+								 */
+								clientService.getAlertCFG();
+								finish();
+								// Intent intent = new
+								// Intent(LoginActivity.this,
+								// EcgActivity.class);
+								Intent intent = new Intent(LoginActivity.this,
+										ModeActivity.class);
+								startActivity(intent);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						} else {
+							showToast(result.getErrmsg());
+						}
+					}
+
+					@Override
+					public void doError(String result) {
+						current = null;
+						showToast(result);
+					}
+				});
 	}
 
 	private void forgotPwd() {

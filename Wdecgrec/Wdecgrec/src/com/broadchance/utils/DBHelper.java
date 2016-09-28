@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
 public class DBHelper extends SQLiteOpenHelper {
-	private final static int DB_VERSION = 4;
+	private final static int DB_VERSION = 5;
 	private final static String DB_ROOT_DIR = "wdecgrec";
 	private final static String DB_NAME = "appdata";
 	private static DBHelper Instance = null;
@@ -64,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		// status 状态0非当前用户，1当前用户
 		db.execSQL("CREATE TABLE "
 				+ TBL_USER
-				+ " (user_name TEXT PRIMARY KEY , pwd TEXT, nick_name TEXT, userid TEXT,token TEXT,status integer,macaddress TEXT);");
+				+ " (user_name TEXT PRIMARY KEY , pwd TEXT, nick_name TEXT, userid TEXT,token TEXT,status integer,macaddress TEXT,certkey text);");
 		/**
 		 * file_name 文件名如:201601021525234(yyyyMMddHHmmssSSSZ) path 文件的绝对路径
 		 * status 0数据未做处理1正在上传2上传成功3上传失败 uploadtimes上传重试次数 filetype 1为补传文件
@@ -88,8 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE " + TBL_USER + ";");
 		db.execSQL("DROP TABLE " + TBL_UPLOAD + ";");
-		if (oldVersion > 3)
-			db.execSQL("DROP TABLE " + TBL_ALERT + ";");
+		db.execSQL("DROP TABLE " + TBL_ALERT + ";");
 		onCreate(db);
 	}
 

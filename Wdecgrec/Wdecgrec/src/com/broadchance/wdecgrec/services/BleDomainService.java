@@ -43,6 +43,7 @@ import com.broadchance.entity.serverentity.UIDevice;
 import com.broadchance.entity.serverentity.UIDeviceResponseList;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
+import com.broadchance.manager.PreferencesManager;
 import com.broadchance.manager.SettingsManager;
 import com.broadchance.utils.AESEncryptor;
 import com.broadchance.utils.ClientGameService;
@@ -481,85 +482,6 @@ public class BleDomainService extends Service {
 
 	UIUserInfoLogin user;
 
-	private void reLogin() {
-		user = DataManager.getUserInfo();
-		String pwdString = DataManager.getUserPwd();
-		try {
-			pwdString = AESEncryptor.decrypt(user.getLoginName(), pwdString);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ClientGameService.getInstance().loginServer(user.getLoginName(),
-				pwdString, new HttpReqCallBack<UIUserInfoLogin>() {
-
-					@Override
-					public Activity getReqActivity() {
-						return null;
-					}
-
-					@Override
-					public void doSuccess(UIUserInfoLogin result) {
-						if (result.isOk()) {
-							ConstantConfig.AUTHOR_TOKEN = result
-									.getAccess_token();
-							SSXLXService
-									.getInstance()
-									.GetUserDevice(
-											result.getUserID(),
-											new HttpReqCallBack<UIDeviceResponseList>() {
-
-												@Override
-												public Activity getReqActivity() {
-													return null;
-												}
-
-												@Override
-												public void doSuccess(
-														UIDeviceResponseList result) {
-													if (result.isOk()) {
-														user.setMacAddress(null);
-														List<UIDevice> devices = result
-																.getData();
-														if (devices != null
-																&& devices
-																		.size() > 0) {
-															UIDevice device = devices
-																	.get(0);
-															user.isOverTime = device
-																	.getIsOverTime() ? 1
-																	: 0;
-															// user.isOverTime =
-															// 0;
-															if (user.isOverTime == 0) {
-																user.setMacAddress(device
-																		.getMAC());
-															}
-														}
-														if (GuardService.Instance != null) {
-															GuardService.Instance
-																	.resetBleCon();
-														}
-													} else {
-													}
-												}
-
-												@Override
-												public void doError(
-														String result) {
-												}
-											});
-						} else {
-						}
-
-						// }
-					}
-
-					@Override
-					public void doError(String result) {
-					}
-				});
-	}
-
 	private void endBatchUpload(List<UploadFile> batchUploadFiles) {
 		try {
 			List<UploadFile> failedFile = new ArrayList<UploadFile>();
@@ -954,8 +876,7 @@ public class BleDomainService extends Service {
 	public static final int MSG_SET_HEART = 2;
 	public static final int MSG_SEND_MSG = 3;
 	public static final int MSG_SEND_LONGMSG = 4;
-	public static final int MSG_OPEN_DEBUG = 5;
-	public static final int MSG_CLOSE_DEBUG = 6;
+	public static final int MSG_DEBUG_CHANGED = 5;
 	/**
 	 * 获取芯片电量
 	 */
@@ -1008,11 +929,10 @@ public class BleDomainService extends Service {
 					mRemoteMessenger = msg.replyTo;
 				}
 				break;
-			case MSG_OPEN_DEBUG:
-				ConstantConfig.Debug = true;
-				break;
-			case MSG_CLOSE_DEBUG:
-				ConstantConfig.Debug = false;
+			case MSG_DEBUG_CHANGED:
+				ConstantConfig.Debug = SettingsManager.getInstance()
+						.getFactory();
+				UIUtil.showRemoteToast("开启工程模式(R)" + ConstantConfig.Debug);
 				break;
 			default:
 				super.handleMessage(msg);
@@ -1059,6 +979,7 @@ public class BleDomainService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
+		ConstantConfig.Debug = SettingsManager.getInstance().getFactory();
 		start();
 		Instance = this;
 		// return mBinder;
@@ -1093,7 +1014,7 @@ public class BleDomainService extends Service {
 		}
 		Calendar cal = null;
 		cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, -1);
+		cal.add(Calendar.MINUTE, -5);
 		final List<UploadFile> batchUploadFiles = getUploadFile(cal.getTime(),
 				-1);
 		if (batchUploadFiles != null && batchUploadFiles.size() > 0) {

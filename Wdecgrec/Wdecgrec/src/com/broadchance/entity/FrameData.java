@@ -44,7 +44,7 @@ public class FrameData {
 	/**
 	 * 蓝牙收到的时间
 	 */
-	public Long date;
+	public long date;
 
 	public float getTemperature() {
 		return temperature;

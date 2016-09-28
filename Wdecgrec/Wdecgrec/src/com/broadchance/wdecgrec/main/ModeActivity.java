@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
+import com.broadchance.manager.SettingsManager;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
@@ -31,7 +32,6 @@ import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.settings.SettingsActivity;
-import com.example.bluetooth.le.DeviceScanActivity;
 
 public class ModeActivity extends BaseActivity {
 	private final static String TAG = ModeActivity.class.getSimpleName();
@@ -43,11 +43,12 @@ public class ModeActivity extends BaseActivity {
 	private Handler handlerTime = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			if (GuardService.Instance != null)
-				GuardService.Instance.getHeartRate(mMesg);
+			// if (GuardService.Instance != null)
+			// GuardService.Instance.getHeartRate(mMesg);
 			if (msg.what == BleDomainService.MSG_SET_HEART) {
 				String heartStr = "-";
-				hearRate = msg.getData().getInt("heart");
+				// hearRate = msg.getData().getInt("heart");
+				hearRate = FilterUtil.Instance.getHeartRate();
 				if (hearRate >= ConstantConfig.Alert_HR_Down
 						&& hearRate <= ConstantConfig.Alert_HR_Up) {
 					heartStr = hearRate + "";
@@ -70,6 +71,7 @@ public class ModeActivity extends BaseActivity {
 		textViewUseName.setText(DataManager.getUserInfo().getShowName());
 		Instance = this;
 		startBleService();
+		ConstantConfig.Debug = SettingsManager.getInstance().getFactory();
 	}
 
 	@Override

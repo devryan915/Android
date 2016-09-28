@@ -26,6 +26,7 @@ import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
+import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.HttpReqCallBack;
 
 /**
@@ -328,8 +329,8 @@ public class AlertMachine {
 												"预警发送成功" + alert_ids.size()
 														+ "条" + "\noutdata:"
 														+ result.getOutdata());
-										// UIUtil.showToast("预警发送成功"
-										// + alert_ids.size() + "条");
+										UIUtil.showRemoteToast("预警发送成功"
+												+ alert_ids.size() + "条");
 									}
 									String outData = result.getOutdata();
 									if (outData != null
@@ -498,7 +499,7 @@ public class AlertMachine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 
 	/**

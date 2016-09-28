@@ -28,15 +28,17 @@ public class UIUtil {
 	static Toast toast;
 
 	public static void showRemoteToast(String content) {
-		if (BleDomainService.Instance != null) {
-			BleDomainService.Instance.showToast(content);
-		}
+		// if (BleDomainService.Instance != null) {
+		// BleDomainService.Instance.showToast(content);
+		// }
+		showToast(content);
 	}
 
 	public static void showRemoteLongToast(String content) {
-		if (BleDomainService.Instance != null) {
-			BleDomainService.Instance.showLongToast(content);
-		}
+		// if (BleDomainService.Instance != null) {
+		// BleDomainService.Instance.showLongToast(content);
+		// }
+		showLongToast(content);
 	}
 
 	public static void showToast(final String content) {

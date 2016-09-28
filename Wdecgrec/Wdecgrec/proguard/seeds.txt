@@ -11573,6 +11573,7 @@ com.broadchance.entity.UIUserInfoLogin: int VTimes
 com.broadchance.entity.UIUserInfoLogin: java.lang.String access_token
 com.broadchance.entity.UIUserInfoLogin: int expires_in
 com.broadchance.entity.UIUserInfoLogin: java.lang.String refresh_token
+com.broadchance.entity.UIUserInfoLogin: java.lang.String certkey
 com.broadchance.entity.UIUserInfoLogin: UIUserInfoLogin()
 com.broadchance.entity.UIUserInfoLogin: java.lang.String getMacAddress()
 com.broadchance.entity.UIUserInfoLogin: void setMacAddress(java.lang.String)
@@ -11593,6 +11594,8 @@ com.broadchance.entity.UIUserInfoLogin: int getExpires_in()
 com.broadchance.entity.UIUserInfoLogin: void setExpires_in(int)
 com.broadchance.entity.UIUserInfoLogin: java.lang.String getRefresh_token()
 com.broadchance.entity.UIUserInfoLogin: void setRefresh_token(java.lang.String)
+com.broadchance.entity.UIUserInfoLogin: java.lang.String getCertkey()
+com.broadchance.entity.UIUserInfoLogin: void setCertkey(java.lang.String)
 com.broadchance.entity.UploadFileResponse
 com.broadchance.entity.UploadFileStatus: com.broadchance.entity.UploadFileStatus[] values()
 com.broadchance.entity.UploadFileStatus: com.broadchance.entity.UploadFileStatus valueOf(java.lang.String)
@@ -11892,7 +11895,6 @@ com.broadchance.wdecgrec.main.ModeActivity: void wearMode(android.view.View)
 com.broadchance.wdecgrec.main.ModeActivity: void settings(android.view.View)
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver
 com.broadchance.wdecgrec.receiver.GPSReceiver
-com.broadchance.wdecgrec.receiver.GPSReceiver: GPSReceiver()
 com.broadchance.wdecgrec.receiver.NetChangeReceiver
 com.broadchance.wdecgrec.receiver.NetChangeReceiver: NetChangeReceiver()
 com.broadchance.wdecgrec.receiver.PowerChangeReceiver

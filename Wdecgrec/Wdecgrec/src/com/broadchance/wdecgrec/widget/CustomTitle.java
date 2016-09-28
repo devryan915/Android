@@ -38,28 +38,33 @@ public class CustomTitle extends RelativeLayout {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			if (msg.what == BleDomainService.MSG_GET_POWER) {
-				Float power = msg.getData().getFloat("power");
-				if (power != null) {
-					// UIUtil.showToast(context, "蓝牙电量 power:" + power);
-					if (power > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.A00005)
-							.getFloatValueRaise()) {
-						textViewPower.setText("高");
-					} else if (power > AlertMachine.getInstance()
-							.getAlertConfig(AlertType.A00005)
-							.getFloatValueRaise()
-							&& power <= AlertMachine.getInstance()
-									.getAlertConfig(AlertType.A00005)
-									.getFloatValueClear()) {
-						textViewPower.setText("中");
-					} else {
-						textViewPower.setText("低");
-					}
-				}
+				setPower();
 			}
 		}
 	};
 	private Messenger mMesg = new Messenger(handler);
+
+	private void setPower() {
+		// Float power = msg.getData().getFloat("power");
+		Float power = FrameDataMachine.getInstance().getPower();
+		if (power != null) {
+			// UIUtil.showToast(context, "蓝牙电量 power:" + power);
+			if (power > AlertMachine.getInstance()
+					.getAlertConfig(AlertType.A00005).getFloatValueRaise()) {
+				textViewPower.setText("高");
+			} else if (power > AlertMachine.getInstance()
+					.getAlertConfig(AlertType.A00005).getFloatValueRaise()
+					&& power <= AlertMachine.getInstance()
+							.getAlertConfig(AlertType.A00005)
+							.getFloatValueClear()) {
+				textViewPower.setText("中");
+			} else {
+				textViewPower.setText("低");
+			}
+		} else {
+			textViewPower.setText("-");
+		}
+	}
 
 	BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -87,9 +92,10 @@ public class CustomTitle extends RelativeLayout {
 			} else if (action.equals(GuardService.ACTION_GATT_POWERCHANGED)) {
 				// float power = intent.getFloatExtra(
 				// BluetoothLeService.EXTRA_DATA, 0);
-				if (GuardService.Instance != null) {
-					GuardService.Instance.getPower(mMesg);
-				}
+				// if (GuardService.Instance != null) {
+				// GuardService.Instance.getPower(mMesg);
+				// }
+				setPower();
 			} else if (action
 					.equals(BluetoothLeService.ACTION_GATT_DISCONNECTED)) {
 				textViewPower.setText("-");
@@ -136,12 +142,13 @@ public class CustomTitle extends RelativeLayout {
 						.setImageResource(R.drawable.common_blesingnal_1);
 			}
 		}
-		if (GuardService.Instance != null) {
-			GuardService.Instance.getPower(mMesg);
-		}
+		// if (GuardService.Instance != null) {
+		// GuardService.Instance.getPower(mMesg);
+		// }
+		setPower();
 		// Float power = FrameDataMachine.getInstance().getPower();
 		// if (power == null) {
-		textViewPower.setText("-");
+		// textViewPower.setText("-");
 		// } else {
 		// if (power > AlertMachine.getInstance()
 		// .getAlertConfig(AlertType.A00005).getFloatValueClear()) {
