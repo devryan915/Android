@@ -357,9 +357,15 @@ public class BleDataParserService extends Service {
 				final int presize = receivedQueue.size();
 				processData();
 				final int csize = receivedQueue.size() - presize;
-				Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize + " 处理耗时:"
-						+ (System.currentTimeMillis() - time) + " 错过次数"
-						+ lostTimes);
+				final long cost = System.currentTimeMillis() - time;
+				if (ConstantConfig.Debug) {
+					Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize
+							+ " 处理耗时:" + (cost) + " 错过次数" + lostTimes);
+					if (cost > 10000) {
+						UIUtil.showToast("cpu不给力  处理能力" + csize
+							+ " 处理耗时:" + (cost));
+					}
+				}
 				lostTimes = 0;
 			} catch (Exception e) {
 				e.printStackTrace();
