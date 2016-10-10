@@ -11581,7 +11581,6 @@ com.broadchance.entity.UIUserInfoLogin: java.lang.String getUserID()
 com.broadchance.entity.UIUserInfoLogin: void setUserID(java.lang.String)
 com.broadchance.entity.UIUserInfoLogin: java.lang.String getLoginName()
 com.broadchance.entity.UIUserInfoLogin: void setLoginName(java.lang.String)
-com.broadchance.entity.UIUserInfoLogin: java.lang.String getShowName()
 com.broadchance.entity.UIUserInfoLogin: java.lang.String getNickName()
 com.broadchance.entity.UIUserInfoLogin: void setNickName(java.lang.String)
 com.broadchance.entity.UIUserInfoLogin: java.lang.String getMobileNum()
@@ -11894,6 +11893,7 @@ com.broadchance.wdecgrec.main.ModeActivity: ModeActivity()
 com.broadchance.wdecgrec.main.ModeActivity: void wearMode(android.view.View)
 com.broadchance.wdecgrec.main.ModeActivity: void settings(android.view.View)
 com.broadchance.wdecgrec.receiver.BootCompleteReceiver
+com.broadchance.wdecgrec.receiver.BootCompleteReceiver: BootCompleteReceiver()
 com.broadchance.wdecgrec.receiver.GPSReceiver
 com.broadchance.wdecgrec.receiver.NetChangeReceiver
 com.broadchance.wdecgrec.receiver.NetChangeReceiver: NetChangeReceiver()
@@ -11974,3 +11974,7 @@ org.apache.http.impl.client.cache.RequestProtocolError: org.apache.http.impl.cli
 org.apache.http.impl.client.cache.RequestProtocolError: org.apache.http.impl.client.cache.RequestProtocolError valueOf(java.lang.String)
 org.apache.http.impl.cookie.BrowserCompatSpecFactory$SecurityLevel: org.apache.http.impl.cookie.BrowserCompatSpecFactory$SecurityLevel[] values()
 org.apache.http.impl.cookie.BrowserCompatSpecFactory$SecurityLevel: org.apache.http.impl.cookie.BrowserCompatSpecFactory$SecurityLevel valueOf(java.lang.String)
+org.apache.log4j.nt.NTEventLogAppender
+org.apache.log4j.nt.NTEventLogAppender: int registerEventSource(java.lang.String,java.lang.String)
+org.apache.log4j.nt.NTEventLogAppender: void reportEvent(int,java.lang.String,int)
+org.apache.log4j.nt.NTEventLogAppender: void deregisterEventSource(int)
