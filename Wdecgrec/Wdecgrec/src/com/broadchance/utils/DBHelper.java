@@ -1,23 +1,20 @@
 package com.broadchance.utils;
 
-import java.io.File;
-import java.util.UUID;
-
-import com.broadchance.manager.AppApplication;
-
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
+
+import com.broadchance.manager.AppApplication;
 
 public class DBHelper extends SQLiteOpenHelper {
-	private final static int DB_VERSION = 5;
+	private final static int DB_VERSION = 1;
 	private final static String DB_ROOT_DIR = "wdecgrec";
 	private final static String DB_NAME = "appdata";
 	private static DBHelper Instance = null;
 
-	public final static String TBL_USER = "user";
+	// public final static String TBL_USER = "user";
 	public final static String TBL_UPLOAD = "upload";
 	public final static String TBL_ALERT = "alert";
 
@@ -62,9 +59,11 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// status 状态0非当前用户，1当前用户
-		db.execSQL("CREATE TABLE "
-				+ TBL_USER
-				+ " (user_name TEXT PRIMARY KEY , pwd TEXT, nick_name TEXT, userid TEXT,token TEXT,status integer,macaddress TEXT,certkey text);");
+		// db.execSQL("CREATE TABLE "
+		// + TBL_USER
+		// +
+		// " (user_name TEXT PRIMARY KEY , pwd TEXT, nick_name TEXT, userid TEXT,token TEXT,status integer,macaddress TEXT,certkey text);");
+
 		/**
 		 * file_name 文件名如:201601021525234(yyyyMMddHHmmssSSSZ) path 文件的绝对路径
 		 * status 0数据未做处理1正在上传2上传成功3上传失败 uploadtimes上传重试次数 filetype 1为补传文件
@@ -84,11 +83,46 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	}
 
+	/**
+	 * 判断某张表是否存在
+	 * 
+	 * @param tabName
+	 *            表名
+	 * @return
+	 */
+	public boolean tabbleIsExist(String tableName) {
+		boolean result = false;
+		if (tableName == null) {
+			return false;
+		}
+		SQLiteDatabase db = null;
+		Cursor cursor = null;
+		try {
+			db = this.getReadableDatabase();
+			String sql = "select count(*) as c from Sqlite_master  where type ='table' and name ='"
+					+ tableName.trim() + "' ";
+			cursor = db.rawQuery(sql, null);
+			if (cursor.moveToNext()) {
+				int count = cursor.getInt(0);
+				if (count > 0) {
+					result = true;
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return result;
+	}
+
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE " + TBL_USER + ";");
-		db.execSQL("DROP TABLE " + TBL_UPLOAD + ";");
-		db.execSQL("DROP TABLE " + TBL_ALERT + ";");
+		// if (tabbleIsExist(TBL_USER))
+		// db.execSQL("DROP TABLE " + TBL_USER + ";");
+		if (tabbleIsExist(TBL_UPLOAD))
+			db.execSQL("DROP TABLE " + TBL_UPLOAD + ";");
+		if (tabbleIsExist(TBL_ALERT))
+			db.execSQL("DROP TABLE " + TBL_ALERT + ";");
 		onCreate(db);
 	}
 

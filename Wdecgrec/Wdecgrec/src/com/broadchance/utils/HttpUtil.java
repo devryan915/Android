@@ -400,7 +400,7 @@ public class HttpUtil {
 			HttpClient client = new DefaultHttpClient();
 			HttpParams httpParam = client.getParams();
 			// 超时时间
-			HttpConnectionParams.setConnectionTimeout(httpParam, 3000);
+			HttpConnectionParams.setConnectionTimeout(httpParam, 10000);
 			HttpResponse res = client.execute(post);
 			zipin.close();
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -408,14 +408,14 @@ public class HttpUtil {
 				if (strResult != null) {
 					ServerResponse entityData = JSON.parseObject(strResult,
 							ServerResponse.class);
-					if ("1".equals(entityData.getErrid())) {
-						// 验证码无效重新更新验证码
-						ClientGameService.getInstance().refreshCertKey();
-					}
 					if (entityData.isOK()) {
 						response.setCode(response.OK);
 					} else {
 						response.setData(entityData.getErrmsg());
+					}
+					if ("1".equals(entityData.getErrid())) {
+						// 验证码无效重新更新验证码
+						ClientGameService.getInstance().refreshCertKey();
 					}
 					return response;
 				}

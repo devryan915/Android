@@ -155,15 +155,16 @@ public class FrameData {
 					if (AlertMachine.getInstance().canSendAlert(
 							AlertType.A00001, 1)) {
 						// 发生脱落
-						UIUserInfoLogin user = DataManager.getUserInfo();
-						if (user == null)
+						// UIUserInfoLogin user = DataManager.getUserInfo();
+						if (!DataManager.isLogin())
 							return;
 						JSONObject alertObj = new JSONObject();
 						alertObj.put("id", AlertType.A00001.getValue());
 						alertObj.put("state", 1);
 						alertObj.put("time", CommonUtil.getTime_B());
 						JSONObject value = new JSONObject();
-						value.put("bledevice", user.getMacAddress());
+						value.put("bledevice", DataManager.getUserInfo()
+								.getMacAddress());
 						value.put("ch", "all");
 						alertObj.put("value", value);
 						AlertMachine.getInstance().sendAlert(AlertType.A00001,

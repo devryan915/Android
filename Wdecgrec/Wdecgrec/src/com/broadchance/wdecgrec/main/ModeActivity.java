@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.SettingsManager;
@@ -68,7 +67,7 @@ public class ModeActivity extends BaseActivity {
 				+ AppApplication.curVer);
 		textViewHeart = (TextView) findViewById(R.id.textViewHeart);
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getShowName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 		Instance = this;
 		startBleService();
 		ConstantConfig.Debug = SettingsManager.getInstance().getFactory();
@@ -256,7 +255,7 @@ public class ModeActivity extends BaseActivity {
 	 * 检查网络并跳转ECG页
 	 */
 	private void goEcgActivity() {
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		UserInfo user = DataManager.getUserInfo();
 		if (user.getMacAddress() != null
 				&& !user.getMacAddress().trim().isEmpty()) {
 			Intent intent = new Intent(ModeActivity.this, EcgActivity.class);
@@ -264,11 +263,11 @@ public class ModeActivity extends BaseActivity {
 			// DeviceScanActivity.class);
 			startActivity(intent);
 		} else {
-			if (user.isOverTime == 1) {
-				showToast("设备过期请重新选择设备");
-			} else {
-				showToast("请绑定新设备");
-			}
+			// if (user.isOverTime == 1) {
+			// showToast("设备过期请重新选择设备");
+			// } else {
+			showToast("请绑定新设备");
+			// }
 			return;
 		}
 	}

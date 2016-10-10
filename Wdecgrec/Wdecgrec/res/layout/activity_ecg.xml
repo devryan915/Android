@@ -404,7 +404,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="当前已运行时长"
+                        android:text="当前cpu"
                         android:textColor="#5c5c5e"
                         android:visibility="invisible" />
 

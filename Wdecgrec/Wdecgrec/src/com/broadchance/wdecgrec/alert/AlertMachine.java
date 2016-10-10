@@ -19,6 +19,7 @@ import android.app.Activity;
 import com.broadchance.entity.AlertBody;
 import com.broadchance.entity.AlertCFG;
 import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.serverentity.ServerResponse;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.PreferencesManager;
@@ -216,9 +217,9 @@ public class AlertMachine {
 		if (bodys != null && bodys.size() > 0) {
 			param = new JSONObject();
 			try {
-				UIUserInfoLogin user = DataManager.getUserInfo();
+				UserInfo user = DataManager.getUserInfo();
 				param.put("device", user.getMacAddress());
-				param.put("orderno", user.getAccess_token());
+				param.put("orderno", user.getOrderNo());
 				param.put("time", CommonUtil.getTime_B());
 				JSONArray alertArray = new JSONArray();
 				alert_ids.clear();
@@ -494,8 +495,8 @@ public class AlertMachine {
 
 	private static String getKeyType(AlertType type, String suffix) {
 		try {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			return user.getUserID() + type.getValue() + "_" + suffix;
+			UserInfo user = DataManager.getUserInfo();
+			return user.getUserName() + type.getValue() + "_" + suffix;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

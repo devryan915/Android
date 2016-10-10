@@ -39,65 +39,65 @@ public class AppDownLoadUtil {
 	private Context context;
 	private String newVer;
 
-	public boolean showAppUpdateDialog(BaseActivity context) {
+	public void showAppUpdateDialog(BaseActivity context, String verName,
+			final String url) {
 		this.context = context;
-		newVer = PreferencesManager.getInstance().getString(
-				ConstantConfig.PREFERENCES_NEWAPPVER);
-		if (newVer.trim().isEmpty()) {
-			return false;
-		}
+		newVer = verName;
+		// newVer = PreferencesManager.getInstance().getString(
+		// ConstantConfig.PREFERENCES_NEWAPPVER);
+		// if (newVer.trim().isEmpty()) {
+		// return false;
+		// }
 		String curVer = AppApplication.curVer;
-		// 有新的版本
-		if (newVer.compareTo(curVer) > 0) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			LinearLayout layout = (LinearLayout) inflater.inflate(
-					R.layout.dialog_appupdate, null);
-			TextView textViewCurVer = (TextView) layout
-					.findViewById(R.id.textViewCurVer);
-			textViewCurVer.setText(curVer);
-			TextView textViewNewVer = (TextView) layout
-					.findViewById(R.id.textViewNewVer);
-			textViewNewVer.setText(newVer);
-			Button buttonReject = (Button) layout
-					.findViewById(R.id.buttonReject);
-			buttonReject.setOnClickListener(new OnClickListener() {
+		// // 有新的版本
+		// if (newVer.compareTo(curVer) > 0) {
+		LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LinearLayout layout = (LinearLayout) inflater.inflate(
+				R.layout.dialog_appupdate, null);
+		TextView textViewCurVer = (TextView) layout
+				.findViewById(R.id.textViewCurVer);
+		textViewCurVer.setText(curVer);
+		TextView textViewNewVer = (TextView) layout
+				.findViewById(R.id.textViewNewVer);
+		textViewNewVer.setText(newVer);
+		Button buttonReject = (Button) layout.findViewById(R.id.buttonReject);
+		buttonReject.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					if (dialogAppUpdate != null) {
-						dialogAppUpdate.cancel();
-						dialogAppUpdate.dismiss();
-					}
+			@Override
+			public void onClick(View v) {
+				if (dialogAppUpdate != null) {
+					dialogAppUpdate.cancel();
+					dialogAppUpdate.dismiss();
 				}
-			});
-			Button buttonAllowed = (Button) layout
-					.findViewById(R.id.buttonAllowed);
-			buttonAllowed.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (dialogAppUpdate != null) {
-						dialogAppUpdate.cancel();
-						dialogAppUpdate.dismiss();
-					}
-					try {
-						downLoadApp();
-					} catch (Exception e) {
-						LogUtil.e(TAG, e);
-					}
+			}
+		});
+		Button buttonAllowed = (Button) layout.findViewById(R.id.buttonAllowed);
+		buttonAllowed.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (dialogAppUpdate != null) {
+					dialogAppUpdate.cancel();
+					dialogAppUpdate.dismiss();
 				}
-			});
-			dialogAppUpdate = UIUtil.buildDialog(context, layout);
-			dialogAppUpdate.show();
-			return true;
-		} else {
-			return false;
-		}
+				try {
+					downLoadApp(url);
+				} catch (Exception e) {
+					LogUtil.e(TAG, e);
+				}
+			}
+		});
+		dialogAppUpdate = UIUtil.buildDialog(context, layout);
+		dialogAppUpdate.show();
+		// return true;
+		// } else {
+		// return false;
+		// }
 	}
 
-	private void downLoadApp() {
-		String url = PreferencesManager.getInstance().getString(
-				ConstantConfig.PREFERENCES_NEWAPPURL);
+	private void downLoadApp(String url) {
+		// String url = PreferencesManager.getInstance().getString(
+		// ConstantConfig.PREFERENCES_NEWAPPURL);
 		if (url.trim().isEmpty()) {
 			return;
 		}
@@ -132,18 +132,17 @@ public class AppDownLoadUtil {
 					public void doSuccess(DownLoadAPPResponse result) {
 						if (result.getDownLoadFile() != null
 								&& result.getDownLoadFile().length() > 0) {
-							PreferencesManager.getInstance().putString(
-									ConstantConfig.PREFERENCES_NEWAPPURL, "");
+							// PreferencesManager.getInstance().putString(
+							// ConstantConfig.PREFERENCES_NEWAPPURL, "");
 							Intent intent = new Intent(Intent.ACTION_VIEW);
 							intent.setDataAndType(
 									Uri.fromFile(result.getDownLoadFile()),
 									"application/vnd.android.package-archive");
 							context.startActivity(intent);
-						} else {
-							if (pBar != null) {
-								pBar.cancel();
-								pBar.dismiss();
-							}
+						}
+						if (pBar != null) {
+							pBar.cancel();
+							pBar.dismiss();
 						}
 					}
 

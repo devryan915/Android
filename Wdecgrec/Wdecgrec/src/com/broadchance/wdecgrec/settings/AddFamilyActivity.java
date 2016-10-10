@@ -80,7 +80,7 @@ public class AddFamilyActivity extends BaseActivity {
 		// }
 		// });
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 		loadData();
 	}
 
@@ -88,7 +88,7 @@ public class AddFamilyActivity extends BaseActivity {
 	 * 从服务端拉取数据
 	 */
 	private void loadData() {
-		serverService.GetMyFamily(DataManager.getUserInfo().getUserID(),
+		serverService.GetMyFamily(DataManager.getUserInfo().getUserName(),
 				new HttpReqCallBack<UIFamilyResponseList>() {
 
 					@Override
@@ -201,7 +201,7 @@ public class AddFamilyActivity extends BaseActivity {
 		}
 		if (waitDeleteContact != null) {
 			serverService.DeleteUserFamily(DataManager.getUserInfo()
-					.getUserID(), waitDeleteContact.getID(),
+					.getUserName(), waitDeleteContact.getID(),
 					new HttpReqCallBack<StringResponse>() {
 
 						@Override
@@ -234,7 +234,8 @@ public class AddFamilyActivity extends BaseActivity {
 						}
 					});
 		} else if (newAddContact != null) {
-			serverService.AddUserFamily(DataManager.getUserInfo().getUserID(),
+			serverService.AddUserFamily(
+					DataManager.getUserInfo().getUserName(),
 					newAddContact.getPhoneNo(), newAddContact.getName(),
 					new HttpReqCallBack<UIFamilyResponse>() {
 

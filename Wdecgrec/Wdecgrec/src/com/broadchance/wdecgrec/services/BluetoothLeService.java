@@ -406,11 +406,11 @@ public class BluetoothLeService extends Service {
 	 */
 	public boolean connect() {
 		try {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user == null) {
+			// UIUserInfoLogin user = DataManager.getUserInfo();
+			if (!DataManager.isLogin()) {
 				return false;
 			}
-			mBluetoothDeviceAddress = user.getMacAddress();
+			mBluetoothDeviceAddress = DataManager.getUserInfo().getMacAddress();
 			if (!(mBluetoothDeviceAddress != null && !mBluetoothDeviceAddress
 					.trim().isEmpty())) {
 				LogUtil.i(TAG, "无设备可连接");

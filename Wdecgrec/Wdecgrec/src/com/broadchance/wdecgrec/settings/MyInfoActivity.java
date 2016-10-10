@@ -161,16 +161,16 @@ public class MyInfoActivity extends BaseActivity {
 		// myinfoBindedDev = (TextView) findViewById(R.id.myinfoBindedDev);
 		// viewBindedDev.setOnClickListener(this);
 		textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 		myinfoDevNo = (TextView) findViewById(R.id.myinfoDevNo);
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		// UIUserInfoLogin user = DataManager.getUserInfo();
 		String deviceNumber = "";
-		if (user != null) {
-			deviceNumber = user.getMacAddress();
-			if (deviceNumber != null && !deviceNumber.trim().isEmpty()) {
-				deviceNumber = BleDataUtil.getDeviceName(deviceNumber);
-			}
+		// if (user != null) {
+		deviceNumber = DataManager.getUserInfo().getMacAddress();
+		if (deviceNumber != null && !deviceNumber.trim().isEmpty()) {
+			deviceNumber = BleDataUtil.getDeviceName(deviceNumber);
 		}
+		// }
 		myinfoDevNo.setText(deviceNumber);
 		myinfoNameSexAge = (TextView) findViewById(R.id.myinfoNameSexAge);
 		myinfoName = (EditText) findViewById(R.id.myinfoName);
@@ -194,8 +194,9 @@ public class MyInfoActivity extends BaseActivity {
 		myinfoMemo = (EditText) findViewById(R.id.myinfoMemo);
 		buttonSave = (Button) findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(this);
-		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		// TextView textViewUseName = (TextView)
+		// findViewById(R.id.textViewUseName);
+		// textViewUseName.setText(DataManager.getUserInfo().getNickName());
 		loadData();
 	}
 
@@ -203,7 +204,7 @@ public class MyInfoActivity extends BaseActivity {
 	 * 从服务端拉取数据
 	 */
 	private void loadData() {
-		serverService.GetUserBase(DataManager.getUserInfo().getUserID(),
+		serverService.GetUserBase(DataManager.getUserInfo().getUserName(),
 				new HttpReqCallBack<UIUserInfoBaseResponse>() {
 
 					@Override
@@ -224,9 +225,9 @@ public class MyInfoActivity extends BaseActivity {
 							myinfoID.setText(result.Data.getIDCard());
 							myinfoHeight.setText(result.Data.getHeight() + "");
 							myinfoWeight.setText(result.Data.getWeight() + "");
-							myinfoMobilePhone.setText(DataManager.getUserInfo()
-									.getMobileNum() != null ? DataManager
-									.getUserInfo().getMobileNum() : "");
+							// myinfoMobilePhone.setText(DataManager.getUserInfo()
+							// .getMobileNum() != null ? DataManager
+							// .getUserInfo().getMobileNum() : "");
 							myinfoAddress
 									.setText(result.Data.getFullAddr() != null ? result.Data
 											.getFullAddr() : "");
@@ -313,7 +314,7 @@ public class MyInfoActivity extends BaseActivity {
 		String address = myinfoAddress.getText().toString();
 		String zipCode = myinfoZipCode.getText().toString();
 		String remark = myinfoMemo.getText().toString();
-		serverService.UpdateUserBase(DataManager.getUserInfo().getUserID(),
+		serverService.UpdateUserBase(DataManager.getUserInfo().getUserName(),
 				myinfoID.getText().toString(), height, weight, zipCode, name,
 				remark, address, tokenPhone,
 				new HttpReqCallBack<StringResponse>() {
@@ -328,7 +329,7 @@ public class MyInfoActivity extends BaseActivity {
 							showToast("保存成功");
 							// 回写数据
 							DataManager.getUserInfo().setNickName(name);
-							DataManager.getUserInfo().setMobileNum(tokenPhone);
+							// DataManager.getUserInfo().setMobileNum(tokenPhone);
 							returnSettingsAcitivity();
 						} else {
 							showToast(result.getMessage());

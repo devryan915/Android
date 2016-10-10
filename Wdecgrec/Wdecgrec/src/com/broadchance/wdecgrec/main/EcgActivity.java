@@ -317,7 +317,9 @@ public class EcgActivity extends BaseActivity {
 						int hours = (int) (time / (1000 * 60 * 60));
 						int min = (int) (time % (1000 * 60 * 60) / (1000 * 60));
 						int sec = (int) (time % (1000 * 60 * 60) % (1000 * 60) / 1000);
-						tvRunTime.setText(hours + ":" + min + ":" + sec);
+						// tvRunTime.setText(hours + ":" + min + ":" + sec);
+						tvRunTime.setText((Integer.parseInt(CommonUtil
+								.getCurCpuFreq()) / 1000f) + "MHZ ");
 					}
 				} else {
 					if (hearRate >= ConstantConfig.Alert_HR_Down
@@ -331,7 +333,7 @@ public class EcgActivity extends BaseActivity {
 						ecg_curhearrate.setText("-");
 					}
 				}
-				
+
 				setHeartRate();
 			}
 		}, 2000);
@@ -426,9 +428,9 @@ public class EcgActivity extends BaseActivity {
 		tvRunTime.setVisibility(View.INVISIBLE);
 
 		setDefault();
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user != null) {
-			String deviceNumber = user.getMacAddress();
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (DataManager.isLogin()) {
+			String deviceNumber = DataManager.getUserInfo().getMacAddress();
 			((TextView) findViewById(R.id.tvMacAddress)).setText(deviceNumber);
 		}
 		if (ConstantConfig.Debug) {
@@ -524,7 +526,7 @@ public class EcgActivity extends BaseActivity {
 			});
 		}
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getShowName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 	}
 
 	private void setDefault() {

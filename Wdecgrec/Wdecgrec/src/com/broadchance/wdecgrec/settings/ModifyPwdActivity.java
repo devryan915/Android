@@ -37,7 +37,7 @@ public class ModifyPwdActivity extends BaseActivity {
 		buttonSave = (Button) findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(this);
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 	}
 
 	private void returnSettingsAcitivity() {
@@ -82,8 +82,8 @@ public class ModifyPwdActivity extends BaseActivity {
 			modifyPwdConfirmpwd.requestFocusFromTouch();
 			return;
 		}
-		serverService.ChangePwd(DataManager.getUserInfo().getUserID(), newPwd,
-				old, new HttpReqCallBack<StringResponse>() {
+		serverService.ChangePwd(DataManager.getUserInfo().getUserName(),
+				newPwd, old, new HttpReqCallBack<StringResponse>() {
 					@Override
 					public Activity getReqActivity() {
 						return ModifyPwdActivity.this;

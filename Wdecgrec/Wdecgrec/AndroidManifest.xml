@@ -35,7 +35,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <!-- 防止休眠 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-   <!--  <uses-permission android:name="android.permission.DEVICE_POWER"/> -->
+    <!-- <uses-permission android:name="android.permission.DEVICE_POWER"/> -->
     <!-- GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -66,7 +66,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <activity
             android:name=".login.LoginActivity"
@@ -134,7 +134,13 @@
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
-         <receiver
+                <receiver android:name=".receiver.GPSReceiver" >
+            <intent-filter>
+                <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
+            </intent-filter>
+        </receiver>
+        -->
+        <receiver
             android:name=".receiver.BootCompleteReceiver"
             android:label="@string/app_name" >
             <intent-filter>
@@ -142,12 +148,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </receiver>        <receiver android:name=".receiver.GPSReceiver" >
-            <intent-filter>
-                <action android:name="com.broadchance.wdecgrec.gps.GpsService" />
-            </intent-filter>
-        </receiver>
-        -->
+        </receiver>
 
         <activity
             android:name=".settings.ModifyPwdActivity"

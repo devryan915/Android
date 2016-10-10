@@ -84,11 +84,12 @@ public class FileUtil {
 	}
 
 	public static String getEcgDir() {
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user == null) {
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (!DataManager.isLogin()) {
 			return null;
 		}
-		String dir = ECG_BATCHDIR + user.getLoginName() + "/";
+		String dir = ECG_BATCHDIR + DataManager.getUserInfo().getUserName()
+				+ "/";
 		try {
 			if (checkDir(dir)) {
 				return dir;

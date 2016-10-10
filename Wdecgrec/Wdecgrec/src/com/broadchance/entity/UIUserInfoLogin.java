@@ -42,13 +42,13 @@ public class UIUserInfoLogin extends BaseResponse<String> {
 		this.LoginName = _LoginName;
 	}
 
-	public String getShowName() {
-		if (NickName != null && !NickName.toString().trim().isEmpty()) {
-			return NickName;
-		} else {
-			return DataManager.getUserInfo().getLoginName();
-		}
-	}
+	// public String getShowName() {
+	// if (NickName != null && !NickName.toString().trim().isEmpty()) {
+	// return NickName;
+	// } else {
+	// return DataManager.getUserInfo().getLoginName();
+	// }
+	// }
 
 	private String NickName;
 

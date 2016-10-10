@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
+import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.UIUtil;
@@ -55,11 +56,15 @@ public class PowerChangeReceiver extends BroadcastReceiver {
 			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
 					|| status == BatteryManager.BATTERY_STATUS_FULL;
 			if (isCharging) {
-				context.sendBroadcast(new Intent(
-						BleDomainService.ACTION_UPLOAD_STARTREALMODE));
+				if (!FrameDataMachine.getInstance().isRealTimeMode()) {
+					context.sendBroadcast(new Intent(
+							BleDomainService.ACTION_UPLOAD_STARTREALMODE));
+				}
 			} else {
-				context.sendBroadcast(new Intent(
-						BleDomainService.ACTION_UPLOAD_ENDREALMODE));
+				if (FrameDataMachine.getInstance().isRealTimeMode()) {
+					context.sendBroadcast(new Intent(
+							BleDomainService.ACTION_UPLOAD_ENDREALMODE));
+				}
 			}
 			// if (ConstantConfig.Debug) {
 			// UIUtil.showBleToast("触发 " + (isCharging ? "开启" : "关闭") + "实时上传");

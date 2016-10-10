@@ -7,58 +7,61 @@
 # view res/layout/activity_add_contact.xml #generated:74
 -keep class com.broadchance.utils.comparator.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:75
+# view AndroidManifest.xml #generated:76
 -keep class com.broadchance.wdecgrec.login.LoginActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:85
+# view AndroidManifest.xml #generated:86
 -keep class com.broadchance.wdecgrec.login.RegisterActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:89
+# view AndroidManifest.xml #generated:90
 -keep class com.broadchance.wdecgrec.login.ResetPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:101
+# view AndroidManifest.xml #generated:102
 -keep class com.broadchance.wdecgrec.main.EcgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:93
+# view AndroidManifest.xml #generated:94
 -keep class com.broadchance.wdecgrec.main.ModeActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:130
+# view AndroidManifest.xml #generated:153
+-keep class com.broadchance.wdecgrec.receiver.BootCompleteReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:131
 -keep class com.broadchance.wdecgrec.receiver.NetChangeReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:184
+# view AndroidManifest.xml #generated:187
 -keep class com.broadchance.wdecgrec.services.BleDataParserService { <init>(...); }
 
-# view AndroidManifest.xml #generated:180
+# view AndroidManifest.xml #generated:183
 -keep class com.broadchance.wdecgrec.services.BleDomainService { <init>(...); }
 
-# view AndroidManifest.xml #generated:169
+# view AndroidManifest.xml #generated:172
 -keep class com.broadchance.wdecgrec.services.BluetoothLeService { <init>(...); }
 
-# view AndroidManifest.xml #generated:189
+# view AndroidManifest.xml #generated:192
 -keep class com.broadchance.wdecgrec.services.GpsService { <init>(...); }
 
-# view AndroidManifest.xml #generated:174
+# view AndroidManifest.xml #generated:177
 -keep class com.broadchance.wdecgrec.services.GuardService { <init>(...); }
 
-# view AndroidManifest.xml #generated:125
+# view AndroidManifest.xml #generated:126
 -keep class com.broadchance.wdecgrec.settings.AddContactActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:121
+# view AndroidManifest.xml #generated:122
 -keep class com.broadchance.wdecgrec.settings.AddFamilyActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:160
+# view AndroidManifest.xml #generated:163
 -keep class com.broadchance.wdecgrec.settings.ModifyPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:111
+# view AndroidManifest.xml #generated:112
 -keep class com.broadchance.wdecgrec.settings.MyInfoActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:116
+# view AndroidManifest.xml #generated:117
 -keep class com.broadchance.wdecgrec.settings.OptionSettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:106
+# view AndroidManifest.xml #generated:107
 -keep class com.broadchance.wdecgrec.settings.SettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:164
+# view AndroidManifest.xml #generated:167
 -keep class com.broadchance.wdecgrec.settings.UploadActivity { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:9

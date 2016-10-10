@@ -1,5 +1,9 @@
 package com.broadchance.utils;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -9,10 +13,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.graphics.Color;
-
 public class CommonUtil {
 	private final static String TAG = CommonUtil.class.getSimpleName();
+
+	// 实时获取CPU当前频率（单位KHZ）
+	public static String getCurCpuFreq() {
+		String result = "N/A";
+		try {
+			FileReader fr = new FileReader(
+					"/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq");
+			BufferedReader br = new BufferedReader(fr);
+			StringBuffer strBuffer = new StringBuffer();
+			String text = null;
+			while ((text = br.readLine()) != null) {
+				strBuffer.append(text.trim());
+			}
+			result = strBuffer.toString();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public static Date getDate() {
 		return Calendar.getInstance(Locale.getDefault()).getTime();

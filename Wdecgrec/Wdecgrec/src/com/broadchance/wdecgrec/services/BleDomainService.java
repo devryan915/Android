@@ -651,8 +651,8 @@ public class BleDomainService extends Service {
 		// LogUtil.d(TAG, "当前网络为移动网络，停止上传");
 		// return;
 		// }
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user == null) {
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (!DataManager.isLogin()) {
 			LogUtil.d(TAG, "用户数据不存在");
 			return;
 		}
@@ -1007,8 +1007,8 @@ public class BleDomainService extends Service {
 			LogUtil.d(TAG, "开始批量上传");
 			UIUtil.showRemoteToast("开始批量上传");
 		}
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user == null) {
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (!DataManager.isLogin()) {
 			LogUtil.d(TAG, "用户数据不存在");
 			return;
 		}
@@ -1102,11 +1102,7 @@ public class BleDomainService extends Service {
 					// param.put("hrs", hrs.toString());
 					// param.put("fileinfo", jarray);
 					param.put("fileinfo", upLoadDatas);
-					if (ConstantConfig.Debug) {
-						LogUtil.d(TAG, "正在上传" + zipFile.getAbsolutePath());
-						UIUtil.showRemoteToast("正在上传"
-								+ zipFile.getAbsolutePath());
-					}
+					
 					ClientGameService.getInstance().uploadBleFile(param,
 
 					new HttpReqCallBack<UploadFileResponse>() {
@@ -1238,8 +1234,14 @@ public class BleDomainService extends Service {
 					fileUtil.writeBlock(fileFrameDatas);
 					fileUtil.endWriteFile();
 					fileUtil.writeBreathData(fileBreathDatas);
-					if (BleDomainService.Instance != null)
+					if (BleDomainService.Instance != null) {
 						BleDomainService.Instance.startBatchUpload();
+					} else {
+						if (ConstantConfig.Debug) {
+							UIUtil.showToast("BleDomainService没有实例");
+							LogUtil.e(TAG, "BleDomainService没有实例");
+						}
+					}
 					return fileUtil;
 				} else {
 					if (ConstantConfig.Debug) {

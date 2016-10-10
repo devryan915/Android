@@ -234,6 +234,10 @@ public class FrameDataMachine {
 		isRealTimeMode = true;
 	}
 
+	public boolean isRealTimeMode() {
+		return isRealTimeMode;
+	}
+
 	public void endRealTimeMode() {
 		isRealTimeMode = false;
 		synchronized (fileRealTimeFrameDatas) {

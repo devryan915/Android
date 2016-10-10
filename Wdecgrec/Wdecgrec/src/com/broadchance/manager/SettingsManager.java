@@ -110,7 +110,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putInt(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_OFFDATA, dataCapacity);
 	}
 
@@ -118,7 +118,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return -1;
 		int capacity = PreferencesManager.getInstance().getInt(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_OFFDATA, -1);
 		if (capacity == -1) {
 			// 如果未设定，默认给最大值
@@ -161,7 +161,7 @@ public class SettingsManager {
 				break;
 			}
 			capacity = PreferencesManager.getInstance().getInt(
-					DataManager.getUserInfo().getUserID()
+					DataManager.getUserInfo().getUserName()
 							+ ConstantConfig.PREFERENCES_OFFDATA);
 		}
 		return capacity;
@@ -176,7 +176,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_GPS, value);
 	}
 
@@ -184,7 +184,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return true;
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_GPS, true);
 	}
 
@@ -197,7 +197,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_DEVFALLOFF, value);
 	}
 
@@ -205,7 +205,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return true;
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_DEVFALLOFF, true);
 	}
 
@@ -218,7 +218,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_DEVOFF, value);
 	}
 
@@ -226,7 +226,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return true;
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_DEVOFF, true);
 	}
 
@@ -239,7 +239,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_LOWPOWER, value);
 	}
 
@@ -247,7 +247,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return true;
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_LOWPOWER, true);
 	}
 
@@ -260,7 +260,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_LOWSINGNAL, value);
 	}
 
@@ -268,7 +268,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return true;
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_LOWSINGNAL, true);
 	}
 
@@ -281,7 +281,7 @@ public class SettingsManager {
 		if (DataManager.getUserInfo() == null)
 			return;
 		PreferencesManager.getInstance().putBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_UPLOADNETTYPE, value);
 	}
 
@@ -291,7 +291,7 @@ public class SettingsManager {
 			return true;
 		}
 		return PreferencesManager.getInstance().getBoolean(
-				DataManager.getUserInfo().getUserID()
+				DataManager.getUserInfo().getUserName()
 						+ ConstantConfig.PREFERENCES_UPLOADNETTYPE, true);
 	}
 
@@ -305,7 +305,7 @@ public class SettingsManager {
 	// if (user != null) {
 	// String deviceNumber = PreferencesManager.getInstance()
 	// .getString(
-	// user.getUserID()
+	// user.getUserName()
 	// + ConstantConfig.PREFERENCES_DEVIVCENUMBER);
 	// return deviceNumber;
 	// }
@@ -322,7 +322,7 @@ public class SettingsManager {
 	// if (user != null) {
 	// PreferencesManager.getInstance()
 	// .putString(
-	// user.getUserID()
+	// user.getUserName()
 	// + ConstantConfig.PREFERENCES_DEVIVCENUMBER,
 	// mac);
 	// }

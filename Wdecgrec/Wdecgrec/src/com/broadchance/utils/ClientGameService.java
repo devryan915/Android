@@ -8,21 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Handler;
 
 import com.broadchance.entity.DownLoadAPPResponse;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFileResponse;
-import com.broadchance.entity.UploadWay;
-import com.broadchance.entity.serverentity.Const;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.serverentity.ServerResponse;
+import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.PreferencesManager;
 import com.broadchance.wdecgrec.HttpReqCallBack;
@@ -51,12 +49,12 @@ public class ClientGameService {
 
 	public void refreshCertKey() {
 		if (isRrefreshCK.compareAndSet(false, true)) {
-			final UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user != null) {
+			final UserInfo user = DataManager.getUserInfo();
+			if (DataManager.isLogin()) {
 				try {
 					JSONObject param;
 					param = new JSONObject();
-					param.put("mobile", user.getLoginName());
+					param.put("mobile", user.getUserName());
 					getKey(param, new HttpReqCallBack<ServerResponse>() {
 
 						@Override
@@ -71,7 +69,7 @@ public class ClientGameService {
 									String certKey = result.getDATA()
 											.getString("certkey");
 									user.setCertkey(certKey);
-									DataManager.saveUser(user, "mima");
+									DataManager.saveUser(user);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -118,6 +116,12 @@ public class ClientGameService {
 	 */
 	public void login(JSONObject param, String certKey,
 			HttpReqCallBack<ServerResponse> backCall) {
+		try {
+			param.put("appname", AppApplication.PKG_NAME);
+			param.put("versioncode", AppApplication.verCode);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		String indata = param.toString();
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "login");
@@ -129,10 +133,10 @@ public class ClientGameService {
 	public void getAlertCFG() {
 		try {
 			JSONObject param = new JSONObject();
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			param.put("holtermobile", user.getLoginName());
-			param.put("mobile", user.getLoginName());
-			param.put("orderno", user.getAccess_token());
+			UserInfo user = DataManager.getUserInfo();
+			param.put("holtermobile", user.getUserName());
+			param.put("mobile", user.getUserName());
+			param.put("orderno", user.getOrderNo());
 			param.put("device", user.getMacAddress());
 			String indata = param.toString();
 			Map<String, Object> reparams = new HashMap<String, Object>();
@@ -254,9 +258,9 @@ public class ClientGameService {
 	 */
 	public void sendAlert(JSONObject param,
 			HttpReqCallBack<ServerResponse> backCall) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		// UIUserInfoLogin user = DataManager.getUserInfo();
 		try {
-			param.put("mobile", user.getLoginName());
+			param.put("mobile", DataManager.getUserInfo().getUserName());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -264,7 +268,8 @@ public class ClientGameService {
 		Map<String, Object> reparams = new HashMap<String, Object>();
 		reparams.put("action", "send_alert");
 		reparams.put("indata", indata);
-		reparams.put("verify", MD5Util.MD5(indata + user.getCertkey()));
+		reparams.put("verify",
+				MD5Util.MD5(indata + DataManager.getUserInfo().getCertkey()));
 		HttpAsyncTaskUtil.fetchData(reparams, backCall);
 	}
 
@@ -272,11 +277,11 @@ public class ClientGameService {
 	public void uploadRealBleFile(JSONObject param,
 			final HttpReqCallBack<UploadFileResponse> backCall) {
 		try {
-			UIUserInfoLogin user = DataManager.getUserInfo();
+			UserInfo user = DataManager.getUserInfo();
 			try {
-				param.put("mobile", user.getLoginName());
+				param.put("mobile", user.getUserName());
 				param.put("device", user.getMacAddress());
-				param.put("orderno", user.getAccess_token());
+				param.put("orderno", user.getOrderNo());
 				param.put("filetype", "1");
 				// ecgFile
 				// breathFile
@@ -336,11 +341,11 @@ public class ClientGameService {
 	@SuppressWarnings("unchecked")
 	public void uploadBleFile(JSONObject param,
 			final HttpReqCallBack<UploadFileResponse> backCall) {
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		UserInfo user = DataManager.getUserInfo();
 		try {
-			param.put("mobile", user.getLoginName());
+			param.put("mobile", user.getUserName());
 			param.put("device", user.getMacAddress());
-			param.put("orderno", user.getAccess_token());
+			param.put("orderno", user.getOrderNo());
 			param.put("filetype", "2");
 			// zipFile
 			// param.put("starttime", "");
@@ -380,6 +385,11 @@ public class ClientGameService {
 			protected UploadFileResponse doInBackground(
 					Map<String, Object>... params) {
 				Map<String, Object> paramsIn = params[0];
+				if (ConstantConfig.Debug) {
+					LogUtil.d(TAG, "正在上传" + paramsIn.get("zipFile") + "\n"
+							+ paramsIn.get("indata"));
+					UIUtil.showRemoteToast("正在上传" + paramsIn.get("zipFile"));
+				}
 				// backCall = (HttpReqCallBack<UploadFileResponse>) paramsIn
 				// .get("backCall");
 				// String url = "http://dx2.9ht.com/xf/9ht.com.coc-xiaomi.apk";

@@ -152,10 +152,11 @@ public class SkinManager {
 	 */
 	public void initSkin() {
 		String setSkinID = "";
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user != null) {
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (DataManager.isLogin()) {
 			setSkinID = PreferencesManager.getInstance().getString(
-					user.getUserID() + ConstantConfig.PREFERENCES_SKINID);
+					DataManager.getUserInfo().getUserName()
+							+ ConstantConfig.PREFERENCES_SKINID);
 		}
 		if (setSkinID.isEmpty() || setSkinID.equals(DEFAULT_SKINID)) {
 			setDefaultSkin();

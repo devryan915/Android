@@ -28,6 +28,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FilterUtil;
@@ -39,7 +40,7 @@ public class GuardService extends Service {
 
 	private BluetoothLeService mBluetoothLeService;
 	private Messenger doMainMessenger;
-	private final static String ServiceName = ConstantConfig.PKG_NAME
+	private final static String ServiceName =AppApplication.PKG_NAME
 			+ ".services.GuardService";
 	private ScheduledExecutorService mEService = Executors
 			.newScheduledThreadPool(2);
@@ -135,10 +136,10 @@ public class GuardService extends Service {
 				IBinder service) {
 			// doMainMessenger = new Messenger(service);
 			// initRemoteMsg();
-			// if (ConstantConfig.Debug) {
-			// LogUtil.d(ConstantConfig.DebugTAG, TAG
-			// + "\ndoMainService Connected");
-			// }
+			if (ConstantConfig.Debug) {
+				LogUtil.d(ConstantConfig.DebugTAG, TAG
+						+ "\ndoMainService Connected");
+			}
 		}
 
 		@Override
@@ -266,9 +267,9 @@ public class GuardService extends Service {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi,
 				byte[] scanRecord) {
-			UIUserInfoLogin user = DataManager.getUserInfo();
-			if (user != null) {
-				String deviceNumber = user.getMacAddress();
+			// UIUserInfoLogin user = DataManager.getUserInfo();
+			if (DataManager.isLogin()) {
+				String deviceNumber = DataManager.getUserInfo().getMacAddress();
 				if (deviceNumber.equals(device.getAddress())) {
 					// if (ConstantConfig.Debug) {
 					UIUtil.showToast("扫描到指定蓝牙并开始连接");

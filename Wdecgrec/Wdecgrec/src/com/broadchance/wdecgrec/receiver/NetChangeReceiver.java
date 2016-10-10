@@ -33,8 +33,8 @@ public class NetChangeReceiver extends BroadcastReceiver {
 				context,
 				activeInfo == null ? "网络断开" : activeInfo.getTypeName() + " "
 						+ activeInfo.getSubtypeName(), 1).show();
-		UIUserInfoLogin user = DataManager.getUserInfo();
-		if (user != null) {
+		// UIUserInfoLogin user = DataManager.getUserInfo();
+		if (DataManager.isLogin()) {
 			if (activeInfo == null) {
 				if (AlertMachine.getInstance()
 						.canSendAlert(AlertType.A00003, 1)) {

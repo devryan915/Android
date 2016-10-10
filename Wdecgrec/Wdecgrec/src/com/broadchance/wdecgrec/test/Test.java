@@ -11,10 +11,9 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.manager.DataManager;
 import com.broadchance.utils.CommonUtil;
-import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.wdecgrec.alert.AlertMachine;
 import com.broadchance.wdecgrec.alert.AlertType;
@@ -31,7 +30,7 @@ public class Test {
 	}
 
 	private void testAlert(boolean isSend) throws JSONException {
-		UIUserInfoLogin user = DataManager.getUserInfo();
+		UserInfo user = DataManager.getUserInfo();
 		if (isSend) {
 			LogUtil.d(TAG, "发送预警");
 			JSONObject alertObj = new JSONObject();

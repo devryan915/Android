@@ -1,9 +1,9 @@
 package com.broadchance.wdecgrec.services;
 
 import java.nio.IntBuffer;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,6 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,11 +22,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 import com.broadchance.entity.FrameData;
 import com.broadchance.entity.HeartRate;
-import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.manager.DataManager;
 import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.manager.PlayerManager;
@@ -32,6 +37,7 @@ import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
+import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.alert.AlertMachine;
 import com.broadchance.wdecgrec.alert.AlertType;
 
@@ -45,6 +51,9 @@ public class BleDataParserService extends Service {
 			+ "ACTION_ECGMV1_DATA_AVAILABLE";
 	public final static String ACTION_ECGMV5_DATA_AVAILABLE = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_ECGMV5_DATA_AVAILABLE";
+
+	public final static String ACTION_PROCESS_DATA = ConstantConfig.ACTION_PREFIX
+			+ "ACTION_PROCESS_DATA";
 	private ScheduledExecutorService mEService = null;
 	/**
 	 * 延迟判断心率是否可用
@@ -73,8 +82,8 @@ public class BleDataParserService extends Service {
 	private LinkedBlockingQueue<FrameData> receivedQueue = new LinkedBlockingQueue<FrameData>();;
 	// private LinkedBlockingQueue<FrameData> dealQueue = new
 	// LinkedBlockingQueue<FrameData>();
-	private Timer processFrameDataTimer;
-	private TimerTask processFrameDataTask;
+	// private Timer processFrameDataTimer;
+	// private TimerTask processFrameDataTask;
 	// private ScheduledExecutorService eServie = Executors
 	// .newScheduledThreadPool(3);
 
@@ -339,16 +348,31 @@ public class BleDataParserService extends Service {
 	@Override
 	public void onDestroy() {
 		this.unregisterReceiver(mGattUpdateReceiver);
-		cancelExeService();
-		receivedQueue = null;
+		cancelProcessService();
+		// receivedQueue = null;
 		// dealQueue.clear();
 		// releaseWarkLock();
 		super.onDestroy();
 	};
 
 	int lostTimes = 0;
+	long lastExeTime = 0;
+	int exeTimes = 0;
 
 	private void executeData() {
+		if (ConstantConfig.Debug) {
+			long diff = (System.currentTimeMillis() - lastExeTime);
+			lastExeTime = System.currentTimeMillis();
+			exeTimes++;
+			if (exeTimes > 100) {
+				UIUtil.showToast("executeData:"
+						+ diff
+						+ " 当前cpu频率："
+						+ (Integer.parseInt(CommonUtil.getCurCpuFreq()) / 1000f)
+						+ "MHZ ");
+				exeTimes = 0;
+			}
+		}
 		if (atomicBooleanPro.compareAndSet(false, true)) {
 			try {
 				// Log.d(ConstantConfig.DebugTAG, TAG + "正在处理数据:"
@@ -361,9 +385,33 @@ public class BleDataParserService extends Service {
 				if (ConstantConfig.Debug) {
 					Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize
 							+ " 处理耗时:" + (cost) + " 错过次数" + lostTimes);
-					if (cost > 10000) {
-						UIUtil.showToast("cpu不给力  处理能力" + csize
-							+ " 处理耗时:" + (cost));
+					if (cost > 3000) {
+						UIUtil.showToast("cpu不给力  处理能力" + csize + " 处理耗时:"
+								+ (cost));
+						Notification notification = new Notification.Builder(
+								BleDataParserService.this)
+								.setContentTitle("警告")
+								.setContentText(
+										"处理能力:"
+												+ csize
+												+ " 耗时:"
+												+ (cost)
+												+ " cpu:"
+												+ (Integer.parseInt(CommonUtil
+														.getCurCpuFreq()) / 1000f)
+												+ "MHZ ")
+								.setSmallIcon(R.drawable.ic_launcher).build();
+						// Intent intent = new Intent(context,
+						// EcgActivity.class);
+						// PendingIntent pendingintent = PendingIntent
+						// .getActivity(BleDataParserService.this, 0,
+						// null, 0);
+						// notification.setLatestEventInfo(
+						// BleDataParserService.this, "穿戴设备",
+						// "设备电量低，请更换电极片！", pendingintent);
+						startForeground(0x111, notification);
+					} else {
+						stopForeground(true);
 					}
 				}
 				lostTimes = 0;
@@ -381,7 +429,7 @@ public class BleDataParserService extends Service {
 		}
 	}
 
-	public void startExeService() {
+	public void startProcessService() {
 		// mEService.scheduleAtFixedRate(new Runnable() {
 		//
 		// @Override
@@ -389,27 +437,46 @@ public class BleDataParserService extends Service {
 		// executeData();
 		// }
 		// }, 0, deal_interval, TimeUnit.MILLISECONDS);
-		processFrameDataTask = new TimerTask() {
-			@Override
-			public void run() {
-				executeData();
-			}
-		};
-		processFrameDataTimer = new Timer();
-		processFrameDataTimer.schedule(processFrameDataTask, 0, deal_interval);
+		// processFrameDataTask = new TimerTask() {
+		// @Override
+		// public void run() {
+		// executeData();
+		// }
+		// };
+		// processFrameDataTimer = new Timer();
+		// processFrameDataTimer.schedule(processFrameDataTask, 0,
+		// deal_interval);
+		//
+
+		Intent intent = new Intent();
+		intent.setAction(ACTION_PROCESS_DATA);
+
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+		// Calendar c = Calendar.getInstance();
+		// long triggerAtTime = c.getTimeInMillis();
+
+		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(),
+				deal_interval, pi);
 
 	}
 
-	public void cancelExeService() {
+	public void cancelProcessService() {
 		// mEService.shutdown();
-		if (processFrameDataTask != null) {
-			processFrameDataTask.cancel();
-			processFrameDataTask = null;
-		}
-		if (processFrameDataTimer != null) {
-			processFrameDataTimer.cancel();
-			processFrameDataTimer = null;
-		}
+		// if (processFrameDataTask != null) {
+		// processFrameDataTask.cancel();
+		// processFrameDataTask = null;
+		// }
+		// if (processFrameDataTimer != null) {
+		// processFrameDataTimer.cancel();
+		// processFrameDataTimer = null;
+		// }
+		Intent intent = new Intent();
+		intent.setAction(ACTION_PROCESS_DATA);
+		PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+		AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarm.cancel(sender);
 	}
 
 	// private String lastSeq = null;
@@ -463,7 +530,6 @@ public class BleDataParserService extends Service {
 			FrameData frameData = new FrameData(data, CommonUtil.getDate()
 					.getTime());
 			receivedQueue.offer(frameData);
-
 		} catch (Exception e) {
 			LogUtil.e(TAG, e);
 		}
@@ -509,6 +575,9 @@ public class BleDataParserService extends Service {
 				// }
 				// }
 				mConnectionState = BluetoothLeService.STATE_CONNECTED;
+
+			} else if (BleDataParserService.ACTION_PROCESS_DATA.equals(action)) {
+				executeData();
 			} else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnectionState = BluetoothLeService.STATE_CONNECTED;
 				if (AlertMachine.getInstance()
@@ -539,7 +608,7 @@ public class BleDataParserService extends Service {
 				}
 				mConnectionState = BluetoothLeService.STATE_DISCONNECTED;
 				conectTime = null;
-				UIUserInfoLogin user = DataManager.getUserInfo();
+				UserInfo user = DataManager.getUserInfo();
 				if (user != null && user.getMacAddress() != null
 						&& !user.getMacAddress().isEmpty()) {
 					// 设备断开
@@ -592,7 +661,7 @@ public class BleDataParserService extends Service {
 					if (power < AlertMachine.getInstance()
 							.getAlertConfig(AlertType.A00005)
 							.getFloatValueRaise()) {
-						UIUserInfoLogin user = DataManager.getUserInfo();
+						UserInfo user = DataManager.getUserInfo();
 						if (user != null && user.getMacAddress() != null
 								&& !user.getMacAddress().isEmpty()) {
 							if (AlertMachine.getInstance().canSendAlert(
@@ -657,6 +726,7 @@ public class BleDataParserService extends Service {
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
 		intentFilter.addAction(GuardService.ACTION_GATT_RSSICHANGED);
 		intentFilter.addAction(GuardService.ACTION_GATT_POWERCHANGED);
+		intentFilter.addAction(BleDataParserService.ACTION_PROCESS_DATA);
 		return intentFilter;
 	}
 
@@ -684,28 +754,29 @@ public class BleDataParserService extends Service {
 		flags = START_STICKY;
 		// mEService = Executors.newScheduledThreadPool(2);
 		receivedQueue.clear();
-		startExeService();
+		startProcessService();
+		// acquireWakeLock();
 		// Notification notification = new Notification();
 		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		// startForeground(3, notification);
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	// private WakeLock wakeLock = null;
-	//
-	// private void acquireWakeLock() {
-	// if (wakeLock == null) {
-	// PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-	// wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this
-	// .getClass().getCanonicalName());
-	// wakeLock.acquire();
-	// }
-	// }
-	//
-	// private void releaseWarkLock() {
-	// if (wakeLock != null && wakeLock.isHeld()) {
-	// wakeLock.release();
-	// wakeLock = null;
-	// }
-	// }
+	private WakeLock wakeLock = null;
+
+	private void acquireWakeLock() {
+		if (wakeLock == null) {
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this
+					.getClass().getCanonicalName());
+			wakeLock.acquire();
+		}
+	}
+
+	private void releaseWarkLock() {
+		if (wakeLock != null && wakeLock.isHeld()) {
+			wakeLock.release();
+			wakeLock = null;
+		}
+	}
 }

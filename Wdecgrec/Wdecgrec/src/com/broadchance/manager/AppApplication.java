@@ -8,10 +8,13 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 
 import com.broadchance.utils.ConstantConfig;
+import com.broadchance.utils.LogUtil;
 
 public class AppApplication extends Application {
 
 	public static String curVer;
+	public static int verCode;
+	public final static String PKG_NAME = "com.broadchance.wdecgrec";
 
 	// public Activity currentActivity;
 
@@ -74,13 +77,14 @@ public class AppApplication extends Application {
 		// }
 		try {
 			PackageManager pm = getPackageManager();
-			PackageInfo pinfo = pm.getPackageInfo(ConstantConfig.PKG_NAME,
+			PackageInfo pinfo = pm.getPackageInfo(PKG_NAME,
 					PackageManager.GET_CONFIGURATIONS);
 			curVer = pinfo.versionName;
+			verCode = pinfo.versionCode;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		LogUtil.init();
 		// 初始化动作由各单例控制,加快APP启动速度
 		// 初始化数据
 		// DBHelper.getInstance().init(AppApplication.this);

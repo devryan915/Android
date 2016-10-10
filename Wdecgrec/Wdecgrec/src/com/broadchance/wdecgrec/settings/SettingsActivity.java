@@ -1,23 +1,16 @@
 package com.broadchance.wdecgrec.settings;
 
-import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,23 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.broadchance.entity.DownLoadAPPResponse;
-import com.broadchance.entity.UIUserInfoLogin;
-import com.broadchance.entity.serverentity.CurVerResponse;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.serverentity.StringResponse;
-import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
-import com.broadchance.manager.FrameDataMachine;
-import com.broadchance.manager.PreferencesManager;
 import com.broadchance.manager.SettingsManager;
 import com.broadchance.manager.SkinManager;
-import com.broadchance.utils.AppDownLoadUtil;
-import com.broadchance.utils.ClientGameService;
-import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
-import com.broadchance.utils.FileUtil;
 import com.broadchance.utils.LogUtil;
-import com.broadchance.utils.SDCardUtils;
 import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.HttpReqCallBack;
@@ -53,7 +36,6 @@ import com.broadchance.wdecgrec.R;
 import com.broadchance.wdecgrec.Skinable;
 import com.broadchance.wdecgrec.adapter.DialogSkinListAdapter;
 import com.broadchance.wdecgrec.login.LoginActivity;
-import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
 import com.broadchance.wdecgrec.services.BleDomainService;
 import com.broadchance.wdecgrec.services.BluetoothLeService;
@@ -171,7 +153,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		buttonTitleBack.setOnClickListener(this);
 
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 		// getNewVer();
 		// String newVer = PreferencesManager.getInstance().getString(
 		// ConstantConfig.PREFERENCES_NEWAPPVER);
@@ -212,8 +194,8 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 				R.layout.dialog_changeskin, null);
 		ListView listViewChangeSkin = (ListView) layout
 				.findViewById(R.id.listViewChangeSkin);
-		selSkinID = getPreferencesString(DataManager.getUserInfo().getUserID()
-				+ ConstantConfig.PREFERENCES_SKINID);
+		selSkinID = getPreferencesString(DataManager.getUserInfo()
+				.getUserName() + ConstantConfig.PREFERENCES_SKINID);
 		adapterSkin = new DialogSkinListAdapter(SettingsActivity.this,
 				selSkinID);
 		listViewChangeSkin.setAdapter(adapterSkin);
@@ -241,7 +223,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 							dialogChangeSkin.dismiss();
 						}
 						putPreferencesString(DataManager.getUserInfo()
-								.getUserID()
+								.getUserName()
 								+ ConstantConfig.PREFERENCES_SKINID, selSkinID);
 						SkinManager.getInstance().initSkin();
 					}
@@ -383,7 +365,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 	}
 
 	private void showUnbind() {
-		final UIUserInfoLogin user = DataManager.getUserInfo();
+		final UserInfo user = DataManager.getUserInfo();
 		if (user == null) {
 			showToast("用户数据不存在");
 			return;
@@ -392,7 +374,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 		if (macAddress != null && !macAddress.trim().isEmpty()) {
 			if (isReqUnBind.compareAndSet(false, true)) {
 				serverService.getInstance().GetFreeDeviceVerify(
-						user.getUserID(), macAddress,
+						user.getUserName(), macAddress,
 						new HttpReqCallBack<StringResponse>() {
 							@Override
 							public Activity getReqActivity() {
@@ -432,7 +414,7 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 													.getText().toString()
 													.trim();
 											serverService.FreeDevice(
-													user.getUserID(),
+													user.getUserName(),
 													macAddress,
 													token,
 													new HttpReqCallBack<StringResponse>() {
@@ -447,8 +429,8 @@ public class SettingsActivity extends BaseActivity implements Skinable {
 																StringResponse result) {
 															if (result.isOk()) {
 																showToast("解绑成功");
-																DataManager
-																		.updateUserMac("");
+																// DataManager
+																// .updateUserMac("");
 																// myinfoDevNo
 																// .setText("");
 																// myinfoBindedDev

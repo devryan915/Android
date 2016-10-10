@@ -1,7 +1,5 @@
 package com.broadchance.wdecgrec.login;
 
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,24 +15,17 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.broadchance.entity.UIUserInfoLogin;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.serverentity.CurVerResponse;
 import com.broadchance.entity.serverentity.ServerResponse;
-import com.broadchance.entity.serverentity.UIDevice;
-import com.broadchance.entity.serverentity.UIDeviceResponseList;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
-import com.broadchance.manager.SettingsManager;
 import com.broadchance.manager.SkinManager;
-import com.broadchance.utils.AESEncryptor;
 import com.broadchance.utils.AppDownLoadUtil;
-import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.GPSUtil;
 import com.broadchance.utils.LogUtil;
@@ -43,9 +34,7 @@ import com.broadchance.utils.UIUtil;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.HttpReqCallBack;
 import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.main.EcgActivity;
 import com.broadchance.wdecgrec.main.ModeActivity;
-import com.broadchance.wdecgrec.services.BluetoothLeService;
 import com.broadchance.wdecgrec.services.GpsService;
 import com.broadchance.wdecgrec.services.GuardService;
 import com.broadchance.wdecgrec.test.Test;
@@ -63,7 +52,7 @@ public class LoginActivity extends BaseActivity {
 	private Dialog dialogAppUpdate;
 	private final static int REQUEST_GPS_CODE = 188;
 	LoginActivity current;
-	private UIUserInfoLogin user;
+	// private UIUserInfoLogin user;
 	Dialog offDialog;
 
 	@Override
@@ -77,54 +66,57 @@ public class LoginActivity extends BaseActivity {
 		buttonRegister.setOnClickListener(this);
 		editTextUserName = (LabelEditText) findViewById(R.id.editTextUserName);
 		editTextPwd = (LabelEditText) findViewById(R.id.editTextPwd);
-		editTextPwd.setOnEditorActionListener(new OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-				switch (actionId) {
-				case EditorInfo.IME_ACTION_GO:
-					logon();
-					break;
-				default:
-					break;
-				}
-				return false;
-			}
-		});
+		// editTextPwd.setOnEditorActionListener(new OnEditorActionListener() {
+		// @Override
+		// public boolean onEditorAction(TextView v, int actionId,
+		// KeyEvent event) {
+		// switch (actionId) {
+		// case EditorInfo.IME_ACTION_GO:
+		// logon();
+		// break;
+		// default:
+		// break;
+		// }
+		// return false;
+		// }
+		// });
 		checkBoxSavePwd = (CheckBox) findViewById(R.id.checkBoxSavePwd);
 		buttonForgotPwd = (Button) findViewById(R.id.buttonForgotPwd);
 		buttonForgotPwd.setOnClickListener(this);
-		checkBoxSavePwd
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						if (!isChecked) {
-							DataManager.deleteUserPwd(editTextUserName
-									.getText().toString());
-						}
-					}
-				});
-		user = DataManager.getUserInfo();
-		if (user != null) {
-			editTextUserName.setText(user.getLoginName());
-			if (!user.getLoginName().isEmpty()) {
-				String pwd = DataManager.getUserPwd();
-				boolean isChked = getPreferencesBoolean(user.getUserID()
-						+ ConstantConfig.PREFERENCES_USERPWDCHK);
-				if (pwd != null && !pwd.isEmpty() && isChked) {
-					String pwdString = pwd;
-					try {
-						pwdString = AESEncryptor.decrypt(user.getLoginName(),
-								pwdString);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					editTextPwd.setText(pwdString);
-					checkBoxSavePwd.setChecked(isChked);
-				}
-			}
+		if (DataManager.isLogin()) {
+			editTextUserName.setText(DataManager.getUserInfo().getUserName());
 		}
+		// checkBoxSavePwd
+		// .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		// @Override
+		// public void onCheckedChanged(CompoundButton buttonView,
+		// boolean isChecked) {
+		// if (!isChecked) {
+		// DataManager.deleteUserPwd(editTextUserName
+		// .getText().toString());
+		// }
+		// }
+		// });
+		// user = DataManager.getUserInfo();
+		// if (user != null) {
+		// editTextUserName.setText(user.getLoginName());
+		// if (!user.getLoginName().isEmpty()) {
+		// String pwd = DataManager.getUserPwd();
+		// boolean isChked = getPreferencesBoolean(user.getUserID()
+		// + ConstantConfig.PREFERENCES_USERPWDCHK);
+		// if (pwd != null && !pwd.isEmpty() && isChked) {
+		// String pwdString = pwd;
+		// try {
+		// pwdString = AESEncryptor.decrypt(user.getLoginName(),
+		// pwdString);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// editTextPwd.setText(pwdString);
+		// checkBoxSavePwd.setChecked(isChked);
+		// }
+		// }
+		// }
 		TextView textViewVerionValue = (TextView) findViewById(R.id.textViewVerionValue);
 		textViewVerionValue.setText(AppApplication.curVer);
 		// 暂时取消gps定位
@@ -163,35 +155,35 @@ public class LoginActivity extends BaseActivity {
 		// registerReceiver(receiver, filter);
 	}
 
-	private void getNewVer() {
-		serverService.GetCurVer(1, new HttpReqCallBack<CurVerResponse>() {
-			@Override
-			public Activity getReqActivity() {
-				return null;
-			}
-
-			@Override
-			public void doSuccess(CurVerResponse result) {
-				if (result.isOk()) {
-					LoginActivity.this.putPreferencesString(
-							ConstantConfig.PREFERENCES_NEWAPPVER,
-							result.Data.getVerNo());
-					LoginActivity.this.putPreferencesString(
-							ConstantConfig.PREFERENCES_NEWAPPURL,
-							result.Data.getUrl());
-				}
-			}
-
-			@Override
-			public void doError(String result) {
-				if (ConstantConfig.Debug) {
-					showToast(result);
-				} else {
-					showToast("操作失败");
-				}
-			}
-		});
-	}
+	// private void getNewVer() {
+	// serverService.GetCurVer(1, new HttpReqCallBack<CurVerResponse>() {
+	// @Override
+	// public Activity getReqActivity() {
+	// return null;
+	// }
+	//
+	// @Override
+	// public void doSuccess(CurVerResponse result) {
+	// if (result.isOk()) {
+	// LoginActivity.this.putPreferencesString(
+	// ConstantConfig.PREFERENCES_NEWAPPVER,
+	// result.Data.getVerNo());
+	// LoginActivity.this.putPreferencesString(
+	// ConstantConfig.PREFERENCES_NEWAPPURL,
+	// result.Data.getUrl());
+	// }
+	// }
+	//
+	// @Override
+	// public void doError(String result) {
+	// if (ConstantConfig.Debug) {
+	// showToast(result);
+	// } else {
+	// showToast("操作失败");
+	// }
+	// }
+	// });
+	// }
 
 	private void register() {
 		Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -247,61 +239,55 @@ public class LoginActivity extends BaseActivity {
 						showToast(result);
 					} else {
 						if (!NetUtil.isConnectNet()) {
-							user = DataManager.getUserInfo();
-							if (user != null && !user.getLoginName().isEmpty()) {
-								String pwd = DataManager.getUserPwd();
-								if (pwd != null && !pwd.isEmpty()) {
-									try {
-										offDialog = UIUtil
-												.buildTipDialog(
-														LoginActivity.this,
-														getString(R.string.dialog_title_offlogin),
-														getString(R.string.dialog_offlogin_content),
-														new OnClickListener() {
-															@Override
-															public void onClick(
-																	View v) {
-																if (offDialog != null) {
-																	offDialog
-																			.cancel();
-																	offDialog
-																			.dismiss();
-																}
-																Intent intent = new Intent(
-																		LoginActivity.this,
-																		ModeActivity.class);
-																startActivity(intent);
-																finish();
+							// user = DataManager.getUserInfo();
+							if (DataManager.isLogin()) {
+								// String pwd = DataManager.getUserPwd();
+								// if (pwd != null && !pwd.isEmpty()) {
+								try {
+									offDialog = UIUtil
+											.buildTipDialog(
+													LoginActivity.this,
+													getString(R.string.dialog_title_offlogin),
+													getString(R.string.dialog_offlogin_content),
+													new OnClickListener() {
+														@Override
+														public void onClick(
+																View v) {
+															if (offDialog != null) {
+																offDialog
+																		.cancel();
+																offDialog
+																		.dismiss();
 															}
-														},
-														new OnClickListener() {
+															Intent intent = new Intent(
+																	LoginActivity.this,
+																	ModeActivity.class);
+															startActivity(intent);
+															finish();
+														}
+													},
+													new OnClickListener() {
 
-															@Override
-															public void onClick(
-																	View v) {
-																if (offDialog != null) {
-																	offDialog
-																			.cancel();
-																	offDialog
-																			.dismiss();
-																}
+														@Override
+														public void onClick(
+																View v) {
+															if (offDialog != null) {
+																offDialog
+																		.cancel();
+																offDialog
+																		.dismiss();
 															}
-														},
-														getString(R.string.dialog_button_ok),
-														getString(R.string.dialog_button_cancel));
-										offDialog.show();
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
+														}
+													},
+													getString(R.string.dialog_button_ok),
+													getString(R.string.dialog_button_cancel));
+									offDialog.show();
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
 							}
-
 						} else {
-							if (ConstantConfig.Debug) {
-								showToast(result);
-							} else {
-								showToast("操作失败");
-							}
+							showToast(result);
 						}
 					}
 
@@ -328,22 +314,43 @@ public class LoginActivity extends BaseActivity {
 						current = null;
 						if (result.isOK()) {
 							try {
+								try {
+									String upgrade = result.getDATA()
+											.getString("upgrade");
+									if ("1".equals(upgrade)) {
+										String versionname = null;
+										String upgradeurl = null;
+										// 有新版本更新
+										versionname = result.getDATA()
+												.getString("versionname");
+										// versionname = "1.2.222";
+										upgradeurl = result.getDATA()
+												.getString("upgradeurl");
+										// upgradeurl =
+										// "http://116.224.86.37/apk.r1.market.hiapk.com/data/upload/apkres/2016/9_23/16/com.zhangdan.app_042407.apk";
+										new AppDownLoadUtil()
+												.showAppUpdateDialog(
+														LoginActivity.this,
+														versionname, upgradeurl);
+										return;
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 								String orderno = result.getDATA().getString(
 										"orderno");
-								UIUserInfoLogin user = new UIUserInfoLogin();
+								UserInfo user = new UserInfo();
 								String logName = pram.getString("holtermobile");
-								user.setUserID(logName);
-								user.setAccess_token(orderno);
-								user.setLoginName(logName);
-								user.setNickName(pram.getString("holtermobile"));
+								user.setUserName(logName);
+								user.setNickName(logName);
+								user.setOrderNo(orderno);
 								user.setMacAddress(result.getDATA().getString(
 										"device"));
-								user.isOverTime = 0;
 								user.setCertkey(certKey);
 								// user.setMacAddress("74:DA:EA:9F:93:36");
 								// user.setMacAddress("D4:F5:13:79:80:E7");
 								// user.setMacAddress("D4:F5:13:79:C3:AE");
-								DataManager.saveUser(user, "mima");
+								DataManager.saveUser(user);
 								// 初始化用户皮肤
 								SkinManager.getInstance().initSkin();
 								if (GuardService.Instance != null) {

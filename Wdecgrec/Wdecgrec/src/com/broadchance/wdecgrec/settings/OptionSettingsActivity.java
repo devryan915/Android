@@ -113,7 +113,7 @@ public class OptionSettingsActivity extends BaseActivity implements
 		checkBoxGPS.setChecked(gps);
 		checkBoxGPS.setOnCheckedChangeListener(this);
 		TextView textViewUseName = (TextView) findViewById(R.id.textViewUseName);
-		textViewUseName.setText(DataManager.getUserInfo().getLoginName());
+		textViewUseName.setText(DataManager.getUserInfo().getNickName());
 	}
 
 	private void showBleDevInfo(List<BleDevInfo> devs) {

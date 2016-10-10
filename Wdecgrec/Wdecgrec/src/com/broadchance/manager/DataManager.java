@@ -10,6 +10,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -18,6 +20,7 @@ import com.broadchance.entity.FileType;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UploadFile;
 import com.broadchance.entity.UploadFileStatus;
+import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.UserStatus;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;
@@ -27,9 +30,15 @@ import com.broadchance.wdecgrec.alert.AlertType;
 
 public class DataManager {
 	private final static String TAG = DataManager.class.getSimpleName();
-	private static UIUserInfoLogin USER;
+	private static UserInfo USER;
 	private static Object objUploadFileLock = new Object();
 	private static Object objalertLock = new Object();
+
+	private final static String USER_NAME = "_USER_NAME";
+	private final static String NICK_NAME = "_NICK_NAME";
+	private final static String MAC_ADDRESS = "_MAC_ADDRESS";
+	private final static String CERT_KEY = "_CERT_KEY";
+	private final static String ORDER_NO = "_ORDER_NO";
 
 	/**
 	 * 将用户密码置空
@@ -37,14 +46,14 @@ public class DataManager {
 	 * @param userName
 	 * @return
 	 */
-	public static boolean deleteUserPwd(String userName) {
-		DBHelper dbHelper = DBHelper.getInstance();
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.execSQL("update " + DBHelper.TBL_USER
-				+ "  set pwd=null where user_name=" + userName);
-		db.close();
-		return true;
-	}
+	// public static boolean deleteUserPwd(String userName) {
+	// DBHelper dbHelper = DBHelper.getInstance();
+	// SQLiteDatabase db = dbHelper.getWritableDatabase();
+	// db.execSQL("update " + DBHelper.TBL_USER
+	// + "  set pwd=null where user_name=" + userName);
+	// db.close();
+	// return true;
+	// }
 
 	/**
 	 * 更新当前登录用户的mac地址
@@ -52,21 +61,21 @@ public class DataManager {
 	 * @param macAddress
 	 * @return
 	 */
-	public static boolean updateUserMac(String macAddress) {
-		getUserInfo();
-		if (USER != null) {
-			DBHelper dbHelper = DBHelper.getInstance();
-			SQLiteDatabase db = dbHelper.getWritableDatabase();
-			db.execSQL("update " + DBHelper.TBL_USER
-					+ "  set macaddress=? where user_name=?", new Object[] {
-					macAddress, USER.getLoginName() });
-			USER.setMacAddress(macAddress);
-			db.close();
-			return true;
-		} else {
-			return false;
-		}
-	}
+	// public static boolean updateUserMac(String macAddress) {
+	// getUserInfo();
+	// if (USER != null) {
+	// DBHelper dbHelper = DBHelper.getInstance();
+	// SQLiteDatabase db = dbHelper.getWritableDatabase();
+	// db.execSQL("update " + DBHelper.TBL_USER
+	// + "  set macaddress=? where user_name=?", new Object[] {
+	// macAddress, USER.getLoginName() });
+	// USER.setMacAddress(macAddress);
+	// db.close();
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// }
 
 	/**
 	 * 保存帐号数据
@@ -75,56 +84,23 @@ public class DataManager {
 	 * @param pwd
 	 * @return
 	 */
-	public static boolean saveUser(UIUserInfoLogin userInfo, String pwd) {
-		DBHelper dbHelper = DBHelper.getInstance();
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		try {
-			db.beginTransaction();
-			db.execSQL("update " + DBHelper.TBL_USER + "  set status="
-					+ UserStatus.None.getValue());
-			boolean isExist = false;
-			String sql = "select 1 from " + DBHelper.TBL_USER
-					+ " where user_name=?";
-			String[] selectionArgs = new String[] { userInfo.getLoginName() };
-			Cursor cursor = db.rawQuery(sql, selectionArgs);
-			for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor
-					.moveToNext()) {
-				isExist = true;
-				break;
-			}
-			cursor.close();
-			if (isExist) {
-				db.execSQL(
-						"update "
-								+ DBHelper.TBL_USER
-								+ "  set status=?,pwd=?,nick_name=?,token=?,macaddress=?,certkey=? where user_name=?",
-						new Object[] { UserStatus.Login.getValue(), pwd,
-								userInfo.getNickName(),
-								userInfo.getAccess_token(),
-								userInfo.getMacAddress(),
-								userInfo.getCertkey(), userInfo.getLoginName() });
-			} else {
-				db.execSQL(
-						"insert into "
-								+ DBHelper.TBL_USER
-								+ " (user_name , pwd,nick_name , userid ,token,status,macaddress,certkey) values (?,?,?,?,?,?,?,?) ",
-						new Object[] { userInfo.getLoginName(), pwd,
-								userInfo.getNickName(), userInfo.getUserID(),
-								userInfo.getAccess_token(),
-								UserStatus.Login.getValue(),
-								userInfo.getMacAddress(), userInfo.getCertkey() });
-			}
-			db.setTransactionSuccessful();
-			return true;
-		} catch (Exception e) {
-			LogUtil.e(TAG, e);
-		} finally {
-			db.endTransaction();
-			db.close();
+	public static void saveUser(UserInfo userInfo) {
+		if (userInfo != null && userInfo.getUserName() != null
+				&& userInfo.getUserName().trim().length() > 0) {
+			SharedPreferences sp = PreferencesManager.getInstance()
+					.getSharedPreferences();
+			String uName = userInfo.getUserName().trim();
+			Editor editor = sp.edit();
+			editor.putString(USER_NAME, uName);
+			editor.putString(NICK_NAME, userInfo.getNickName());
+			// editor.putString(MAC_ADDRESS + uName, userInfo.getMacAddress());
+			editor.putString(MAC_ADDRESS, userInfo.getMacAddress());
+			editor.putString(CERT_KEY, userInfo.getCertkey());
+			editor.putString(ORDER_NO, userInfo.getOrderNo());
+			editor.commit();
+			USER = null;
+			USER = getUserInfo();
 		}
-		USER=null;
-		USER = getUserInfo();
-		return false;
 	}
 
 	/**
@@ -133,69 +109,85 @@ public class DataManager {
 	 * @param user_name
 	 * @return
 	 */
-	public static String getUserPwd() {
-		String pwd = null;
-		getUserInfo();
-		if (USER == null)
-			return null;
-		String user_name = USER.getLoginName();
-		DBHelper dbHelper = DBHelper.getInstance();
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		String sql = "select user_name,pwd from " + DBHelper.TBL_USER
-				+ " where user_name=?";
-		String[] selectionArgs = new String[] { user_name };
-		// UIUserInfoRegist user = new UIUserInfoRegist();
-		Cursor cursor = db.rawQuery(sql, selectionArgs);
-		for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor.moveToNext()) {
-			// user.setLoginName(cursor.getString(cursor
-			// .getColumnIndex("user_name")));
-			// user.setPassword(cursor.getString(cursor.getColumnIndex("pwd")));
-			pwd = cursor.getString(cursor.getColumnIndex("pwd"));
-		}
-		cursor.close();
-		db.close();
-		return pwd;
-	}
+	// public static String getUserPwd() {
+	// String pwd = null;
+	// getUserInfo();
+	// if (USER == null)
+	// return null;
+	// String user_name = USER.getLoginName();
+	// DBHelper dbHelper = DBHelper.getInstance();
+	// SQLiteDatabase db = dbHelper.getReadableDatabase();
+	// String sql = "select user_name,pwd from " + DBHelper.TBL_USER
+	// + " where user_name=?";
+	// String[] selectionArgs = new String[] { user_name };
+	// // UIUserInfoRegist user = new UIUserInfoRegist();
+	// Cursor cursor = db.rawQuery(sql, selectionArgs);
+	// for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor.moveToNext())
+	// {
+	// // user.setLoginName(cursor.getString(cursor
+	// // .getColumnIndex("user_name")));
+	// // user.setPassword(cursor.getString(cursor.getColumnIndex("pwd")));
+	// pwd = cursor.getString(cursor.getColumnIndex("pwd"));
+	// }
+	// cursor.close();
+	// db.close();
+	// return pwd;
+	// }
 
 	public static boolean isLogin() {
-		try {
-			UIUserInfoLogin user = getUserInfo();
-			return user != null && user.getUserID().trim().length() > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+		UserInfo user = getUserInfo();
+		return user != null && user.getUserName() != null
+				&& user.getUserName().trim().length() > 0;
 	}
 
-	public static UIUserInfoLogin getUserInfo() {
-		if (USER != null) {
+	public static UserInfo getUserInfo() {
+		if (USER != null && USER.getUserName() != null
+				&& USER.getUserName().trim().length() > 0) {
 			return USER;
 		}
-		DBHelper dbHelper = DBHelper.getInstance();
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		String sql = "select user_name , pwd , userid ,nick_name,token,macaddress,certkey from "
-				+ DBHelper.TBL_USER + " where status=?";
-		String[] selectionArgs = new String[] { UserStatus.Login.getValue()
-				+ "" };
-		UIUserInfoLogin user = new UIUserInfoLogin();
-		Cursor cursor = db.rawQuery(sql, selectionArgs);
-		for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor.moveToNext()) {
-			user.setLoginName(cursor.getString(cursor
-					.getColumnIndex("user_name")));
-			user.setUserID(cursor.getString(cursor.getColumnIndex("userid")));
-			user.setNickName(cursor.getString(cursor
-					.getColumnIndex("nick_name")));
-			user.setMacAddress(cursor.getString(cursor
-					.getColumnIndex("macaddress")));
-			user.setCertkey(cursor.getString(cursor.getColumnIndex("certkey")));
-			user.setAccess_token(cursor.getString(cursor
-					.getColumnIndex("token")));
+		USER = new UserInfo();
+		SharedPreferences sp = PreferencesManager.getInstance()
+				.getSharedPreferences();
+		String uName = sp.getString(USER_NAME, "");
+		if (!uName.isEmpty()) {
+			USER.setUserName(uName);
+			USER.setNickName(sp.getString(NICK_NAME, ""));
+			USER.setMacAddress(sp.getString(MAC_ADDRESS, ""));
+			USER.setCertkey(sp.getString(CERT_KEY, ""));
+			USER.setOrderNo(sp.getString(ORDER_NO, ""));
 		}
-		cursor.close();
-		db.close();
-		USER = (user.getUserID() != null && user.getUserID().trim().length() > 0) ? user
-				: null;
 		return USER;
+		// if (USER != null) {
+		// return USER;
+		// }
+		// DBHelper dbHelper = DBHelper.getInstance();
+		// SQLiteDatabase db = dbHelper.getReadableDatabase();
+		// String sql =
+		// "select user_name , pwd , userid ,nick_name,token,macaddress,certkey from "
+		// + DBHelper.TBL_USER + " where status=?";
+		// String[] selectionArgs = new String[] { UserStatus.Login.getValue()
+		// + "" };
+		// UIUserInfoLogin user = new UIUserInfoLogin();
+		// Cursor cursor = db.rawQuery(sql, selectionArgs);
+		// for (cursor.moveToFirst(); !(cursor.isAfterLast());
+		// cursor.moveToNext()) {
+		// user.setLoginName(cursor.getString(cursor
+		// .getColumnIndex("user_name")));
+		// user.setUserID(cursor.getString(cursor.getColumnIndex("userid")));
+		// user.setNickName(cursor.getString(cursor
+		// .getColumnIndex("nick_name")));
+		// user.setMacAddress(cursor.getString(cursor
+		// .getColumnIndex("macaddress")));
+		// user.setCertkey(cursor.getString(cursor.getColumnIndex("certkey")));
+		// user.setAccess_token(cursor.getString(cursor
+		// .getColumnIndex("token")));
+		// }
+		// cursor.close();
+		// db.close();
+		// USER = (user.getUserID() != null && user.getUserID().trim().length()
+		// > 0) ? user
+		// : null;
+		// return USER;
 	}
 
 	/**
@@ -235,14 +227,14 @@ public class DataManager {
 				// path, UploadFileStatus.UnDeal.getValue(), 0,
 				// sdf.format(dataBeginTime), sdf.format(dataEndTime),
 				// sdf.format(new Date()) });
-				UIUserInfoLogin user = DataManager.getUserInfo();
-				if (user == null) {
+				// UIUserInfoLogin user = DataManager.getUserInfo();
+				if (!isLogin()) {
 					LogUtil.d(TAG, "saveUploadFile " + "用户数据不存在");
 					return false;
 				}
 				ContentValues cValue = new ContentValues();
 				cValue.put("file_name", fileName);
-				cValue.put("user_id", user.getUserID());
+				cValue.put("user_id", USER.getUserName());
 				cValue.put("path", path);
 				cValue.put("status", UploadFileStatus.UnDeal.getValue());
 				cValue.put("uploadtimes", 0);
@@ -426,8 +418,8 @@ public class DataManager {
 		synchronized (objUploadFileLock) {
 
 			try {
-				UIUserInfoLogin user = DataManager.getUserInfo();
-				if (user == null) {
+				// UIUserInfoLogin user = DataManager.getUserInfo();
+				if (!isLogin()) {
 					LogUtil.d(TAG, "getUploadFile " + "用户数据不存在");
 					return null;
 				}
@@ -451,13 +443,13 @@ public class DataManager {
 							UploadFileStatus.UnDeal.getValue() + "",
 							UploadFileStatus.UploadFailed.getValue() + "",
 							CommonUtil.getTime_C(calendar.getTime()),
-							user.getUserID(), limit + "" };
+							USER.getUserName(), limit + "" };
 				} else {
 					selectionArgs = new String[] { CommonUtil.getTime_C(date),
 							UploadFileStatus.UnDeal.getValue() + "",
 							UploadFileStatus.UploadFailed.getValue() + "",
 							CommonUtil.getTime_C(calendar.getTime()),
-							user.getUserID() };
+							USER.getUserName() };
 				}
 
 				UploadFile file = null;
@@ -515,18 +507,18 @@ public class DataManager {
 			try {
 				DBHelper dbHelper = DBHelper.getInstance();
 				SQLiteDatabase db = dbHelper.getWritableDatabase();
-				UIUserInfoLogin user = DataManager.getUserInfo();
-				if (user == null) {
+				// UIUserInfoLogin user = DataManager.getUserInfo();
+				if (!isLogin()) {
 					LogUtil.d(TAG, "saveAlert " + "用户数据不存在");
 					return false;
 				}
 				ContentValues cValue = new ContentValues();
 				cValue.put("creattime", CommonUtil.getTime_B());
 				cValue.put("id", id.getValue());
-				cValue.put("orderno", user.getAccess_token());
+				cValue.put("orderno", USER.getOrderNo());
 				cValue.put("state", state);
 				cValue.put("time", time);
-				cValue.put("userid", user.getUserID());
+				cValue.put("userid", USER.getUserName());
 				// 只有触发事件才有
 				if (state == 1) {
 					cValue.put("value", value.toString());
@@ -549,8 +541,8 @@ public class DataManager {
 	public static List<AlertBody> getAlert() {
 		synchronized (objalertLock) {
 			try {
-				UIUserInfoLogin user = DataManager.getUserInfo();
-				if (user == null) {
+				// UIUserInfoLogin user = DataManager.getUserInfo();
+				if (!isLogin()) {
 					LogUtil.d(TAG, "getAlert " + "用户数据不存在");
 					return null;
 				}
@@ -562,8 +554,8 @@ public class DataManager {
 						+ " where userid=? and orderno=? "
 						+ "  order by creattime ";
 				String[] selectionArgs = null;
-				selectionArgs = new String[] { user.getUserID(),
-						user.getAccess_token() + "" };
+				selectionArgs = new String[] { USER.getUserName(),
+						USER.getOrderNo() + "" };
 				AlertBody body = null;
 				Cursor cursor = db.rawQuery(sql, selectionArgs);
 				for (cursor.moveToFirst(); !(cursor.isAfterLast()); cursor

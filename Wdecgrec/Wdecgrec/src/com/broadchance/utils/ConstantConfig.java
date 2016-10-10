@@ -1,13 +1,14 @@
 package com.broadchance.utils;
 
+import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.SettingsManager;
 
 public class ConstantConfig {
 	public static boolean Debug = true;
 	public final static String DebugTAG = "DebugTAG";
 
-	public final static String PKG_NAME = "com.broadchance.wdecgrec";
-	public final static String ACTION_PREFIX = PKG_NAME + ".";
+	// public final static String PKG_NAME = "com.broadchance.wdecgrec";
+	public final static String ACTION_PREFIX = AppApplication.PKG_NAME + ".";
 	// public final static String BLE_UUID_READ =
 	// 单通道"0000fff4-0000-1000-8000-00805f9b34fb";
 	// 三通道8ac32d3f-5cb9-4d44-bec2-ee689169f626
