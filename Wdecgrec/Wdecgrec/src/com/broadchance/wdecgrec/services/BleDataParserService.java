@@ -128,7 +128,7 @@ public class BleDataParserService extends Service {
 			// 如果是第一通道数据可以计算心率
 			int[] filterData = dst;
 			// if (ACTION_ECGMII_DATA_AVAILABLE.equals(action)) {
-			// filterData = FilterUtil.Instance.getECGDataII(dst);
+			filterData = FilterUtil.Instance.getECGDataII(dst);
 			int heart = FilterUtil.Instance.getHeartRate();
 			FrameDataMachine machine = FrameDataMachine.getInstance();
 			if (lastHeartRate == null
