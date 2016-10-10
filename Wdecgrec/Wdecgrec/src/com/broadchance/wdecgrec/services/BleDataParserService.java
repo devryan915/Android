@@ -1,9 +1,6 @@
 package com.broadchance.wdecgrec.services;
 
 import java.nio.IntBuffer;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,6 +21,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.broadchance.entity.FrameData;
@@ -447,19 +445,29 @@ public class BleDataParserService extends Service {
 		// processFrameDataTimer.schedule(processFrameDataTask, 0,
 		// deal_interval);
 		//
+		startAlarm();
+	}
 
+	private void startAlarm() {
 		Intent intent = new Intent();
 		intent.setAction(ACTION_PROCESS_DATA);
-
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 0);
+		// am.setRepeating(AlarmManager.RTC,
+		// System.currentTimeMillis(), deal_interval, pi);
+		// am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+		// SystemClock.elapsedRealtime(), deal_interval, pi);
+		// 改为兼容api19以上定时任务
+		am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				SystemClock.elapsedRealtime() + deal_interval, pi);
+	}
 
-		// Calendar c = Calendar.getInstance();
-		// long triggerAtTime = c.getTimeInMillis();
-
-		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(),
-				deal_interval, pi);
-
+	private void cancelAlarm() {
+		Intent intent = new Intent();
+		intent.setAction(ACTION_PROCESS_DATA);
+		PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+		AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarm.cancel(sender);
 	}
 
 	public void cancelProcessService() {
@@ -472,11 +480,7 @@ public class BleDataParserService extends Service {
 		// processFrameDataTimer.cancel();
 		// processFrameDataTimer = null;
 		// }
-		Intent intent = new Intent();
-		intent.setAction(ACTION_PROCESS_DATA);
-		PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
-		AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarm.cancel(sender);
+		cancelAlarm();
 	}
 
 	// private String lastSeq = null;
@@ -577,6 +581,7 @@ public class BleDataParserService extends Service {
 				mConnectionState = BluetoothLeService.STATE_CONNECTED;
 
 			} else if (BleDataParserService.ACTION_PROCESS_DATA.equals(action)) {
+				startAlarm();
 				executeData();
 			} else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnectionState = BluetoothLeService.STATE_CONNECTED;
