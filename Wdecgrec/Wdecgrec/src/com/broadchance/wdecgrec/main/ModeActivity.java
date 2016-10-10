@@ -44,16 +44,16 @@ public class ModeActivity extends BaseActivity {
 		public void handleMessage(android.os.Message msg) {
 			// if (GuardService.Instance != null)
 			// GuardService.Instance.getHeartRate(mMesg);
-			if (msg.what == BleDomainService.MSG_SET_HEART) {
-				String heartStr = "-";
-				// hearRate = msg.getData().getInt("heart");
-				hearRate = FilterUtil.Instance.getHeartRate();
-				if (hearRate >= ConstantConfig.Alert_HR_Down
-						&& hearRate <= ConstantConfig.Alert_HR_Up) {
-					heartStr = hearRate + "";
-				}
-				textViewHeart.setText(heartStr + "次/分");
+			// if (msg.what == BleDomainService.MSG_SET_HEART) {
+			String heartStr = "-";
+			// hearRate = msg.getData().getInt("heart");
+			hearRate = FilterUtil.Instance.getHeartRate();
+			if (hearRate >= ConstantConfig.Alert_HR_Down
+					&& hearRate <= ConstantConfig.Alert_HR_Up) {
+				heartStr = hearRate + "";
 			}
+			textViewHeart.setText(heartStr + "次/分");
+			// }
 		}
 	};
 	private Messenger mMesg = new Messenger(handlerTime);

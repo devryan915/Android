@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Notification;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -27,11 +28,9 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.manager.AppApplication;
 import com.broadchance.manager.DataManager;
 import com.broadchance.utils.ConstantConfig;
-import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
 
@@ -40,7 +39,7 @@ public class GuardService extends Service {
 
 	private BluetoothLeService mBluetoothLeService;
 	private Messenger doMainMessenger;
-	private final static String ServiceName =AppApplication.PKG_NAME
+	private final static String ServiceName = AppApplication.PKG_NAME
 			+ ".services.GuardService";
 	private ScheduledExecutorService mEService = Executors
 			.newScheduledThreadPool(2);
@@ -203,12 +202,12 @@ public class GuardService extends Service {
 					}
 				}
 				if (!isServiceRunning) {
-					LogUtil.i(TAG, "restart " + ServiceName);
+					LogUtil.d(TAG, "restart " + ServiceName);
 					Intent serviceIntent = new Intent(context,
 							GuardService.class);
 					context.startService(serviceIntent);
 				} else {
-					LogUtil.i(TAG, ServiceName + " running");
+					LogUtil.d(TAG, ServiceName + " running");
 				}
 			}
 		}
@@ -495,7 +494,7 @@ public class GuardService extends Service {
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
-		// intentFilter.addAction(Intent.ACTION_TIME_TICK);
+		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 		return intentFilter;
 	}
 
