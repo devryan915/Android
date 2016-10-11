@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <stdarg.h>
+#include <string.h>
 
 
 
@@ -31,14 +32,14 @@ static void ring_put(ECG_HND * hnd, int ch, int d)
 
     /*插值成250Hz*/
     hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch])]
-        = (hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch]-1)] + hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch])])/2 ;
+        = (hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch] - 1)] + hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch])]) / 2 ;
 
     hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch] + 1)] = hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch])] ;
 
 #if 0
     ECG_DBG("Input :CH %d:0x%08x: %6d(%lf)\n", hnd->channel_id, hnd->idx_w[ch], d, hnd->ecg_chx_input[ch][IDX(hnd->idx_w[ch])]);
     ECG_DBG("Input :CH %d:0x%08x: (%lf), (%lf)\n", hnd->channel_id, hnd->idx250_w[ch],
-        hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch])], hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch]+1)]);
+            hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch])], hnd->ecg250_chx_input[ch][IDX250(hnd->idx250_w[ch] + 1)]);
 #endif
 
     hnd->idx_w[ch]++;
@@ -60,13 +61,12 @@ ECG_HND *  ecg_init(int channel_id)
 {
     ECG_HND * hnd;
 
-    int i;
 
     hnd = malloc(sizeof(ECG_HND));
-    //memset(hnd, 0, sizeof(ECG_HND));
+    memset(hnd, 0, sizeof(ECG_HND));
 
-    for(i=0;i<3;i++)
-        hnd->idx_w[i] = 0;
+    //for(i = 0; i < 1; i++)
+    //    hnd->idx_w[i] = 0;
 
     hnd->fl_pass = 1;
     hnd->hr_pass = 1;
@@ -81,7 +81,7 @@ ECG_E ecg_input(ECG_HND *hnd, void * input, int len, void *output, int * outlen)
 {
     int i, j;
     unsigned idx;
-	double hr_buffer[HR_LEN];
+    double hr_buffer[HR_LEN];
 
     unsigned char * data = input;
 
@@ -96,20 +96,23 @@ ECG_E ecg_input(ECG_HND *hnd, void * input, int len, void *output, int * outlen)
 
     for(i = 0; i < len; i++)
     {
-        short v = data[i* ECG_WORD_SIZE + 0] << 8 | data[i * ECG_WORD_SIZE + 1];
+        short v = data[i * ECG_WORD_SIZE + 0] << 8 | data[i * ECG_WORD_SIZE + 1];
+
+        if( v == LEAD_OFF_INDICATE ) /* 如果是脱落标志，设置数据为0 */
+            v = 0;
 
         ring_put(hnd, 0, v);
     }
-    ECG_DBG("CH %d After enqueue IDX 0x%08x  0x%08x, Samples %d\n",hnd->channel_id, hnd->idx_w[0], hnd->idx250_w[0], len);
+    ECG_DBG("CH %d After enqueue IDX 0x%08x  0x%08x, Samples %d\n", hnd->channel_id, hnd->idx_w[0], hnd->idx250_w[0], len);
 
 
     /* 滤波计算 */
     idx = hnd->idx250_w[0];
-    idx -= 2*len;
+    idx -= 2 * len;
 
     ECG_DBG("First IDX250 0x%08x\n", idx);
 
-    for(i=0; i < 2*len; i++, idx++)
+    for(i = 0; i < 2 * len; i++, idx++)
     {
         unsigned char * data = (unsigned char *) output + ( i >> 1) * ECG_WORD_SIZE;
         int v;
@@ -161,14 +164,14 @@ ECG_E ecg_input(ECG_HND *hnd, void * input, int len, void *output, int * outlen)
     hnd->hr_pass = 0;
 
     /* 数据够多的情况下，输出心率 */
-    
 
-    idx = hnd->idx_w[0]; 
+
+    idx = hnd->idx_w[0];
     idx -= HR_LEN;
 
 
     /* 复制通道数据到平坦缓存，源数据在环形队列中， 可能回绕 */
-    for(i=0; i<HR_LEN; i++,idx++)
+    for(i = 0; i < HR_LEN; i++, idx++)
     {
         hr_buffer[i] = hnd->ecg_chx_input[0][IDX(idx)];
     }

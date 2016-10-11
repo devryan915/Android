@@ -7,6 +7,8 @@
 #define RING_LEN   4096
 #define RING_MASK  0xfff
 
+#define LEAD_OFF_INDICATE  (0x8000)
+
 
 typedef struct {
     double ecg_chx_input[1][RING_LEN];

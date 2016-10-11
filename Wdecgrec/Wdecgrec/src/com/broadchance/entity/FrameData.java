@@ -24,6 +24,8 @@ import com.broadchance.wdecgrec.alert.AlertType;
 public class FrameData {
 	private final static String TAG = FrameData.class.getSimpleName();
 	private byte[] frameData;
+	public final static byte[] BLANK_FRAME = new byte[] { 0, 0, 80, 8, 0, 80,
+			8, 0, 80, 8, 0, 80, 8, 0, 80, 8, 0, 80, 8, 0 };
 	private FrameType frameType = null;
 	private int seq;
 	private boolean isParsedData = false;
@@ -117,7 +119,7 @@ public class FrameData {
 	 */
 	private void resetData() {
 		for (int i = 2; i < frameData.length; i++) {
-			frameData[i] = 0;
+			frameData[i] = BLANK_FRAME[i];
 		}
 	}
 

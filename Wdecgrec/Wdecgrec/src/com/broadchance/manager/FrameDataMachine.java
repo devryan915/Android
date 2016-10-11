@@ -312,7 +312,7 @@ public class FrameDataMachine {
 			frameData[1] = seq;
 		}
 		for (int i = 2; i < frameData.length; i++) {
-			frameData[i] = 0;
+			frameData[i] = FrameData.BLANK_FRAME[i];
 		}
 		return frameData;
 	}

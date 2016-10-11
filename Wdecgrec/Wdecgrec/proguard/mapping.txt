@@ -13004,14 +13004,15 @@ com.broadchance.entity.FileType -> com.broadchance.entity.g:
     com.broadchance.entity.FileType[] values() -> values
     com.broadchance.entity.FileType valueOf(java.lang.String) -> valueOf
 com.broadchance.entity.FrameData -> com.broadchance.entity.h:
-    java.lang.String TAG -> b
-    byte[] frameData -> c
-    com.broadchance.entity.FrameType frameType -> d
-    int seq -> e
-    boolean isParsedData -> f
-    float power -> g
-    float temperature -> h
-    long date -> a
+    java.lang.String TAG -> c
+    byte[] frameData -> d
+    byte[] BLANKDATA -> a
+    com.broadchance.entity.FrameType frameType -> e
+    int seq -> f
+    boolean isParsedData -> g
+    float power -> h
+    float temperature -> i
+    long date -> b
     float getTemperature() -> a
     float getPower() -> b
     byte[] getFrameData() -> c
