@@ -24,9 +24,12 @@ import com.broadchance.wdecgrec.alert.AlertType;
 public class FrameData {
 	private final static String TAG = FrameData.class.getSimpleName();
 	private byte[] frameData;
-	public final static byte[] BLANK_FRAME = new byte[] { 0, 0, 80, 8, 0, 80,
-			8, 0, 80, 8, 0, 80, 8, 0, 80, 8, 0, 80, 8, 0 };
+	public final static byte[] BLANK_FRAME = new byte[] { 0x0, 0x0,
+			(byte) 0x80, 0x8, 0x0, (byte) 0x80, 0x8, 0x0, (byte) 0x80, 0x8,
+			0x0, (byte) 0x80, 0x8, 0x0, (byte) 0x80, 0x8, 0x0, (byte) 0x80,
+			0x8, 0x0 };
 	private FrameType frameType = null;
+	private FrameStatus frameStatus = FrameStatus.NORMAL;
 	private int seq;
 	private boolean isParsedData = false;
 	// private boolean isFallOff=false;
@@ -100,7 +103,14 @@ public class FrameData {
 
 	public short[] getFramePoints() throws Exception {
 		if (isParsedData) {
-			return BleDataUtil.getECGData(frameData);
+			if (frameStatus == FrameStatus.NORMAL) {
+				return BleDataUtil.getECGData(frameData);
+			} else {
+				return new short[] { (short) 0x8000, (short) 0x8000,
+						(short) 0x8000, (short) 0x8000, (short) 0x8000,
+						(short) 0x8000, (short) 0x8000, (short) 0x8000,
+						(short) 0x8000, (short) 0x8000 };
+			}
 		} else {
 			throw new Exception("请先调用parseData");
 		}
@@ -117,10 +127,18 @@ public class FrameData {
 	/**
 	 * 将数据置0，保留帧类型
 	 */
-	private void resetData() {
-		for (int i = 2; i < frameData.length; i++) {
-			frameData[i] = BLANK_FRAME[i];
-		}
+	// private void resetData() {
+	// for (int i = 2; i < frameData.length; i++) {
+	// frameData[i] = BLANK_FRAME[i];
+	// }
+	// }
+
+	public FrameStatus getFrameStatus() {
+		return frameStatus;
+	}
+
+	public void setFrameStatus(FrameStatus frameStatus) {
+		this.frameStatus = frameStatus;
 	}
 
 	/**
@@ -192,7 +210,8 @@ public class FrameData {
 				seq = BleDataUtil.byteToInt(frameData[1]);
 				if (!frameTypeHex.endsWith("0")) {// 电极脱落/数据发生错误置不为0
 					// 取消置零
-					resetData();
+					// resetData();
+					frameStatus = FrameStatus.WRONG;
 					UIUtil.sendBroadcast(new Intent(action));
 				}
 			}
