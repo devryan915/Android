@@ -98,8 +98,10 @@ ECG_E ecg_input(ECG_HND *hnd, void * input, int len, void *output, int * outlen)
     {
         short v = data[i * ECG_WORD_SIZE + 0] << 8 | data[i * ECG_WORD_SIZE + 1];
 
-        if( v == LEAD_OFF_INDICATE ) /* 如果是脱落标志，设置数据为0 */
+        if( v == (short)LEAD_OFF_INDICATE ) /* 如果是脱落标志，设置数据为0 */
+        {
             v = 0;
+        }
 
         ring_put(hnd, 0, v);
     }
