@@ -11560,6 +11560,8 @@ com.broadchance.entity.DownLoadAPPResponse: java.io.File getDownLoadFile()
 com.broadchance.entity.DownLoadAPPResponse: void setDownLoadFile(java.io.File)
 com.broadchance.entity.FileType: com.broadchance.entity.FileType[] values()
 com.broadchance.entity.FileType: com.broadchance.entity.FileType valueOf(java.lang.String)
+com.broadchance.entity.FrameStatus: com.broadchance.entity.FrameStatus[] values()
+com.broadchance.entity.FrameStatus: com.broadchance.entity.FrameStatus valueOf(java.lang.String)
 com.broadchance.entity.FrameType: com.broadchance.entity.FrameType[] values()
 com.broadchance.entity.FrameType: com.broadchance.entity.FrameType valueOf(java.lang.String)
 com.broadchance.entity.UIUserInfoLogin

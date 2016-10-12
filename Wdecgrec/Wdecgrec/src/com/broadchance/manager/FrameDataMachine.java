@@ -14,10 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.util.Log;
 
 import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FrameData;
+import com.broadchance.entity.FrameStatus;
 import com.broadchance.entity.FrameType;
 import com.broadchance.entity.HeartRate;
 import com.broadchance.utils.CommonUtil;
@@ -311,9 +311,10 @@ public class FrameDataMachine {
 			frameData[0] = (byte) 0xA3;
 			frameData[1] = seq;
 		}
-		for (int i = 2; i < frameData.length; i++) {
-			frameData[i] = FrameData.BLANK_FRAME[i];
-		}
+		// 取消置零
+		// for (int i = 2; i < frameData.length; i++) {
+		// frameData[i] = FrameData.BLANK_FRAME[i];
+		// }
 		return frameData;
 	}
 
@@ -731,6 +732,7 @@ public class FrameDataMachine {
 						curframeDate += ONEFRAME_TIME;
 						FrameData data = new FrameData(byteData, curframeDate);
 						data.parseData();
+						data.setFrameStatus(FrameStatus.LOST);
 						frameDatas.offer(data);
 						// testData(data);
 						addFramePoint(frameType, data.getFramePoints());

@@ -13006,12 +13006,13 @@ com.broadchance.entity.FileType -> com.broadchance.entity.g:
 com.broadchance.entity.FrameData -> com.broadchance.entity.h:
     java.lang.String TAG -> c
     byte[] frameData -> d
-    byte[] BLANKDATA -> a
+    byte[] BLANK_FRAME -> a
     com.broadchance.entity.FrameType frameType -> e
-    int seq -> f
-    boolean isParsedData -> g
-    float power -> h
-    float temperature -> i
+    com.broadchance.entity.FrameStatus frameStatus -> f
+    int seq -> g
+    boolean isParsedData -> h
+    float power -> i
+    float temperature -> j
     long date -> b
     float getTemperature() -> a
     float getPower() -> b
@@ -13021,9 +13022,17 @@ com.broadchance.entity.FrameData -> com.broadchance.entity.h:
     int getSeq() -> e
     short[] getFramePoints() -> f
     short[] getBreathPoints() -> g
-    void resetData() -> i
-    void parseData() -> h
-com.broadchance.entity.FrameType -> com.broadchance.entity.i:
+    com.broadchance.entity.FrameStatus getFrameStatus() -> h
+    void setFrameStatus(com.broadchance.entity.FrameStatus) -> a
+    void parseData() -> i
+com.broadchance.entity.FrameStatus -> com.broadchance.entity.i:
+    com.broadchance.entity.FrameStatus NORMAL -> a
+    com.broadchance.entity.FrameStatus LOST -> b
+    com.broadchance.entity.FrameStatus WRONG -> c
+    com.broadchance.entity.FrameStatus[] ENUM$VALUES -> d
+    com.broadchance.entity.FrameStatus[] values() -> values
+    com.broadchance.entity.FrameStatus valueOf(java.lang.String) -> valueOf
+com.broadchance.entity.FrameType -> com.broadchance.entity.j:
     com.broadchance.entity.FrameType MII -> a
     com.broadchance.entity.FrameType MV1 -> b
     com.broadchance.entity.FrameType MV5 -> c
@@ -13031,10 +13040,10 @@ com.broadchance.entity.FrameType -> com.broadchance.entity.i:
     com.broadchance.entity.FrameType[] ENUM$VALUES -> e
     com.broadchance.entity.FrameType[] values() -> values
     com.broadchance.entity.FrameType valueOf(java.lang.String) -> valueOf
-com.broadchance.entity.HeartRate -> com.broadchance.entity.j:
+com.broadchance.entity.HeartRate -> com.broadchance.entity.k:
     int heart -> a
     java.util.Date date -> b
-com.broadchance.entity.LocationCellInfo -> com.broadchance.entity.k:
+com.broadchance.entity.LocationCellInfo -> com.broadchance.entity.l:
     int cellId -> a
     java.lang.String mobileCountryCode -> b
     java.lang.String mobileNetworkCode -> c
@@ -13050,14 +13059,14 @@ com.broadchance.entity.LocationCellInfo -> com.broadchance.entity.k:
     void setLocationAreaCode(int) -> b
     java.lang.String getRadioType() -> e
     void setRadioType(java.lang.String) -> c
-com.broadchance.entity.ResponseCodeMsg -> com.broadchance.entity.l:
+com.broadchance.entity.ResponseCodeMsg -> com.broadchance.entity.m:
     java.lang.String code -> a
     java.lang.String msg -> b
     java.lang.String getCode() -> a
     void setCode(java.lang.String) -> a
     java.lang.String getMsg() -> b
     void setMsg(java.lang.String) -> b
-com.broadchance.entity.SettingsOffData -> com.broadchance.entity.m:
+com.broadchance.entity.SettingsOffData -> com.broadchance.entity.n:
     int capacity -> a
     java.lang.String dataTime -> b
     boolean isSelect -> c
@@ -13067,7 +13076,7 @@ com.broadchance.entity.SettingsOffData -> com.broadchance.entity.m:
     void setCapacity(int) -> a
     boolean isSelect() -> c
     void setSelect(boolean) -> a
-com.broadchance.entity.Skin -> com.broadchance.entity.n:
+com.broadchance.entity.Skin -> com.broadchance.entity.o:
     java.lang.String skinID -> b
     java.lang.String assetSkinFileName -> c
     java.lang.String skinName -> d
@@ -13116,7 +13125,7 @@ com.broadchance.entity.UIUserInfoLogin -> com.broadchance.entity.UIUserInfoLogin
     void setRefresh_token(java.lang.String) -> setRefresh_token
     java.lang.String getCertkey() -> getCertkey
     void setCertkey(java.lang.String) -> setCertkey
-com.broadchance.entity.UploadFile -> com.broadchance.entity.o:
+com.broadchance.entity.UploadFile -> com.broadchance.entity.p:
     java.lang.String fileName -> a
     java.lang.String path -> b
     int uploadtimes -> c
@@ -13148,7 +13157,7 @@ com.broadchance.entity.UploadFile -> com.broadchance.entity.o:
     int getUploadtimes() -> j
     void setUploadtimes(int) -> a
 com.broadchance.entity.UploadFileResponse -> com.broadchance.entity.UploadFileResponse:
-com.broadchance.entity.UploadFileStatus -> com.broadchance.entity.p:
+com.broadchance.entity.UploadFileStatus -> com.broadchance.entity.q:
     com.broadchance.entity.UploadFileStatus UnDeal -> a
     com.broadchance.entity.UploadFileStatus Uploading -> b
     com.broadchance.entity.UploadFileStatus Uploaded -> c
@@ -13159,7 +13168,7 @@ com.broadchance.entity.UploadFileStatus -> com.broadchance.entity.p:
     int getValue() -> a
     com.broadchance.entity.UploadFileStatus[] values() -> values
     com.broadchance.entity.UploadFileStatus valueOf(java.lang.String) -> valueOf
-com.broadchance.entity.UploadWay -> com.broadchance.entity.q:
+com.broadchance.entity.UploadWay -> com.broadchance.entity.r:
     com.broadchance.entity.UploadWay Batch -> a
     com.broadchance.entity.UploadWay OneKey -> b
     com.broadchance.entity.UploadWay RealTime -> c
@@ -13168,7 +13177,7 @@ com.broadchance.entity.UploadWay -> com.broadchance.entity.q:
     int getValue() -> a
     com.broadchance.entity.UploadWay[] values() -> values
     com.broadchance.entity.UploadWay valueOf(java.lang.String) -> valueOf
-com.broadchance.entity.UserInfo -> com.broadchance.entity.r:
+com.broadchance.entity.UserInfo -> com.broadchance.entity.s:
     java.lang.String userName -> a
     java.lang.String nickName -> b
     java.lang.String macAddress -> c
@@ -13184,7 +13193,7 @@ com.broadchance.entity.UserInfo -> com.broadchance.entity.r:
     void setCertkey(java.lang.String) -> d
     java.lang.String getOrderNo() -> e
     void setOrderNo(java.lang.String) -> e
-com.broadchance.entity.UserStatus -> com.broadchance.entity.s:
+com.broadchance.entity.UserStatus -> com.broadchance.entity.t:
     com.broadchance.entity.UserStatus None -> a
     com.broadchance.entity.UserStatus Login -> b
     int value -> c

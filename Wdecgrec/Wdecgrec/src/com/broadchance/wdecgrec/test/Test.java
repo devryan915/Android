@@ -11,8 +11,10 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.broadchance.entity.FrameData;
 import com.broadchance.entity.UserInfo;
 import com.broadchance.manager.DataManager;
+import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.wdecgrec.alert.AlertMachine;
@@ -27,6 +29,10 @@ public class Test {
 
 	public void test() {
 		// testTimer();
+		byte[] frame = FrameData.BLANK_FRAME;
+		String str = BleDataUtil.bytesToHexString(BleDataUtil
+				.short2ByteArray((short) 0x8000));
+		System.out.println(str);
 	}
 
 	private void testAlert(boolean isSend) throws JSONException {

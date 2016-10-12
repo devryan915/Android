@@ -39,4 +39,6 @@ void pinghua(double *src, double *dst, int len, int winlen)
         dst[i] = sum;
         sum = 0;
     }
+
+    free(data);
 }
