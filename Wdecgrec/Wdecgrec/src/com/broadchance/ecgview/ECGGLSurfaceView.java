@@ -16,11 +16,12 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup.LayoutParams;
 
-import com.broadchance.manager.FrameDataMachine;
-import com.broadchance.manager.SettingsManager;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.LogUtil;
-import com.broadchance.wdecgrec.R;
+
+import thoth.holter.ecg_010.R;
+import thoth.holter.ecg_010.manager.FrameDataMachine;
+import thoth.holter.ecg_010.manager.SettingsManager;
 
 public class ECGGLSurfaceView extends GLSurfaceView {
 	private final static String TAG = ECGGLSurfaceView.class.getSimpleName();

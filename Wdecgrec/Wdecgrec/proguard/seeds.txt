@@ -11852,8 +11852,6 @@ com.broadchance.entity.serverentity.UserInfoRegist: void set_CreateDT(java.util.
 com.broadchance.entity.serverentity.UserInfoRegist: java.lang.String get_Email()
 com.broadchance.entity.serverentity.UserInfoRegist: void set_Email(java.lang.String)
 com.broadchance.entity.serverentity.UserInfoRegistResponse
-com.broadchance.manager.AppApplication
-com.broadchance.manager.AppApplication: AppApplication()
 com.broadchance.utils.FileUtil$ECGFileStatus: com.broadchance.utils.FileUtil$ECGFileStatus[] values()
 com.broadchance.utils.FileUtil$ECGFileStatus: com.broadchance.utils.FileUtil$ECGFileStatus valueOf(java.lang.String)
 com.broadchance.utils.FilterUtil
@@ -11878,63 +11876,6 @@ com.broadchance.wdecgrec.alert.AlertStatus: com.broadchance.wdecgrec.alert.Alert
 com.broadchance.wdecgrec.alert.AlertStatus: com.broadchance.wdecgrec.alert.AlertStatus valueOf(java.lang.String)
 com.broadchance.wdecgrec.alert.AlertType: com.broadchance.wdecgrec.alert.AlertType[] values()
 com.broadchance.wdecgrec.alert.AlertType: com.broadchance.wdecgrec.alert.AlertType valueOf(java.lang.String)
-com.broadchance.wdecgrec.login.LoginActivity
-com.broadchance.wdecgrec.login.LoginActivity: LoginActivity()
-com.broadchance.wdecgrec.login.LoginActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.login.RegisterActivity
-com.broadchance.wdecgrec.login.RegisterActivity: RegisterActivity()
-com.broadchance.wdecgrec.login.RegisterActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.login.ResetPwdActivity
-com.broadchance.wdecgrec.login.ResetPwdActivity: ResetPwdActivity()
-com.broadchance.wdecgrec.login.ResetPwdActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.main.EcgActivity
-com.broadchance.wdecgrec.main.EcgActivity: EcgActivity()
-com.broadchance.wdecgrec.main.EcgActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.main.ModeActivity
-com.broadchance.wdecgrec.main.ModeActivity: ModeActivity()
-com.broadchance.wdecgrec.main.ModeActivity: void wearMode(android.view.View)
-com.broadchance.wdecgrec.main.ModeActivity: void settings(android.view.View)
-com.broadchance.wdecgrec.receiver.BootCompleteReceiver
-com.broadchance.wdecgrec.receiver.BootCompleteReceiver: BootCompleteReceiver()
-com.broadchance.wdecgrec.receiver.GPSReceiver
-com.broadchance.wdecgrec.receiver.NetChangeReceiver
-com.broadchance.wdecgrec.receiver.NetChangeReceiver: NetChangeReceiver()
-com.broadchance.wdecgrec.receiver.PowerChangeReceiver
-com.broadchance.wdecgrec.services.BleDataParserService
-com.broadchance.wdecgrec.services.BleDataParserService: BleDataParserService()
-com.broadchance.wdecgrec.services.BleDomainService
-com.broadchance.wdecgrec.services.BleDomainService: BleDomainService()
-com.broadchance.wdecgrec.services.BluetoothLeService
-com.broadchance.wdecgrec.services.BluetoothLeService: BluetoothLeService()
-com.broadchance.wdecgrec.services.GpsService
-com.broadchance.wdecgrec.services.GpsService: GpsService()
-com.broadchance.wdecgrec.services.GuardService
-com.broadchance.wdecgrec.services.GuardService: GuardService()
-com.broadchance.wdecgrec.settings.AddContactActivity
-com.broadchance.wdecgrec.settings.AddContactActivity: AddContactActivity()
-com.broadchance.wdecgrec.settings.AddContactActivity: void addFamily(android.view.View)
-com.broadchance.wdecgrec.settings.AddContactActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.AddFamilyActivity
-com.broadchance.wdecgrec.settings.AddFamilyActivity: AddFamilyActivity()
-com.broadchance.wdecgrec.settings.AddFamilyActivity: void showChooseContacts(android.view.View)
-com.broadchance.wdecgrec.settings.AddFamilyActivity: void onGridItemClick(android.view.View)
-com.broadchance.wdecgrec.settings.AddFamilyActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.ModifyPwdActivity
-com.broadchance.wdecgrec.settings.ModifyPwdActivity: ModifyPwdActivity()
-com.broadchance.wdecgrec.settings.ModifyPwdActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.MyInfoActivity
-com.broadchance.wdecgrec.settings.MyInfoActivity: MyInfoActivity()
-com.broadchance.wdecgrec.settings.MyInfoActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.OptionSettingsActivity
-com.broadchance.wdecgrec.settings.OptionSettingsActivity: OptionSettingsActivity()
-com.broadchance.wdecgrec.settings.OptionSettingsActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.SettingsActivity
-com.broadchance.wdecgrec.settings.SettingsActivity: SettingsActivity()
-com.broadchance.wdecgrec.settings.SettingsActivity: void addFamily()
-com.broadchance.wdecgrec.settings.SettingsActivity: void onClick(android.view.View)
-com.broadchance.wdecgrec.settings.UploadActivity
-com.broadchance.wdecgrec.settings.UploadActivity: UploadActivity()
-com.broadchance.wdecgrec.settings.UploadActivity: void onClick(android.view.View)
 com.broadchance.wdecgrec.test.TestJNI
 com.broadchance.wdecgrec.test.TestJNI: java.lang.String stringFromJNI()
 com.broadchance.wdecgrec.test.TestJNI: java.lang.String stringFromJNIStatic()
@@ -11942,20 +11883,6 @@ com.broadchance.wdecgrec.test.TestJNI: com.broadchance.wdecgrec.test.TestJNI tes
 com.broadchance.wdecgrec.test.TestJNI: void testSetValue(int)
 com.broadchance.wdecgrec.test.TestJNI: int testGetValue()
 com.broadchance.wdecgrec.test.TestJNI: int[] testIntArray(int[])
-com.broadchance.wdecgrec.widget.CustomTitle
-com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context)
-com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet,int)
-com.broadchance.wdecgrec.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet)
-com.broadchance.wdecgrec.widget.DigitalClock
-com.broadchance.wdecgrec.widget.DigitalClock: DigitalClock(android.content.Context,android.util.AttributeSet)
-com.broadchance.wdecgrec.widget.GridItemLayout
-com.broadchance.wdecgrec.widget.GridItemLayout: GridItemLayout(android.content.Context)
-com.broadchance.wdecgrec.widget.GridItemLayout: GridItemLayout(android.content.Context,android.util.AttributeSet,int)
-com.broadchance.wdecgrec.widget.GridItemLayout: GridItemLayout(android.content.Context,android.util.AttributeSet)
-com.broadchance.wdecgrec.widget.LabelEditText
-com.broadchance.wdecgrec.widget.LabelEditText: LabelEditText(android.content.Context)
-com.broadchance.wdecgrec.widget.LabelEditText: LabelEditText(android.content.Context,android.util.AttributeSet,int)
-com.broadchance.wdecgrec.widget.LabelEditText: LabelEditText(android.content.Context,android.util.AttributeSet)
 org.apache.http.auth.AuthProtocolState: org.apache.http.auth.AuthProtocolState[] values()
 org.apache.http.auth.AuthProtocolState: org.apache.http.auth.AuthProtocolState valueOf(java.lang.String)
 org.apache.http.auth.ChallengeState: org.apache.http.auth.ChallengeState[] values()
@@ -11980,3 +11907,76 @@ org.apache.log4j.nt.NTEventLogAppender
 org.apache.log4j.nt.NTEventLogAppender: int registerEventSource(java.lang.String,java.lang.String)
 org.apache.log4j.nt.NTEventLogAppender: void reportEvent(int,java.lang.String,int)
 org.apache.log4j.nt.NTEventLogAppender: void deregisterEventSource(int)
+thoth.holter.ecg_010.login.LoginActivity
+thoth.holter.ecg_010.login.LoginActivity: LoginActivity()
+thoth.holter.ecg_010.login.LoginActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.login.RegisterActivity
+thoth.holter.ecg_010.login.RegisterActivity: RegisterActivity()
+thoth.holter.ecg_010.login.RegisterActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.login.ResetPwdActivity
+thoth.holter.ecg_010.login.ResetPwdActivity: ResetPwdActivity()
+thoth.holter.ecg_010.login.ResetPwdActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.main.EcgActivity
+thoth.holter.ecg_010.main.EcgActivity: EcgActivity()
+thoth.holter.ecg_010.main.EcgActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.main.ModeActivity
+thoth.holter.ecg_010.main.ModeActivity: ModeActivity()
+thoth.holter.ecg_010.main.ModeActivity: void wearMode(android.view.View)
+thoth.holter.ecg_010.main.ModeActivity: void settings(android.view.View)
+thoth.holter.ecg_010.manager.AppApplication
+thoth.holter.ecg_010.manager.AppApplication: AppApplication()
+thoth.holter.ecg_010.receiver.BootCompleteReceiver
+thoth.holter.ecg_010.receiver.BootCompleteReceiver: BootCompleteReceiver()
+thoth.holter.ecg_010.receiver.GPSReceiver
+thoth.holter.ecg_010.receiver.NetChangeReceiver
+thoth.holter.ecg_010.receiver.NetChangeReceiver: NetChangeReceiver()
+thoth.holter.ecg_010.receiver.PowerChangeReceiver
+thoth.holter.ecg_010.services.BleDataParserService
+thoth.holter.ecg_010.services.BleDataParserService: BleDataParserService()
+thoth.holter.ecg_010.services.BleDomainService
+thoth.holter.ecg_010.services.BleDomainService: BleDomainService()
+thoth.holter.ecg_010.services.BluetoothLeService
+thoth.holter.ecg_010.services.BluetoothLeService: BluetoothLeService()
+thoth.holter.ecg_010.services.GpsService
+thoth.holter.ecg_010.services.GpsService: GpsService()
+thoth.holter.ecg_010.services.GuardService
+thoth.holter.ecg_010.services.GuardService: GuardService()
+thoth.holter.ecg_010.settings.AddContactActivity
+thoth.holter.ecg_010.settings.AddContactActivity: AddContactActivity()
+thoth.holter.ecg_010.settings.AddContactActivity: void addFamily(android.view.View)
+thoth.holter.ecg_010.settings.AddContactActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.AddFamilyActivity
+thoth.holter.ecg_010.settings.AddFamilyActivity: AddFamilyActivity()
+thoth.holter.ecg_010.settings.AddFamilyActivity: void showChooseContacts(android.view.View)
+thoth.holter.ecg_010.settings.AddFamilyActivity: void onGridItemClick(android.view.View)
+thoth.holter.ecg_010.settings.AddFamilyActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.ModifyPwdActivity
+thoth.holter.ecg_010.settings.ModifyPwdActivity: ModifyPwdActivity()
+thoth.holter.ecg_010.settings.ModifyPwdActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.MyInfoActivity
+thoth.holter.ecg_010.settings.MyInfoActivity: MyInfoActivity()
+thoth.holter.ecg_010.settings.MyInfoActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.OptionSettingsActivity
+thoth.holter.ecg_010.settings.OptionSettingsActivity: OptionSettingsActivity()
+thoth.holter.ecg_010.settings.OptionSettingsActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.SettingsActivity
+thoth.holter.ecg_010.settings.SettingsActivity: SettingsActivity()
+thoth.holter.ecg_010.settings.SettingsActivity: void addFamily()
+thoth.holter.ecg_010.settings.SettingsActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.settings.UploadActivity
+thoth.holter.ecg_010.settings.UploadActivity: UploadActivity()
+thoth.holter.ecg_010.settings.UploadActivity: void onClick(android.view.View)
+thoth.holter.ecg_010.widget.CustomTitle
+thoth.holter.ecg_010.widget.CustomTitle: CustomTitle(android.content.Context)
+thoth.holter.ecg_010.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet,int)
+thoth.holter.ecg_010.widget.CustomTitle: CustomTitle(android.content.Context,android.util.AttributeSet)
+thoth.holter.ecg_010.widget.DigitalClock
+thoth.holter.ecg_010.widget.DigitalClock: DigitalClock(android.content.Context,android.util.AttributeSet)
+thoth.holter.ecg_010.widget.GridItemLayout
+thoth.holter.ecg_010.widget.GridItemLayout: GridItemLayout(android.content.Context)
+thoth.holter.ecg_010.widget.GridItemLayout: GridItemLayout(android.content.Context,android.util.AttributeSet,int)
+thoth.holter.ecg_010.widget.GridItemLayout: GridItemLayout(android.content.Context,android.util.AttributeSet)
+thoth.holter.ecg_010.widget.LabelEditText
+thoth.holter.ecg_010.widget.LabelEditText: LabelEditText(android.content.Context)
+thoth.holter.ecg_010.widget.LabelEditText: LabelEditText(android.content.Context,android.util.AttributeSet,int)
+thoth.holter.ecg_010.widget.LabelEditText: LabelEditText(android.content.Context,android.util.AttributeSet)

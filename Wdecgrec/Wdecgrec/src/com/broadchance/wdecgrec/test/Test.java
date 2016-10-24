@@ -9,11 +9,11 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import thoth.holter.ecg_010.manager.DataManager;
 import android.util.Log;
 
 import com.broadchance.entity.FrameData;
 import com.broadchance.entity.UserInfo;
-import com.broadchance.manager.DataManager;
 import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.LogUtil;

@@ -43,9 +43,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.broadchance.manager.AppApplication;
-import com.broadchance.manager.PreferencesManager;
-
+import thoth.holter.ecg_010.manager.AppApplication;
+import thoth.holter.ecg_010.manager.PreferencesManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

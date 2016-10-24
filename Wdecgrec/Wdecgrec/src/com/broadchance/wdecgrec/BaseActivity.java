@@ -1,5 +1,8 @@
 package com.broadchance.wdecgrec;
 
+import thoth.holter.ecg_010.manager.PreferencesManager;
+import thoth.holter.ecg_010.manager.ResponseCodeMsgManager;
+import thoth.holter.ecg_010.manager.SkinManager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -7,9 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
-import com.broadchance.manager.PreferencesManager;
-import com.broadchance.manager.ResponseCodeMsgManager;
-import com.broadchance.manager.SkinManager;
 import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.SSXLXService;
 import com.broadchance.utils.UIUtil;

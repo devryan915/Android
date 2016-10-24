@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.json.JSONObject;
 
+import thoth.holter.ecg_010.manager.DataManager;
+import thoth.holter.ecg_010.manager.FrameDataMachine;
 import android.content.Intent;
 
-import com.broadchance.manager.DataManager;
-import com.broadchance.manager.FrameDataMachine;
 import com.broadchance.utils.BleDataUtil;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.LogUtil;

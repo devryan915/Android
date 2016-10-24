@@ -22,11 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.broadchance.entity.DownLoadAPPResponse;
-import com.broadchance.manager.AppApplication;
-import com.broadchance.manager.PreferencesManager;
 import com.broadchance.wdecgrec.BaseActivity;
 import com.broadchance.wdecgrec.HttpReqCallBack;
-import com.broadchance.wdecgrec.R;
+
+import thoth.holter.ecg_010.R;
+import thoth.holter.ecg_010.manager.AppApplication;
+import thoth.holter.ecg_010.manager.PreferencesManager;
 
 /**
  * @author ryan.wang

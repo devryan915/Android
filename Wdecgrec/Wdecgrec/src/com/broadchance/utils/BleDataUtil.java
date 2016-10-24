@@ -3,7 +3,7 @@ package com.broadchance.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.broadchance.manager.AppApplication;
+import thoth.holter.ecg_010.manager.AppApplication;
 
 public class BleDataUtil {
 	private final static String TAG = BleDataUtil.class.getSimpleName();

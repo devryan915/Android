@@ -1,17 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:wdecgrec="http://schemas.android.com/apk/res/com.broadchance.wdecgrec"
+    xmlns:wdecgrec="http://schemas.android.com/apk/res/thoth.holter.ecg_010"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#10141f"
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <com.broadchance.wdecgrec.widget.CustomTitle
+    <thoth.holter.ecg_010.widget.CustomTitle
         android:id="@+id/customTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </com.broadchance.wdecgrec.widget.CustomTitle>
+    </thoth.holter.ecg_010.widget.CustomTitle>
 
     <RelativeLayout
         android:layout_width="wrap_content"

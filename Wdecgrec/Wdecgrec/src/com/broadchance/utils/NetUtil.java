@@ -1,10 +1,9 @@
 package com.broadchance.utils;
 
+import thoth.holter.ecg_010.manager.AppApplication;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import com.broadchance.manager.AppApplication;
 
 public class NetUtil {
 

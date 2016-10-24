@@ -1,68 +1,68 @@
 # view res/layout/activity_ecg.xml #generated:48
 -keep class com.broadchance.ecgview.ECGGLSurfaceView { <init>(...); }
 
-# view AndroidManifest.xml #generated:49
--keep class com.broadchance.manager.AppApplication { <init>(...); }
-
 # view res/layout/activity_add_contact.xml #generated:74
 -keep class com.broadchance.utils.comparator.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:76
--keep class com.broadchance.wdecgrec.login.LoginActivity { <init>(...); }
+# view AndroidManifest.xml #generated:77
+-keep class thoth.holter.ecg_010.login.LoginActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:86
--keep class com.broadchance.wdecgrec.login.RegisterActivity { <init>(...); }
+# view AndroidManifest.xml #generated:87
+-keep class thoth.holter.ecg_010.login.RegisterActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:90
--keep class com.broadchance.wdecgrec.login.ResetPwdActivity { <init>(...); }
+# view AndroidManifest.xml #generated:91
+-keep class thoth.holter.ecg_010.login.ResetPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:102
--keep class com.broadchance.wdecgrec.main.EcgActivity { <init>(...); }
+# view AndroidManifest.xml #generated:103
+-keep class thoth.holter.ecg_010.main.EcgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:94
--keep class com.broadchance.wdecgrec.main.ModeActivity { <init>(...); }
+# view AndroidManifest.xml #generated:95
+-keep class thoth.holter.ecg_010.main.ModeActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:153
--keep class com.broadchance.wdecgrec.receiver.BootCompleteReceiver { <init>(...); }
+# view AndroidManifest.xml #generated:49
+-keep class thoth.holter.ecg_010.manager.AppApplication { <init>(...); }
 
-# view AndroidManifest.xml #generated:131
--keep class com.broadchance.wdecgrec.receiver.NetChangeReceiver { <init>(...); }
+# view AndroidManifest.xml #generated:155
+-keep class thoth.holter.ecg_010.receiver.BootCompleteReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:187
--keep class com.broadchance.wdecgrec.services.BleDataParserService { <init>(...); }
+# view AndroidManifest.xml #generated:132
+-keep class thoth.holter.ecg_010.receiver.NetChangeReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:183
--keep class com.broadchance.wdecgrec.services.BleDomainService { <init>(...); }
+# view AndroidManifest.xml #generated:189
+-keep class thoth.holter.ecg_010.services.BleDataParserService { <init>(...); }
 
-# view AndroidManifest.xml #generated:172
--keep class com.broadchance.wdecgrec.services.BluetoothLeService { <init>(...); }
+# view AndroidManifest.xml #generated:185
+-keep class thoth.holter.ecg_010.services.BleDomainService { <init>(...); }
 
-# view AndroidManifest.xml #generated:192
--keep class com.broadchance.wdecgrec.services.GpsService { <init>(...); }
+# view AndroidManifest.xml #generated:174
+-keep class thoth.holter.ecg_010.services.BluetoothLeService { <init>(...); }
 
-# view AndroidManifest.xml #generated:177
--keep class com.broadchance.wdecgrec.services.GuardService { <init>(...); }
+# view AndroidManifest.xml #generated:194
+-keep class thoth.holter.ecg_010.services.GpsService { <init>(...); }
 
-# view AndroidManifest.xml #generated:126
--keep class com.broadchance.wdecgrec.settings.AddContactActivity { <init>(...); }
+# view AndroidManifest.xml #generated:179
+-keep class thoth.holter.ecg_010.services.GuardService { <init>(...); }
 
-# view AndroidManifest.xml #generated:122
--keep class com.broadchance.wdecgrec.settings.AddFamilyActivity { <init>(...); }
+# view AndroidManifest.xml #generated:127
+-keep class thoth.holter.ecg_010.settings.AddContactActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:163
--keep class com.broadchance.wdecgrec.settings.ModifyPwdActivity { <init>(...); }
+# view AndroidManifest.xml #generated:123
+-keep class thoth.holter.ecg_010.settings.AddFamilyActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:112
--keep class com.broadchance.wdecgrec.settings.MyInfoActivity { <init>(...); }
+# view AndroidManifest.xml #generated:165
+-keep class thoth.holter.ecg_010.settings.ModifyPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:117
--keep class com.broadchance.wdecgrec.settings.OptionSettingsActivity { <init>(...); }
+# view AndroidManifest.xml #generated:113
+-keep class thoth.holter.ecg_010.settings.MyInfoActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:107
--keep class com.broadchance.wdecgrec.settings.SettingsActivity { <init>(...); }
+# view AndroidManifest.xml #generated:118
+-keep class thoth.holter.ecg_010.settings.OptionSettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:167
--keep class com.broadchance.wdecgrec.settings.UploadActivity { <init>(...); }
+# view AndroidManifest.xml #generated:108
+-keep class thoth.holter.ecg_010.settings.SettingsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:169
+-keep class thoth.holter.ecg_010.settings.UploadActivity { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:9
 # view res/layout/activity_add_family.xml #generated:9
@@ -71,10 +71,10 @@
 # view res/layout/activity_modify_pwd.xml #generated:9
 # view res/layout/activity_my_info.xml #generated:9
 # view res/layout/activity_option_settings.xml #generated:9
--keep class com.broadchance.wdecgrec.widget.CustomTitle { <init>(...); }
+-keep class thoth.holter.ecg_010.widget.CustomTitle { <init>(...); }
 
 # view res/layout/listview_addfamily_item.xml #generated:2
--keep class com.broadchance.wdecgrec.widget.GridItemLayout { <init>(...); }
+-keep class thoth.holter.ecg_010.widget.GridItemLayout { <init>(...); }
 
 # view res/layout/activity_login.xml #generated:21
 # view res/layout/activity_login.xml #generated:36
@@ -87,7 +87,7 @@
 # view res/layout/activity_register.xml #generated:35
 # view res/layout/activity_register.xml #generated:84
 # view res/layout/activity_register.xml #generated:98
--keep class com.broadchance.wdecgrec.widget.LabelEditText { <init>(...); }
+-keep class thoth.holter.ecg_010.widget.LabelEditText { <init>(...); }
 
 # onClick res/layout/listview_choosecontact_item.xml #generated:20
 -keepclassmembers class * { *** addFamily(...); }

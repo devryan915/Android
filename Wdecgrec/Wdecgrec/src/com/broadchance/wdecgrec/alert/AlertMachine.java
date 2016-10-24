@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import thoth.holter.ecg_010.manager.DataManager;
+import thoth.holter.ecg_010.manager.PreferencesManager;
 import android.app.Activity;
 
 import com.broadchance.entity.AlertBody;
@@ -21,8 +23,6 @@ import com.broadchance.entity.AlertCFG;
 import com.broadchance.entity.UIUserInfoLogin;
 import com.broadchance.entity.UserInfo;
 import com.broadchance.entity.serverentity.ServerResponse;
-import com.broadchance.manager.DataManager;
-import com.broadchance.manager.PreferencesManager;
 import com.broadchance.utils.ClientGameService;
 import com.broadchance.utils.CommonUtil;
 import com.broadchance.utils.ConstantConfig;

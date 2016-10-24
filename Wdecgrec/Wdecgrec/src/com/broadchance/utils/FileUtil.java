@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import thoth.holter.ecg_010.manager.DataManager;
+import thoth.holter.ecg_010.manager.FrameDataMachine;
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Environment;
@@ -28,8 +30,6 @@ import android.os.Environment;
 import com.broadchance.entity.FileFrameData;
 import com.broadchance.entity.FileType;
 import com.broadchance.entity.UIUserInfoLogin;
-import com.broadchance.manager.DataManager;
-import com.broadchance.manager.FrameDataMachine;
 
 /**
  * @author ryan.wang

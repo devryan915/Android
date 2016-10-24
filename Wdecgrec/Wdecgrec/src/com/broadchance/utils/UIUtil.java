@@ -16,12 +16,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.broadchance.manager.AppApplication;
-import com.broadchance.wdecgrec.R;
-import com.broadchance.wdecgrec.main.EcgActivity;
-import com.broadchance.wdecgrec.main.ModeActivity;
-import com.broadchance.wdecgrec.services.BleDomainService;
+import thoth.holter.ecg_010.R;
+import thoth.holter.ecg_010.main.EcgActivity;
+import thoth.holter.ecg_010.main.ModeActivity;
+import thoth.holter.ecg_010.manager.AppApplication;
+import thoth.holter.ecg_010.services.BleDomainService;
 
 public class UIUtil {
 	static Activity context;

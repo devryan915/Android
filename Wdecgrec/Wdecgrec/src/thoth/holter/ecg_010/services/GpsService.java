@@ -1,0 +1,180 @@
+package thoth.holter.ecg_010.services;
+
+import java.util.ArrayList;
+
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
+
+import com.broadchance.entity.LocationCellInfo;
+import com.broadchance.utils.ConstantConfig;
+import com.broadchance.utils.GPSUtil;
+
+public class GpsService extends Service {
+
+	class Gps {
+		private Location location = null;
+		private LocationManager locationManager = null;
+		private Context context = null;
+
+		/**
+		 * 初始化
+		 * 
+		 * @param ctx
+		 */
+		public Gps(Context ctx) {
+			context = ctx;
+			locationManager = (LocationManager) context
+					.getSystemService(Context.LOCATION_SERVICE);
+			location = locationManager.getLastKnownLocation(getProvider());
+			locationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+		}
+
+		// 获取Location Provider
+		private String getProvider() {
+			// 构建位置查询条件
+			Criteria criteria = new Criteria();
+			// 查询精度：高
+			criteria.setAccuracy(Criteria.ACCURACY_FINE);
+			// 是否查询海拨：否
+			criteria.setAltitudeRequired(false);
+			// 是否查询方位角 : 否
+			criteria.setBearingRequired(false);
+			// 是否允许付费：是
+			criteria.setCostAllowed(true);
+			// 电量要求：低
+			criteria.setPowerRequirement(Criteria.POWER_LOW);
+			// 返回最合适的符合条件的provider，第2个参数为true说明 ,
+			// 如果只有一个provider是有效的,则返回当前provider
+			return locationManager.getBestProvider(criteria, true);
+		}
+
+		private LocationListener locationListener = new LocationListener() {
+			// 位置发生改变后调用
+			public void onLocationChanged(Location l) {
+				if (l != null) {
+					location = l;
+				}
+			}
+
+			// provider 被用户关闭后调用
+			public void onProviderDisabled(String provider) {
+				location = null;
+			}
+
+			// provider 被用户开启后调用
+			public void onProviderEnabled(String provider) {
+				Location l = locationManager.getLastKnownLocation(provider);
+				if (l != null) {
+					location = l;
+				}
+
+			}
+
+			// provider 状态变化时调用
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+			}
+
+		};
+
+		public Location getLocation() {
+			return location;
+		}
+
+		public void closeLocation() {
+			if (locationManager != null) {
+				if (locationListener != null) {
+					locationManager.removeUpdates(locationListener);
+					locationListener = null;
+				}
+				locationManager = null;
+			}
+		}
+
+	}
+
+	ArrayList<LocationCellInfo> cellIds = null;
+	private Gps gps = null;
+	private boolean threadDisable = false;
+	private final static String TAG = GpsService.class.getSimpleName();
+	public final static String ACTION_GPS = ConstantConfig.ACTION_PREFIX
+			+ ".gps.GpsService";
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		gps = new Gps(GpsService.this);
+		cellIds = GPSUtil.init(GpsService.this);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (!threadDisable) {
+					try {
+						if (gps != null) { // 当结束服务时gps为空
+							// 获取经纬度
+							Location location = gps.getLocation();
+							// 如果gps无法获取经纬度，改用基站定位获取
+							if (location == null) {
+								Log.v(TAG, "gps location null");
+								// 2.根据基站信息获取经纬度
+								try {
+									location = GPSUtil.callGear(
+											GpsService.this, cellIds);
+								} catch (Exception e) {
+									location = null;
+									e.printStackTrace();
+								}
+								if (location == null) {
+									Log.v(TAG, "cell location null");
+								}
+							}
+							if (location != null) {
+								// 发送广播
+								Intent intent = new Intent();
+								intent.putExtra("lat", location.getLatitude()
+										+ "");
+								intent.putExtra("lon", location.getLongitude()
+										+ "");
+								intent.setAction(ACTION_GPS);
+								sendBroadcast(intent);
+							}
+						}
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+
+	}
+
+	@Override
+	public void onDestroy() {
+		threadDisable = true;
+		if (cellIds != null && cellIds.size() > 0) {
+			cellIds = null;
+		}
+		if (gps != null) {
+			gps.closeLocation();
+			gps = null;
+		}
+		super.onDestroy();
+	}
+
+	@Override
+	public IBinder onBind(Intent arg0) {
+		return null;
+	}
+
+}

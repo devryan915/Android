@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.broadchance.wdecgrec.R;
+import thoth.holter.ecg_010.R;
 
 public class SideBar extends View {
 	// 触摸事件

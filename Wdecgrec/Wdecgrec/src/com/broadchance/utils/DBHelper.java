@@ -1,12 +1,11 @@
 package com.broadchance.utils;
 
+import thoth.holter.ecg_010.manager.AppApplication;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.broadchance.manager.AppApplication;
 
 public class DBHelper extends SQLiteOpenHelper {
 	private final static int DB_VERSION = 1;

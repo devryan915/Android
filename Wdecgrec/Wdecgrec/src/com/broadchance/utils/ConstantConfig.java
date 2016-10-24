@@ -1,13 +1,12 @@
 package com.broadchance.utils;
 
-import com.broadchance.manager.AppApplication;
-import com.broadchance.manager.SettingsManager;
+import thoth.holter.ecg_010.manager.AppApplication;
+import thoth.holter.ecg_010.manager.SettingsManager;
 
 public class ConstantConfig {
-	public static boolean Debug = true;
+	public static boolean Debug = false;
 	public final static String DebugTAG = "DebugTAG";
 
-	// public final static String PKG_NAME = "com.broadchance.wdecgrec";
 	public final static String ACTION_PREFIX = AppApplication.PKG_NAME + ".";
 	// public final static String BLE_UUID_READ =
 	// 单通道"0000fff4-0000-1000-8000-00805f9b34fb";
@@ -50,7 +49,7 @@ public class ConstantConfig {
 	// 正式 http://106.75.62.31:8080/index.php/Api/index/mobileinterface.html
 	// 测试 http://106.75.12.181/index.php/Api/index/mobileinterface.html
 
-	public final static String SERVER_URL_DEF = "http://106.75.12.181/index.php/Api/index/mobileinterface.html";
+	public final static String SERVER_URL_DEF = "http://106.75.62.31:8080/index.php/Api/index/mobileinterface.html";
 	public static String SERVER_URL = SettingsManager.getInstance()
 			.getServerURL();
 	// public static final String SERVER_URL = "http://192.168.1.134:56285";

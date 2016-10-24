@@ -1,7 +1,8 @@
 package com.broadchance.entity;
 
+import thoth.holter.ecg_010.manager.DataManager;
+
 import com.broadchance.entity.serverentity.BaseResponse;
-import com.broadchance.manager.DataManager;
 import com.broadchance.utils.BleDataUtil;
 
 public class UIUserInfoLogin extends BaseResponse<String> {

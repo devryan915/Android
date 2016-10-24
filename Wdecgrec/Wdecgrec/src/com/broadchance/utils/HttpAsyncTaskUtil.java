@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.broadchance.entity.serverentity.BaseResponse;
 import com.broadchance.entity.serverentity.StringResponse;
 import com.broadchance.wdecgrec.HttpReqCallBack;
-import com.broadchance.wdecgrec.R;
+import thoth.holter.ecg_010.R;
 import com.broadchance.entity.serverentity.ServerResponse;
 
 /**
