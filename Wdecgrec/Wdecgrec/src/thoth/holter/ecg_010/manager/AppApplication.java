@@ -74,7 +74,7 @@ public class AppApplication extends Application {
 		// }
 		try {
 			PackageManager pm = getPackageManager();
-			PackageInfo pinfo = pm.getPackageInfo(PKG_NAME,
+			PackageInfo pinfo = pm.getPackageInfo(getPackageName(),
 					PackageManager.GET_CONFIGURATIONS);
 			curVer = pinfo.versionName;
 			verCode = pinfo.versionCode;
