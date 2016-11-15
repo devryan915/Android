@@ -4,64 +4,64 @@
 # view res/layout/activity_add_contact.xml #generated:74
 -keep class com.broadchance.utils.comparator.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:71
+# view AndroidManifest.xml #generated:72
 -keep class thoth.holter.ecg_010.login.LoginActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:83
+# view AndroidManifest.xml #generated:84
 -keep class thoth.holter.ecg_010.login.RegisterActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:87
+# view AndroidManifest.xml #generated:88
 -keep class thoth.holter.ecg_010.login.ResetPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:99
+# view AndroidManifest.xml #generated:100
 -keep class thoth.holter.ecg_010.main.EcgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:91
+# view AndroidManifest.xml #generated:92
 -keep class thoth.holter.ecg_010.main.ModeActivity { <init>(...); }
 
 # view AndroidManifest.xml #generated:49
 -keep class thoth.holter.ecg_010.manager.AppApplication { <init>(...); }
 
-# view AndroidManifest.xml #generated:160
+# view AndroidManifest.xml #generated:163
 -keep class thoth.holter.ecg_010.receiver.BootCompleteReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:128
+# view AndroidManifest.xml #generated:129
 -keep class thoth.holter.ecg_010.receiver.NetChangeReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:194
+# view AndroidManifest.xml #generated:197
 -keep class thoth.holter.ecg_010.services.BleDataParserService { <init>(...); }
 
-# view AndroidManifest.xml #generated:190
+# view AndroidManifest.xml #generated:193
 -keep class thoth.holter.ecg_010.services.BleDomainService { <init>(...); }
 
-# view AndroidManifest.xml #generated:179
+# view AndroidManifest.xml #generated:182
 -keep class thoth.holter.ecg_010.services.BluetoothLeService { <init>(...); }
 
-# view AndroidManifest.xml #generated:199
+# view AndroidManifest.xml #generated:202
 -keep class thoth.holter.ecg_010.services.GpsService { <init>(...); }
 
-# view AndroidManifest.xml #generated:184
+# view AndroidManifest.xml #generated:187
 -keep class thoth.holter.ecg_010.services.GuardService { <init>(...); }
 
-# view AndroidManifest.xml #generated:123
+# view AndroidManifest.xml #generated:124
 -keep class thoth.holter.ecg_010.settings.AddContactActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:119
+# view AndroidManifest.xml #generated:120
 -keep class thoth.holter.ecg_010.settings.AddFamilyActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:170
+# view AndroidManifest.xml #generated:173
 -keep class thoth.holter.ecg_010.settings.ModifyPwdActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:109
+# view AndroidManifest.xml #generated:110
 -keep class thoth.holter.ecg_010.settings.MyInfoActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:114
+# view AndroidManifest.xml #generated:115
 -keep class thoth.holter.ecg_010.settings.OptionSettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:104
+# view AndroidManifest.xml #generated:105
 -keep class thoth.holter.ecg_010.settings.SettingsActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:174
+# view AndroidManifest.xml #generated:177
 -keep class thoth.holter.ecg_010.settings.UploadActivity { <init>(...); }
 
 # view res/layout/activity_add_contact.xml #generated:9

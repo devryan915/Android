@@ -35,6 +35,7 @@ import thoth.holter.ecg_010.R;
 import thoth.holter.ecg_010.main.ModeActivity;
 import thoth.holter.ecg_010.manager.AppApplication;
 import thoth.holter.ecg_010.manager.DataManager;
+import thoth.holter.ecg_010.manager.SettingsManager;
 import thoth.holter.ecg_010.manager.SkinManager;
 import thoth.holter.ecg_010.services.GpsService;
 import thoth.holter.ecg_010.services.GuardService;
@@ -131,7 +132,6 @@ public class LoginActivity extends BaseActivity {
 		if (ConstantConfig.Debug) {
 			new Test().test();
 		}
-
 	}
 
 	/**
@@ -237,6 +237,10 @@ public class LoginActivity extends BaseActivity {
 				@Override
 				public void doError(String result) {
 					current = null;
+					SettingsManager.getInstance().setServerURL(
+							ConstantConfig.SERVER_URL_DEF);
+					ConstantConfig.SERVER_URL = SettingsManager.getInstance()
+							.getServerURL();
 					if (!ConstantConfig.Debug) {
 						showToast(result);
 					} else {
@@ -381,6 +385,7 @@ public class LoginActivity extends BaseActivity {
 					public void doError(String result) {
 						current = null;
 						showToast(result);
+
 					}
 				});
 	}

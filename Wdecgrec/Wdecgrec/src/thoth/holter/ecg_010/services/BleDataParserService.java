@@ -1,6 +1,8 @@
 package thoth.holter.ecg_010.services;
 
 import java.nio.IntBuffer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -8,6 +10,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import thoth.holter.ecg_010.R;
+import thoth.holter.ecg_010.manager.DataManager;
+import thoth.holter.ecg_010.manager.FrameDataMachine;
+import thoth.holter.ecg_010.manager.PlayerManager;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -32,12 +38,6 @@ import com.broadchance.utils.ConstantConfig;
 import com.broadchance.utils.FilterUtil;
 import com.broadchance.utils.LogUtil;
 import com.broadchance.utils.UIUtil;
-
-import thoth.holter.ecg_010.R;
-import thoth.holter.ecg_010.manager.DataManager;
-import thoth.holter.ecg_010.manager.FrameDataMachine;
-import thoth.holter.ecg_010.manager.PlayerManager;
-
 import com.broadchance.wdecgrec.alert.AlertMachine;
 import com.broadchance.wdecgrec.alert.AlertType;
 
@@ -54,7 +54,7 @@ public class BleDataParserService extends Service {
 
 	public final static String ACTION_PROCESS_DATA = ConstantConfig.ACTION_PREFIX
 			+ "ACTION_PROCESS_DATA";
-	private ScheduledExecutorService mEService = null;
+	// private ScheduledExecutorService mEService = null;
 	/**
 	 * 延迟判断心率是否可用
 	 */
@@ -82,8 +82,8 @@ public class BleDataParserService extends Service {
 	private LinkedBlockingQueue<FrameData> receivedQueue = new LinkedBlockingQueue<FrameData>();;
 	// private LinkedBlockingQueue<FrameData> dealQueue = new
 	// LinkedBlockingQueue<FrameData>();
-	// private Timer processFrameDataTimer;
-	// private TimerTask processFrameDataTask;
+	private Timer processFrameDataTimer;
+	private TimerTask processFrameDataTask;
 	// private ScheduledExecutorService eServie = Executors
 	// .newScheduledThreadPool(3);
 
@@ -365,12 +365,26 @@ public class BleDataParserService extends Service {
 			lastExeTime = System.currentTimeMillis();
 			exeTimes++;
 			if (exeTimes > 100) {
-				UIUtil.showToast("executeData:"
-						+ diff
-						+ " 当前cpu频率："
-						+ (Integer.parseInt(CommonUtil.getCurCpuFreq()) / 1000f)
-						+ "MHZ ");
+				LogUtil.d(
+						TAG,
+						"executeData:"
+								+ diff
+								+ " 当前cpu频率："
+								+ (Integer.parseInt(CommonUtil.getCurCpuFreq()) / 1000f)
+								+ "MHZ ");
 				exeTimes = 0;
+				Notification notification = new Notification.Builder(
+						BleDataParserService.this)
+						.setContentTitle("警告")
+						.setContentText(
+								"executeData:"
+										+ diff
+										+ " 当前cpu频率："
+										+ (Integer.parseInt(CommonUtil
+												.getCurCpuFreq()) / 1000f)
+										+ "MHZ ")
+						.setSmallIcon(R.drawable.ic_launcher).build();
+				startForeground(0x111, notification);
 			}
 		}
 		if (atomicBooleanPro.compareAndSet(false, true)) {
@@ -460,7 +474,8 @@ public class BleDataParserService extends Service {
 		// am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 		// SystemClock.elapsedRealtime(), deal_interval, pi);
 		// 改为兼容api19以上定时任务
-		am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+		// am.setExact(type, triggerAtMillis, operation)
+		am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 				SystemClock.elapsedRealtime() + deal_interval, pi);
 	}
 

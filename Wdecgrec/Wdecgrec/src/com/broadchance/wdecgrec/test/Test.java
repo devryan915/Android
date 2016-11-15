@@ -29,10 +29,10 @@ public class Test {
 
 	public void test() {
 		// testTimer();
-		byte[] frame = FrameData.BLANK_FRAME;
-		String str = BleDataUtil.bytesToHexString(BleDataUtil
-				.short2ByteArray((short) 0x8000));
-		System.out.println(str);
+		// byte[] frame = FrameData.BLANK_FRAME;
+		// String str = BleDataUtil.bytesToHexString(BleDataUtil
+		// .short2ByteArray((short) 0x8000));
+		// System.out.println(str);
 	}
 
 	private void testAlert(boolean isSend) throws JSONException {

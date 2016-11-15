@@ -25652,25 +25652,26 @@ thoth.holter.ecg_010.services.BleDataParserService -> thoth.holter.ecg_010.servi
     java.lang.String ACTION_ECGMV1_DATA_AVAILABLE -> b
     java.lang.String ACTION_ECGMV5_DATA_AVAILABLE -> c
     java.lang.String ACTION_PROCESS_DATA -> d
-    java.util.concurrent.ScheduledExecutorService mEService -> k
-    java.lang.Long conectTime -> l
-    int heartDelay -> m
+    java.lang.Long conectTime -> k
+    int heartDelay -> l
     int SIGNAL_MAX -> e
     int SIGNAL_MIN -> f
-    int deal_interval -> n
-    int DEAL_MAX -> o
-    java.util.concurrent.LinkedBlockingQueue receivedQueue -> p
-    java.nio.IntBuffer miiBuffer -> q
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> r
-    int lastHeart -> s
-    int mConnectionState -> t
-    com.broadchance.entity.HeartRate lastHeartRate -> u
-    android.os.IBinder mBinder -> v
+    int deal_interval -> m
+    int DEAL_MAX -> n
+    java.util.concurrent.LinkedBlockingQueue receivedQueue -> o
+    java.util.Timer processFrameDataTimer -> p
+    java.util.TimerTask processFrameDataTask -> q
+    java.nio.IntBuffer miiBuffer -> r
+    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> s
+    int lastHeart -> t
+    int mConnectionState -> u
+    com.broadchance.entity.HeartRate lastHeartRate -> v
+    android.os.IBinder mBinder -> w
     int lostTimes -> g
     long lastExeTime -> h
     int exeTimes -> i
-    android.content.BroadcastReceiver mGattUpdateReceiver -> w
-    android.os.PowerManager$WakeLock wakeLock -> x
+    android.content.BroadcastReceiver mGattUpdateReceiver -> x
+    android.os.PowerManager$WakeLock wakeLock -> y
     void sendECGData(java.nio.IntBuffer,java.lang.String) -> a
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
