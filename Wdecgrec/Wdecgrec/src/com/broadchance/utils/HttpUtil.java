@@ -273,11 +273,11 @@ public class HttpUtil {
 			String indata = (String) reparams.get("indata");
 			String action = (String) reparams.get("action");
 			String verify = (String) reparams.get("verify");
-			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, "action:" + action);
-				LogUtil.d(TAG, "indata:" + indata);
-				LogUtil.d(TAG, "verify:" + verify);
-			}
+			// if (ConstantConfig.Debug) {
+			// LogUtil.d(TAG, "action:" + action);
+			// LogUtil.d(TAG, "indata:" + indata);
+			// LogUtil.d(TAG, "verify:" + verify);
+			// }
 			HttpPost post = new HttpPost(url);
 			// post.addHeader("Authorization", "Bearer "
 			// + ConstantConfig.AUTHOR_TOKEN);
@@ -369,15 +369,15 @@ public class HttpUtil {
 			String indata = (String) reparams.get("indata");
 			String action = (String) reparams.get("action");
 			String verify = (String) reparams.get("verify");
-			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, "action:" + action);
-				LogUtil.d(TAG, "indata:" + indata);
-				LogUtil.d(TAG, "verify:" + verify);
-				LogUtil.d(
-						TAG,
-						"zipFile:" + zipFile.length() + " "
-								+ zipFile.getAbsolutePath());
-			}
+			// if (ConstantConfig.Debug) {
+			// LogUtil.d(TAG, "action:" + action);
+			// LogUtil.d(TAG, "indata:" + indata);
+			// LogUtil.d(TAG, "verify:" + verify);
+			// LogUtil.d(
+			// TAG,
+			// "zipFile:" + zipFile.length() + " "
+			// + zipFile.getAbsolutePath());
+			// }
 			HttpPost post = new HttpPost(url);
 			// post.addHeader("Authorization", "Bearer "
 			// + ConstantConfig.AUTHOR_TOKEN);

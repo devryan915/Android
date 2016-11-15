@@ -69,7 +69,7 @@ public class BleDataParserService extends Service {
 	// public final static float POWER_MAX = 2.9f;
 	// public final static float POWER_MIN = 2.8f;
 	// public static int rssiValue = 0;
-	private static final int deal_interval = 80;
+	private static final int deal_interval = 2000;
 	/**
 	 * 每一次最大处理ble数据帧数
 	 */
@@ -351,28 +351,25 @@ public class BleDataParserService extends Service {
 		cancelProcessService();
 		// receivedQueue = null;
 		// dealQueue.clear();
-		// releaseWarkLock();
+		releaseWarkLock();
 		super.onDestroy();
 	};
 
 	int lostTimes = 0;
 	long lastExeTime = 0;
-	int exeTimes = 0;
 
 	private void executeData() {
 		if (ConstantConfig.Debug) {
 			long diff = (System.currentTimeMillis() - lastExeTime);
 			lastExeTime = System.currentTimeMillis();
-			exeTimes++;
-			if (exeTimes > 100) {
+			if (diff > 1000) {
 				LogUtil.d(
 						TAG,
 						"executeData:"
 								+ diff
-								+ " 当前cpu频率："
+								+ "ms 当前cpu频率："
 								+ (Integer.parseInt(CommonUtil.getCurCpuFreq()) / 1000f)
-								+ "MHZ ");
-				exeTimes = 0;
+								+ "MHZ 已接收的数据长度 " + receivedQueue.size() + " ");
 				Notification notification = new Notification.Builder(
 						BleDataParserService.this)
 						.setContentTitle("警告")
@@ -399,7 +396,7 @@ public class BleDataParserService extends Service {
 				if (ConstantConfig.Debug) {
 					Log.d(ConstantConfig.DebugTAG, TAG + " 处理能力" + csize
 							+ " 处理耗时:" + (cost) + " 错过次数" + lostTimes);
-					if (cost > 3000) {
+					if (cost > 10000) {
 						UIUtil.showToast("cpu不给力  处理能力" + csize + " 处理耗时:"
 								+ (cost));
 						Notification notification = new Notification.Builder(
@@ -461,7 +458,7 @@ public class BleDataParserService extends Service {
 		// processFrameDataTimer.schedule(processFrameDataTask, 0,
 		// deal_interval);
 		//
-		startAlarm();
+		// startAlarm();
 	}
 
 	private void startAlarm() {
@@ -497,7 +494,7 @@ public class BleDataParserService extends Service {
 		// processFrameDataTimer.cancel();
 		// processFrameDataTimer = null;
 		// }
-		cancelAlarm();
+		// cancelAlarm();
 	}
 
 	// private String lastSeq = null;
@@ -557,6 +554,8 @@ public class BleDataParserService extends Service {
 		// }
 	}
 
+	private long lastrecTime = 0;
+	private long recedataslength = 0;
 	/**
 	 * 是否设备断开
 	 */
@@ -566,15 +565,26 @@ public class BleDataParserService extends Service {
 			final String action = intent.getAction();
 			if (Intent.ACTION_TIME_TICK.equals(action)) {
 				if (ConstantConfig.Debug) {
-					if (exeTimes > 100) {
-						UIUtil.showToast("TimeTick broadcast start executeData");
-					}
+					// UIUtil.showToast("TimeTick broadcast start executeData");
+					LogUtil.d(TAG, "TimeTick broadcast start executeData");
 				}
 				executeData();
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 				final byte[] data = intent
 						.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
 				receiveData(data);
+				if (ConstantConfig.Debug) {
+					recedataslength++;
+					long diff = System.currentTimeMillis() - lastrecTime;
+					if (diff > 5000) {
+						LogUtil.d(TAG, diff + " 内收到了 " + recedataslength
+								+ " 帧 "
+								+ ((recedataslength * 1f / diff) * 1000) + "/s");
+						recedataslength = 0;
+						lastrecTime = System.currentTimeMillis();
+					}
+				}
+				executeData();
 				// synchronized (receivedQueue) {
 				// byte[] data = intent
 				// .getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
@@ -785,7 +795,7 @@ public class BleDataParserService extends Service {
 		// mEService = Executors.newScheduledThreadPool(2);
 		receivedQueue.clear();
 		startProcessService();
-		// acquireWakeLock();
+		acquireWakeLock();
 		// Notification notification = new Notification();
 		// notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		// startForeground(3, notification);

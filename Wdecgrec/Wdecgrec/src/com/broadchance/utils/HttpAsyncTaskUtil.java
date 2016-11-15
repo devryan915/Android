@@ -172,9 +172,9 @@ public class HttpAsyncTaskUtil extends
 		String result = response.isOk() ? response.getData() : "";
 		boolean hasData = result != null && !result.isEmpty();
 		if (!mIsError && !mIsTimeOut) {
-			if (ConstantConfig.Debug) {
-				LogUtil.d(TAG, result);
-			}
+			// if (ConstantConfig.Debug) {
+			// LogUtil.d(TAG, result);
+			// }
 			ServerResponse entityData;
 			try {
 				if (mCallBack != null) {

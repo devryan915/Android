@@ -13881,32 +13881,40 @@ com.broadchance.utils.HttpUtil -> com.broadchance.utils.ad:
     com.broadchance.entity.UploadFileResponse uploadRealBleFile(java.lang.String,java.util.Map) -> c
     com.broadchance.entity.UploadFileResponse uploadBleFile(java.lang.String,java.util.Map) -> d
 com.broadchance.utils.LogUtil -> com.broadchance.utils.ae:
-    int I -> a
-    int D -> b
-    int W -> c
-    int E -> d
-    int C -> e
+    int I -> d
+    int D -> e
+    int W -> f
+    int E -> g
+    int C -> h
+    java.net.Socket socket -> a
+    java.io.OutputStream ou -> b
+    java.util.concurrent.LinkedBlockingQueue list -> c
     void init() -> a
+    void send() -> c
+    void sendSocket(java.lang.String,java.lang.Object) -> d
     void d(java.lang.String,java.lang.Object) -> a
     void i(java.lang.String,java.lang.Object) -> b
     void w(java.lang.String,java.lang.Object) -> c
     void e(java.lang.String,java.lang.Exception) -> a
     void e(java.lang.String,java.lang.String) -> a
     void e(java.lang.String,java.lang.Object,java.lang.Exception) -> a
-com.broadchance.utils.MD5Util -> com.broadchance.utils.af:
+    void access$0() -> b
+com.broadchance.utils.LogUtil$1 -> com.broadchance.utils.af:
+    void run() -> run
+com.broadchance.utils.MD5Util -> com.broadchance.utils.ag:
     java.lang.String MD5(java.lang.String) -> a
-com.broadchance.utils.NetUtil -> com.broadchance.utils.ag:
+com.broadchance.utils.NetUtil -> com.broadchance.utils.ah:
     boolean isConnectNet() -> a
     boolean isNetAvailable() -> b
     boolean isWifi() -> c
     boolean isMobileNet() -> d
-com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ah:
+com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ai:
     long getAvailableSpace() -> a
     long getUsedSpace(java.lang.String) -> a
     long getFileSize(long,java.io.File) -> a
     boolean isSDCardAvailable() -> b
     boolean isAvailableSpace(long) -> a
-com.broadchance.utils.SSXLXService -> com.broadchance.utils.ai:
+com.broadchance.utils.SSXLXService -> com.broadchance.utils.aj:
     com.broadchance.utils.SSXLXService _Instance -> a
     com.broadchance.utils.SSXLXService getInstance() -> a
     void GetFreeDeviceVerify(java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> a
@@ -13932,13 +13940,13 @@ com.broadchance.utils.SSXLXService -> com.broadchance.utils.ai:
     void GetForgetVerifyCode(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> f
     void InserGPS(java.lang.String,java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> e
     void GetUserBase(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> g
-com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.aj:
+com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.ak:
     java.util.HashMap attributes -> c
     java.lang.String HEART_RATE_MEASUREMENT -> a
     java.lang.String CLIENT_CHARACTERISTIC_CONFIG -> b
     java.lang.String lookup(java.lang.String) -> a
     java.lang.String lookup(java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil -> com.broadchance.utils.ak:
+com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
     android.app.Activity context -> a
     android.widget.Toast toast -> b
     void showRemoteToast(java.lang.String) -> a
@@ -13954,11 +13962,11 @@ com.broadchance.utils.UIUtil -> com.broadchance.utils.ak:
     android.app.Dialog showLoadingDialog(android.content.Context,java.lang.String) -> c
     android.app.Dialog buildDialog(android.content.Context,android.view.View) -> a
     android.app.Dialog buildTipDialog(android.content.Context,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.al:
+com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.am:
     java.lang.String val$content -> a
     int val$duration -> b
     void run() -> run
-com.broadchance.utils.ZipUtil -> com.broadchance.utils.am:
+com.broadchance.utils.ZipUtil -> com.broadchance.utils.an:
     int BUFF_SIZE -> a
     android.graphics.Bitmap compressBitmapByResid(android.content.res.Resources,int) -> a
     android.graphics.Bitmap compressImage(android.graphics.Bitmap) -> a
@@ -25647,55 +25655,61 @@ thoth.holter.ecg_010.receiver.NetChangeReceiver -> thoth.holter.ecg_010.receiver
 thoth.holter.ecg_010.receiver.PowerChangeReceiver -> thoth.holter.ecg_010.receiver.PowerChangeReceiver:
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
 thoth.holter.ecg_010.services.BleDataParserService -> thoth.holter.ecg_010.services.BleDataParserService:
-    java.lang.String TAG -> j
+    java.lang.String TAG -> i
     java.lang.String ACTION_ECGMII_DATA_AVAILABLE -> a
     java.lang.String ACTION_ECGMV1_DATA_AVAILABLE -> b
     java.lang.String ACTION_ECGMV5_DATA_AVAILABLE -> c
     java.lang.String ACTION_PROCESS_DATA -> d
-    java.lang.Long conectTime -> k
-    int heartDelay -> l
+    java.lang.Long conectTime -> j
+    int heartDelay -> k
     int SIGNAL_MAX -> e
     int SIGNAL_MIN -> f
-    int deal_interval -> m
-    int DEAL_MAX -> n
-    java.util.concurrent.LinkedBlockingQueue receivedQueue -> o
-    java.util.Timer processFrameDataTimer -> p
-    java.util.TimerTask processFrameDataTask -> q
-    java.nio.IntBuffer miiBuffer -> r
-    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> s
-    int lastHeart -> t
-    int mConnectionState -> u
-    com.broadchance.entity.HeartRate lastHeartRate -> v
-    android.os.IBinder mBinder -> w
+    int deal_interval -> l
+    int DEAL_MAX -> m
+    java.util.concurrent.LinkedBlockingQueue receivedQueue -> n
+    java.util.Timer processFrameDataTimer -> o
+    java.util.TimerTask processFrameDataTask -> p
+    java.nio.IntBuffer miiBuffer -> q
+    java.util.concurrent.atomic.AtomicBoolean atomicBooleanPro -> r
+    int lastHeart -> s
+    int mConnectionState -> t
+    com.broadchance.entity.HeartRate lastHeartRate -> u
+    android.os.IBinder mBinder -> v
     int lostTimes -> g
     long lastExeTime -> h
-    int exeTimes -> i
-    android.content.BroadcastReceiver mGattUpdateReceiver -> x
-    android.os.PowerManager$WakeLock wakeLock -> y
+    long lastrecTime -> w
+    long recedataslength -> x
+    android.content.BroadcastReceiver mGattUpdateReceiver -> y
+    android.os.PowerManager$WakeLock wakeLock -> z
     void sendECGData(java.nio.IntBuffer,java.lang.String) -> a
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onCreate() -> onCreate
     void onDestroy() -> onDestroy
-    void executeData() -> c
+    void executeData() -> d
     void startProcessService() -> a
-    void startAlarm() -> d
-    void cancelAlarm() -> e
+    void startAlarm() -> e
+    void cancelAlarm() -> f
     void cancelProcessService() -> b
-    void processData() -> f
+    void processData() -> g
     void receiveData(byte[]) -> a
-    android.content.IntentFilter makeGattUpdateIntentFilter() -> g
+    android.content.IntentFilter makeGattUpdateIntentFilter() -> h
     boolean stopService(android.content.Intent) -> stopService
     void onTrimMemory(int) -> onTrimMemory
     void onLowMemory() -> onLowMemory
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    void acquireWakeLock() -> h
-    void releaseWarkLock() -> i
-    void access$0(thoth.holter.ecg_010.services.BleDataParserService) -> a
-    void access$1(thoth.holter.ecg_010.services.BleDataParserService,byte[]) -> a
-    void access$2(thoth.holter.ecg_010.services.BleDataParserService,int) -> a
-    void access$3(thoth.holter.ecg_010.services.BleDataParserService) -> b
-    void access$4(thoth.holter.ecg_010.services.BleDataParserService,java.lang.Long) -> a
+    void acquireWakeLock() -> i
+    void releaseWarkLock() -> j
+    java.lang.String access$0() -> c
+    void access$1(thoth.holter.ecg_010.services.BleDataParserService) -> a
+    void access$2(thoth.holter.ecg_010.services.BleDataParserService,byte[]) -> a
+    long access$3(thoth.holter.ecg_010.services.BleDataParserService) -> b
+    void access$4(thoth.holter.ecg_010.services.BleDataParserService,long) -> a
+    long access$5(thoth.holter.ecg_010.services.BleDataParserService) -> c
+    void access$6(thoth.holter.ecg_010.services.BleDataParserService,long) -> b
+    void access$7(thoth.holter.ecg_010.services.BleDataParserService,int) -> a
+    void access$8(thoth.holter.ecg_010.services.BleDataParserService) -> d
+    void access$9(thoth.holter.ecg_010.services.BleDataParserService,java.lang.Long) -> a
 thoth.holter.ecg_010.services.BleDataParserService$1 -> thoth.holter.ecg_010.services.a:
     thoth.holter.ecg_010.services.BleDataParserService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive

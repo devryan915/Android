@@ -244,7 +244,7 @@ public class EcgActivity extends BaseActivity {
 
 			// 防止队列无限增大，检查队列是否超过最大允许上限，如果超出则移除老数据
 			// int maxLength = totalEcg * 3;
-			int maxLength = (int) Math.max(1000, totalEcg * 1.8f);
+			int maxLength = (int) Math.max(1000, totalEcg * 4f);
 			if (length > maxLength) {
 				length = (int) (totalEcg * 0.5f);
 				if (ConstantConfig.Debug) {

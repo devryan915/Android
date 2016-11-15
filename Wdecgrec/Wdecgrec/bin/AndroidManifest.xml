@@ -3,7 +3,7 @@
     package="thoth.holter.ecg_010"
     android:sharedUserId="thoth.holter.ecg_010.skin"
     android:versionCode="5"
-    android:versionName="1.1.53" >
+    android:versionName="1.1.61" >
 
     <uses-sdk
         android:minSdkVersion="18"
