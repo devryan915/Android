@@ -709,8 +709,40 @@ public class FrameDataMachine {
 				// 补帧
 				// lastFrameData = null;
 				if (lastFrameData != null) {
-					// Calendar cal = Calendar.getInstance();
-					// cal.setTimeInMillis(lastFrameData.date);
+					// long curframeDate = lastFrameData.date;
+					// int seq = 0;
+					// int diff = (frameData.getSeq() - lastFrameData.getSeq())
+					// / 2;
+					// int seqDifference = diff >= 0 ? diff
+					// : (FRAME_SEQMAXLENGTH / 2 + diff);
+					// int period = (int) ((frameData.date - lastFrameData.date)
+					// / (FRAME_PERIOD * 1000));
+					// if (seqDifference > 1) {
+					// while (frameData.date - curframeDate > ONEFRAME_TIME) {
+					// byte[] byteData = buildFrameData(
+					// frameType,
+					// (byte) (lastFrameData.getSeq() + 2 + frameCount));
+					// curframeDate += ONEFRAME_TIME;
+					// FrameData data = new FrameData(byteData,
+					// curframeDate);
+					// data.parseData();
+					// data.setFrameStatus(FrameStatus.LOST);
+					// frameDatas.offer(data);
+					// // testData(data);
+					// addFramePoint(frameType, data.getFramePoints());
+					// // BleDataUtil.logEcg(byteData);
+					// seq=data.getSeq();
+					// frameCount++;
+					// }
+					// }
+
+					// if (ConstantConfig.Debug && frameCount > 0) {
+					// LogUtil.d(TAG, "补帧\t "
+					// + (frameData.date - lastFrameData.date)
+					// + "ms内补了" + frameCount + "帧");
+					// UIUtil.showToast("补了" + frameCount + "帧");
+					// }
+
 					long curframeDate = lastFrameData.date;
 					// 由于设备序号间隔两所以为了保证序号，将序号除以2
 					// 判断补帧 FrameData内检查错位补零
@@ -722,11 +754,10 @@ public class FrameDataMachine {
 					// 补帧 序号/2保证连续
 					int frameCount = FRAME_SEQMAXLENGTH / 2 * period
 							+ seqDifference - 1;
-					if (ConstantConfig.Debug && frameCount > 0) {
-						LogUtil.d(TAG, "补了" + frameCount + "帧");
-						// UIUtil.showBleToast("补了" + frameCount + "帧");
-					}
-					for (int i = 0; i < frameCount; i++) {
+
+					int reframecount = 0;
+					for (int i = 0; i < frameCount
+							&& CommonUtil.getDate().getTime() - curframeDate > ONEFRAME_TIME * 2; i++) {
 						byte[] byteData = buildFrameData(frameType,
 								(byte) (lastFrameData.getSeq() + 2 + i));
 						curframeDate += ONEFRAME_TIME;
@@ -737,6 +768,12 @@ public class FrameDataMachine {
 						// testData(data);
 						addFramePoint(frameType, data.getFramePoints());
 						// BleDataUtil.logEcg(byteData);
+						reframecount++;
+					}
+					if (ConstantConfig.Debug && frameCount > 0) {
+						LogUtil.d(TAG, "补帧\t "
+								+ (frameData.date - lastFrameData.date)
+								+ "ms内补了" + reframecount + "帧");
 					}
 					// 由于心电设备发送的数据间隔时间不是严格的80ms一帧，所以在保证数据连续的情况下，将时间间隔调整为严格80ms时间
 					curframeDate += ONEFRAME_TIME;

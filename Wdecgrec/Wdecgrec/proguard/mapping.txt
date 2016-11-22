@@ -13881,16 +13881,14 @@ com.broadchance.utils.HttpUtil -> com.broadchance.utils.ad:
     com.broadchance.entity.UploadFileResponse uploadRealBleFile(java.lang.String,java.util.Map) -> c
     com.broadchance.entity.UploadFileResponse uploadBleFile(java.lang.String,java.util.Map) -> d
 com.broadchance.utils.LogUtil -> com.broadchance.utils.ae:
-    int I -> d
-    int D -> e
-    int W -> f
-    int E -> g
-    int C -> h
+    int I -> c
+    int D -> d
+    int W -> e
+    int E -> f
+    int C -> g
     java.net.Socket socket -> a
     java.io.OutputStream ou -> b
-    java.util.concurrent.LinkedBlockingQueue list -> c
     void init() -> a
-    void send() -> c
     void sendSocket(java.lang.String,java.lang.Object) -> d
     void d(java.lang.String,java.lang.Object) -> a
     void i(java.lang.String,java.lang.Object) -> b
@@ -13898,23 +13896,20 @@ com.broadchance.utils.LogUtil -> com.broadchance.utils.ae:
     void e(java.lang.String,java.lang.Exception) -> a
     void e(java.lang.String,java.lang.String) -> a
     void e(java.lang.String,java.lang.Object,java.lang.Exception) -> a
-    void access$0() -> b
-com.broadchance.utils.LogUtil$1 -> com.broadchance.utils.af:
-    void run() -> run
-com.broadchance.utils.MD5Util -> com.broadchance.utils.ag:
+com.broadchance.utils.MD5Util -> com.broadchance.utils.af:
     java.lang.String MD5(java.lang.String) -> a
-com.broadchance.utils.NetUtil -> com.broadchance.utils.ah:
+com.broadchance.utils.NetUtil -> com.broadchance.utils.ag:
     boolean isConnectNet() -> a
     boolean isNetAvailable() -> b
     boolean isWifi() -> c
     boolean isMobileNet() -> d
-com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ai:
+com.broadchance.utils.SDCardUtils -> com.broadchance.utils.ah:
     long getAvailableSpace() -> a
     long getUsedSpace(java.lang.String) -> a
     long getFileSize(long,java.io.File) -> a
     boolean isSDCardAvailable() -> b
     boolean isAvailableSpace(long) -> a
-com.broadchance.utils.SSXLXService -> com.broadchance.utils.aj:
+com.broadchance.utils.SSXLXService -> com.broadchance.utils.ai:
     com.broadchance.utils.SSXLXService _Instance -> a
     com.broadchance.utils.SSXLXService getInstance() -> a
     void GetFreeDeviceVerify(java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> a
@@ -13940,13 +13935,13 @@ com.broadchance.utils.SSXLXService -> com.broadchance.utils.aj:
     void GetForgetVerifyCode(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> f
     void InserGPS(java.lang.String,java.lang.String,java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> e
     void GetUserBase(java.lang.String,com.broadchance.wdecgrec.HttpReqCallBack) -> g
-com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.ak:
+com.broadchance.utils.SampleGattAttributes -> com.broadchance.utils.aj:
     java.util.HashMap attributes -> c
     java.lang.String HEART_RATE_MEASUREMENT -> a
     java.lang.String CLIENT_CHARACTERISTIC_CONFIG -> b
     java.lang.String lookup(java.lang.String) -> a
     java.lang.String lookup(java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
+com.broadchance.utils.UIUtil -> com.broadchance.utils.ak:
     android.app.Activity context -> a
     android.widget.Toast toast -> b
     void showRemoteToast(java.lang.String) -> a
@@ -13962,11 +13957,11 @@ com.broadchance.utils.UIUtil -> com.broadchance.utils.al:
     android.app.Dialog showLoadingDialog(android.content.Context,java.lang.String) -> c
     android.app.Dialog buildDialog(android.content.Context,android.view.View) -> a
     android.app.Dialog buildTipDialog(android.content.Context,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,java.lang.String,java.lang.String) -> a
-com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.am:
+com.broadchance.utils.UIUtil$1 -> com.broadchance.utils.al:
     java.lang.String val$content -> a
     int val$duration -> b
     void run() -> run
-com.broadchance.utils.ZipUtil -> com.broadchance.utils.an:
+com.broadchance.utils.ZipUtil -> com.broadchance.utils.am:
     int BUFF_SIZE -> a
     android.graphics.Bitmap compressBitmapByResid(android.content.res.Resources,int) -> a
     android.graphics.Bitmap compressImage(android.graphics.Bitmap) -> a

@@ -38,53 +38,84 @@ public class LogUtil {
 			logConfigurator.setLevel("org.apache", Level.ERROR);
 			logConfigurator.configure();
 		}
-		if (ConstantConfig.Debug) {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						// 创建Socket
-						// socket = new Socket("192.168.1.110",54321);
-						socket = new Socket("192.168.1.102", 9050); // IP：10.14.114.127，端口54321
-						ou = socket.getOutputStream();
-						send();
-					} catch (Exception e) {
-					}
-				}
-			}).start();
-		}
+		// startSocket();
 	}
 
-	static LinkedBlockingQueue<String> list = new LinkedBlockingQueue<String>();
-
-	private static void send() {
-		while (true) {
-			try {
-				String msg = list.poll();
-				int size = list.size();
-				if (msg != null && msg.length() > 0) {
-					msg = "\n(" + size + ")\t" + msg + "\n";
-					ou.write(msg.getBytes("UTF-8"));
-					ou.flush();
-				}
-				if (size < 20)
-					Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	// static LinkedBlockingQueue<String> list = new
+	// LinkedBlockingQueue<String>();
+	//
+	// private static void startSocket() {
+	// if (ConstantConfig.Debug) {
+	// if (ou != null) {
+	// try {
+	// ou.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	// if (socket != null) {
+	// try {
+	// socket.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// try {
+	// // 创建Socket
+	// // socket = new Socket("192.168.1.110",54321);
+	// socket = new Socket("192.168.1.141", 9050); // IP：10.14.114.127，端口54321
+	// ou = socket.getOutputStream();
+	// send();
+	// } catch (Exception e) {
+	// try {
+	// Thread.sleep(2000);
+	// } catch (InterruptedException e1) {
+	// e1.printStackTrace();
+	// }
+	// startSocket();
+	// // e.printStackTrace();
+	// }
+	// }
+	// }).start();
+	// }
+	// }
+	//
+	// private static void send() {
+	// while (true) {
+	// try {
+	// String msg = list.poll();
+	// int size = list.size();
+	// if (msg != null && msg.length() > 0) {
+	// msg = "\n(" + size + ")\t" + msg + "\n";
+	// ou.write(msg.getBytes("UTF-8"));
+	// ou.flush();
+	// }
+	// if (size < 20)
+	// Thread.sleep(1000);
+	// } catch (Exception e) {
+	// // startSocket();
+	// try {
+	// Thread.sleep(2000);
+	// } catch (InterruptedException e1) {
+	// e1.printStackTrace();
+	// }
+	// startSocket();
+	// break;
+	// }
+	// }
+	// }
 
 	private static void sendSocket(String tag, Object obj) {
-		if (ConstantConfig.Debug) {
-			list.offer(CommonUtil.getTime_D() + "\t" + tag + "\n"
-					+ obj.toString());
-		}
+		// if (ConstantConfig.Debug) {
+		// list.offer(CommonUtil.getTime_D() + "\t" + tag + "\n"
+		// + obj.toString());
+		// }
 	}
 
 	public static void d(String tag, Object obj) {

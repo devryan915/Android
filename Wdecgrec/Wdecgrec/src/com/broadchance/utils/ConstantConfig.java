@@ -4,7 +4,7 @@ import thoth.holter.ecg_010.manager.AppApplication;
 import thoth.holter.ecg_010.manager.SettingsManager;
 
 public class ConstantConfig {
-	public static boolean Debug = true;
+	public static boolean Debug = false;
 	public final static String DebugTAG = "DebugTAG";
 
 	public final static String ACTION_PREFIX = AppApplication.PKG_NAME + ".";
